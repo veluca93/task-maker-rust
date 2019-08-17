@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Dependency","A dependency of an execution, all the sandbox paths must be relative and inside of the sandbox."],["LanguageManager","Singleton that manages the known languages"]],"trait":[["Language","Trait that defines what a language is."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ScoreTypeMin","The score type `min`, for each subtask takes the value of worst testcase score."]],"trait":[["ScoreType","A score type is the aggregation function for the testcases scores. From the testcases score this is able to compute the subtask scores and the task total score."]]});
