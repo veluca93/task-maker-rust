@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LocalExecutor","An Executor that runs locally by spawning a number of threads with the workers inside."]]});

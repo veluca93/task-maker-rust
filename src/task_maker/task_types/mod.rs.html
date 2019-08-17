@@ -735,9 +735,9 @@
 <span id="735">735</span>
 <span id="736">736</span>
 <span id="737">737</span>
+<span id="738">738</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">evaluation</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">executor</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">score_types</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
@@ -749,6 +749,8 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">executors</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">common</span>;
 <span class="kw">mod</span> <span class="ident">grader_map</span>;
@@ -1170,7 +1172,7 @@
         <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
             <span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">tx_remote</span>, <span class="ident">rx_remote</span>).<span class="ident">unwrap</span>();
         });
-        <span class="ident">ExecutorClient</span>::<span class="ident">evaluate</span>(<span class="ident">eval</span>, <span class="ident">tx</span>, <span class="ident">rx</span>).<span class="ident">unwrap</span>();
+        <span class="ident">ExecutorClient</span>::<span class="ident">evaluate</span>(<span class="ident">eval</span>.<span class="ident">dag</span>, <span class="ident">tx</span>, <span class="ident">rx</span>).<span class="ident">unwrap</span>();
         <span class="ident">server</span>.<span class="ident">join</span>().<span class="ident">expect</span>(<span class="string">&quot;Server paniced&quot;</span>);
     }
 }

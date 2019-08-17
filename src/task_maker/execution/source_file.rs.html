@@ -195,6 +195,7 @@
 <span id="195">195</span>
 <span id="196">196</span>
 <span id="197">197</span>
+<span id="198">198</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">evaluation</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::<span class="kw-2">*</span>;
@@ -351,13 +352,14 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">test_utils</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
+    <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">eval_dag_locally</span>;
+    <span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_source_file_cpp</span>() {
-        <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">setup_test</span>();
+        <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
 
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">eval</span>, <span class="ident">_receiver</span>) <span class="op">=</span> <span class="ident">EvaluationData</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="string">&quot;int main() {return 0;}&quot;</span>;
@@ -386,7 +388,7 @@
         });
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
 
-        <span class="ident">eval_dag_locally</span>(<span class="ident">eval</span>, <span class="ident">cwd</span>.<span class="ident">path</span>());
+        <span class="ident">eval_dag_locally</span>(<span class="ident">eval</span>.<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>);
 
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_start2</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_done2</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));
