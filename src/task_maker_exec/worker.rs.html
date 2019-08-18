@@ -311,6 +311,9 @@
 <span id="311">311</span>
 <span id="312">312</span>
 <span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -397,7 +400,10 @@
     <span class="doccomment">/// Make a new worker attached to a [`FileStore`](../task_maker_store/struct.FileStore.html),</span>
     <span class="doccomment">/// will return a pair with the actual `Worker` and an handle with the channels to connect to</span>
     <span class="doccomment">/// communicate with the worker.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">S</span>, <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> (<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(
+        <span class="ident">name</span>: <span class="ident">S</span>,
+        <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>,
+    ) <span class="op">-&gt;</span> (<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>) {
         <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx_worker</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> (<span class="ident">tx_worker</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> <span class="ident">uuid</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">new_v4</span>();

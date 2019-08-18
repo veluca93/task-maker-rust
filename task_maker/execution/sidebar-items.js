@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SourceFile","A source file that will be able to be execute (with an optional compilation step)."]]});

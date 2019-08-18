@@ -50,6 +50,8 @@
 <span id="50">50</span>
 <span id="51">51</span>
 <span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG generation and resulting structures for [`Execution`](struct.Execution.html)s and</span>
 <span class="doccomment">//! [`File`](struct.File.html)s.</span>
@@ -89,6 +91,8 @@
 <span class="doccomment">//! dag.on_execution_done(&amp;exec_id, |result| println!(&quot;Elapsed time: {} seconds&quot;, result.resources.cpu_time));</span>
 <span class="doccomment">//! dag.get_file_content(&amp;output, 1000, |date| println!(&quot;The date is: {}&quot;, std::str::from_utf8(&amp;date).unwrap()));</span>
 <span class="doccomment">//! ```</span>
+
+<span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">boxfnonce</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">failure</span>;

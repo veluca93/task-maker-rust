@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["evaluation",""],["execution",""],["languages",""],["score_types",""],["task_types",""],["ui",""]]});
+initSidebarItems({"mod":[["evaluation",""],["score_types",""],["task_types",""],["ui",""]]});
