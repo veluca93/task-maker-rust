@@ -310,6 +310,8 @@
 <span id="310">310</span>
 <span id="311">311</span>
 <span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
@@ -465,7 +467,9 @@
         }
         <span class="comment">// allow reading some basic directories</span>
         <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="ident">READABLE_DIRS</span> {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--readable-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">dir</span>);
+            <span class="kw">if</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">dir</span>).<span class="ident">is_dir</span>() {
+                <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--readable-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">dir</span>);
+            }
         }
         <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--&quot;</span>);
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">command</span> {
