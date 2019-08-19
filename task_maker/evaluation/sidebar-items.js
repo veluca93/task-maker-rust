@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["EvaluationData","The data for an evaluation, including the DAG and the UI channel."],["SourceFile","Wrapper around `task_maker_lang::SourceFile` that also sends to the UI the messages about the compilation, making the compilation completely transparent to the `SourceFile`."]],"trait":[["UISender","What can send UIMessages."]]});

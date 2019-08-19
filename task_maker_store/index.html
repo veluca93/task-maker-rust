@@ -10,10 +10,10 @@ least-recently-used files are removed automatically.</p>
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::{<span class="ident">FileStore</span>, <span class="ident">FileStoreKey</span>, <span class="ident">ReadFileIterator</span>};
 
 <span class="comment">// make a new store based on a directory, this will lock if the store is already in use</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="string">&quot;/tmp/store&quot;</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="ident">store_dir</span>)<span class="question-mark">?</span>;
 <span class="comment">// compute the key of a file and make an iterator over its content</span>
-<span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">FileStoreKey</span>::<span class="ident">from_file</span>(<span class="string">&quot;/tmp/file.txt&quot;</span>)<span class="question-mark">?</span>;
-<span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">ReadFileIterator</span>::<span class="ident">new</span>(<span class="string">&quot;/tmp/file.txt&quot;</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">FileStoreKey</span>::<span class="ident">from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">ReadFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>)<span class="question-mark">?</span>;
 <span class="comment">// store the file inside the file store</span>
 <span class="ident">store</span>.<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">iter</span>)<span class="question-mark">?</span>;
 <span class="comment">// store.get(&amp;key) will return the path on disk of the file if present inside the store</span>

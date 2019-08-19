@@ -698,21 +698,21 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # use failure::Error;</span>
 <span class="doccomment">//! # use std::fs;</span>
+<span class="doccomment">//! # use tempdir::TempDir;</span>
 <span class="doccomment">//! # fn main() -&gt; Result&lt;(), Error&gt; {</span>
-<span class="doccomment">//! # fs::write(&quot;/tmp/file.txt&quot;, &quot;hello world&quot;)?;</span>
+<span class="doccomment">//! # let tmp = TempDir::new(&quot;tm-test&quot;).unwrap();</span>
+<span class="doccomment">//! # let store_dir = tmp.path().join(&quot;store&quot;);</span>
+<span class="doccomment">//! # let path = tmp.path().join(&quot;file.txt&quot;);</span>
+<span class="doccomment">//! # fs::write(&amp;path, &quot;hello world&quot;)?;</span>
 <span class="doccomment">//! // make a new store based on a directory, this will lock if the store is already in use</span>
-<span class="doccomment">//! let mut store = FileStore::new(&quot;/tmp/store&quot;)?;</span>
+<span class="doccomment">//! let mut store = FileStore::new(store_dir)?;</span>
 <span class="doccomment">//! // compute the key of a file and make an iterator over its content</span>
-<span class="doccomment">//! let key = FileStoreKey::from_file(&quot;/tmp/file.txt&quot;)?;</span>
-<span class="doccomment">//! let iter = ReadFileIterator::new(&quot;/tmp/file.txt&quot;)?;</span>
+<span class="doccomment">//! let key = FileStoreKey::from_file(&amp;path)?;</span>
+<span class="doccomment">//! let iter = ReadFileIterator::new(&amp;path)?;</span>
 <span class="doccomment">//! // store the file inside the file store</span>
 <span class="doccomment">//! store.store(&amp;key, iter)?;</span>
 <span class="doccomment">//! // store.get(&amp;key) will return the path on disk of the file if present inside the store</span>
 <span class="doccomment">//! assert!(store.get(&amp;key)?.is_some());</span>
-<span class="doccomment">//! # // clear the test data</span>
-<span class="doccomment">//! # fs::remove_file(&quot;/tmp/file.txt&quot;)?;</span>
-<span class="doccomment">//! # std::mem::drop(store);</span>
-<span class="doccomment">//! # fs::remove_dir_all(&quot;/tmp/store&quot;)?;</span>
 <span class="doccomment">//! # Ok(())</span>
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
