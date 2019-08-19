@@ -177,7 +177,7 @@
     }
 }
 
-<span class="doccomment">/// Wrapper around [`task_maker_lang::SourceFile`](../task_maker_lang/struct.SourceFile.html) that</span>
+<span class="doccomment">/// Wrapper around [`task_maker_lang::SourceFile`](../../task_maker_lang/struct.SourceFile.html) that</span>
 <span class="doccomment">/// also sends to the UI the messages about the compilation, making the compilation completely</span>
 <span class="doccomment">/// transparent to the `SourceFile`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -187,7 +187,7 @@
 
 <span class="kw">impl</span> <span class="ident">SourceFile</span> {
     <span class="doccomment">/// Make a new `SourceFile`. See</span>
-    <span class="doccomment">/// [`task_maker_lang::SourceFile`](../task_maker_lang/struct.SourceFile.html) for the details.</span>
+    <span class="doccomment">/// [`task_maker_lang::SourceFile`](../../task_maker_lang/struct.SourceFile.html) for the details.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
         <span class="ident">path</span>: <span class="ident">P</span>,
         <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;&gt;</span>,
@@ -200,7 +200,7 @@
     <span class="doccomment">/// Prepare an execution of the source file, eventually adding the compilation to the DAG.</span>
     <span class="doccomment">/// The compilation messages are sent to the UI.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [`task_maker_lang::SourceFile`](../task_maker_lang/struct.SourceFile.html) for the</span>
+    <span class="doccomment">/// See [`task_maker_lang::SourceFile`](../../task_maker_lang/struct.SourceFile.html) for the</span>
     <span class="doccomment">/// details. Note that the return value is different because the compilation uuid is handled by</span>
     <span class="doccomment">/// this method.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execute</span>(

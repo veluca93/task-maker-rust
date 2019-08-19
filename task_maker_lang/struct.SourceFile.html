@@ -27,7 +27,7 @@ returned only once, even if the <code>execute</code> method is called more than 
 execution is returned as second parameter.</p>
 <p>The returned execution has all the dependencies already set, but it <strong>has not been added</strong>
 to the DAG yet. In order for this execution to work it has to be manually added to the DAG
-using <a href="../task_maker_dag/struct.ExecutionDAG.html#method.add_execution"><code>add_execution</code></a>.</p>
+using <a href="../task_maker_dag/struct.ExecutionDAG.html#method.add_execution"><code>ExecutionDAG::add_execution</code></a>.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <p>When executing a <code>.cpp</code> file the first item returned contains an handle to the compilation
 execution. Note that the second time the handle is not returned.</p>

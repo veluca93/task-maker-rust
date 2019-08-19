@@ -3,7 +3,7 @@
 <p>The communication between the services is done using the abstraction of
 <code>std::sync::mpsc::channel</code>. The messages are serialized and then sent inside a <code>channel</code>. The
 way the messages are serialized is unspecified and
-<a href="../task_maker_exec/fn.serialize_into.html"><code>serialize_into</code></a>/<a href="task_maker_exec/fn.deserialize_from.html"><code>deserialize_from</code></a>
+<a href="../../task_maker_exec/fn.serialize_into.html"><code>serialize_into</code></a>/<a href="../../task_maker_exec/fn.deserialize_from.html"><code>deserialize_from</code></a>
 should be used instead of reading from / writing to the channels.</p>
 <p>There are 3 basic actors in the protocol:</p>
 <ul>
