@@ -516,8 +516,21 @@
 <span id="516">516</span>
 <span id="517">517</span>
 <span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
@@ -644,6 +657,10 @@
 
     <span class="doccomment">/// Limits on the execution.</span>
     <span class="kw">pub</span> <span class="ident">limits</span>: <span class="ident">ExecutionLimits</span>,
+
+    <span class="doccomment">/// The configuration of the underlying DAG. Will be overwritten by</span>
+    <span class="doccomment">/// `ExecutionDAG.add_execution`.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>,
 }
 
 <span class="doccomment">/// Limits on an [`Execution`](struct.Execution.html). On some worker platforms some of the fields</span>
@@ -831,6 +848,8 @@
             <span class="ident">outputs</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
 
             <span class="ident">limits</span>: <span class="ident">ExecutionLimits</span>::<span class="ident">default</span>(),
+
+            <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>::<span class="ident">new</span>(),
         }
     }
 
@@ -1011,6 +1030,11 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">limits_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExecutionLimits</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">limits</span>
+    }
+
+    <span class="doccomment">/// A reference to the configuration of the underlying DAG.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ExecutionDAGConfig</span> {
+        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>
     }
 }
 

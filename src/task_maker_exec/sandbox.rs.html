@@ -312,6 +312,29 @@
 <span id="312">312</span>
 <span id="313">313</span>
 <span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
@@ -358,8 +381,11 @@
 <span class="doccomment">/// Internals of the sandbox.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">struct</span> <span class="ident">SandboxData</span> {
-    <span class="doccomment">/// Handle to the temporary directory, will be deleted on drop.</span>
-    <span class="ident">boxdir</span>: <span class="ident">TempDir</span>,
+    <span class="doccomment">/// Handle to the temporary directory, will be deleted on drop. It&#39;s always Some(_) except</span>
+    <span class="doccomment">/// inside `Drop`.</span>
+    <span class="ident">boxdir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TempDir</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Whether to keep the sandbox after exit.</span>
+    <span class="ident">keep_sandbox</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Wrapper around the sandbox. Cloning this struct will keep the reference of the same sandbox,</span>
@@ -412,14 +438,17 @@
         <span class="kw">let</span> <span class="ident">boxdir</span> <span class="op">=</span> <span class="ident">TempDir</span>::<span class="ident">new_in</span>(<span class="ident">sandboxes_dir</span>, <span class="string">&quot;box&quot;</span>)<span class="question-mark">?</span>;
         <span class="ident">Sandbox</span>::<span class="ident">setup</span>(<span class="ident">boxdir</span>.<span class="ident">path</span>(), <span class="ident">execution</span>, <span class="ident">dep_keys</span>, <span class="ident">file_store</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Sandbox</span> {
-            <span class="ident">data</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">SandboxData</span> { <span class="ident">boxdir</span> })),
+            <span class="ident">data</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">SandboxData</span> {
+                <span class="ident">boxdir</span>: <span class="prelude-val">Some</span>(<span class="ident">boxdir</span>),
+                <span class="ident">keep_sandbox</span>: <span class="bool-val">false</span>,
+            })),
             <span class="ident">execution</span>: <span class="ident">execution</span>.<span class="ident">clone</span>(),
         })
     }
 
     <span class="doccomment">/// Starts the sandbox and blocks the thread until the sandbox exits.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SandboxResult</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">boxdir</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">boxdir</span>.<span class="ident">path</span>().<span class="ident">to_owned</span>();
+        <span class="kw">let</span> <span class="ident">boxdir</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">to_owned</span>();
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Running sandbox at {:?}&quot;</span>, <span class="ident">boxdir</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OUT_DIR&quot;</span>)).<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;tmbox&quot;</span>));
         <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--directory&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>));
@@ -519,35 +548,36 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kill</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="macro">info</span><span class="macro">!</span>(
             <span class="string">&quot;Sandbox at {:?} got killed&quot;</span>,
-            <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">boxdir</span>.<span class="ident">path</span>()
+            <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>()
         );
         <span class="macro">unimplemented</span><span class="macro">!</span>();
     }
 
     <span class="doccomment">/// Make the sandbox persistent, the sandbox directory won&#39;t be deleted after the execution.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keep</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="macro">unimplemented</span><span class="macro">!</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keep</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">boxdir</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">to_owned</span>();
+        <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Keeping sandbox at {:?}&quot;</span>, <span class="ident">path</span>);
+        <span class="ident">data</span>.<span class="ident">keep_sandbox</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let</span> <span class="ident">serialized</span> <span class="op">=</span>
+            <span class="ident">serde_json</span>::<span class="ident">to_string_pretty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot serialize execution&quot;</span>);
+        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;info.json&quot;</span>), <span class="ident">serialized</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;Cannot write execution info inside sandbox&quot;</span>);
     }
 
     <span class="doccomment">/// Path of the file where the standard output is written to.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">boxdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>)
+        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>)
     }
 
     <span class="doccomment">/// Path of the file where the standard error is written to.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">boxdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>)
+        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>)
     }
 
     <span class="doccomment">/// Path of the file where that output file is written to.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="self">self</span>.<span class="ident">data</span>
-            .<span class="ident">lock</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">boxdir</span>
-            .<span class="ident">path</span>()
-            .<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>)
-            .<span class="ident">join</span>(<span class="ident">output</span>)
+        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>).<span class="ident">join</span>(<span class="ident">output</span>)
     }
 
     <span class="doccomment">/// Setup the sandbox directory with all the files required for the execution.</span>
@@ -625,6 +655,22 @@
         <span class="ident">permisions</span>.<span class="ident">set_mode</span>(<span class="ident">mode</span>);
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">set_permissions</span>(<span class="ident">dest</span>, <span class="ident">permisions</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">SandboxData</span> {
+    <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Path</span> {
+        <span class="comment">// this unwrap is safe since only `Drop` will remove the boxdir</span>
+        <span class="self">self</span>.<span class="ident">boxdir</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>()
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">SandboxData</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">keep_sandbox</span> {
+            <span class="comment">// this will unwrap the directory, dropping the `TempDir` without deleting the directory</span>
+            <span class="self">self</span>.<span class="ident">boxdir</span>.<span class="ident">take</span>().<span class="ident">map</span>(<span class="ident">TempDir</span>::<span class="ident">into_path</span>);
+        }
     }
 }
 </pre></div>
