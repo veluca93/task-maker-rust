@@ -54,9 +54,13 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">Error</span>, <span class="ident">format_err</span>};
+<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 
@@ -98,15 +102,19 @@
             <span class="kw">let</span> (<span class="ident">worker</span>, <span class="ident">conn</span>) <span class="op">=</span>
                 <span class="ident">Worker</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Local worker {}&quot;</span>, <span class="ident">i</span>), <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>());
             <span class="ident">workers</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">add_worker</span>(<span class="ident">conn</span>));
-            <span class="ident">workers</span>.<span class="ident">push</span>(<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
-                .<span class="ident">name</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Worker {}&quot;</span>, <span class="ident">worker</span>))
-                .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
-                    <span class="ident">worker</span>.<span class="ident">work</span>().<span class="ident">expect</span>(<span class="string">&quot;Worker failed&quot;</span>);
-                })<span class="question-mark">?</span>);
+            <span class="ident">workers</span>.<span class="ident">push</span>(
+                <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
+                    .<span class="ident">name</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Worker {}&quot;</span>, <span class="ident">worker</span>))
+                    .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+                        <span class="ident">worker</span>.<span class="ident">work</span>().<span class="ident">expect</span>(<span class="string">&quot;Worker failed&quot;</span>);
+                    })<span class="question-mark">?</span>,
+            );
         }
         <span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">sender</span>, <span class="ident">receiver</span>)<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">worker</span> <span class="kw">in</span> <span class="ident">workers</span>.<span class="ident">into_iter</span>() {
-            <span class="ident">worker</span>.<span class="ident">join</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Worker panicked: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
+            <span class="ident">worker</span>
+                .<span class="ident">join</span>()
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Worker panicked: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }

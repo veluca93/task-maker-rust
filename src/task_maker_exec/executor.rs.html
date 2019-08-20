@@ -551,6 +551,9 @@
 <span id="551">551</span>
 <span id="552">552</span>
 <span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">BinaryHeap</span>, <span class="ident">HashMap</span>, <span class="ident">HashSet</span>, <span class="ident">VecDeque</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Condvar</span>, <span class="ident">Mutex</span>};
@@ -635,7 +638,7 @@
     <span class="doccomment">/// The worker got some job.</span>
     <span class="ident">GotJob</span>(<span class="ident">WorkerJob</span>),
     <span class="doccomment">/// The computation ended, the worker should exit now.</span>
-    <span class="ident">Exit</span>
+    <span class="ident">Exit</span>,
 }
 
 <span class="doccomment">/// State of a worker as seen by the server.</span>
@@ -800,8 +803,8 @@
                                         <span class="ident">worker</span>.<span class="ident">name</span>.<span class="ident">clone</span>(),
                                         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">worker</span>.<span class="ident">job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>() {
                                             <span class="ident">WorkerWaitingState</span>::<span class="ident">GotJob</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-                                            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>
-                                        }
+                                            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+                                        },
                                     )
                                 })
                                 .<span class="ident">collect</span>(),
@@ -882,13 +885,14 @@
                 }
                 <span class="kw">match</span> <span class="ident">wait_for_work</span>(<span class="ident">executor</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">uuid</span>) {
                     <span class="ident">WorkerWaitingState</span>::<span class="ident">GotJob</span>(<span class="ident">job</span>) <span class="op">=&gt;</span> {
-                        <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">job</span>)), <span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">sender</span>).<span class="ident">unwrap</span>();
+                        <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">job</span>)), <span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">sender</span>)
+                            .<span class="ident">unwrap</span>();
                     }
                     <span class="ident">WorkerWaitingState</span>::<span class="ident">Exit</span> <span class="op">=&gt;</span> {
                         <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Worker {} asked to exit&quot;</span>, <span class="ident">conn</span>);
                         <span class="kw">break</span>;
                     }
-                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;wait_for_work returned without reason&quot;</span>)
+                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;wait_for_work returned without reason&quot;</span>),
                 }
             }
             <span class="prelude-val">Ok</span>(<span class="ident">WorkerClientMessage</span>::<span class="ident">WorkerDone</span>(<span class="ident">result</span>)) <span class="op">=&gt;</span> {
@@ -900,7 +904,9 @@
                     .<span class="ident">expect</span>(<span class="string">&quot;Worker disappeared&quot;</span>)
                     .<span class="ident">job</span>
                     .<span class="ident">lock</span>()
-                    .<span class="ident">unwrap</span>().<span class="ident">clone</span>() {
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">clone</span>()
+                {
                     <span class="ident">job</span>
                 } <span class="kw">else</span> {
                     <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Worker job disappeared&quot;</span>);

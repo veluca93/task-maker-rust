@@ -103,27 +103,19 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
-<span id="108">108</span>
-<span id="109">109</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! TODO rustdoc</span>
+<span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate allows you to parse the tasks on disk and evaluate the solutions inside of them by</span>
+<span class="doccomment">//! adding the executions inside an [`ExecutionDAG`](task_maker_dag/struct.ExecutionDAG.html).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This crate also provides ui functionalities for showing the progress and the results of the</span>
+<span class="doccomment">//! execution.</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">failure</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">glob</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">itertools</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_yaml</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">task_maker_dag</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">task_maker_lang</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">termcolor</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">log</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">pest</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">pest_derive</span>;
 

@@ -279,6 +279,10 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
@@ -311,9 +315,13 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">UISender</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">list_files</span>, <span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">TaskFormat</span>};
 
+<span class="kw">mod</span> <span class="ident">curses_ui</span>;
 <span class="kw">mod</span> <span class="ident">dag</span>;
 <span class="kw">mod</span> <span class="ident">format</span>;
+<span class="kw">mod</span> <span class="ident">ui_state</span>;
+<span class="kw">mod</span> <span class="ident">finish_ui</span>;
 
+<span class="kw">use</span> <span class="ident">curses_ui</span>::<span class="ident">CursesUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// In IOI tasks the subtask numbers are non-negative 0-based integers.</span>
@@ -405,7 +413,7 @@
         <span class="kw">match</span> <span class="ident">ui_type</span> {
             <span class="ident">UIType</span>::<span class="ident">Raw</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">RawUI</span>::<span class="ident">new</span>())),
             <span class="ident">UIType</span>::<span class="ident">Print</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">PrintUI</span>::<span class="ident">new</span>())),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;IOI task does not current support this ui: {:?}&quot;</span>, <span class="ident">ui_type</span>),
+            <span class="ident">UIType</span>::<span class="ident">Curses</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CursesUI</span>::<span class="ident">new</span>(<span class="self">self</span>)<span class="question-mark">?</span>)),
         }
     }
 
