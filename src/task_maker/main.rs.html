@@ -100,6 +100,7 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">borrowed_box</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>)]</span>
@@ -197,10 +198,11 @@
             <span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">tx_remote</span>, <span class="ident">rx_remote</span>).<span class="ident">unwrap</span>();
         })
         .<span class="ident">unwrap</span>();
-    <span class="ident">ExecutorClient</span>::<span class="ident">evaluate</span>(<span class="ident">eval</span>.<span class="ident">dag</span>, <span class="ident">tx</span>, <span class="ident">rx</span>).<span class="ident">unwrap</span>();
+    <span class="ident">ExecutorClient</span>::<span class="ident">evaluate</span>(<span class="ident">eval</span>.<span class="ident">dag</span>, <span class="ident">tx</span>, <span class="kw-2">&amp;</span><span class="ident">rx</span>).<span class="ident">unwrap</span>();
 
     <span class="comment">// wait for the server and the ui to exit</span>
     <span class="ident">server</span>.<span class="ident">join</span>().<span class="ident">expect</span>(<span class="string">&quot;Executor panicked&quot;</span>);
+    <span class="ident">drop</span>(<span class="ident">eval</span>.<span class="ident">sender</span>); <span class="comment">// make the UI exit</span>
     <span class="ident">ui_thread</span>.<span class="ident">join</span>().<span class="ident">expect</span>(<span class="string">&quot;UI panicked&quot;</span>);
 }
 </pre></div>

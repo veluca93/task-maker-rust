@@ -253,6 +253,7 @@
 <span id="253">253</span>
 <span id="254">254</span>
 <span id="255">255</span>
+<span id="256">256</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -333,6 +334,7 @@
 }
 
 <span class="doccomment">/// The iterator item type when following the task input testcases.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">TaskInputEntry</span> {
     <span class="doccomment">/// Create a new subtask given its information.</span>
     <span class="ident">Subtask</span>(<span class="ident">SubtaskInfo</span>),
