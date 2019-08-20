@@ -200,10 +200,6 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
-<span id="203">203</span>
-<span id="204">204</span>
-<span id="205">205</span>
-<span id="206">206</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -385,15 +381,11 @@
             <span class="ident">exec2_start</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>)
         });
         <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec2</span>);
-        <span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="ident">exec3</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">_res</span><span class="op">|</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;exec3 has not been skipped&quot;</span>)
-        });
+        <span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="ident">exec3</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">_res</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;exec3 has not been skipped&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">on_execution_skip</span>(<span class="kw-2">&amp;</span><span class="ident">exec3</span>.<span class="ident">uuid</span>, <span class="kw">move</span> <span class="op">||</span> {
             <span class="ident">exec3_skipped</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>)
         });
-        <span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="ident">exec3</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">_w</span><span class="op">|</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;exec3 has not been skipped&quot;</span>)
-        });
+        <span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="ident">exec3</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">_w</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;exec3 has not been skipped&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec3</span>);
         <span class="ident">dag</span>.<span class="ident">write_file_to</span>(<span class="kw-2">&amp;</span><span class="ident">stdout</span>, <span class="kw-2">&amp;</span><span class="ident">cwd</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">write_file_to</span>(<span class="kw-2">&amp;</span><span class="ident">stdout2</span>, <span class="kw-2">&amp;</span><span class="ident">cwd</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stdout2&quot;</span>));

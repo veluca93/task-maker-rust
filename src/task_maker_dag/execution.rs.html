@@ -502,6 +502,20 @@
 <span id="502">502</span>
 <span id="503">503</span>
 <span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
@@ -739,7 +753,7 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Set the memory limit in seconds.</span>
+    <span class="doccomment">/// Set the memory limit in KiB.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">memory</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
@@ -865,6 +879,20 @@
             <span class="ident">outs</span>.<span class="ident">push</span>(<span class="ident">output</span>.<span class="ident">uuid</span>);
         }
         <span class="ident">outs</span>
+    }
+
+    <span class="doccomment">/// Sets the command line arguments of the execution. Calling again this method will overwrite</span>
+    <span class="doccomment">/// the previous values.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;test execution&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// exec.args(vec![&quot;test&quot;, &quot;args&quot;]);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">args</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">into</span>()).<span class="ident">collect</span>();
+        <span class="self">self</span>
     }
 
     <span class="doccomment">/// Bind the standard input to the specified file. Calling again this method will overwrite the</span>

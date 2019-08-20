@@ -197,7 +197,7 @@
             .<span class="ident">as_ref</span>()
             .<span class="ident">extension</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string_lossy</span>())
-            .<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>.<span class="ident">into</span>())
+            .<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="string">&quot;&quot;</span>.<span class="ident">into</span>())
             .<span class="ident">to_lowercase</span>();
         <span class="kw">for</span> <span class="ident">lang</span> <span class="kw">in</span> <span class="ident">manager</span>.<span class="ident">known_languages</span>.<span class="ident">iter</span>() {
             <span class="kw">for</span> <span class="ident">lang_ext</span> <span class="kw">in</span> <span class="ident">lang</span>.<span class="ident">extensions</span>().<span class="ident">iter</span>() {

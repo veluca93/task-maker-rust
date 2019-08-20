@@ -132,7 +132,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ioi</span>;
 <span class="kw">mod</span> <span class="ident">source_file</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ui</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">source_file</span>::<span class="ident">SourceFile</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">source_file</span>::<span class="ident">SourceFile</span>;
 
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
@@ -149,7 +149,7 @@
     <span class="doccomment">/// Execute the evaluation of this task by adding the executions to the provided DAG.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// TODO: provide some options like dry_run, cache_mode, exclusive, extra_time, copy_exe, seed,</span>
-    <span class="doccomment">///   ecc...</span>
+    <span class="doccomment">///   solution filter, ecc...</span>
     <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 

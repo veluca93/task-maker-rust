@@ -76,6 +76,9 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -139,6 +142,9 @@
 
 <span class="doccomment">/// Make a new iterator of the static input files inside the `input/` directory relative to the task</span>
 <span class="doccomment">/// root.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// - `get_validator` is a function that, given the id of a subtask, returns the input validator</span>
+<span class="doccomment">/// - `get_output_get` is a function that, given the id of a testcase, returns the output generator</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">static_inputs</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">V</span>, <span class="ident">O</span><span class="op">&gt;</span>(
     <span class="ident">task_dir</span>: <span class="ident">P</span>,
     <span class="ident">get_validator</span>: <span class="ident">V</span>,

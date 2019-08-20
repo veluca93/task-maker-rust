@@ -113,6 +113,7 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
@@ -173,6 +174,7 @@
     )
     .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>)
     .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;No generator found&quot;</span>))<span class="question-mark">?</span>;
+    <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Detected input generator: {:?}&quot;</span>, <span class="ident">generator</span>);
 
     <span class="kw">for</span> <span class="ident">line</span> <span class="kw">in</span> <span class="ident">file</span>.<span class="ident">into_inner</span>() {
         <span class="kw">match</span> <span class="ident">line</span>.<span class="ident">as_rule</span>() {

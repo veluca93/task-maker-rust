@@ -175,13 +175,132 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! In IOI-like tasks there is the concept of _subtask_ and of _testcase_: a testcase is a single</span>
+<span class="doccomment">//! instance of the evaluation of a solution on a given input file, producing a single output file</span>
+<span class="doccomment">//! which will be used for the scoring. For each solution every testcase is worth from 0.0 to 1.0</span>
+<span class="doccomment">//! points.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! A subtask is a group of testcases, it has a `max_score` parameter which scales its value from</span>
+<span class="doccomment">//! 0.0 to `max_score` points. For computing the score of the subtask a `TestcaseScoreAggregator` is</span>
+<span class="doccomment">//! used. The score of the task for a solution is the sum of all the subtask scores.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! There are many different valid task types, the most common is `Batch` where the solution is</span>
+<span class="doccomment">//! simply executed once per testcase, feeding in the input file (either via stdin or normal file)</span>
+<span class="doccomment">//! and getting the output file (either via stdout or normal file). The output is then checked using</span>
+<span class="doccomment">//! a `Checker`, a program that computes the score of the testcase given the input file, the output</span>
+<span class="doccomment">//! file and the _correct_ output file (the one produced by the jury).</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
 <span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">bail</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -189,78 +308,31 @@
 <span class="kw">use</span> <span class="ident">task_maker_lang</span>::<span class="ident">GraderMap</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">TaskFormat</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">UISender</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">list_files</span>, <span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">TaskFormat</span>};
 
+<span class="kw">mod</span> <span class="ident">dag</span>;
 <span class="kw">mod</span> <span class="ident">format</span>;
+
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// In IOI tasks the subtask numbers are non-negative 0-based integers.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SubtaskId</span> <span class="op">=</span> <span class="ident">u32</span>;
 <span class="doccomment">/// In IOI tasks the testcase numbers are non-negative 0-based integers.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">TestcaseId</span> <span class="op">=</span> <span class="ident">u32</span>;
 
-<span class="doccomment">/// Which tool to use to compute the score on a testcase given the input file, the _correct_ output</span>
-<span class="doccomment">/// file and the output file to evaluate.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Checker</span> {
-    <span class="doccomment">/// Use a built-in white diff checker that scores 1.0 if the two output files are identical</span>
-    <span class="doccomment">/// except for white spaces. It internally uses `diff --ignore-all-spaces`</span>
-    <span class="ident">WhiteDiff</span>,
-    <span class="doccomment">/// Use a custom checker based on an executable that can output a score (from 0.0 to 1.0) as</span>
-    <span class="doccomment">/// well as a custom message.</span>
-    <span class="ident">Custom</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
-}
-
-<span class="doccomment">/// The source of the input files. It can either be a statically provided input file or a custom</span>
-<span class="doccomment">/// command that will generate an input file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InputGenerator</span> {
-    <span class="doccomment">/// Use the static file as input. The file will be copied without transformations.</span>
-    <span class="ident">StaticFile</span>(<span class="ident">PathBuf</span>),
-    <span class="doccomment">/// Use a custom command to generate the input file. The file has to be printed to stdout.</span>
-    <span class="ident">Custom</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
-}
-
-<span class="doccomment">/// An input file validator is responsible for checking that the input file follows the format and</span>
-<span class="doccomment">/// constraints defined by the task.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">InputValidator</span> {
-    <span class="doccomment">/// Skip the validation and assume the input file is valid.</span>
-    <span class="ident">AssumeValid</span>,
-    <span class="doccomment">/// Use a custom command to check if the input file is valid. The command should exit with</span>
-    <span class="doccomment">/// non-zero return code if the input is invalid.</span>
-    <span class="ident">Custom</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
-}
-
-<span class="doccomment">/// The source of the output files. It can either be a statically provided output file or a custom</span>
-<span class="doccomment">/// command that will generate an output file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OutputGenerator</span> {
-    <span class="doccomment">/// Use the static file as output. The file will be copied without transformations.</span>
-    <span class="ident">StaticFile</span>(<span class="ident">PathBuf</span>),
-    <span class="doccomment">/// Use a custom command to generate the output file. The file has to be printed to stdout.</span>
-    <span class="ident">Custom</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>),
-}
-
-<span class="doccomment">/// The aggregator of testcase scores to compute the subtask score.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TestcaseScoreAggregator</span> {
-    <span class="doccomment">/// Take the minimum of all the testcases, formally:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `st_score = st_max_score * min(*testcase_scores)`</span>
-    <span class="ident">Min</span>,
-    <span class="doccomment">/// Sum the score of all the testcases, formally:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `st_score = st_max_score * sum(*testcase_scores) / len(*testcase_scores)`</span>
-    <span class="ident">Sum</span>,
-}
-
-<span class="doccomment">/// The type of the task. This changes the behaviour of the solutions.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskType</span> {
-    <span class="doccomment">/// The solution is a single file that will be executed once per testcase, feeding in the input</span>
-    <span class="doccomment">/// file and reading the output file. The solution may be compiled with additional graders</span>
-    <span class="doccomment">/// (called grader.LANG). The output is checked with an external program.</span>
-    <span class="ident">Batch</span>,
+<span class="doccomment">/// This struct will manage the scores of a solution in a task and will emit the ui messages when</span>
+<span class="doccomment">/// a new score is ready.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ScoreManager</span> {
+    <span class="doccomment">/// The scores of each subtask.</span>
+    <span class="ident">subtask_scores</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">SubtaskId</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;&gt;</span>,
+    <span class="doccomment">/// The maximum score of each subtask.</span>
+    <span class="ident">max_subtask_scores</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">SubtaskId</span>, <span class="ident">f64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The scores of each testcase.</span>
+    <span class="ident">testcase_scores</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">SubtaskId</span>, <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">TestcaseId</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The aggregator to use for computing the subtask scores.</span>
+    <span class="ident">aggregator</span>: <span class="ident">TestcaseScoreAggregator</span>,
 }
 
 <span class="doccomment">/// Information about a generic IOI task.</span>
@@ -321,7 +393,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Task</span> {
-    <span class="doccomment">/// Try to make a `Task` from the specified path. Will return `None` if the format of the task</span>
+    <span class="doccomment">/// Try to make a `Task` from the specified path. Will return `Err` if the format of the task</span>
     <span class="doccomment">/// is not IOI or if the task is corrupted and cannot be parsed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Task</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">format</span>::<span class="ident">italian_yaml</span>::<span class="ident">parse_task</span>(<span class="ident">path</span>)
@@ -338,7 +410,70 @@
     }
 
     <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="macro">unimplemented</span><span class="macro">!</span>()
+        <span class="kw">let</span> <span class="ident">graders</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">grader_map</span>
+            .<span class="ident">all_paths</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">to_path_buf</span>())
+            .<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">empty_score_manager</span> <span class="op">=</span> <span class="ident">ScoreManager</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">solutions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">list_files</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;sol/*&quot;</span>])
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="op">!</span><span class="ident">graders</span>.<span class="ident">contains</span>(<span class="ident">p</span>)) <span class="comment">// the graders are not solutions</span>
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="ident">p</span>, <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">grader_map</span>.<span class="ident">clone</span>())))
+            .<span class="ident">filter</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>) <span class="comment">// ignore the unknown languages</span>
+            .<span class="ident">map</span>(<span class="prelude-ty">Option</span>::<span class="ident">unwrap</span>)
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">source</span><span class="op">|</span> (<span class="ident">source</span>, <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">empty_score_manager</span>.<span class="ident">clone</span>()))))
+            .<span class="ident">collect</span>();
+
+        <span class="kw">for</span> <span class="ident">subtask</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">subtasks</span>.<span class="ident">values</span>() {
+            <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Executing the generation of subtask {}&quot;</span>, <span class="ident">subtask</span>.<span class="ident">id</span>);
+
+            <span class="kw">for</span> <span class="ident">testcase</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">values</span>() {
+                <span class="macro">trace</span><span class="macro">!</span>(
+                    <span class="string">&quot;Executing the generation of testcase {} of subtask {}&quot;</span>,
+                    <span class="ident">testcase</span>.<span class="ident">id</span>,
+                    <span class="ident">subtask</span>.<span class="ident">id</span>
+                );
+
+                <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">testcase</span>
+                    .<span class="ident">input_generator</span>
+                    .<span class="ident">generate</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">val_handle</span> <span class="op">=</span>
+                    <span class="ident">testcase</span>
+                        .<span class="ident">input_validator</span>
+                        .<span class="ident">validate</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>, <span class="ident">input</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">output_generator</span>.<span class="ident">generate</span>(
+                    <span class="kw-2">&amp;</span><span class="self">self</span>,
+                    <span class="ident">eval</span>,
+                    <span class="ident">subtask</span>.<span class="ident">id</span>,
+                    <span class="ident">testcase</span>.<span class="ident">id</span>,
+                    <span class="ident">input</span>,
+                    <span class="ident">val_handle</span>,
+                )<span class="question-mark">?</span>;
+
+                <span class="kw">for</span> (<span class="ident">solution</span>, <span class="ident">score_manager</span>) <span class="kw">in</span> <span class="ident">solutions</span>.<span class="ident">iter</span>() {
+                    <span class="macro">trace</span><span class="macro">!</span>(
+                        <span class="string">&quot;Evaluation of the solution {:?} against subtask {} / testcase {}&quot;</span>,
+                        <span class="ident">solution</span>,
+                        <span class="ident">subtask</span>.<span class="ident">id</span>,
+                        <span class="ident">testcase</span>.<span class="ident">id</span>
+                    );
+
+                    <span class="self">self</span>.<span class="ident">task_type</span>.<span class="ident">evaluate</span>(
+                        <span class="kw-2">&amp;</span><span class="self">self</span>,
+                        <span class="ident">eval</span>,
+                        <span class="ident">subtask</span>.<span class="ident">id</span>,
+                        <span class="ident">testcase</span>.<span class="ident">id</span>,
+                        <span class="ident">solution</span>,
+                        <span class="ident">input</span>,
+                        <span class="ident">val_handle</span>,
+                        <span class="ident">output</span>,
+                        <span class="ident">score_manager</span>.<span class="ident">clone</span>(),
+                    )<span class="question-mark">?</span>;
+                }
+            }
+        }
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
@@ -351,6 +486,79 @@
             <span class="string">&quot;sum&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Sum</span>),
             <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;Invalid testcase score aggregator: {}&quot;</span>, <span class="ident">s</span>),
         }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">ScoreManager</span> {
+    <span class="doccomment">/// Make a new `ScoreManager` based on the subtasks and testcases of the specified task.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span>) <span class="op">-&gt;</span> <span class="ident">ScoreManager</span> {
+        <span class="ident">ScoreManager</span> {
+            <span class="ident">subtask_scores</span>: <span class="ident">task</span>.<span class="ident">subtasks</span>.<span class="ident">keys</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">st</span>, <span class="prelude-val">None</span>)).<span class="ident">collect</span>(),
+            <span class="ident">max_subtask_scores</span>: <span class="ident">task</span>
+                .<span class="ident">subtasks</span>
+                .<span class="ident">values</span>()
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> (<span class="ident">st</span>.<span class="ident">id</span>, <span class="ident">st</span>.<span class="ident">max_score</span>))
+                .<span class="ident">collect</span>(),
+            <span class="ident">testcase_scores</span>: <span class="ident">task</span>
+                .<span class="ident">subtasks</span>
+                .<span class="ident">values</span>()
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> (<span class="ident">st</span>.<span class="ident">id</span>, <span class="ident">st</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">tc</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">tc</span>, <span class="prelude-val">None</span>)).<span class="ident">collect</span>()))
+                .<span class="ident">collect</span>(),
+            <span class="ident">aggregator</span>: <span class="ident">task</span>.<span class="ident">testcase_score_aggregator</span>.<span class="ident">clone</span>(),
+        }
+    }
+
+    <span class="doccomment">/// Store the score of the testcase and eventually compute the score of the subtask and of the</span>
+    <span class="doccomment">/// task.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">score</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">subtask_id</span>: <span class="ident">SubtaskId</span>,
+        <span class="ident">testcase_id</span>: <span class="ident">TestcaseId</span>,
+        <span class="ident">score</span>: <span class="ident">f64</span>,
+        <span class="ident">message</span>: <span class="ident">String</span>,
+        <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">UIMessageSender</span><span class="op">&gt;&gt;</span>,
+        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
+    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">testcase_scores</span>
+            .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>)
+            .<span class="ident">unwrap</span>()
+            .<span class="ident">insert</span>(<span class="ident">testcase_id</span>, <span class="prelude-val">Some</span>(<span class="ident">score</span>));
+        <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITestcaseScore</span> {
+            <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
+            <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
+            <span class="ident">solution</span>: <span class="ident">solution</span>.<span class="ident">clone</span>(),
+            <span class="ident">score</span>,
+            <span class="ident">message</span>,
+        })<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">testcase_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>]
+            .<span class="ident">values</span>()
+            .<span class="ident">all</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>)
+        {
+            <span class="kw">let</span> <span class="ident">subtask_score</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">max_subtask_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>]
+                <span class="op">*</span> <span class="self">self</span>.<span class="ident">aggregator</span>.<span class="ident">aggregate</span>(
+                    <span class="self">self</span>.<span class="ident">testcase_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>]
+                        .<span class="ident">values</span>()
+                        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">score</span><span class="op">|</span> <span class="ident">score</span>.<span class="ident">unwrap</span>()),
+                );
+            <span class="self">self</span>.<span class="ident">subtask_scores</span>.<span class="ident">insert</span>(<span class="ident">subtask_id</span>, <span class="prelude-val">Some</span>(<span class="ident">subtask_score</span>));
+            <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOISubtaskScore</span> {
+                <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
+                <span class="ident">solution</span>: <span class="ident">solution</span>.<span class="ident">clone</span>(),
+                <span class="ident">score</span>: <span class="ident">subtask_score</span>,
+            })<span class="question-mark">?</span>;
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">subtask_scores</span>.<span class="ident">values</span>().<span class="ident">all</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>) {
+                <span class="kw">let</span> <span class="ident">task_score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="self">self</span>
+                    .<span class="ident">subtask_scores</span>
+                    .<span class="ident">values</span>()
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">score</span><span class="op">|</span> <span class="ident">score</span>.<span class="ident">unwrap</span>())
+                    .<span class="ident">sum</span>();
+                <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITaskScore</span> {
+                    <span class="ident">solution</span>: <span class="ident">solution</span>.<span class="ident">clone</span>(),
+                    <span class="ident">score</span>: <span class="ident">task_score</span>,
+                })<span class="question-mark">?</span>;
+            }
+        }
+        <span class="prelude-val">Ok</span>(())
     }
 }
 </pre></div>
