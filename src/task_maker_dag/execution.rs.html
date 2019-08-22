@@ -566,6 +566,31 @@
 <span id="566">566</span>
 <span id="567">567</span>
 <span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
@@ -593,6 +618,14 @@
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) is skipped.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnSkipCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, ()<span class="op">&gt;</span>;
+
+<span class="doccomment">/// A tag on an `Execution`. Can be used to classify the executions into groups and refer to them,</span>
+<span class="doccomment">/// for example for splitting the cache scopes.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Hash</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionTag</span> {
+    <span class="doccomment">/// The name of the tag.</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">String</span>,
+}
 
 <span class="doccomment">/// Command of an [`Execution`](struct.Execution.html) to execute.</span>
 <span class="doccomment">///</span>
@@ -700,6 +733,9 @@
     <span class="doccomment">/// The configuration of the underlying DAG. Will be overwritten by</span>
     <span class="doccomment">/// `ExecutionDAG.add_execution`.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>,
+
+    <span class="doccomment">/// The tag associated with this execution.</span>
+    <span class="kw">pub</span> <span class="ident">tag</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecutionTag</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Limits on an [`Execution`](struct.Execution.html). On some worker platforms some of the fields</span>
@@ -887,6 +923,8 @@
             <span class="ident">limits</span>: <span class="ident">ExecutionLimits</span>::<span class="ident">default</span>(),
 
             <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>::<span class="ident">new</span>(),
+
+            <span class="ident">tag</span>: <span class="prelude-val">None</span>,
         }
     }
 
@@ -1074,6 +1112,12 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>
     }
 
+    <span class="doccomment">/// Set the tag of this `Execution`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">ExecutionTag</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">tag</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">tag</span>);
+        <span class="self">self</span>
+    }
+
     <span class="doccomment">/// Compute the [`ExecutionStatus`](struct.ExecutionStatus.html) based on the result of the</span>
     <span class="doccomment">/// execution, checking the signals, the return code and the time/memory constraints.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(
@@ -1133,6 +1177,12 @@
             <span class="ident">on_done</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
             <span class="ident">on_skip</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExecutionTag</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">ExecutionTag</span> { <span class="ident">name</span>: <span class="ident">name</span>.<span class="ident">into</span>() }
     }
 }
 </pre></div>

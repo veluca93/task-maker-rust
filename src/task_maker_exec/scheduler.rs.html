@@ -367,6 +367,21 @@
 <span id="367">367</span>
 <span id="368">368</span>
 <span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -408,6 +423,10 @@
 
     <span class="doccomment">/// Assign the most important ready jobs to the free workers.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="ident">executor_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExecutorData</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">executor_data</span>.<span class="ident">dag</span>.<span class="ident">is_none</span>() {
+            <span class="comment">// no DAG no party</span>
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+        }
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Schedule in progress&quot;</span>);
 
         <span class="comment">// process all the executions that are cached. Note that this may call `schedule`</span>
@@ -686,6 +705,11 @@
     <span class="doccomment">/// Search between the ready tasks if there are some that are cached, mark all of them as ready</span>
     <span class="doccomment">/// and also all the produced files. This may cause the `schedule` function to be called again.</span>
     <span class="kw">fn</span> <span class="ident">process_cached</span>(<span class="ident">executor_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExecutorData</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">cache_mode</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">executor_data</span>.<span class="ident">dag</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">config</span>.<span class="ident">cache_mode</span>;
+        <span class="comment">// disable the cache</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">CacheMode</span>::<span class="ident">Nothing</span> <span class="op">=</span> <span class="ident">cache_mode</span> {
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+        }
         <span class="kw">let</span> <span class="ident">file_keys</span> <span class="op">=</span> <span class="ident">executor_data</span>
             .<span class="ident">file_handles</span>
             .<span class="ident">iter</span>()
@@ -699,6 +723,12 @@
         <span class="comment">// value.</span>
         <span class="kw">for</span> <span class="ident">exec</span> <span class="kw">in</span> <span class="ident">executor_data</span>.<span class="ident">ready_execs</span>.<span class="ident">iter</span>() {
             <span class="kw">let</span> <span class="ident">execution</span> <span class="op">=</span> <span class="ident">executor_data</span>.<span class="ident">dag</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">executions</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>].<span class="ident">clone</span>();
+            <span class="kw">if</span> <span class="kw">let</span> (<span class="ident">CacheMode</span>::<span class="ident">Except</span>(<span class="ident">set</span>), <span class="prelude-val">Some</span>(<span class="ident">tag</span>)) <span class="op">=</span> (<span class="ident">cache_mode</span>, <span class="ident">execution</span>.<span class="ident">tag</span>.<span class="ident">as_ref</span>()) {
+                <span class="kw">if</span> <span class="ident">set</span>.<span class="ident">contains</span>(<span class="ident">tag</span>) {
+                    <span class="ident">still_ready_execs</span>.<span class="ident">push</span>(<span class="kw-2">*</span><span class="ident">exec</span>);
+                    <span class="kw">continue</span>;
+                }
+            }
             <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">executor_data</span>.<span class="ident">cache</span>.<span class="ident">get</span>(
                 <span class="kw-2">&amp;</span><span class="ident">execution</span>,
                 <span class="kw-2">&amp;</span><span class="ident">file_keys</span>,

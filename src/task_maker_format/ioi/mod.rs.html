@@ -284,6 +284,8 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
@@ -320,10 +322,12 @@
 <span class="kw">mod</span> <span class="ident">dag</span>;
 <span class="kw">mod</span> <span class="ident">finish_ui</span>;
 <span class="kw">mod</span> <span class="ident">format</span>;
+<span class="kw">mod</span> <span class="ident">tag</span>;
 <span class="kw">mod</span> <span class="ident">ui_state</span>;
 
 <span class="kw">use</span> <span class="ident">curses_ui</span>::<span class="ident">CursesUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tag</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// In IOI tasks the subtask numbers are non-negative 0-based integers.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SubtaskId</span> <span class="op">=</span> <span class="ident">u32</span>;
