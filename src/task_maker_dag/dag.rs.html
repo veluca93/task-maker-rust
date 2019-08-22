@@ -212,6 +212,16 @@
 <span id="212">212</span>
 <span id="213">213</span>
 <span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -245,6 +255,8 @@
     <span class="kw">pub</span> <span class="ident">dry_run</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// The cache mode for this DAG.</span>
     <span class="kw">pub</span> <span class="ident">cache_mode</span>: <span class="ident">CacheMode</span>,
+    <span class="doccomment">/// Extra time to give to the sandbox before killing the process, in seconds.</span>
+    <span class="kw">pub</span> <span class="ident">extra_time</span>: <span class="ident">f64</span>
 }
 
 <span class="doccomment">/// A wrapper around a File provided by the client, this means that the client</span>
@@ -394,6 +406,7 @@
             <span class="ident">keep_sandboxes</span>: <span class="bool-val">false</span>,
             <span class="ident">dry_run</span>: <span class="bool-val">false</span>,
             <span class="ident">cache_mode</span>: <span class="ident">CacheMode</span>::<span class="ident">Everything</span>,
+            <span class="ident">extra_time</span>: <span class="number">0.5</span>
         }
     }
 
@@ -412,6 +425,13 @@
     <span class="doccomment">/// Set the cache mode for the executions of this DAG.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cache_mode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cache_mode</span>: <span class="ident">CacheMode</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">cache_mode</span> <span class="op">=</span> <span class="ident">cache_mode</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Set the extra time to give to the executions before being killed by the sandbox.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extra_time</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">extra_time</span>: <span class="ident">f64</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">extra_time</span> <span class="op">&gt;=</span> <span class="number">0.0</span>);
+        <span class="self">self</span>.<span class="ident">extra_time</span> <span class="op">=</span> <span class="ident">extra_time</span>;
         <span class="self">self</span>
     }
 }
