@@ -528,8 +528,47 @@
 <span id="528">528</span>
 <span id="529">529</span>
 <span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -567,7 +606,7 @@
 <span class="doccomment">/// let sys_cmd = ExecutionCommand::System(&quot;env&quot;.into()); // looking at $PATH</span>
 <span class="doccomment">/// let local_cmd = ExecutionCommand::Local(&quot;generator&quot;.into()); // local to the cwd of the sandbox</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExecutionCommand</span> {
     <span class="doccomment">/// A system command, the workers will search in their `$PATH` for the executable if it&#39;s not</span>
     <span class="doccomment">/// absolute.</span>
@@ -578,7 +617,7 @@
 
 <span class="doccomment">/// An input file of an [`Execution`](struct.Execution.html), can be marked as executable if it has</span>
 <span class="doccomment">/// to be run inside the sandbox.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionInput</span> {
     <span class="doccomment">/// Uuid of the file.</span>
     <span class="kw">pub</span> <span class="ident">file</span>: <span class="ident">FileUuid</span>,
@@ -665,7 +704,7 @@
 
 <span class="doccomment">/// Limits on an [`Execution`](struct.Execution.html). On some worker platforms some of the fields</span>
 <span class="doccomment">/// may not be supported or may be less accurate.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionLimits</span> {
     <span class="doccomment">/// Limit on the userspace cpu time of the process, in seconds.</span>
     <span class="kw">pub</span> <span class="ident">cpu_time</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
@@ -690,7 +729,7 @@
 }
 
 <span class="doccomment">/// Status of a completed [`Execution`](struct.Execution.html).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExecutionStatus</span> {
     <span class="doccomment">/// The program exited with status 0 within the limits.</span>
     <span class="ident">Success</span>,
@@ -712,7 +751,7 @@
 
 <span class="doccomment">/// Resources used during the execution, note that on some platform these values may not be</span>
 <span class="doccomment">/// accurate.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResourcesUsage</span> {
     <span class="doccomment">/// Number of seconds the process used in user space.</span>
     <span class="kw">pub</span> <span class="ident">cpu_time</span>: <span class="ident">f64</span>,
@@ -725,10 +764,8 @@
 }
 
 <span class="doccomment">/// The result of an [`Execution`](struct.Execution.html).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResult</span> {
-    <span class="doccomment">/// Uuid of the completed execution.</span>
-    <span class="kw">pub</span> <span class="ident">uuid</span>: <span class="ident">ExecutionUuid</span>,
     <span class="doccomment">/// Status of the completed execution.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">ExecutionStatus</span>,
     <span class="doccomment">/// Resources used by the execution.</span>
@@ -1035,6 +1072,45 @@
     <span class="doccomment">/// A reference to the configuration of the underlying DAG.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ExecutionDAGConfig</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>
+    }
+
+    <span class="doccomment">/// Compute the [`ExecutionStatus`](struct.ExecutionStatus.html) based on the result of the</span>
+    <span class="doccomment">/// execution, checking the signals, the return code and the time/memory constraints.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">exit_status</span>: <span class="ident">u32</span>,
+        <span class="ident">signal</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
+        <span class="ident">resources</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionResourcesUsage</span>,
+    ) <span class="op">-&gt;</span> <span class="ident">ExecutionStatus</span> {
+        <span class="comment">// it&#39;s important to check those before the signals because exceeding those</span>
+        <span class="comment">// limits may trigger a SIGKILL from the sandbox</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cpu_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">cpu_time</span> {
+            <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">cpu_time</span> <span class="op">&gt;</span> <span class="ident">cpu_time_limit</span> {
+                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">TimeLimitExceeded</span>;
+            }
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sys_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">sys_time</span> {
+            <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">sys_time</span> <span class="op">&gt;</span> <span class="ident">sys_time_limit</span> {
+                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">SysTimeLimitExceeded</span>;
+            }
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">wall_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">wall_time</span> {
+            <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">wall_time</span> <span class="op">&gt;</span> <span class="ident">wall_time_limit</span> {
+                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">WallTimeLimitExceeded</span>;
+            }
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">memory_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">memory</span> {
+            <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">memory</span> <span class="op">&gt;</span> <span class="ident">memory_limit</span> {
+                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">MemoryLimitExceeded</span>;
+            }
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">signal</span>) <span class="op">=</span> <span class="ident">signal</span> {
+            <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="ident">signal</span>, <span class="ident">strsignal</span>(<span class="ident">signal</span>));
+        }
+        <span class="kw">if</span> <span class="ident">exit_status</span> <span class="op">!=</span> <span class="number">0</span> {
+            <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="ident">exit_status</span>);
+        }
+        <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>
     }
 }
 

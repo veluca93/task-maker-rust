@@ -30,6 +30,8 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The supported executors.</span>
 <span class="doccomment">//!</span>
@@ -44,10 +46,12 @@
 <span class="doccomment">//! use task_maker_exec::executors::LocalExecutor;</span>
 <span class="doccomment">//! use std::sync::{Arc, Mutex, mpsc::channel};</span>
 <span class="doccomment">//! # use std::thread;</span>
+<span class="doccomment">//! use task_maker_cache::Cache;</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! let store = FileStore::new(&quot;/tmp/store&quot;).unwrap();</span>
+<span class="doccomment">//! let cache = Cache::new(&quot;/tmp/store&quot;).unwrap();</span>
 <span class="doccomment">//! let num_cores = 4;</span>
-<span class="doccomment">//! let mut executor = LocalExecutor::new(Arc::new(Mutex::new(store)), num_cores);</span>
+<span class="doccomment">//! let mut executor = LocalExecutor::new(Arc::new(Mutex::new(store)), cache, num_cores);</span>
 <span class="doccomment">//! // the communication channels for the client</span>
 <span class="doccomment">//! let (tx, rx_remote) = channel();</span>
 <span class="doccomment">//! let (tx_remote, rx) = channel();</span>

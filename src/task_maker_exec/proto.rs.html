@@ -158,6 +158,9 @@
 <span id="158">158</span>
 <span id="159">159</span>
 <span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The protocol related structs and enums.</span>
 <span class="doccomment">//!</span>
@@ -199,6 +202,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 
 <span class="doccomment">/// Messages that the client sends to the server.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
@@ -228,8 +232,9 @@
     <span class="doccomment">/// proceed with the execution.</span>
     <span class="ident">AskFile</span>(<span class="ident">FileUuid</span>),
     <span class="doccomment">/// The server is sending a file. After this message there is a protocol switch for the file</span>
-    <span class="doccomment">/// transmission protocol.</span>
-    <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>),
+    <span class="doccomment">/// transmission protocol. The second entry is true if the generation of the file was</span>
+    <span class="doccomment">/// successful.</span>
+    <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">bool</span>),
     <span class="doccomment">/// The execution has started on a worker.</span>
     <span class="ident">NotifyStart</span>(<span class="ident">ExecutionUuid</span>, <span class="ident">WorkerUuid</span>),
     <span class="doccomment">/// The execution has completed with that result.</span>
@@ -250,8 +255,9 @@
     <span class="doccomment">/// The worker is ready for some job. The worker will wait for a</span>
     <span class="doccomment">/// [`Work`](enum.WorkerServerMessage.html#variant.Work) message.</span>
     <span class="ident">GetWork</span>,
-    <span class="doccomment">/// The worker completed the job with this result.</span>
-    <span class="ident">WorkerDone</span>(<span class="ident">ExecutionResult</span>),
+    <span class="doccomment">/// The worker completed the job with this result producing those files. The actual files will</span>
+    <span class="doccomment">/// be sent immediately after using `ProvideFile` messages.</span>
+    <span class="ident">WorkerDone</span>(<span class="ident">ExecutionResult</span>, <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span><span class="op">&gt;</span>),
     <span class="doccomment">/// The worker is sending a file to the server. After this message there is a protocol switch</span>
     <span class="doccomment">/// for the file transmission.</span>
     <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>),

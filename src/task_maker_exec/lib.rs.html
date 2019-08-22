@@ -227,7 +227,7 @@
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">scheduler</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">signals</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">worker</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">client</span>;
@@ -236,7 +236,6 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">proto</span>;
 <span class="kw">mod</span> <span class="ident">sandbox</span>;
 <span class="kw">mod</span> <span class="ident">scheduler</span>;
-<span class="kw">mod</span> <span class="ident">signals</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
 
 <span class="doccomment">/// The channel part that sends data.</span>
@@ -270,9 +269,10 @@
     <span class="kw">let</span> (<span class="ident">tx_remote</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
     <span class="kw">let</span> <span class="ident">store_dir</span> <span class="op">=</span> <span class="ident">store_dir</span>.<span class="ident">into</span>();
     <span class="kw">let</span> <span class="ident">server</span> <span class="op">=</span> <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
-        <span class="kw">let</span> <span class="ident">file_store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="ident">store_dir</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot create the file store&quot;</span>);
+        <span class="kw">let</span> <span class="ident">file_store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">store_dir</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot create the file store&quot;</span>);
+        <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">Cache</span>::<span class="ident">new</span>(<span class="ident">store_dir</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot create the cache&quot;</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">executor</span> <span class="op">=</span>
-            <span class="ident">executors</span>::<span class="ident">LocalExecutor</span>::<span class="ident">new</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">file_store</span>)), <span class="ident">num_cores</span>);
+            <span class="ident">executors</span>::<span class="ident">LocalExecutor</span>::<span class="ident">new</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">file_store</span>)), <span class="ident">cache</span>, <span class="ident">num_cores</span>);
         <span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">tx_remote</span>, <span class="ident">rx_remote</span>).<span class="ident">unwrap</span>();
     });
     <span class="ident">ExecutorClient</span>::<span class="ident">evaluate</span>(<span class="ident">dag</span>, <span class="ident">tx</span>, <span class="kw-2">&amp;</span><span class="ident">rx</span>).<span class="ident">unwrap</span>();

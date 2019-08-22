@@ -161,6 +161,8 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -191,6 +193,7 @@
     <span class="doccomment">/// use std::sync::{Arc, Mutex};</span>
     <span class="doccomment">/// use std::thread;</span>
     <span class="doccomment">/// use std::path::PathBuf;</span>
+    <span class="doccomment">/// use task_maker_cache::Cache;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // make a new, empty, DAG</span>
     <span class="doccomment">/// let dag = ExecutionDAG::new();</span>
@@ -200,7 +203,8 @@
     <span class="doccomment">/// // make a new local executor in a second thread</span>
     <span class="doccomment">/// let server = thread::spawn(move || {</span>
     <span class="doccomment">///     let file_store = FileStore::new(&quot;/tmp/store&quot;).expect(&quot;Cannot create the file store&quot;);</span>
-    <span class="doccomment">///     let mut executor = LocalExecutor::new(Arc::new(Mutex::new(file_store)), 4);</span>
+    <span class="doccomment">///     let cache = Cache::new(&quot;/tmp/store&quot;).expect(&quot;Cannot create the cache&quot;);</span>
+    <span class="doccomment">///     let mut executor = LocalExecutor::new(Arc::new(Mutex::new(file_store)), cache, 4);</span>
     <span class="doccomment">///     executor.evaluate(tx_remote, rx_remote).unwrap();</span>
     <span class="doccomment">/// });</span>
     <span class="doccomment">///</span>
@@ -241,8 +245,8 @@
                     <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">ExecutorClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>), <span class="kw-2">&amp;</span><span class="ident">sender</span>)<span class="question-mark">?</span>;
                     <span class="ident">ChannelFileSender</span>::<span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="ident">sender</span>)<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>)) <span class="op">=&gt;</span> {
-                    <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Server sent the file {}&quot;</span>, <span class="ident">uuid</span>);
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">success</span>)) <span class="op">=&gt;</span> {
+                    <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Server sent the file {}, success: {}&quot;</span>, <span class="ident">uuid</span>, <span class="ident">success</span>);
                     <span class="kw">let</span> <span class="ident">iterator</span> <span class="op">=</span> <span class="ident">ChannelFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">receiver</span>);
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">callback</span>) <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">uuid</span>) {
                         <span class="kw">let</span> <span class="ident">limit</span> <span class="op">=</span> <span class="ident">callback</span>
@@ -251,12 +255,12 @@
                             .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">limit</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">limit</span>)
                             .<span class="ident">unwrap_or</span>(<span class="number">0</span>);
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">callback</span>.<span class="ident">write_to</span> {
-                            <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=&gt;</span> {
+                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">callback</span>.<span class="ident">write_to</span>, <span class="ident">success</span>) {
+                            (<span class="prelude-val">Some</span>(<span class="ident">path</span>), <span class="bool-val">true</span>) <span class="op">=&gt;</span> {
                                 <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">path</span>.<span class="ident">parent</span>().<span class="ident">unwrap</span>())<span class="question-mark">?</span>;
                                 <span class="prelude-val">Some</span>(<span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>::<span class="ident">create</span>(<span class="ident">path</span>)<span class="question-mark">?</span>)
                             }
-                            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+                            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
                         };
                         <span class="kw">for</span> <span class="ident">chunk</span> <span class="kw">in</span> <span class="ident">iterator</span> {
                             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">file</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">file</span> {

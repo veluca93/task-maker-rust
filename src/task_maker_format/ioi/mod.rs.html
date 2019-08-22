@@ -464,7 +464,7 @@
                 <span class="kw">for</span> (<span class="ident">solution</span>, <span class="ident">score_manager</span>) <span class="kw">in</span> <span class="ident">solutions</span>.<span class="ident">iter</span>() {
                     <span class="macro">trace</span><span class="macro">!</span>(
                         <span class="string">&quot;Evaluation of the solution {:?} against subtask {} / testcase {}&quot;</span>,
-                        <span class="ident">solution</span>,
+                        <span class="ident">solution</span>.<span class="ident">name</span>(),
                         <span class="ident">subtask</span>.<span class="ident">id</span>,
                         <span class="ident">testcase</span>.<span class="ident">id</span>
                     );
