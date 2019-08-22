@@ -538,6 +538,8 @@
 <span id="538">538</span>
 <span id="539">539</span>
 <span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -749,6 +751,7 @@
                     <span class="ident">task</span>.<span class="ident">path</span>
                         .<span class="ident">join</span>(<span class="string">&quot;input&quot;</span>)
                         .<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;input{}.txt&quot;</span>, <span class="ident">testcase_id</span>)),
+                    <span class="bool-val">false</span>,
                 );
                 <span class="prelude-val">Ok</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>)
             }
@@ -837,6 +840,7 @@
                     <span class="ident">task</span>.<span class="ident">path</span>
                         .<span class="ident">join</span>(<span class="string">&quot;output&quot;</span>)
                         .<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;output{}.txt&quot;</span>, <span class="ident">testcase_id</span>)),
+                    <span class="bool-val">false</span>,
                 );
                 <span class="prelude-val">Ok</span>(<span class="ident">output</span>.<span class="ident">uuid</span>)
             }

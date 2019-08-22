@@ -103,6 +103,7 @@
 <span id="103">103</span>
 <span id="104">104</span>
 <span id="105">105</span>
+<span id="106">106</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -197,14 +198,15 @@
 
 <span class="doccomment">/// Make a `SourceFile` with the first file that matches the patterns provided that is in a</span>
 <span class="doccomment">/// recognised language. Returns `None` if no valid source file can be found.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_source_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_source_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">P2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
     <span class="ident">cwd</span>: <span class="ident">P</span>,
     <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
     <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">write_bin_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">P2</span><span class="op">&gt;</span>,
 ) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
     <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">list_files</span>(<span class="ident">cwd</span>, <span class="ident">patterns</span>) {
         <span class="kw">if</span> <span class="ident">LanguageManager</span>::<span class="ident">detect_language</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">is_some</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">grader_map</span>).<span class="ident">unwrap</span>());
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">grader_map</span>, <span class="ident">write_bin_to</span>).<span class="ident">unwrap</span>());
         }
     }
     <span class="prelude-val">None</span>

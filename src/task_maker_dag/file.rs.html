@@ -82,6 +82,7 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
+<span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -97,8 +98,9 @@
 
 <span class="doccomment">/// The callbacks that will trigger when the file is ready.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileCallbacks</span> {
-    <span class="doccomment">/// Destination of the file if it has to be stored in the disk of the local executor.</span>
-    <span class="kw">pub</span> <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Destination of the file if it has to be stored in the disk of the local executor, and if it</span>
+    <span class="doccomment">/// has to be made executable.</span>
+    <span class="kw">pub</span> <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">PathBuf</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,
     <span class="doccomment">/// Callback to be called with the first bytes of the file.</span>
     <span class="kw">pub</span> <span class="ident">get_content</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">GetContentCallback</span>)<span class="op">&gt;</span>,
 }

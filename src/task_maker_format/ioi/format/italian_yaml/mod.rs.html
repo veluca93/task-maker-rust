@@ -254,6 +254,9 @@
 <span id="254">254</span>
 <span id="255">255</span>
 <span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -431,6 +434,7 @@
             <span class="string">&quot;cor/correttore&quot;</span>,
         ],
         <span class="prelude-val">None</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;checker&quot;</span>)),
     )
     .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>)
     .<span class="ident">map</span>(<span class="ident">Checker</span>::<span class="ident">Custom</span>);
@@ -468,6 +472,7 @@
             <span class="string">&quot;gen/valida&quot;</span>,
         ],
         <span class="prelude-val">None</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;validator&quot;</span>)),
     )
     .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>);
     <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Detected input validator: {:?}&quot;</span>, <span class="ident">validator</span>);
@@ -499,6 +504,7 @@
             <span class="string">&quot;sol/soluzione&quot;</span>,
         ],
         <span class="prelude-val">Some</span>(<span class="ident">grader_map</span>.<span class="ident">clone</span>()),
+        <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;official_solution&quot;</span>)),
     )
     .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>);
     <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Detected output generator: {:?}&quot;</span>, <span class="ident">official_solution</span>);
