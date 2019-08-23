@@ -327,6 +327,9 @@
 <span id="327">327</span>
 <span id="328">328</span>
 <span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
@@ -361,6 +364,8 @@
         <span class="ident">signal</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Resources used by the process.</span>
         <span class="ident">resources</span>: <span class="ident">ExecutionResourcesUsage</span>,
+        <span class="doccomment">/// Whether the sandbox killed the process.</span>
+        <span class="ident">was_killed</span>: <span class="ident">bool</span>,
     },
     <span class="doccomment">/// The sandbox failed to execute the process, an error message is reported. Note that this</span>
     <span class="doccomment">/// represents a sandbox error, not the process failure.</span>
@@ -532,6 +537,7 @@
                     <span class="ident">wall_time</span>: <span class="ident">outcome</span>.<span class="ident">wall_time</span>.<span class="ident">unwrap</span>(),
                     <span class="ident">memory</span>: <span class="ident">outcome</span>.<span class="ident">memory_usage</span>.<span class="ident">unwrap</span>(),
                 },
+                <span class="ident">was_killed</span>: <span class="ident">outcome</span>.<span class="ident">killed_by_sandbox</span>.<span class="ident">unwrap</span>(),
             })
         }
     }

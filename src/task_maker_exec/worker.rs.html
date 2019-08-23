@@ -294,6 +294,11 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
@@ -564,9 +569,12 @@
             <span class="ident">exit_status</span>,
             <span class="ident">signal</span>,
             <span class="ident">resources</span>,
+            <span class="ident">was_killed</span>,
         } <span class="op">=&gt;</span> <span class="ident">ExecutionResult</span> {
             <span class="ident">status</span>: <span class="ident">execution</span>.<span class="ident">status</span>(<span class="ident">exit_status</span>, <span class="ident">signal</span>, <span class="kw-2">&amp;</span><span class="ident">resources</span>),
             <span class="ident">resources</span>,
+            <span class="ident">was_killed</span>,
+            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
         },
         <span class="ident">SandboxResult</span>::<span class="ident">Failed</span> { <span class="ident">error</span> } <span class="op">=&gt;</span> <span class="ident">ExecutionResult</span> {
             <span class="ident">status</span>: <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
@@ -576,6 +584,8 @@
                 <span class="ident">wall_time</span>: <span class="number">0.0</span>,
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
+            <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
+            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
         },
     }
 }
