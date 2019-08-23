@@ -375,6 +375,8 @@
 <span id="375">375</span>
 <span id="376">376</span>
 <span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
@@ -411,12 +413,14 @@
 <span class="kw">mod</span> <span class="ident">dag</span>;
 <span class="kw">mod</span> <span class="ident">finish_ui</span>;
 <span class="kw">mod</span> <span class="ident">format</span>;
+<span class="kw">mod</span> <span class="ident">print</span>;
 <span class="kw">mod</span> <span class="ident">tag</span>;
 <span class="kw">mod</span> <span class="ident">ui_state</span>;
 
 <span class="kw">use</span> <span class="ident">curses_ui</span>::<span class="ident">CursesUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">print</span>::<span class="ident">PrintUI</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tag</span>::<span class="kw-2">*</span>;
 
@@ -508,7 +512,7 @@
     <span class="kw">fn</span> <span class="ident">ui</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui_type</span>: <span class="ident">UIType</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">UI</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">ui_type</span> {
             <span class="ident">UIType</span>::<span class="ident">Raw</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">RawUI</span>::<span class="ident">new</span>())),
-            <span class="ident">UIType</span>::<span class="ident">Print</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">PrintUI</span>::<span class="ident">new</span>())),
+            <span class="ident">UIType</span>::<span class="ident">Print</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">PrintUI</span>::<span class="ident">new</span>(<span class="self">self</span>))),
             <span class="ident">UIType</span>::<span class="ident">Curses</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CursesUI</span>::<span class="ident">new</span>(<span class="self">self</span>)<span class="question-mark">?</span>)),
             <span class="ident">UIType</span>::<span class="ident">Json</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">JsonUI</span>::<span class="ident">new</span>())),
         }
