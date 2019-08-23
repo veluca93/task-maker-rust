@@ -583,7 +583,7 @@
         });
         <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
 
-        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>);
+        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>, <span class="ident">cwd</span>.<span class="ident">path</span>());
 
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_start</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_done</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));

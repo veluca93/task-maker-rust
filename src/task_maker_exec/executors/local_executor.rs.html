@@ -63,6 +63,13 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
@@ -76,6 +83,8 @@
     <span class="ident">executor</span>: <span class="ident">Executor</span>,
     <span class="doccomment">/// A reference to the [`FileStore`](../../task_maker_store/struct.FileStore.html).</span>
     <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>,
+    <span class="doccomment">/// Where to store the sandboxes of the workers.</span>
+    <span class="ident">sandbox_path</span>: <span class="ident">PathBuf</span>,
     <span class="doccomment">/// The number of local workers to spawn.</span>
     <span class="kw">pub</span> <span class="ident">num_workers</span>: <span class="ident">usize</span>,
 }
@@ -84,15 +93,17 @@
     <span class="doccomment">/// Make a new [`LocalExecutor`](struct.LocalExecutor.html) based on a</span>
     <span class="doccomment">/// [`FileStore`](../../task_maker_store/struct.FileStore.html) and ready to spawn that number</span>
     <span class="doccomment">/// of workers.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
         <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>,
         <span class="ident">cache</span>: <span class="ident">Cache</span>,
         <span class="ident">num_workers</span>: <span class="ident">usize</span>,
+        <span class="ident">sandbox_path</span>: <span class="ident">P</span>,
     ) <span class="op">-&gt;</span> <span class="ident">LocalExecutor</span> {
         <span class="ident">LocalExecutor</span> {
             <span class="ident">executor</span>: <span class="ident">Executor</span>::<span class="ident">new</span>(<span class="ident">file_store</span>.<span class="ident">clone</span>(), <span class="ident">cache</span>),
             <span class="ident">file_store</span>: <span class="ident">file_store</span>.<span class="ident">clone</span>(),
             <span class="ident">num_workers</span>,
+            <span class="ident">sandbox_path</span>: <span class="ident">sandbox_path</span>.<span class="ident">into</span>(),
         }
     }
 
@@ -109,8 +120,11 @@
         <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Spawning {} workers&quot;</span>, <span class="self">self</span>.<span class="ident">num_workers</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">workers</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_workers</span> {
-            <span class="kw">let</span> (<span class="ident">worker</span>, <span class="ident">conn</span>) <span class="op">=</span>
-                <span class="ident">Worker</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Local worker {}&quot;</span>, <span class="ident">i</span>), <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>());
+            <span class="kw">let</span> (<span class="ident">worker</span>, <span class="ident">conn</span>) <span class="op">=</span> <span class="ident">Worker</span>::<span class="ident">new</span>(
+                <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Local worker {}&quot;</span>, <span class="ident">i</span>),
+                <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(),
+                <span class="self">self</span>.<span class="ident">sandbox_path</span>.<span class="ident">clone</span>(),
+            );
             <span class="ident">workers</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">add_worker</span>(<span class="ident">conn</span>));
             <span class="ident">workers</span>.<span class="ident">push</span>(
                 <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
