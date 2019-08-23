@@ -193,6 +193,11 @@
 <span id="193">193</span>
 <span id="194">194</span>
 <span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -206,9 +211,11 @@
 
 <span class="kw">mod</span> <span class="ident">print</span>;
 <span class="kw">mod</span> <span class="ident">raw</span>;
+<span class="kw">mod</span> <span class="ident">json</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">print</span>::<span class="ident">PrintUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">raw</span>::<span class="ident">RawUI</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json</span>::<span class="ident">JsonUI</span>;
 
 <span class="doccomment">/// Channel type for sending `UIMessage`s.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UIChannelSender</span> <span class="op">=</span> <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">UIMessage</span><span class="op">&gt;</span>;
@@ -369,12 +376,14 @@
 <span class="doccomment">/// The type of the UI to use, it enumerates all the known UI interfaces.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UIType</span> {
-    <span class="doccomment">/// The PrintUI.</span>
+    <span class="doccomment">/// The `PrintUI`.</span>
     <span class="ident">Print</span>,
-    <span class="doccomment">/// The RawUI</span>
+    <span class="doccomment">/// The `RawUI`.</span>
     <span class="ident">Raw</span>,
-    <span class="doccomment">/// The CursesUI</span>
+    <span class="doccomment">/// The `CursesUI`.</span>
     <span class="ident">Curses</span>,
+    <span class="doccomment">/// The `JsonUI`.</span>
+    <span class="ident">Json</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">UIType</span> {
@@ -385,6 +394,7 @@
             <span class="string">&quot;print&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Print</span>),
             <span class="string">&quot;raw&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Raw</span>),
             <span class="string">&quot;curses&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Curses</span>),
+            <span class="string">&quot;json&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Json</span>),
             <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unknown ui: {}&quot;</span>, <span class="ident">s</span>)),
         }
     }

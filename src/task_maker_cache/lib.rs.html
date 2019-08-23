@@ -396,6 +396,8 @@
 <span id="396">396</span>
 <span id="397">397</span>
 <span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -702,11 +704,13 @@
             <span class="ident">stderr</span>,
             <span class="ident">outputs</span>,
         };
-        <span class="comment">// do not insert duplicated keys</span>
-        <span class="kw">if</span> <span class="ident">set</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">limits</span> <span class="op">==</span> <span class="ident">entry</span>.<span class="ident">limits</span>) {
-            <span class="kw">return</span>;
+        <span class="comment">// do not insert duplicated keys, replace if the limits are the same</span>
+        <span class="kw">let</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">set</span>.<span class="ident">iter</span>().<span class="ident">find_position</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">limits</span> <span class="op">==</span> <span class="ident">entry</span>.<span class="ident">limits</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">pos</span>, <span class="kw">_</span>)) <span class="op">=</span> <span class="ident">pos</span> {
+            <span class="ident">set</span>[<span class="ident">pos</span>] <span class="op">=</span> <span class="ident">entry</span>;
+        } <span class="kw">else</span> {
+            <span class="ident">set</span>.<span class="ident">push</span>(<span class="ident">entry</span>);
         }
-        <span class="ident">set</span>.<span class="ident">push</span>(<span class="ident">entry</span>);
     }
 
     <span class="doccomment">/// Search in the cache for a valid entry, returning a cache hit if it&#39;s found or a cache miss</span>
