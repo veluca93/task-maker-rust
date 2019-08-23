@@ -415,7 +415,7 @@
 <span id="415">415</span>
 <span id="416">416</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">print_final_state</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">FinishUI</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">ui_state</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">UIMessage</span>, <span class="ident">UI</span>};
@@ -489,7 +489,7 @@
         <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">join</span>().<span class="ident">unwrap</span>();
         <span class="comment">// at this point the terminal should be restored</span>
         <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">unwrap</span>();
-        <span class="ident">print_final_state</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
+        <span class="ident">FinishUI</span>::<span class="ident">print</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
     }
 }
 

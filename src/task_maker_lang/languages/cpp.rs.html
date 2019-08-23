@@ -77,6 +77,13 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::<span class="ident">Language</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
@@ -135,7 +142,14 @@
 
     <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">executable_name</span>(<span class="ident">path</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-O2&quot;</span>, <span class="string">&quot;-Wall&quot;</span>, <span class="string">&quot;-ggdb3&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="ident">exe_name</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>()];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[
+            <span class="string">&quot;-O2&quot;</span>,
+            <span class="string">&quot;-Wall&quot;</span>,
+            <span class="string">&quot;-ggdb3&quot;</span>,
+            <span class="string">&quot;-DEVAL&quot;</span>,
+            <span class="string">&quot;-o&quot;</span>,
+            <span class="ident">exe_name</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>(),
+        ];
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">version</span> {
             <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp11</span> <span class="op">|</span> <span class="ident">LanguageCppVersion</span>::<span class="ident">ClangCpp11</span> <span class="op">=&gt;</span> {
                 <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;-std=c++11&quot;</span>)

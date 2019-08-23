@@ -70,6 +70,8 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -85,7 +87,9 @@
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;t&quot;</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;task-dir&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;.&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">task_dir</span>: <span class="ident">PathBuf</span>,
 
-    <span class="doccomment">/// Which UI to use, available UIS are: print, raw, curses</span>
+    <span class="doccomment">/// Which UI to use, available UIS are: print, raw, curses, json.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that the JSON api is not stable yet.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;ui&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;print&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ui</span>: <span class="ident">task_maker_format</span>::<span class="ident">ui</span>::<span class="ident">UIType</span>,
 
