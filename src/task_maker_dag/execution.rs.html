@@ -595,6 +595,10 @@
 <span id="595">595</span>
 <span id="596">596</span>
 <span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
@@ -766,6 +770,8 @@
     <span class="kw">pub</span> <span class="ident">memlock</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Limit on the stack size for the process. 0 means unlimited.</span>
     <span class="kw">pub</span> <span class="ident">stack</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Whether the process in the sandbox is not allowed to create new files inside the sandbox.</span>
+    <span class="kw">pub</span> <span class="ident">read_only</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Status of a completed [`Execution`](struct.Execution.html).</span>
@@ -830,6 +836,7 @@
             <span class="ident">fsize</span>: <span class="prelude-val">None</span>,
             <span class="ident">memlock</span>: <span class="prelude-val">None</span>,
             <span class="ident">stack</span>: <span class="prelude-val">None</span>,
+            <span class="ident">read_only</span>: <span class="bool-val">false</span>,
         }
     }
 
@@ -902,6 +909,7 @@
             <span class="ident">fsize</span>: <span class="prelude-val">Some</span>(<span class="number">1024u64</span>.<span class="ident">pow</span>(<span class="number">3</span>)),
             <span class="ident">memlock</span>: <span class="prelude-val">None</span>,
             <span class="ident">stack</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
+            <span class="ident">read_only</span>: <span class="bool-val">true</span>,
         }
     }
 }
