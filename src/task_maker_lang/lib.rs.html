@@ -108,6 +108,7 @@
 <span id="108">108</span>
 <span id="109">109</span>
 <span id="110">110</span>
+<span id="111">111</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing programming languages and source files.</span>
 <span class="doccomment">//!</span>
@@ -165,6 +166,7 @@
             <span class="comment">// ordered by most important first</span>
             <span class="ident">known_languages</span>: <span class="macro">vec</span><span class="macro">!</span>[
                 <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">cpp</span>::<span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">cpp</span>::<span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span>)),
+                <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">c</span>::<span class="ident">LanguageC</span>::<span class="ident">new</span>(<span class="ident">c</span>::<span class="ident">LanguageCVersion</span>::<span class="ident">GccC11</span>)),
                 <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">python</span>::<span class="ident">LanguagePython</span>::<span class="ident">new</span>(
                     <span class="ident">python</span>::<span class="ident">LanguagePythonVersion</span>::<span class="ident">Autodetect</span>,
                 )),
