@@ -724,7 +724,7 @@
 }
 
 <span class="doccomment">/// The current status of the `Executor`, this is sent to the user when the server status is asked.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutorStatus</span> {
     <span class="doccomment">/// List of the connected workers with their uuid, name and if they have some work.</span>
     <span class="kw">pub</span> <span class="ident">connected_workers</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">WorkerUuid</span>, <span class="ident">String</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>,

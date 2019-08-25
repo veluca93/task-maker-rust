@@ -540,6 +540,7 @@
 <span id="540">540</span>
 <span id="541">541</span>
 <span id="542">542</span>
+<span id="543">543</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -634,13 +635,14 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Parameters</span>
 <span class="doccomment">/// - `eval: EvaluationData`</span>
-<span class="doccomment">/// - `exec: Execution`</span>
+<span class="doccomment">/// - `exec_uuid: ExecutionUuid`</span>
 <span class="doccomment">/// - `enum` is a lambda that takes one or more arguments:</span>
 <span class="doccomment">///   - the first is a `UIExecutionStatus`</span>
 <span class="doccomment">///   - the followings are clones of the `extra` parameter</span>
 <span class="doccomment">/// - `extra` is a series of identifiers of `Clone`able variables.</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">bind_exec_callbacks</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">enum</span>:<span class="macro-nonterminal">expr</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {{
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">enum</span>:<span class="macro-nonterminal">expr</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {{
         {
             $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
             <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span>;
@@ -652,7 +654,7 @@
         {
             $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
             <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec</span>.<span class="ident">uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">worker</span><span class="op">|</span> {
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">worker</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Started</span> { <span class="ident">worker</span> };
                 <span class="ident">sender</span>
                     .<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
@@ -662,7 +664,7 @@
         {
             $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
             <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec</span>.<span class="ident">uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span> };
                 <span class="ident">sender</span>
                     .<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
@@ -672,7 +674,7 @@
         {
             $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
             <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_skip</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec</span>.<span class="ident">uuid</span>, <span class="kw">move</span> <span class="op">||</span> {
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_skip</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">||</span> {
                 <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Skipped</span>;
                 <span class="ident">sender</span>
                     .<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
@@ -740,7 +742,7 @@
                 )<span class="question-mark">?</span>;
                 <span class="ident">exec</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Generation</span>.<span class="ident">into</span>());
                 <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stdout</span>();
-                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIGeneration</span> {
+                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIGeneration</span> {
                     <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                     <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
                     <span class="ident">status</span>
@@ -784,7 +786,7 @@
                 <span class="ident">exec</span>.<span class="ident">input</span>(<span class="ident">input</span>, <span class="string">&quot;tm_validation_file&quot;</span>, <span class="bool-val">false</span>)
                     .<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Generation</span>.<span class="ident">into</span>());
                 <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stdout</span>();
-                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIValidation</span> {
+                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIValidation</span> {
                     <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                     <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
                     <span class="ident">status</span>
@@ -829,7 +831,7 @@
                 )<span class="question-mark">?</span>;
                 <span class="ident">exec</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Generation</span>.<span class="ident">into</span>());
                 <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="macro">bind_exec_io</span><span class="macro">!</span>(<span class="ident">exec</span>, <span class="ident">task</span>, <span class="ident">input</span>, <span class="ident">validation_handle</span>);
-                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOISolution</span> {
+                <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOISolution</span> {
                     <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                     <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
                     <span class="ident">status</span>
@@ -881,7 +883,7 @@
                     .<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Checking</span>.<span class="ident">into</span>());
                 <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
                     <span class="ident">eval</span>,
-                    <span class="ident">exec</span>,
+                    <span class="ident">exec</span>.<span class="ident">uuid</span>,
                     <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIChecker</span> {
                         <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                         <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
@@ -918,7 +920,7 @@
                     .<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Checking</span>.<span class="ident">into</span>());
                 <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
                     <span class="ident">eval</span>,
-                    <span class="ident">exec</span>,
+                    <span class="ident">exec</span>.<span class="ident">uuid</span>,
                     <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIChecker</span> {
                         <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                         <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
@@ -1004,7 +1006,7 @@
                 }
                 <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
                     <span class="ident">eval</span>,
-                    <span class="ident">exec</span>,
+                    <span class="ident">exec</span>.<span class="ident">uuid</span>,
                     <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIEvaluation</span> {
                         <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                         <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
