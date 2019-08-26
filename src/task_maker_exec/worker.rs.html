@@ -448,7 +448,7 @@
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">missing_deps</span> <span class="op">=</span> <span class="number">0</span>;
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handles</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
                     <span class="kw">for</span> <span class="ident">input</span> <span class="kw">in</span> <span class="ident">job</span>.<span class="ident">execution</span>.<span class="ident">dependencies</span>().<span class="ident">iter</span>() {
-                        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">store</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+                        <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
                         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">job</span>
                             .<span class="ident">dep_keys</span>
                             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>)
@@ -477,7 +477,7 @@
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>)) <span class="op">=&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Server sent file {} {:?}&quot;</span>, <span class="ident">uuid</span>, <span class="ident">key</span>);
-                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">store</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+                    <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
                     <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">ChannelFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">receiver</span>);
                     <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">store</span>.<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">reader</span>)<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">job</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
