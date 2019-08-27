@@ -341,11 +341,11 @@
         <span class="kw">match</span> <span class="ident">message</span> {
             <span class="ident">UIMessage</span>::<span class="ident">ServerStatus</span> { <span class="ident">status</span> } <span class="op">=&gt;</span> {
                 <span class="macro">println</span><span class="macro">!</span>(
-                    <span class="string">&quot;[STATUS]  Server status: {} running DAG, {} ready exec, {} waiting exec&quot;</span>,
-                    <span class="ident">status</span>.<span class="ident">running_dags</span>, <span class="ident">status</span>.<span class="ident">ready_execs</span>, <span class="ident">status</span>.<span class="ident">waiting_execs</span>
+                    <span class="string">&quot;[STATUS]  Server status: {} ready exec, {} waiting exec&quot;</span>,
+                    <span class="ident">status</span>.<span class="ident">ready_execs</span>, <span class="ident">status</span>.<span class="ident">waiting_execs</span>
                 );
                 <span class="kw">for</span> <span class="ident">worker</span> <span class="kw">in</span> <span class="ident">status</span>.<span class="ident">connected_workers</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {} ({})&quot;</span>, <span class="ident">worker</span>.<span class="number">1</span>, <span class="ident">worker</span>.<span class="number">0</span>);
+                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {} ({})&quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">worker</span>.<span class="ident">uuid</span>);
                 }
             }
             <span class="ident">UIMessage</span>::<span class="ident">Compilation</span> { <span class="ident">file</span>, <span class="ident">status</span> } <span class="op">=&gt;</span> {

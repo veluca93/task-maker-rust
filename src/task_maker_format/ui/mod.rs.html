@@ -279,6 +279,7 @@
 <span id="279">279</span>
 <span id="280">280</span>
 <span id="281">281</span>
+<span id="282">282</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -295,6 +296,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json</span>::<span class="ident">JsonUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">raw</span>::<span class="ident">RawUI</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
 
 <span class="doccomment">/// Channel type for sending `UIMessage`s.</span>
@@ -328,7 +330,7 @@
     <span class="doccomment">/// An update on the status of the executor.</span>
     <span class="ident">ServerStatus</span> {
         <span class="doccomment">/// The status of the executor.</span>
-        <span class="ident">status</span>: <span class="ident">ExecutorStatus</span>,
+        <span class="ident">status</span>: <span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span>,
     },
 
     <span class="doccomment">/// An update on the compilation status.</span>

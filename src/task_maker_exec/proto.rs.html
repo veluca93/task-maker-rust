@@ -161,6 +161,8 @@
 <span id="161">161</span>
 <span id="162">162</span>
 <span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The protocol related structs and enums.</span>
 <span class="doccomment">//!</span>
@@ -196,13 +198,13 @@
 <span class="doccomment">//! - `B` sends [`FileProtocol::End`](enum.FileProtocol.html#variant.End) which triggers a protocol</span>
 <span class="doccomment">//!   switch, back into normal mode</span>
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="kw-2">*</span>;
-
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 
 <span class="doccomment">/// Messages that the client sends to the server.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
@@ -244,7 +246,7 @@
     <span class="doccomment">/// There was an error during the evaluation.</span>
     <span class="ident">Error</span>(<span class="ident">String</span>),
     <span class="doccomment">/// The server status as asked by the client.</span>
-    <span class="ident">Status</span>(<span class="ident">ExecutorStatus</span>),
+    <span class="ident">Status</span>(<span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>),
     <span class="doccomment">/// The evaluation of the DAG is complete, this message will close the connection.</span>
     <span class="ident">Done</span>,
 }
@@ -263,7 +265,7 @@
     <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>),
     <span class="doccomment">/// The worker needs a file from the server. The server should send back that file in order to</span>
     <span class="doccomment">/// run the execution on the worker.</span>
-    <span class="ident">AskFile</span>(<span class="ident">FileUuid</span>),
+    <span class="ident">AskFile</span>(<span class="ident">FileStoreKey</span>),
 }
 
 <span class="doccomment">/// Messages sent by the server to the worker.</span>
@@ -271,9 +273,11 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">WorkerServerMessage</span> {
     <span class="doccomment">/// The job the worker should do. Boxed to reduce the enum size.</span>
     <span class="ident">Work</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">WorkerJob</span><span class="op">&gt;</span>),
-    <span class="doccomment">/// The file the workers as asked After this message there is a protocol switch for the file</span>
+    <span class="doccomment">/// The file the workers as asked. After this message there is a protocol switch for the file</span>
     <span class="doccomment">/// transmission.</span>
-    <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>),
+    <span class="ident">ProvideFile</span>(<span class="ident">FileStoreKey</span>),
+    <span class="doccomment">/// Ask the worker to exit.</span>
+    <span class="ident">Exit</span>,
 }
 
 <span class="doccomment">/// Messages sent during the FileProtocol operation, during the transfer of a file.</span>

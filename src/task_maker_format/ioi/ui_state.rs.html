@@ -576,11 +576,13 @@
 <span id="576">576</span>
 <span id="577">577</span>
 <span id="578">578</span>
+<span id="579">579</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">UIExecutionStatus</span>, <span class="ident">UIMessage</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
 
@@ -768,7 +770,7 @@
     <span class="doccomment">/// The status of the evaluations of the solutions.</span>
     <span class="kw">pub</span> <span class="ident">evaluations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">SolutionEvaluationState</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The status of the executor.</span>
-    <span class="kw">pub</span> <span class="ident">executor_status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecutorStatus</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">executor_status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestcaseEvaluationStatus</span> {
@@ -801,7 +803,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
         <span class="kw">use</span> <span class="ident">TestcaseEvaluationStatus</span>::<span class="kw-2">*</span>;
-        <span class="kw">return</span> <span class="kw">match</span> <span class="self">self</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Pending</span> <span class="op">=&gt;</span> <span class="string">&quot;Not done&quot;</span>.<span class="ident">into</span>(),
             <span class="ident">Solving</span> <span class="op">=&gt;</span> <span class="string">&quot;Solution running&quot;</span>.<span class="ident">into</span>(),
             <span class="ident">Solved</span> <span class="op">=&gt;</span> <span class="string">&quot;Solution completed&quot;</span>.<span class="ident">into</span>(),
@@ -833,7 +835,7 @@
             <span class="ident">RuntimeError</span> <span class="op">=&gt;</span> <span class="string">&quot;Runtime error&quot;</span>.<span class="ident">into</span>(),
             <span class="ident">Failed</span> <span class="op">=&gt;</span> <span class="string">&quot;Execution failed&quot;</span>.<span class="ident">into</span>(),
             <span class="ident">Skipped</span> <span class="op">=&gt;</span> <span class="string">&quot;Execution skipped&quot;</span>.<span class="ident">into</span>(),
-        };
+        }
     }
 }
 

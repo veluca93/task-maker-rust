@@ -70,19 +70,23 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
 
 <span class="doccomment">/// An Executor that runs locally by spawning a number of threads with the workers inside.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LocalExecutor</span> {
-    <span class="doccomment">/// The real Executor that does the actual work.</span>
     <span class="ident">executor</span>: <span class="ident">Executor</span>,
     <span class="doccomment">/// A reference to the [`FileStore`](../../task_maker_store/struct.FileStore.html).</span>
-    <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Where to store the sandboxes of the workers.</span>
     <span class="ident">sandbox_path</span>: <span class="ident">PathBuf</span>,
     <span class="doccomment">/// The number of local workers to spawn.</span>
@@ -94,15 +98,14 @@
     <span class="doccomment">/// [`FileStore`](../../task_maker_store/struct.FileStore.html) and ready to spawn that number</span>
     <span class="doccomment">/// of workers.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
-        <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;&gt;</span>,
-        <span class="ident">cache</span>: <span class="ident">Cache</span>,
+        <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>,
         <span class="ident">num_workers</span>: <span class="ident">usize</span>,
         <span class="ident">sandbox_path</span>: <span class="ident">P</span>,
     ) <span class="op">-&gt;</span> <span class="ident">LocalExecutor</span> {
         <span class="ident">LocalExecutor</span> {
-            <span class="ident">executor</span>: <span class="ident">Executor</span>::<span class="ident">new</span>(<span class="ident">file_store</span>.<span class="ident">clone</span>(), <span class="ident">cache</span>),
-            <span class="ident">file_store</span>: <span class="ident">file_store</span>.<span class="ident">clone</span>(),
+            <span class="ident">executor</span>: <span class="ident">Executor</span>::<span class="ident">new</span>(<span class="ident">file_store</span>.<span class="ident">clone</span>()),
             <span class="ident">num_workers</span>,
+            <span class="ident">file_store</span>,
             <span class="ident">sandbox_path</span>: <span class="ident">sandbox_path</span>.<span class="ident">into</span>(),
         }
     }
@@ -112,12 +115,18 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `sender` - Channel that sends messages to the client.</span>
     <span class="doccomment">/// * `receiver` - Channel that receives messages from the client.</span>
+    <span class="doccomment">/// * `cache` - The cache the executor has to use.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">evaluate</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="self">self</span>,
         <span class="ident">sender</span>: <span class="ident">ChannelSender</span>,
         <span class="ident">receiver</span>: <span class="ident">ChannelReceiver</span>,
+        <span class="ident">cache</span>: <span class="ident">Cache</span>,
     ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Spawning {} workers&quot;</span>, <span class="self">self</span>.<span class="ident">num_workers</span>);
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">worker_manager</span> <span class="op">=</span>
+            <span class="ident">WorkerManager</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(), <span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">scheduler_tx</span>.<span class="ident">clone</span>());
+
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">workers</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">num_workers</span> {
             <span class="kw">let</span> (<span class="ident">worker</span>, <span class="ident">conn</span>) <span class="op">=</span> <span class="ident">Worker</span>::<span class="ident">new</span>(
@@ -125,7 +134,7 @@
                 <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(),
                 <span class="self">self</span>.<span class="ident">sandbox_path</span>.<span class="ident">clone</span>(),
             );
-            <span class="ident">workers</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">add_worker</span>(<span class="ident">conn</span>));
+            <span class="ident">workers</span>.<span class="ident">push</span>(<span class="ident">worker_manager</span>.<span class="ident">add</span>(<span class="ident">conn</span>));
             <span class="ident">workers</span>.<span class="ident">push</span>(
                 <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
                     .<span class="ident">name</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Worker {}&quot;</span>, <span class="ident">worker</span>))
@@ -134,7 +143,8 @@
                     })<span class="question-mark">?</span>,
             );
         }
-        <span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">sender</span>, <span class="ident">receiver</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">executor</span>.<span class="ident">evaluate</span>(<span class="ident">sender</span>, <span class="ident">receiver</span>, <span class="ident">cache</span>)<span class="question-mark">?</span>;
+        <span class="ident">worker_manager</span>.<span class="ident">stop</span>()<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">worker</span> <span class="kw">in</span> <span class="ident">workers</span>.<span class="ident">into_iter</span>() {
             <span class="ident">worker</span>
                 .<span class="ident">join</span>()

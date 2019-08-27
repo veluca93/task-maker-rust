@@ -39,7 +39,7 @@
 <span class="doccomment">//! The supported executors.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! An executor is something that implements the communication protocol for evaluating DAGs.</span>
-<span class="doccomment">//! For example the LocalExecutor is an implementation of a thread-based Executor that will listen</span>
+<span class="doccomment">//! For example the `LocalExecutor` is an implementation of a thread-based executor that will listen</span>
 <span class="doccomment">//! on the client channel and will spawn a list of local workers.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Example</span>
@@ -57,13 +57,13 @@
 <span class="doccomment">//! let store = FileStore::new(path).unwrap();</span>
 <span class="doccomment">//! let cache = Cache::new(path).unwrap();</span>
 <span class="doccomment">//! let num_cores = 4;</span>
-<span class="doccomment">//! let mut executor = LocalExecutor::new(Arc::new(Mutex::new(store)), cache, num_cores, path);</span>
+<span class="doccomment">//! let mut executor = LocalExecutor::new(Arc::new(store), num_cores, path);</span>
 <span class="doccomment">//! // the communication channels for the client</span>
 <span class="doccomment">//! let (tx, rx_remote) = channel();</span>
 <span class="doccomment">//! let (tx_remote, rx) = channel();</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # let server = thread::spawn(move || {</span>
-<span class="doccomment">//! executor.evaluate(tx_remote, rx_remote).unwrap();  // this will block!!</span>
+<span class="doccomment">//! executor.evaluate(tx_remote, rx_remote, cache).unwrap();  // this will block!!</span>
 <span class="doccomment">//! # });</span>
 <span class="doccomment">//! # drop(tx);</span>
 <span class="doccomment">//! # drop(rx);</span>
