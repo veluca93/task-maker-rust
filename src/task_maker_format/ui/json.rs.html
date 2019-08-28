@@ -18,10 +18,12 @@
 <span id="18">18</span>
 <span id="19">19</span>
 <span id="20">20</span>
+<span id="21">21</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// This UI will print to stdout the UI messages as json.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">JsonUI</span>;
 
 <span class="kw">impl</span> <span class="ident">JsonUI</span> {

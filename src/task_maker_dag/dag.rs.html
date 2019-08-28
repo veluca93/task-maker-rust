@@ -476,7 +476,7 @@
             <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">CacheMode</span>::<span class="ident">Everything</span>,
             <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="ident">CacheMode</span>::<span class="ident">Nothing</span>,
             <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">list</span>)) <span class="op">=&gt;</span> {
-                <span class="ident">CacheMode</span>::<span class="ident">Except</span>(<span class="ident">list</span>.<span class="ident">split</span>(<span class="string">&#39;,&#39;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">tag</span><span class="op">|</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="ident">tag</span>)).<span class="ident">collect</span>())
+                <span class="ident">CacheMode</span>::<span class="ident">Except</span>(<span class="ident">list</span>.<span class="ident">split</span>(<span class="string">&#39;,&#39;</span>).<span class="ident">map</span>(<span class="ident">ExecutionTag</span>::<span class="ident">from</span>).<span class="ident">collect</span>())
             }
         }
     }
