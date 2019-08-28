@@ -544,6 +544,8 @@
 <span id="544">544</span>
 <span id="545">545</span>
 <span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -790,7 +792,9 @@
                     <span class="ident">args</span>.<span class="ident">clone</span>(),
                 )<span class="question-mark">?</span>;
                 <span class="ident">exec</span>.<span class="ident">input</span>(<span class="ident">input</span>, <span class="string">&quot;tm_validation_file&quot;</span>, <span class="bool-val">false</span>)
-                    .<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Generation</span>.<span class="ident">into</span>());
+                    .<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Generation</span>.<span class="ident">into</span>())
+                    .<span class="ident">env</span>(<span class="string">&quot;TM_SUBTASK&quot;</span>, <span class="ident">subtask_id</span>.<span class="ident">to_string</span>())
+                    .<span class="ident">env</span>(<span class="string">&quot;TM_TESTCASE&quot;</span>, <span class="ident">testcase_id</span>.<span class="ident">to_string</span>());
                 <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stdout</span>();
                 <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIValidation</span> {
                     <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,

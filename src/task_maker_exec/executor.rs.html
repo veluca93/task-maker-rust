@@ -212,6 +212,7 @@
 <span id="212">212</span>
 <span id="213">213</span>
 <span id="214">214</span>
+<span id="215">215</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
@@ -365,7 +366,8 @@
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Status</span>) <span class="op">=&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking for the status&quot;</span>);
-                    <span class="self">self</span>.<span class="ident">scheduler_tx</span>.<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">Status</span>).<span class="ident">unwrap</span>();
+                    <span class="comment">// this may fail is the scheduler is gone</span>
+                    <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scheduler_tx</span>.<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">Status</span>);
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Stop</span>) <span class="op">=&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking to stop&quot;</span>);

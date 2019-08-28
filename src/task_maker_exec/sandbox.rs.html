@@ -373,6 +373,9 @@
 <span id="373">373</span>
 <span id="374">374</span>
 <span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
@@ -514,6 +517,9 @@
             <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stderr&quot;</span>).<span class="ident">arg</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>));
         } <span class="kw">else</span> {
             <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stderr&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;/dev/null&quot;</span>);
+        }
+        <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">env</span>.<span class="ident">iter</span>() {
+            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--env&quot;</span>).<span class="ident">arg</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}={}&quot;</span>, <span class="ident">key</span>, <span class="ident">value</span>));
         }
         <span class="comment">// set the cpu_limit (--time parameter) to the sum of cpu_time and</span>
         <span class="comment">// sys_time</span>
