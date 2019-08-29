@@ -159,7 +159,7 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">comp</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
             <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Compilation of {}&quot;</span>, <span class="ident">name</span>),
-            <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="string">&quot;asy&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;asy&quot;</span>),
         );
         <span class="ident">comp</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-f&quot;</span>, <span class="string">&quot;pdf&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="string">&quot;output.pdf&quot;</span>, <span class="string">&quot;source.asy&quot;</span>]);
         <span class="ident">comp</span>.<span class="ident">limits_mut</span>()
@@ -195,7 +195,7 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">crop</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
             <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Crop of {}&quot;</span>, <span class="ident">name</span>),
-            <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="string">&quot;pdfcrop&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;pdfcrop&quot;</span>),
         );
         <span class="ident">crop</span>.<span class="ident">limits_mut</span>()
             .<span class="ident">read_only</span>(<span class="bool-val">false</span>)

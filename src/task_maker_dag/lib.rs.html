@@ -79,7 +79,7 @@
 <span class="doccomment">//! use task_maker_dag::{ExecutionDAG, Execution, ExecutionCommand};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! let mut dag = ExecutionDAG::new();</span>
-<span class="doccomment">//! let mut exec = Execution::new(&quot;Get the date&quot;, ExecutionCommand::System(&quot;date&quot;.into()));</span>
+<span class="doccomment">//! let mut exec = Execution::new(&quot;Get the date&quot;, ExecutionCommand::system(&quot;date&quot;));</span>
 <span class="doccomment">//! let exec_id = exec.uuid;</span>
 <span class="doccomment">//! let output = exec.stdout();</span>
 <span class="doccomment">//! dag.add_execution(exec);</span>

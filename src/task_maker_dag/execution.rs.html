@@ -645,6 +645,18 @@
 <span id="645">645</span>
 <span id="646">646</span>
 <span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
@@ -689,9 +701,9 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// use task_maker_dag::ExecutionCommand;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let sys_cmd = ExecutionCommand::System(&quot;/usr/bin/env&quot;.into());</span>
-<span class="doccomment">/// let sys_cmd = ExecutionCommand::System(&quot;env&quot;.into()); // looking at $PATH</span>
-<span class="doccomment">/// let local_cmd = ExecutionCommand::Local(&quot;generator&quot;.into()); // local to the cwd of the sandbox</span>
+<span class="doccomment">/// let sys_cmd = ExecutionCommand::system(&quot;/usr/bin/env&quot;);</span>
+<span class="doccomment">/// let sys_cmd = ExecutionCommand::system(&quot;env&quot;); // looking at $PATH</span>
+<span class="doccomment">/// let local_cmd = ExecutionCommand::local(&quot;generator&quot;); // local to the cwd of the sandbox</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExecutionCommand</span> {
@@ -741,7 +753,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// // first execution reading stdin, outputting to stdout, with 2s cpu limit, 3s wall limit and</span>
 <span class="doccomment">/// // 1MiB of memory.</span>
-<span class="doccomment">/// let mut exec = Execution::new(&quot;some hard work&quot;, ExecutionCommand::Local(&quot;worker&quot;.into()));</span>
+<span class="doccomment">/// let mut exec = Execution::new(&quot;some hard work&quot;, ExecutionCommand::local(&quot;worker&quot;));</span>
 <span class="doccomment">/// exec.stdin(&amp;stdin);</span>
 <span class="doccomment">/// let stdout = exec.stdout();</span>
 <span class="doccomment">/// exec.limits_mut().cpu_time(2.0).wall_time(3.0).memory(1024);</span>
@@ -749,7 +761,7 @@
 <span class="doccomment">/// // second execution, will run after the first because it depends on its output, only if the</span>
 <span class="doccomment">/// // first is successful. Will take the stdout of the first as a file input and will capture the</span>
 <span class="doccomment">/// // stdout.</span>
-<span class="doccomment">/// let mut exec2 = Execution::new(&quot;some other work&quot;, ExecutionCommand::Local(&quot;worker2&quot;.into()));</span>
+<span class="doccomment">/// let mut exec2 = Execution::new(&quot;some other work&quot;, ExecutionCommand::local(&quot;worker2&quot;));</span>
 <span class="doccomment">/// exec2.input(&amp;stdout, &quot;data.txt&quot;, false); // put the stdout of exec inside data.txt of exec2</span>
 <span class="doccomment">/// let result = exec2.stdout();</span>
 <span class="doccomment">///</span>
@@ -990,13 +1002,25 @@
     }
 }
 
+<span class="kw">impl</span> <span class="ident">ExecutionCommand</span> {
+    <span class="doccomment">/// Make a new `ExecutionCommand::System`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionCommand</span> {
+        <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="ident">path</span>.<span class="ident">into</span>())
+    }
+
+    <span class="doccomment">/// Make a new `ExecutionCommand::Local`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionCommand</span> {
+        <span class="ident">ExecutionCommand</span>::<span class="ident">Local</span>(<span class="ident">path</span>.<span class="ident">into</span>())
+    }
+}
+
 <span class="kw">impl</span> <span class="ident">Execution</span> {
     <span class="doccomment">/// Create a basic [`Execution`](struct.Execution.html) with the default limits.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="ident">description</span>: <span class="ident">S</span>, <span class="ident">command</span>: <span class="ident">ExecutionCommand</span>) <span class="op">-&gt;</span> <span class="ident">Execution</span> {
         <span class="ident">Execution</span> {
@@ -1027,7 +1051,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = File::new(&quot;random file&quot;);</span>
     <span class="doccomment">/// let uuid = file.uuid;</span>
     <span class="doccomment">/// exec.stdin(file);</span>
@@ -1050,7 +1074,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = exec.stdout();</span>
     <span class="doccomment">/// let uuid = file.uuid;</span>
     <span class="doccomment">/// assert_eq!(exec.outputs(), vec![uuid]);</span>
@@ -1075,7 +1099,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;test execution&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;test execution&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// exec.args(vec![&quot;test&quot;, &quot;args&quot;]);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">args</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
@@ -1089,7 +1113,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = File::new(&quot;random file&quot;);</span>
     <span class="doccomment">/// let uuid = file.uuid;</span>
     <span class="doccomment">/// exec.stdin(file);</span>
@@ -1107,7 +1131,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = exec.stdout();</span>
     <span class="doccomment">/// assert_eq!(exec.stdout, Some(file));</span>
     <span class="doccomment">/// ```</span>
@@ -1126,7 +1150,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = exec.stderr();</span>
     <span class="doccomment">/// assert_eq!(exec.stderr, Some(file));</span>
     <span class="doccomment">/// ```</span>
@@ -1145,7 +1169,7 @@
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
     <span class="doccomment">/// use std::path::PathBuf;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = File::new(&quot;test file&quot;);</span>
     <span class="doccomment">/// let uuid = file.uuid;</span>
     <span class="doccomment">/// exec.input(file, &quot;test/file.txt&quot;, false);</span>
@@ -1175,7 +1199,7 @@
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">/// use std::path::PathBuf;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// let file = exec.output(&quot;foo/bar.txt&quot;);</span>
     <span class="doccomment">/// assert_eq!(exec.outputs[&amp;PathBuf::from(&quot;foo/bar.txt&quot;)], file);</span>
     <span class="doccomment">/// ```</span>
@@ -1189,7 +1213,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;random exec&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;random exec&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// exec.env(&quot;foo&quot;, &quot;bar&quot;);</span>
     <span class="doccomment">/// assert_eq!(exec.env[&quot;foo&quot;], &quot;bar&quot;);</span>
     <span class="doccomment">/// ```</span>
@@ -1203,7 +1227,7 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, ExecutionLimits};</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::Local(&quot;foo&quot;.into()));</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// exec.limits_mut().cpu_time(2.0).sys_time(0.5).wall_time(3.0).memory(1024).nproc(10);</span>
     <span class="doccomment">/// assert_eq!(exec.limits.cpu_time, Some(2.0));</span>
     <span class="doccomment">/// assert_eq!(exec.limits.sys_time, Some(0.5));</span>
