@@ -618,6 +618,33 @@
 <span id="618">618</span>
 <span id="619">619</span>
 <span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
+<span id="624">624</span>
+<span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
@@ -794,6 +821,10 @@
     <span class="kw">pub</span> <span class="ident">stack</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Whether the process in the sandbox is not allowed to create new files inside the sandbox.</span>
     <span class="kw">pub</span> <span class="ident">read_only</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether the process in the sandbox can use `/dev/null` and `/tmp`.</span>
+    <span class="kw">pub</span> <span class="ident">mount_tmpfs</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Extra directory that can be read inside the sandbox.</span>
+    <span class="kw">pub</span> <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Status of a completed [`Execution`](struct.Execution.html).</span>
@@ -859,6 +890,8 @@
             <span class="ident">memlock</span>: <span class="prelude-val">None</span>,
             <span class="ident">stack</span>: <span class="prelude-val">None</span>,
             <span class="ident">read_only</span>: <span class="bool-val">false</span>,
+            <span class="ident">mount_tmpfs</span>: <span class="bool-val">true</span>,
+            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         }
     }
 
@@ -915,6 +948,25 @@
         <span class="self">self</span>.<span class="ident">stack</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
+
+    <span class="doccomment">/// Set whether the process in the sandbox is not allowed to create new files inside the</span>
+    <span class="doccomment">/// sandbox.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_only</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">read_only</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">read_only</span> <span class="op">=</span> <span class="ident">read_only</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Set whether the process in the sandbox can use `/dev/null` and `/tmp`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mount_tmpfs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mount_tmpfs</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">mount_tmpfs</span> <span class="op">=</span> <span class="ident">mount_tmpfs</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Add a directory to the list of additional readable directories in the sandbox.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_extra_readable_dir</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dir</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">extra_readable_dirs</span>.<span class="ident">push</span>(<span class="ident">dir</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">default</span>::<span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ExecutionLimits</span> {
@@ -932,6 +984,8 @@
             <span class="ident">memlock</span>: <span class="prelude-val">None</span>,
             <span class="ident">stack</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
             <span class="ident">read_only</span>: <span class="bool-val">true</span>,
+            <span class="ident">mount_tmpfs</span>: <span class="bool-val">false</span>,
+            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         }
     }
 }

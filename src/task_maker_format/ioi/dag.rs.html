@@ -546,6 +546,7 @@
 <span id="546">546</span>
 <span id="547">547</span>
 <span id="548">548</span>
+<span id="549">549</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -556,7 +557,6 @@
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>, <span class="ident">ExecutionStatus</span>, <span class="ident">File</span>, <span class="ident">FileUuid</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">UISender</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>};
 
 <span class="doccomment">/// Which tool to use to compute the score on a testcase given the input file, the _correct_ output</span>
@@ -650,6 +650,8 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">enum</span>:<span class="macro-nonterminal">expr</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">redundant_closure_call</span>)]</span>
         {
+            <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">UISender</span>;
+            <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIExecutionStatus</span>;
             {
                 $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
                 <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span>;
