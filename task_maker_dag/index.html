@@ -53,12 +53,13 @@ accurate.</p>
 for example for splitting the cache scopes.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.File.html" title='task_maker_dag::File struct'>File</a></td><td class='docblock-short'><p>An handle to a file in the evaluation, this only tracks dependencies between executions.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.FileCallbacks.html" title='task_maker_dag::FileCallbacks struct'>FileCallbacks</a></td><td class='docblock-short'><p>The callbacks that will trigger when the file is ready.</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.ProvidedFile.html" title='task_maker_dag::ProvidedFile struct'>ProvidedFile</a></td><td class='docblock-short'><p>A wrapper around a File provided by the client, this means that the client
-knows the FileStoreKey and the path to that file.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.WriteToCallback.html" title='task_maker_dag::WriteToCallback struct'>WriteToCallback</a></td><td class='docblock-short'><p>Where to write the file to with some other information.</p>
 </td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>
 <table><tr class='module-item'><td><a class="enum" href="enum.CacheMode.html" title='task_maker_dag::CacheMode enum'>CacheMode</a></td><td class='docblock-short'><p>The setting of the cache level.</p>
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.ExecutionCommand.html" title='task_maker_dag::ExecutionCommand enum'>ExecutionCommand</a></td><td class='docblock-short'><p>Command of an <a href="struct.Execution.html"><code>Execution</code></a> to execute.</p>
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.ExecutionStatus.html" title='task_maker_dag::ExecutionStatus enum'>ExecutionStatus</a></td><td class='docblock-short'><p>Status of a completed <a href="struct.Execution.html"><code>Execution</code></a>.</p>
+</td></tr><tr class='module-item'><td><a class="enum" href="enum.ProvidedFile.html" title='task_maker_dag::ProvidedFile enum'>ProvidedFile</a></td><td class='docblock-short'><p>A wrapper around a <code>File</code> provided by the client, this means that the client knows the
+<code>FileStoreKey</code> and the path to that file if it's local, or it's content if it's generated.</p>
 </td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table><tr class='module-item'><td><a class="type" href="type.ExecutionUuid.html" title='task_maker_dag::ExecutionUuid type'>ExecutionUuid</a></td><td class='docblock-short'><p>The identifier of an execution, it's globally unique and it identifies an execution only during
 a single evaluation.</p>
