@@ -19,6 +19,9 @@
 <span id="19">19</span>
 <span id="20">20</span>
 <span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionTag</span>;
 
@@ -30,6 +33,8 @@
     <span class="ident">Evaluation</span>,
     <span class="doccomment">/// Checking of a solution.</span>
     <span class="ident">Checking</span>,
+    <span class="doccomment">/// Compilation of the booklet.</span>
+    <span class="ident">Booklet</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ExecutionTag</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Tag</span> {
@@ -38,6 +43,7 @@
             <span class="ident">Tag</span>::<span class="ident">Generation</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;generation&quot;</span>),
             <span class="ident">Tag</span>::<span class="ident">Evaluation</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;evaluation&quot;</span>),
             <span class="ident">Tag</span>::<span class="ident">Checking</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;checking&quot;</span>),
+            <span class="ident">Tag</span>::<span class="ident">Booklet</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;booklet&quot;</span>),
         }
     }
 }

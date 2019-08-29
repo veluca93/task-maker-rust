@@ -48,11 +48,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">asy</span>;
 <span class="kw">mod</span> <span class="ident">booklet</span>;
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">module_inception</span>)]</span>
 <span class="kw">mod</span> <span class="ident">statement</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">Task</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">list_files</span>;
-<span class="kw">use</span> <span class="ident">asy</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">booklet</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">statement</span>::<span class="kw-2">*</span>;
