@@ -277,6 +277,10 @@
 <span id="277">277</span>
 <span id="278">278</span>
 <span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cwrite</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">FinishUI</span>;
@@ -546,6 +550,10 @@
                     <span class="ident">step</span> <span class="op">+</span> <span class="number">1</span>,
                     <span class="ident">num_steps</span>
                 ));
+            }
+            <span class="ident">UIMessage</span>::<span class="ident">Warning</span> { <span class="ident">message</span> } <span class="op">=&gt;</span> {
+                <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">WARNING</span>, <span class="string">&quot;[WARNING] &quot;</span>);
+                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>);
             }
         };
         <span class="macro">println</span><span class="macro">!</span>();

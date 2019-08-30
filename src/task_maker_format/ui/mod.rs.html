@@ -323,6 +323,12 @@
 <span id="323">323</span>
 <span id="324">324</span>
 <span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -534,6 +540,12 @@
         <span class="ident">num_steps</span>: <span class="ident">usize</span>,
         <span class="doccomment">/// The status of this step.</span>
         <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
+    },
+
+    <span class="doccomment">/// A warning has been emitted.</span>
+    <span class="ident">Warning</span> {
+        <span class="doccomment">/// The message of the warning.</span>
+        <span class="ident">message</span>: <span class="ident">String</span>,
     },
 }
 

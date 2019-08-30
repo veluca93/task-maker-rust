@@ -428,6 +428,17 @@
 <span id="428">428</span>
 <span id="429">429</span>
 <span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
@@ -504,6 +515,7 @@
         <span class="macro">println</span><span class="macro">!</span>();
         <span class="ident">ui</span>.<span class="ident">print_evaluations</span>(<span class="ident">state</span>);
         <span class="ident">ui</span>.<span class="ident">print_summary</span>(<span class="ident">state</span>);
+        <span class="ident">ui</span>.<span class="ident">print_messages</span>(<span class="ident">state</span>);
     }
 
     <span class="doccomment">/// Print the basic task info.</span>
@@ -806,6 +818,16 @@
             <span class="macro">println</span><span class="macro">!</span>();
         }
         <span class="macro">println</span><span class="macro">!</span>();
+    }
+
+    <span class="doccomment">/// Print the warnings.</span>
+    <span class="kw">fn</span> <span class="ident">print_messages</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">warnings</span>.<span class="ident">is_empty</span>() {
+            <span class="macro">cwriteln</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;Warnings:&quot;</span>);
+            <span class="kw">for</span> <span class="ident">warning</span> <span class="kw">in</span> <span class="ident">state</span>.<span class="ident">warnings</span>.<span class="ident">iter</span>() {
+                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {}&quot;</span>, <span class="ident">warning</span>);
+            }
+        }
     }
 
     <span class="doccomment">/// Print the time and memory usage of an execution.</span>
