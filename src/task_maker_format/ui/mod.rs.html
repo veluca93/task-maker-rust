@@ -303,6 +303,26 @@
 <span id="303">303</span>
 <span id="304">304</span>
 <span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -396,6 +416,16 @@
         <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
     },
 
+    <span class="doccomment">/// An update on the stderr of the generation of a testcase.</span>
+    <span class="ident">IOIGenerationStderr</span> {
+        <span class="doccomment">/// The id of the subtask.</span>
+        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
+        <span class="doccomment">/// The id of the testcase.</span>
+        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
+        <span class="doccomment">/// The prefix of the stderr of the generation.</span>
+        <span class="ident">content</span>: <span class="ident">String</span>,
+    },
+
     <span class="doccomment">/// The validation of a testcase in a IOI task.</span>
     <span class="ident">IOIValidation</span> {
         <span class="doccomment">/// The id of the subtask.</span>
@@ -404,6 +434,16 @@
         <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
         <span class="doccomment">/// The status of the validation.</span>
         <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
+    },
+
+    <span class="doccomment">/// An update on the stderr of the validation of a testcase.</span>
+    <span class="ident">IOIValidationStderr</span> {
+        <span class="doccomment">/// The id of the subtask.</span>
+        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
+        <span class="doccomment">/// The id of the testcase.</span>
+        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
+        <span class="doccomment">/// The prefix of the stderr of the validator.</span>
+        <span class="ident">content</span>: <span class="ident">String</span>,
     },
 
     <span class="doccomment">/// The solution of a testcase in a IOI task.</span>

@@ -425,6 +425,14 @@
 <span id="425">425</span>
 <span id="426">426</span>
 <span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -631,15 +639,26 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">outputs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
 
-        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">stdout</span>), <span class="prelude-val">Some</span>(<span class="ident">handle</span>)) <span class="op">=</span> (<span class="ident">exec</span>.<span class="ident">stdout</span>.<span class="ident">as_ref</span>(), <span class="macro">try_get</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">stdout</span>)) {
-            <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>, <span class="ident">handle</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdout</span>) <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stdout</span>.<span class="ident">as_ref</span>() {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span> <span class="macro">try_get</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">stdout</span>) {
+                <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>, <span class="ident">handle</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
         }
-        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">stderr</span>), <span class="prelude-val">Some</span>(<span class="ident">handle</span>)) <span class="op">=</span> (<span class="ident">exec</span>.<span class="ident">stderr</span>.<span class="ident">as_ref</span>(), <span class="macro">try_get</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">stderr</span>)) {
-            <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">stderr</span>.<span class="ident">uuid</span>, <span class="ident">handle</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stderr</span>) <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stderr</span>.<span class="ident">as_ref</span>() {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span> <span class="macro">try_get</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">stderr</span>) {
+                <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">stderr</span>.<span class="ident">uuid</span>, <span class="ident">handle</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
         }
-        <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">key</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">outputs</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">uuid</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">outputs</span>[<span class="ident">path</span>].<span class="ident">uuid</span>;
-            <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">uuid</span>, <span class="macro">try_get</span><span class="macro">!</span>(<span class="prelude-val">Some</span>(<span class="ident">key</span>)).<span class="ident">unwrap</span>());
+        <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">file</span>) <span class="kw">in</span> <span class="ident">exec</span>.<span class="ident">outputs</span>.<span class="ident">iter</span>() {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span> <span class="macro">try_get</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">outputs</span>.<span class="ident">get</span>(<span class="ident">path</span>)) {
+                <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">file</span>.<span class="ident">uuid</span>, <span class="ident">handle</span>);
+            } <span class="kw">else</span> {
+                <span class="kw">return</span> <span class="prelude-val">None</span>;
+            }
         }
         <span class="prelude-val">Some</span>(<span class="ident">outputs</span>)
     }
@@ -786,9 +805,6 @@
             <span class="kw">match</span> <span class="ident">entry</span>.<span class="ident">outputs</span>(<span class="ident">file_store</span>, <span class="ident">execution</span>) {
                 <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
                     <span class="comment">// TODO: remove the entry because it&#39;s not valid anymore</span>
-                    <span class="macro">unimplemented</span><span class="macro">!</span>(
-                        <span class="string">&quot;the flush is not implemented yet, so this code should not be reachable&quot;</span>
-                    );
                 }
                 <span class="prelude-val">Some</span>(<span class="ident">outputs</span>) <span class="op">=&gt;</span> {
                     <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">is_compatible</span>(<span class="ident">execution</span>) {
