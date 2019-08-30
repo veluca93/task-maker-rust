@@ -134,6 +134,8 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">Tag</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui</span>::<span class="ident">UIMessage</span>, <span class="ident">EvaluationData</span>};
@@ -168,6 +170,7 @@
         <span class="ident">comp</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-f&quot;</span>, <span class="string">&quot;pdf&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="string">&quot;output.pdf&quot;</span>, <span class="string">&quot;source.asy&quot;</span>]);
         <span class="ident">comp</span>.<span class="ident">limits_mut</span>()
             .<span class="ident">read_only</span>(<span class="bool-val">false</span>)
+            .<span class="ident">wall_time</span>(<span class="number">10.0</span>) <span class="comment">// asy tends to deadlock on failure</span>
             .<span class="ident">nproc</span>(<span class="number">1000</span>)
             .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/etc&quot;</span>)
             .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>);
@@ -203,6 +206,7 @@
         );
         <span class="ident">crop</span>.<span class="ident">limits_mut</span>()
             .<span class="ident">read_only</span>(<span class="bool-val">false</span>)
+            .<span class="ident">wall_time</span>(<span class="number">10.0</span>) <span class="comment">// asy tends to deadlock on failure</span>
             .<span class="ident">nproc</span>(<span class="number">1000</span>)
             .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/etc&quot;</span>)
             .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>);
