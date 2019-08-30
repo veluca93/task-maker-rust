@@ -115,6 +115,8 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -166,6 +168,8 @@
     <span class="doccomment">/// Execute only the solutions whose names start with the filter. If left empty all the</span>
     <span class="doccomment">/// solutions are executed.</span>
     <span class="kw">pub</span> <span class="ident">solution_filter</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Include the solutions in the booklet.</span>
+    <span class="kw">pub</span> <span class="ident">booklet_solutions</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// The data for an evaluation, including the DAG and the UI channel.</span>

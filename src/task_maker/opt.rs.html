@@ -77,6 +77,11 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -147,6 +152,10 @@
     <span class="doccomment">/// The number of CPU cores to use</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;num-cores&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">num_cores</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Include the solutions in the booklet.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;booklet-solutions&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">booklet_solutions</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Opt</span> {
@@ -154,6 +163,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">EvaluationConfig</span> {
         <span class="ident">EvaluationConfig</span> {
             <span class="ident">solution_filter</span>: <span class="self">self</span>.<span class="ident">filter</span>.<span class="ident">clone</span>(),
+            <span class="ident">booklet_solutions</span>: <span class="self">self</span>.<span class="ident">booklet_solutions</span>,
         }
     }
 }

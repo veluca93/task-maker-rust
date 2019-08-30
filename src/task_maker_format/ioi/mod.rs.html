@@ -384,6 +384,11 @@
 <span id="384">384</span>
 <span id="385">385</span>
 <span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
@@ -480,6 +485,11 @@
     <span class="kw">pub</span> <span class="ident">testcase_score_aggregator</span>: <span class="ident">TestcaseScoreAggregator</span>,
     <span class="doccomment">/// The graders registered for this task.</span>
     <span class="kw">pub</span> <span class="ident">grader_map</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// An integer that defines the difficulty of the task. Used only in booklet compilations.</span>
+    <span class="kw">pub</span> <span class="ident">difficulty</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// An integer that defines the level inside a _syllabus_ (for example for the Olympiads in</span>
+    <span class="doccomment">/// Teams). Used only in booklet compilations.</span>
+    <span class="kw">pub</span> <span class="ident">syllabus_level</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A subtask of a IOI task.</span>
@@ -625,7 +635,7 @@
             }
         }
         <span class="comment">// build the statements</span>
-        <span class="kw">let</span> <span class="ident">booklets</span> <span class="op">=</span> <span class="ident">make_booklets</span>(<span class="self">self</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">booklets</span> <span class="op">=</span> <span class="ident">make_booklets</span>(<span class="self">self</span>, <span class="ident">config</span>)<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">booklet</span> <span class="kw">in</span> <span class="ident">booklets</span> {
             <span class="ident">booklet</span>.<span class="ident">build</span>(<span class="ident">eval</span>)<span class="question-mark">?</span>;
         }

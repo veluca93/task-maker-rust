@@ -287,23 +287,6 @@
 <span id="287">287</span>
 <span id="288">288</span>
 <span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -337,20 +320,8 @@
     <span class="doccomment">/// The title of the task (the long one).</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;nome&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// The number of input files.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="kw">pub</span> <span class="ident">n_input</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The score mode for this task.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="kw">pub</span> <span class="ident">score_mode</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The score type to use for this task.</span>
     <span class="kw">pub</span> <span class="ident">score_type</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The token mode of this task.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="kw">pub</span> <span class="ident">token_mode</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// The time limit for the execution of the solutions, if not set it&#39;s unlimited.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;timeout&quot;</span>)]</span>
@@ -358,31 +329,24 @@
     <span class="doccomment">/// The memory limit in MiB of the execution of the solution, if not set it&#39;s unlimited.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;memlimit&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">memory_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A list of comma separated numbers of the testcases with the feedback, can be set to &quot;all&quot;.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;risultati&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">public_testcases</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
     <span class="doccomment">/// Whether this is an output only task. Defaults to false.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;bool::default&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;python_bool_serializer&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;python_bool_deserializer&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">output_only</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// The maximum score of this task, if it&#39;s not set it will be autodetected from the testcase</span>
-    <span class="doccomment">/// definition.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="kw">pub</span> <span class="ident">total_value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The input file for the solutions, usually &#39;input.txt&#39; or &#39;&#39; (stdin). Defaults to `&#39;&#39;`.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_infile&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">infile</span>: <span class="ident">String</span>,
     <span class="doccomment">/// The output file for the solutions, usually &#39;output.txt&#39; or &#39;&#39; (stdout). Defaults to `&#39;&#39;`.</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span> <span class="op">=</span> <span class="string">&quot;default_outfile&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">outfile</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// The primary language for this task.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is ignored by task-maker.</span>
-    <span class="kw">pub</span> <span class="ident">primary_language</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// An integer that defines the difficulty of the task. Used only in booklet compilations.</span>
+    <span class="kw">pub</span> <span class="ident">difficulty</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// An integer that defines the level inside a _syllabus_ (for example for the Olympiads in</span>
+    <span class="doccomment">/// Teams). Used only in booklet compilations.</span>
+    <span class="kw">pub</span> <span class="ident">syllabuslevel</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// The iterator item type when following the task input testcases.</span>
@@ -505,6 +469,8 @@
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">TestcaseScoreAggregator</span>::<span class="ident">from_str</span>(<span class="ident">s</span>))
             .<span class="ident">unwrap_or</span>(<span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span>))<span class="question-mark">?</span>,
         <span class="ident">grader_map</span>,
+        <span class="ident">difficulty</span>: <span class="ident">yaml</span>.<span class="ident">difficulty</span>,
+        <span class="ident">syllabus_level</span>: <span class="ident">yaml</span>.<span class="ident">syllabuslevel</span>,
     })
 }
 
