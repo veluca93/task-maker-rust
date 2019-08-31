@@ -546,6 +546,19 @@
 <span id="546">546</span>
 <span id="547">547</span>
 <span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">FinishUI</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">ui_state</span>::<span class="kw-2">*</span>;
@@ -615,14 +628,21 @@
 
 <span class="kw">impl</span> <span class="ident">UI</span> <span class="kw">for</span> <span class="ident">CursesUI</span> {
     <span class="kw">fn</span> <span class="ident">on_message</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>) {
-        <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">write</span>().<span class="ident">unwrap</span>().<span class="ident">apply</span>(<span class="ident">message</span>);
+        <span class="self">self</span>.<span class="ident">state</span>
+            .<span class="ident">write</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>)
+            .<span class="ident">apply</span>(<span class="ident">message</span>);
     }
 
     <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
-        <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">join</span>().<span class="ident">unwrap</span>();
+        <span class="self">self</span>.<span class="ident">ui_thread</span>
+            .<span class="ident">take</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;UI finished more than once&quot;</span>)
+            .<span class="ident">join</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;UI thread failed&quot;</span>);
         <span class="comment">// at this point the terminal should be restored</span>
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;State lock is poisoned&quot;</span>);
         <span class="ident">FinishUI</span>::<span class="ident">print</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
     }
 }
@@ -632,7 +652,8 @@
         <span class="comment">// tell the ui to stop and wait for it, the terminal will be released.</span>
         <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">is_some</span>() {
-            <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">join</span>().<span class="ident">unwrap</span>();
+            <span class="comment">// try not to panic during unwind</span>
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">join</span>();
         }
     }
 }
@@ -641,7 +662,7 @@
 <span class="doccomment">/// the `stop` `AtomicBool`.</span>
 <span class="kw">fn</span> <span class="ident">ui_body</span>(<span class="kw-2">mut</span> <span class="ident">terminal</span>: <span class="ident">TerminalType</span>, <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;&gt;</span>, <span class="ident">stop</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>);
         [
             <span class="ident">Text</span>::<span class="ident">styled</span>(
                 <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">title</span>.<span class="ident">clone</span>(),
@@ -670,7 +691,7 @@
         <span class="ident">loading_index</span> <span class="op">+=</span> <span class="number">1</span>;
         <span class="ident">terminal</span>
             .<span class="ident">draw</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">f</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">unwrap</span>();
+                <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>);
                 <span class="kw">let</span> <span class="ident">booklet_len</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">state</span>
                     .<span class="ident">booklets</span>
                     .<span class="ident">values</span>()
@@ -732,7 +753,7 @@
                     .<span class="ident">render</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="ident">chunks</span>[<span class="number">5</span>]);
                 <span class="ident">draw_server_status</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="ident">inner_block</span>(<span class="ident">chunks</span>[<span class="number">5</span>]), <span class="kw-2">&amp;</span><span class="ident">state</span>, <span class="ident">loading</span>);
             })
-            .<span class="ident">unwrap</span>();
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to draw to the screen&quot;</span>);
         <span class="comment">// reduce the framerate to at most `FPS`</span>
         <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_micros</span>(<span class="number">1_000_000</span> <span class="op">/</span> <span class="ident">FPS</span>));
     }
@@ -751,7 +772,7 @@
     <span class="kw">let</span> <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">state</span>
         .<span class="ident">compilations</span>
         .<span class="ident">keys</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>().<span class="ident">len</span>())
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>).<span class="ident">len</span>())
         .<span class="ident">max</span>()
         .<span class="ident">unwrap_or</span>(<span class="number">0</span>)
         <span class="op">+</span> <span class="number">4</span>;
@@ -763,7 +784,9 @@
             <span class="macro">vec</span><span class="macro">!</span>[
                 <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(
                     <span class="string">&quot;{:&lt;max_len$}&quot;</span>,
-                    <span class="ident">file</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>().<span class="ident">to_string_lossy</span>(),
+                    <span class="ident">file</span>.<span class="ident">file_name</span>()
+                        .<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)
+                        .<span class="ident">to_string_lossy</span>(),
                     <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">max_len</span>
                 )),
                 <span class="ident">compilation_status_text</span>(<span class="ident">status</span>, <span class="ident">loading</span>),
@@ -901,7 +924,7 @@
     <span class="kw">let</span> <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">state</span>
         .<span class="ident">evaluations</span>
         .<span class="ident">keys</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>().<span class="ident">len</span>())
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> <span class="ident">k</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>).<span class="ident">len</span>())
         .<span class="ident">max</span>()
         .<span class="ident">unwrap_or</span>(<span class="number">0</span>)
         <span class="op">+</span> <span class="number">4</span>;
@@ -913,7 +936,10 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texts</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
             <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(
                 <span class="string">&quot;{:&lt;max_len$}&quot;</span>,
-                <span class="ident">solution</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>().<span class="ident">to_string_lossy</span>(),
+                <span class="ident">solution</span>
+                    .<span class="ident">file_name</span>()
+                    .<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)
+                    .<span class="ident">to_string_lossy</span>(),
                 <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">max_len</span>
             )));
             <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">evaluation_score</span>(<span class="ident">state</span>, <span class="ident">solution</span>, <span class="ident">loading</span>));

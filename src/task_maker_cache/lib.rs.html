@@ -433,6 +433,8 @@
 <span id="433">433</span>
 <span id="434">434</span>
 <span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -845,7 +847,9 @@
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Cache</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="self">self</span>.<span class="ident">cache_file</span>.<span class="ident">parent</span>().<span class="ident">unwrap</span>()) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span>
+            <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="self">self</span>.<span class="ident">cache_file</span>.<span class="ident">parent</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid cache file&quot;</span>))
+        {
             <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Failed to create the directory of the cache file: {:?}&quot;</span>, <span class="ident">e</span>);
             <span class="kw">return</span>;
         }

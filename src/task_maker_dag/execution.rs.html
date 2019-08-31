@@ -657,11 +657,13 @@
 <span id="657">657</span>
 <span id="658">658</span>
 <span id="659">659</span>
+<span id="660">660</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
+<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -677,13 +679,13 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WorkerUuid</span> <span class="op">=</span> <span class="ident">Uuid</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) starts.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnStartCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">WorkerUuid</span>,)<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnStartCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">WorkerUuid</span>,), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;&gt;</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) ends.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnDoneCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">ExecutionResult</span>,)<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnDoneCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">ExecutionResult</span>,), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;&gt;</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) is skipped.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnSkipCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, ()<span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnSkipCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;&gt;</span>;
 
 <span class="doccomment">/// A tag on an `Execution`. Can be used to classify the executions into groups and refer to them,</span>
 <span class="doccomment">/// for example for splitting the cache scopes.</span>

@@ -220,7 +220,7 @@
     <span class="doccomment">/// The name of the executable to call inside the sandbox. It defaults to the file name of</span>
     <span class="doccomment">/// program.</span>
     <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>())
+        <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>))
     }
 }
 </pre></div>

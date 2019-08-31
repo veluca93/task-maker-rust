@@ -217,11 +217,18 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="kw-2">*</span>;
@@ -319,16 +326,19 @@
             .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
                 <span class="ident">Executor</span>::<span class="ident">scheduler_thread</span>(<span class="ident">sched_binder_rx</span>, <span class="ident">sched_binder_client</span>).<span class="ident">unwrap</span>()
             })
-            .<span class="ident">unwrap</span>();
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to spawn scheduler binder thread&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">scheduler</span> <span class="op">=</span> <span class="ident">Scheduler</span>::<span class="ident">new</span>(<span class="ident">cache</span>, <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(), <span class="ident">sched_binder_tx</span>);
-        <span class="kw">let</span> <span class="ident">sched_rx</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scheduler_rx</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">sched_rx</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">scheduler_rx</span>
+            .<span class="ident">take</span>()
+            .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Evaluate called more than once&quot;</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">join_scheduler</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;Scheduler&quot;</span>.<span class="ident">into</span>())
             .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
                 <span class="ident">scheduler</span>.<span class="ident">work</span>(<span class="ident">sched_rx</span>).<span class="ident">unwrap</span>();
             })
-            .<span class="ident">unwrap</span>();
+            .<span class="ident">expect</span>(<span class="string">&quot;Failed to spawn the scheduler&quot;</span>);
 
         <span class="kw">loop</span> {
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">deserialize_from</span>::<span class="op">&lt;</span><span class="ident">ExecutorClientMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">client_rx</span>);
@@ -356,11 +366,13 @@
                     }
                     <span class="self">self</span>.<span class="ident">scheduler_tx</span>
                         .<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">DAG</span> { <span class="ident">dag</span>, <span class="ident">callbacks</span> })
-                        .<span class="ident">unwrap</span>();
+                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                     <span class="kw">for</span> (<span class="ident">uuid</span>, <span class="ident">handle</span>) <span class="kw">in</span> <span class="ident">ready_files</span>.<span class="ident">into_iter</span>() {
                         <span class="self">self</span>.<span class="ident">scheduler_tx</span>
                             .<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">FileReady</span> { <span class="ident">uuid</span>, <span class="ident">handle</span> })
-                            .<span class="ident">unwrap</span>();
+                            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                                <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>)
+                            })<span class="question-mark">?</span>;
                     }
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>)) <span class="op">=&gt;</span> {
@@ -370,7 +382,7 @@
                         .<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">ChannelFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">client_rx</span>))<span class="question-mark">?</span>;
                     <span class="self">self</span>.<span class="ident">scheduler_tx</span>
                         .<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">FileReady</span> { <span class="ident">uuid</span>, <span class="ident">handle</span> })
-                        .<span class="ident">unwrap</span>();
+                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Status</span>) <span class="op">=&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking for the status&quot;</span>);
@@ -388,8 +400,10 @@
             }
         }
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scheduler_tx</span>.<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">Exit</span>);
-        <span class="ident">join_scheduler</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
-        <span class="ident">join_scheduler_binder</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
+        <span class="ident">join_scheduler</span>.<span class="ident">join</span>().<span class="ident">expect</span>(<span class="string">&quot;Scheduler thread panicked&quot;</span>);
+        <span class="ident">join_scheduler_binder</span>
+            .<span class="ident">join</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;Scheduler binder thread panicked&quot;</span>);
         <span class="prelude-val">Ok</span>(())
     }
 

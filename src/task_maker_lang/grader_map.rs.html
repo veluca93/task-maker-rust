@@ -141,7 +141,7 @@
                     <span class="ident">Dependency</span> {
                         <span class="ident">file</span>,
                         <span class="ident">local_path</span>: <span class="ident">grader</span>.<span class="ident">clone</span>(),
-                        <span class="ident">sandbox_path</span>: <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">grader</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>()),
+                        <span class="ident">sandbox_path</span>: <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">grader</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)),
                         <span class="ident">executable</span>: <span class="bool-val">false</span>,
                     },
                 );
