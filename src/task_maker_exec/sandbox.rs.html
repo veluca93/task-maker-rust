@@ -388,10 +388,103 @@
 <span id="388">388</span>
 <span id="389">389</span>
 <span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Deserialize</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">OsString</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">PermissionsExt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">Command</span>;
@@ -512,81 +605,11 @@
             <span class="string">&quot;tmbox&quot;</span>.<span class="ident">into</span>()
         };
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">tmbox_path</span>);
-        <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--directory&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>));
-        <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--json&quot;</span>);
-        <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--env&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;PATH&quot;</span>);
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stdin</span>.<span class="ident">is_some</span>() {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stdin&quot;</span>).<span class="ident">arg</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdin&quot;</span>));
-        } <span class="kw">else</span> {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stdin&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;/dev/null&quot;</span>);
-        }
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stdout</span>.<span class="ident">is_some</span>() {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stdout&quot;</span>).<span class="ident">arg</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>));
-        } <span class="kw">else</span> {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stdout&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;/dev/null&quot;</span>);
-        }
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stderr</span>.<span class="ident">is_some</span>() {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stderr&quot;</span>).<span class="ident">arg</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>));
-        } <span class="kw">else</span> {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--stderr&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;/dev/null&quot;</span>);
-        }
-        <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">env</span>.<span class="ident">iter</span>() {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--env&quot;</span>).<span class="ident">arg</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}={}&quot;</span>, <span class="ident">key</span>, <span class="ident">value</span>));
-        }
-        <span class="comment">// set the cpu_limit (--time parameter) to the sum of cpu_time and sys_time</span>
-        <span class="kw">let</span> <span class="ident">cpu_limit</span> <span class="op">=</span> <span class="kw">match</span> (
-            <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">cpu_time</span>,
-            <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">sys_time</span>,
-        ) {
-            (<span class="prelude-val">Some</span>(<span class="ident">cpu</span>), <span class="prelude-val">Some</span>(<span class="ident">sys</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span> <span class="op">+</span> <span class="ident">sys</span>),
-            (<span class="prelude-val">Some</span>(<span class="ident">cpu</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span>),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">sys</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">sys</span>),
-            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+        <span class="kw">let</span> <span class="ident">command</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">build_command</span>(<span class="kw-2">&amp;</span><span class="ident">boxdir</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">cmd</span>) <span class="op">=&gt;</span> <span class="ident">cmd</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">SandboxResult</span>::<span class="ident">Failed</span> { <span class="ident">error</span>: <span class="ident">e</span> }),
         };
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span>) <span class="op">=</span> <span class="ident">cpu_limit</span> {
-            <span class="kw">let</span> <span class="ident">cpu</span> <span class="op">=</span> <span class="ident">cpu</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>;
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--time&quot;</span>).<span class="ident">arg</span>(<span class="ident">cpu</span>.<span class="ident">to_string</span>());
-        }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">wall</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">wall_time</span> {
-            <span class="kw">let</span> <span class="ident">wall</span> <span class="op">=</span> <span class="ident">wall</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>;
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--wall&quot;</span>).<span class="ident">arg</span>(<span class="ident">wall</span>.<span class="ident">to_string</span>());
-        }
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">nproc</span> {
-            <span class="prelude-val">Some</span>(<span class="number">1</span>) <span class="op">=&gt;</span> {}
-            <span class="kw">_</span> <span class="op">=&gt;</span> {
-                <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--multiprocess&quot;</span>);
-            }
-        }
-        <span class="comment">// allow reading some basic directories</span>
-        <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="ident">READABLE_DIRS</span> {
-            <span class="kw">if</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">dir</span>).<span class="ident">is_dir</span>() {
-                <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--readable-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">dir</span>);
-            }
-        }
-        <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">extra_readable_dirs</span> {
-            <span class="kw">if</span> <span class="ident">dir</span>.<span class="ident">is_dir</span>() {
-                <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--readable-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">dir</span>);
-            }
-        }
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">mount_tmpfs</span> {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--mount-tmpfs&quot;</span>);
-        }
-        <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="string">&quot;--&quot;</span>);
-        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">command</span> {
-            <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="ident">cmd</span>) <span class="op">=&gt;</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">cmd</span>) <span class="op">=</span> <span class="ident">which</span>::<span class="ident">which</span>(<span class="ident">cmd</span>) {
-                    <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="ident">cmd</span>)
-                } <span class="kw">else</span> {
-                    <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">SandboxResult</span>::<span class="ident">Failed</span> {
-                        <span class="ident">error</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Executable {:?} not found&quot;</span>, <span class="ident">cmd</span>),
-                    });
-                }
-            }
-            <span class="ident">ExecutionCommand</span>::<span class="ident">Local</span>(<span class="ident">cmd</span>) <span class="op">=&gt;</span> <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="ident">cmd</span>),
-        };
-        <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">args</span>.<span class="ident">iter</span>() {
-            <span class="ident">sandbox</span>.<span class="ident">arg</span>(<span class="ident">arg</span>);
-        }
+        <span class="ident">sandbox</span>.<span class="ident">args</span>(<span class="ident">command</span>);
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Sandbox command: {:?}&quot;</span>, <span class="ident">sandbox</span>);
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">sandbox</span>.<span class="ident">output</span>()<span class="question-mark">?</span>;
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Sandbox output: {:?}&quot;</span>, <span class="ident">res</span>);
@@ -642,6 +665,11 @@
             <span class="ident">serde_json</span>::<span class="ident">to_string_pretty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot serialize execution&quot;</span>);
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;info.json&quot;</span>), <span class="ident">serialized</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Cannot write execution info inside sandbox&quot;</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">command</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">build_command</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>) {
+            <span class="kw">let</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">s</span>)).<span class="ident">join</span>(<span class="string">&quot; &quot;</span>);
+            <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;command.txt&quot;</span>), <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;tmbox {}\n&quot;</span>, <span class="ident">command</span>))
+                .<span class="ident">expect</span>(<span class="string">&quot;Cannot write command info inside sandbox&quot;</span>);
+        }
     }
 
     <span class="doccomment">/// Path of the file where the standard output is written to.</span>
@@ -657,6 +685,101 @@
     <span class="doccomment">/// Path of the file where that output file is written to.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>).<span class="ident">join</span>(<span class="ident">output</span>)
+    }
+
+    <span class="doccomment">/// Build the command line arguments of `tmbox`.</span>
+    <span class="kw">fn</span> <span class="ident">build_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">boxdir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--directory&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>).<span class="ident">into</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--json&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--env&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;PATH&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stdin</span>.<span class="ident">is_some</span>() {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stdin&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdin&quot;</span>).<span class="ident">into</span>());
+        } <span class="kw">else</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stdin&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;/dev/null&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stdout</span>.<span class="ident">is_some</span>() {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stdout&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>).<span class="ident">into</span>());
+        } <span class="kw">else</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stdout&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;/dev/null&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stderr</span>.<span class="ident">is_some</span>() {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stderr&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>).<span class="ident">into</span>());
+        } <span class="kw">else</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--stderr&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;/dev/null&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">env</span>.<span class="ident">iter</span>() {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--env&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">OsString</span>::<span class="ident">from</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}={}&quot;</span>, <span class="ident">key</span>, <span class="ident">value</span>)));
+        }
+        <span class="comment">// set the cpu_limit (--time parameter) to the sum of cpu_time and sys_time</span>
+        <span class="kw">let</span> <span class="ident">cpu_limit</span> <span class="op">=</span> <span class="kw">match</span> (
+            <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">cpu_time</span>,
+            <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">sys_time</span>,
+        ) {
+            (<span class="prelude-val">Some</span>(<span class="ident">cpu</span>), <span class="prelude-val">Some</span>(<span class="ident">sys</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span> <span class="op">+</span> <span class="ident">sys</span>),
+            (<span class="prelude-val">Some</span>(<span class="ident">cpu</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">sys</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">sys</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+        };
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cpu</span>) <span class="op">=</span> <span class="ident">cpu_limit</span> {
+            <span class="kw">let</span> <span class="ident">cpu</span> <span class="op">=</span> <span class="ident">cpu</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>;
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--time&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">cpu</span>.<span class="ident">to_string</span>().<span class="ident">into</span>());
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">wall</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">wall_time</span> {
+            <span class="kw">let</span> <span class="ident">wall</span> <span class="op">=</span> <span class="ident">wall</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>;
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--wall&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">wall</span>.<span class="ident">to_string</span>().<span class="ident">into</span>());
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">mem</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">memory</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--memory&quot;</span>.<span class="ident">into</span>());
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">mem</span>.<span class="ident">to_string</span>().<span class="ident">into</span>());
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="number">1</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">nproc</span> {
+            <span class="comment">// default is not multi process</span>
+        } <span class="kw">else</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--multiprocess&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="comment">// allow reading some basic directories</span>
+        <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="ident">READABLE_DIRS</span> {
+            <span class="kw">if</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">dir</span>).<span class="ident">is_dir</span>() {
+                <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--readable-dir&quot;</span>.<span class="ident">into</span>());
+                <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">dir</span>.<span class="ident">into</span>());
+            }
+        }
+        <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">extra_readable_dirs</span> {
+            <span class="kw">if</span> <span class="ident">dir</span>.<span class="ident">is_dir</span>() {
+                <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--readable-dir&quot;</span>.<span class="ident">into</span>());
+                <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">dir</span>.<span class="ident">into</span>());
+            }
+        }
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">limits</span>.<span class="ident">mount_tmpfs</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--mount-tmpfs&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">command</span> {
+            <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="ident">cmd</span>) <span class="op">=&gt;</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">cmd</span>) <span class="op">=</span> <span class="ident">which</span>::<span class="ident">which</span>(<span class="ident">cmd</span>) {
+                    <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">cmd</span>.<span class="ident">into</span>())
+                } <span class="kw">else</span> {
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Executable {:?} not found&quot;</span>, <span class="ident">cmd</span>));
+                }
+            }
+            <span class="ident">ExecutionCommand</span>::<span class="ident">Local</span>(<span class="ident">cmd</span>) <span class="op">=&gt;</span> <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">cmd</span>.<span class="ident">into</span>()),
+        };
+        <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">args</span>.<span class="ident">iter</span>() {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">arg</span>.<span class="ident">into</span>());
+        }
+        <span class="prelude-val">Ok</span>(<span class="ident">args</span>)
     }
 
     <span class="doccomment">/// Setup the sandbox directory with all the files required for the execution.</span>
@@ -760,9 +883,28 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Sandbox</span>;
+    <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
     <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>};
+
+    <span class="kw">fn</span> <span class="ident">assert_contains</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span>[<span class="ident">String</span>], <span class="ident">check</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) {
+        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">source</span>.<span class="ident">len</span>() {
+            <span class="kw">if</span> <span class="ident">source</span>[<span class="ident">i</span>] <span class="op">==</span> <span class="ident">check</span>[<span class="number">0</span>] {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">valid</span> <span class="op">=</span> <span class="bool-val">true</span>;
+                <span class="kw">for</span> <span class="ident">j</span> <span class="kw">in</span> <span class="number">1</span>..<span class="ident">check</span>.<span class="ident">len</span>() {
+                    <span class="kw">if</span> <span class="ident">source</span>[<span class="ident">i</span> <span class="op">+</span> <span class="ident">j</span>] <span class="op">!=</span> <span class="ident">check</span>[<span class="ident">j</span>] {
+                        <span class="ident">valid</span> <span class="op">=</span> <span class="bool-val">false</span>;
+                        <span class="kw">break</span>;
+                    }
+                }
+                <span class="kw">if</span> <span class="ident">valid</span> {
+                    <span class="kw">return</span>;
+                }
+            }
+        }
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;{:?} does not contain {:?}&quot;</span>, <span class="ident">source</span>, <span class="ident">check</span>);
+    }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_remove_sandbox_on_drop</span>() {
@@ -777,6 +919,46 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outfile</span>.<span class="ident">exists</span>());
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outfile</span>.<span class="ident">parent</span>().<span class="ident">unwrap</span>().<span class="ident">exists</span>()); <span class="comment">// the box/ dir</span>
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outfile</span>.<span class="ident">parent</span>().<span class="ident">unwrap</span>().<span class="ident">parent</span>().<span class="ident">unwrap</span>().<span class="ident">exists</span>()); <span class="comment">// the sandbox dir</span>
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_command_args</span>() {
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="ident">exec</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;bar&quot;</span>, <span class="string">&quot;baz&quot;</span>]);
+        <span class="ident">exec</span>.<span class="ident">limits_mut</span>()
+            .<span class="ident">sys_time</span>(<span class="number">1.0</span>)
+            .<span class="ident">cpu_time</span>(<span class="number">2.6</span>)
+            .<span class="ident">wall_time</span>(<span class="number">10.0</span>)
+            .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>)
+            .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/home&quot;</span>)
+            .<span class="ident">nproc</span>(<span class="number">2</span>)
+            .<span class="ident">memory</span>(<span class="number">1234</span>);
+        <span class="ident">exec</span>.<span class="ident">env</span>(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>);
+        <span class="kw">let</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="ident">Sandbox</span>::<span class="ident">new</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="kw-2">&amp;</span><span class="ident">exec</span>, <span class="kw-2">&amp;</span><span class="ident">HashMap</span>::<span class="ident">new</span>()).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">sandbox</span>
+            .<span class="ident">build_command</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>())
+            .<span class="ident">unwrap</span>()
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>())
+            .<span class="ident">collect_vec</span>();
+        <span class="kw">let</span> <span class="ident">extra_time</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>;
+        <span class="kw">let</span> <span class="ident">total_time</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">+</span> <span class="number">2.6</span> <span class="op">+</span> <span class="ident">extra_time</span>;
+        <span class="kw">let</span> <span class="ident">wall_time</span> <span class="op">=</span> <span class="number">10.0</span> <span class="op">+</span> <span class="ident">extra_time</span>;
+        <span class="kw">let</span> <span class="ident">boxdir</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--directory&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">boxdir</span>.<span class="ident">to_string_lossy</span>()]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--json&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--time&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">total_time</span>.<span class="ident">to_string</span>()]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--wall&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">wall_time</span>.<span class="ident">to_string</span>()]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--memory&quot;</span>, <span class="string">&quot;1234&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--readable-dir&quot;</span>, <span class="string">&quot;/home&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--mount-tmpfs&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--multiprocess&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--env&quot;</span>, <span class="string">&quot;foo=bar&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--stdin&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--stdout&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--stderr&quot;</span>, <span class="string">&quot;/dev/null&quot;</span>]);
+        <span class="ident">assert_contains</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>, <span class="kw-2">&amp;</span>[<span class="string">&quot;--&quot;</span>, <span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>, <span class="string">&quot;baz&quot;</span>]);
     }
 }
 </pre></div>
