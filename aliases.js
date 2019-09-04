@@ -6,3 +6,4 @@ ALIASES["task_maker_exec"] = {};
 ALIASES["task_maker_format"] = {};
 ALIASES["task_maker_lang"] = {};
 ALIASES["task_maker_store"] = {};
+ALIASES["task_maker_test"] = {};

@@ -676,6 +676,7 @@
 <span id="676">676</span>
 <span id="677">677</span>
 <span id="678">678</span>
+<span id="679">679</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">UIExecutionStatus</span>, <span class="ident">UIMessage</span>};
@@ -686,7 +687,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
 
 <span class="doccomment">/// The status of the compilation of a file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CompilationStatus</span> {
     <span class="doccomment">/// The compilation is known but it has not started yet.</span>
     <span class="ident">Pending</span>,
@@ -715,7 +716,7 @@
 }
 
 <span class="doccomment">/// Status of the generation of a testcase input and output.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TestcaseGenerationStatus</span> {
     <span class="doccomment">/// The generation has not started yet.</span>
     <span class="ident">Pending</span>,
@@ -738,7 +739,7 @@
 }
 
 <span class="doccomment">/// Status of the evaluation of a solution on a testcase.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TestcaseEvaluationStatus</span> {
     <span class="doccomment">/// The solution has not started yet.</span>
     <span class="ident">Pending</span>,
@@ -769,7 +770,7 @@
 }
 
 <span class="doccomment">/// State of the generation of a testcases.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestcaseGenerationState</span> {
     <span class="doccomment">/// Status of the generation.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">TestcaseGenerationStatus</span>,
@@ -786,14 +787,14 @@
 }
 
 <span class="doccomment">/// State of the generation of a subtask.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubtaskGenerationState</span> {
     <span class="doccomment">/// State of the testcases of this subtask.</span>
     <span class="kw">pub</span> <span class="ident">testcases</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">TestcaseId</span>, <span class="ident">TestcaseGenerationState</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// State of the evaluation of a testcase.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolutionTestcaseEvaluationState</span> {
     <span class="doccomment">/// The score on that testcase</span>
     <span class="kw">pub</span> <span class="ident">score</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
@@ -806,7 +807,7 @@
 }
 
 <span class="doccomment">/// State of the evaluation of a subtask.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolutionSubtaskEvaluationState</span> {
     <span class="doccomment">/// Score of the subtask.</span>
     <span class="kw">pub</span> <span class="ident">score</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
@@ -815,7 +816,7 @@
 }
 
 <span class="doccomment">/// State of the evaluation of a solution.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolutionEvaluationState</span> {
     <span class="doccomment">/// Score of the solution.</span>
     <span class="kw">pub</span> <span class="ident">score</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
@@ -860,14 +861,14 @@
 }
 
 <span class="doccomment">/// The status of the compilation of a dependency of a booklet.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BookletDependencyState</span> {
     <span class="doccomment">/// The status of the execution.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
 }
 
 <span class="doccomment">/// The status of the compilation of a booklet.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BookletState</span> {
     <span class="doccomment">/// The status of the execution.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
@@ -876,7 +877,7 @@
 }
 
 <span class="doccomment">/// The state of a IOI task, all the information for the UI are stored here.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UIState</span> {
     <span class="doccomment">/// The task.</span>
     <span class="kw">pub</span> <span class="ident">task</span>: <span class="ident">Task</span>,
@@ -924,6 +925,7 @@
         }
     }
 
+    <span class="doccomment">/// A message representing this status.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
         <span class="kw">use</span> <span class="ident">TestcaseEvaluationStatus</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {

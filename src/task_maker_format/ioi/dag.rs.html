@@ -560,14 +560,6 @@
 <span id="560">560</span>
 <span id="561">561</span>
 <span id="562">562</span>
-<span id="563">563</span>
-<span id="564">564</span>
-<span id="565">565</span>
-<span id="566">566</span>
-<span id="567">567</span>
-<span id="568">568</span>
-<span id="569">569</span>
-<span id="570">570</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -1118,23 +1110,15 @@
     <span class="doccomment">/// Aggregate the scores of a subtask from an iterator with the scores of the testcases.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">aggregate</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">f64</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="ident">f64</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span> <span class="op">=&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="number">1.0</span>;
-                <span class="kw">for</span> <span class="ident">score</span> <span class="kw">in</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>() {
-                    <span class="kw">if</span> <span class="ident">score</span> <span class="op">&lt;</span> <span class="ident">min</span> {
-                        <span class="ident">min</span> <span class="op">=</span> <span class="ident">score</span>;
-                    }
-                }
-                <span class="ident">min</span>
-            }
+            <span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span> <span class="op">=&gt;</span> <span class="ident">iter</span>
+                .<span class="ident">into_iter</span>()
+                .<span class="ident">min_by</span>(<span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span>.<span class="ident">partial_cmp</span>(<span class="ident">b</span>).<span class="ident">unwrap</span>())
+                .<span class="ident">unwrap_or</span>(<span class="number">1.0</span>),
             <span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Sum</span> <span class="op">=&gt;</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum</span> <span class="op">=</span> <span class="number">1.0</span>;
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
-                <span class="kw">for</span> <span class="ident">score</span> <span class="kw">in</span> <span class="ident">iter</span>.<span class="ident">into_iter</span>() {
-                    <span class="ident">sum</span> <span class="op">+=</span> <span class="ident">score</span>;
-                    <span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
-                }
-                <span class="ident">sum</span> <span class="op">/</span> (<span class="ident">f64</span>::<span class="ident">from</span>(<span class="ident">count</span>))
+                <span class="kw">let</span> <span class="ident">sum_count</span> <span class="op">=</span> <span class="ident">iter</span>
+                    .<span class="ident">into_iter</span>()
+                    .<span class="ident">fold</span>((<span class="number">0.0</span>, <span class="number">0</span>), <span class="op">|</span><span class="ident">prev</span>, <span class="ident">cur</span><span class="op">|</span> (<span class="ident">prev</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">cur</span>, <span class="ident">prev</span>.<span class="number">1</span> <span class="op">+</span> <span class="number">1</span>));
+                <span class="ident">sum_count</span>.<span class="number">0</span> <span class="op">/</span> (<span class="ident">f64</span>::<span class="ident">from</span>(<span class="ident">sum_count</span>.<span class="number">1</span>))
             }
         }
     }

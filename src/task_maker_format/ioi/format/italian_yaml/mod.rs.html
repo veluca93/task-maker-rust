@@ -294,6 +294,12 @@
 <span id="294">294</span>
 <span id="295">295</span>
 <span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -471,13 +477,19 @@
         <span class="ident">memory_limit</span>: <span class="ident">yaml</span>.<span class="ident">memory_limit</span>,
         <span class="ident">infile</span>,
         <span class="ident">outfile</span>,
-        <span class="ident">subtasks</span>,
         <span class="ident">checker</span>: <span class="ident">custom_checker</span>.<span class="ident">unwrap_or</span>(<span class="ident">Checker</span>::<span class="ident">WhiteDiff</span>),
         <span class="ident">testcase_score_aggregator</span>: <span class="ident">yaml</span>
             .<span class="ident">score_type</span>
             .<span class="ident">as_ref</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">TestcaseScoreAggregator</span>::<span class="ident">from_str</span>(<span class="ident">s</span>))
-            .<span class="ident">unwrap_or</span>(<span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span>))<span class="question-mark">?</span>,
+            .<span class="ident">unwrap_or_else</span>(<span class="op">||</span> {
+                <span class="kw">if</span> <span class="ident">subtasks</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Sum</span>)
+                } <span class="kw">else</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span>)
+                }
+            })<span class="question-mark">?</span>,
+        <span class="ident">subtasks</span>,
         <span class="ident">grader_map</span>,
         <span class="ident">booklets</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         <span class="ident">difficulty</span>: <span class="ident">yaml</span>.<span class="ident">difficulty</span>,
