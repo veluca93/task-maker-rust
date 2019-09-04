@@ -716,7 +716,7 @@
 }
 
 <span class="doccomment">/// Status of the generation of a testcase input and output.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TestcaseGenerationStatus</span> {
     <span class="doccomment">/// The generation has not started yet.</span>
     <span class="ident">Pending</span>,

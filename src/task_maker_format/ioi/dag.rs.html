@@ -563,6 +563,9 @@
 <span id="563">563</span>
 <span id="564">564</span>
 <span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -1001,7 +1004,10 @@
                 }
                 <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">get_file_content</span>(<span class="ident">stdout</span>, <span class="number">128</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">content</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>);
-                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">score</span>.<span class="ident">trim</span>().<span class="ident">parse</span>()<span class="question-mark">?</span>;
+                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">score</span>
+                        .<span class="ident">trim</span>()
+                        .<span class="ident">parse</span>()
+                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid score from checker: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state_stdout</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
                     <span class="ident">state</span>.<span class="number">0</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">score</span>);
                     <span class="macro">send_state</span><span class="macro">!</span>(<span class="ident">callback_stdout</span>, <span class="ident">state</span>);
