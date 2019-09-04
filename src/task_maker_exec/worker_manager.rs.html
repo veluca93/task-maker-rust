@@ -231,7 +231,7 @@
                             <span class="ident">result</span>,
                             <span class="ident">outputs</span>: <span class="ident">output_handlers</span>,
                         })
-                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;;
+                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                 }
                 <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
                     <span class="kw">if</span> <span class="ident">scheduler</span>
