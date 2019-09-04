@@ -305,6 +305,35 @@
 <span id="305">305</span>
 <span id="306">306</span>
 <span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
@@ -339,6 +368,8 @@
     <span class="kw">pub</span> <span class="ident">solution_scores</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;&gt;</span>,
     <span class="doccomment">/// The status of the evaluation of some solutions.</span>
     <span class="kw">pub</span> <span class="ident">solution_statuses</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TestcaseEvaluationStatus</span><span class="op">&gt;&gt;</span>,
+    <span class="doccomment">/// Expect task-maker to fail with the specified message.</span>
+    <span class="kw">pub</span> <span class="ident">fail</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestInterface</span> {
@@ -358,7 +389,14 @@
             <span class="ident">subtask_scores</span>: <span class="prelude-val">None</span>,
             <span class="ident">solution_scores</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
             <span class="ident">solution_statuses</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+            <span class="ident">fail</span>: <span class="prelude-val">None</span>,
         }
+    }
+
+    <span class="doccomment">/// Check that task-maker fails with the specified message.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fail</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">fail</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
     }
 
     <span class="doccomment">/// Check that the time limit is the one specified.</span>
@@ -455,8 +493,22 @@
         <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">output</span>().<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="op">!</span><span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">success</span>() {
-            <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stderr</span>));
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;task-maker exited with: {:?}&quot;</span>, <span class="ident">output</span>.<span class="ident">status</span>);
+            <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stderr</span>);
+            <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">stderr</span>);
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
+                <span class="kw">if</span> <span class="op">!</span><span class="ident">stderr</span>.<span class="ident">contains</span>(<span class="ident">message</span>) {
+                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting task-maker to fail with {:?} but didn&#39;t&quot;</span>, <span class="ident">message</span>);
+                } <span class="kw">else</span> {
+                    <span class="kw">return</span>;
+                }
+            } <span class="kw">else</span> {
+                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;task-maker exited with: {:?}&quot;</span>, <span class="ident">output</span>.<span class="ident">status</span>);
+            }
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
+            <span class="macro">panic</span><span class="macro">!</span>(
+                <span class="string">&quot;Expecting task-maker to fail with {:?} but didn&#39;t fail&quot;</span>,
+                <span class="ident">message</span>
+            );
         }
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">UIState</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>);
         <span class="kw">for</span> <span class="ident">message</span> <span class="kw">in</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">output</span>.<span class="ident">stdout</span>).<span class="ident">unwrap</span>().<span class="ident">lines</span>() {
@@ -551,6 +603,9 @@
             .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">file</span>, <span class="ident">eval</span>)<span class="op">|</span> (<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">file</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>()), <span class="ident">eval</span>))
             .<span class="ident">collect</span>();
         <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">scores</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solution_scores</span>.<span class="ident">iter</span>() {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">evaluations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
+                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;No evaluation score for solution {:?}&quot;</span>, <span class="ident">name</span>)
+            }
             <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">evaluations</span>[<span class="ident">name</span>];
             <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">iter</span>().<span class="ident">sum</span>();
             <span class="macro">assert</span><span class="macro">!</span>(
@@ -600,6 +655,9 @@
             })
             .<span class="ident">collect</span>();
         <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">statuses</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solution_statuses</span>.<span class="ident">iter</span>() {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">evaluations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
+                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;No evaluation statues for solution {:?}&quot;</span>, <span class="ident">name</span>)
+            }
             <span class="kw">let</span> <span class="ident">actuals</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">evaluations</span>[<span class="ident">name</span>];
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">actuals</span>.<span class="ident">len</span>() {
                 <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">actuals</span>[<span class="ident">i</span>];
