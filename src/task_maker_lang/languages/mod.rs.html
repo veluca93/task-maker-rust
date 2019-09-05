@@ -125,7 +125,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">shell</span>;
 
 <span class="doccomment">/// A dependency of an execution, all the sandbox paths must be relative and inside of the sandbox.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Dependency</span> {
     <span class="doccomment">/// The handle of the file.</span>
     <span class="kw">pub</span> <span class="ident">file</span>: <span class="ident">File</span>,
@@ -167,7 +167,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
     <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionCommand</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>());
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
     <span class="doccomment">/// Arguments to pass to the compiler to compile to source file. The source file is located at</span>
@@ -177,7 +177,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
     <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>());
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
     <span class="doccomment">/// Add a file to the compilation command if the language requires that. That file can be any</span>
@@ -187,7 +187,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
     <span class="kw">fn</span> <span class="ident">compilation_add_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>());
+        <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
     <span class="doccomment">/// The dependencies to put inside the compilation sandbox. This does not include the source</span>
