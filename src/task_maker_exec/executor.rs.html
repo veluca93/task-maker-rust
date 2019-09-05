@@ -239,7 +239,7 @@
 
 <span class="doccomment">/// List of the _interesting_ files and executions, only the callbacks listed here will be called by</span>
 <span class="doccomment">/// the server. Every other callback is not sent to the client for performance reasons.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionDAGWatchSet</span> {
     <span class="doccomment">/// Set of the handles of the executions that have at least a callback bound.</span>
     <span class="kw">pub</span> <span class="ident">executions</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">ExecutionUuid</span><span class="op">&gt;</span>,
