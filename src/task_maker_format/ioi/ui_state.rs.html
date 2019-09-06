@@ -687,7 +687,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
 
 <span class="doccomment">/// The status of the compilation of a file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CompilationStatus</span> {
     <span class="doccomment">/// The compilation is known but it has not started yet.</span>
     <span class="ident">Pending</span>,
@@ -1063,6 +1063,7 @@
                     <span class="kw">_</span> <span class="op">=&gt;</span> {}
                 }
             }
+            <span class="ident">UIMessage</span>::<span class="ident">IOITask</span> { .. } <span class="op">=&gt;</span> {}
             <span class="ident">UIMessage</span>::<span class="ident">IOIGeneration</span> {
                 <span class="ident">subtask</span>,
                 <span class="ident">testcase</span>,
@@ -1353,7 +1354,6 @@
             <span class="ident">UIMessage</span>::<span class="ident">Warning</span> { <span class="ident">message</span> } <span class="op">=&gt;</span> {
                 <span class="self">self</span>.<span class="ident">warnings</span>.<span class="ident">push</span>(<span class="ident">message</span>);
             }
-            <span class="kw">_</span> <span class="op">=&gt;</span> {}
         }
     }
 }

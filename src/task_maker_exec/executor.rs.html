@@ -258,7 +258,7 @@
 }
 
 <span class="doccomment">/// Status of a worker of an `Executor`.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutorWorkerStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// UUID of the worker.</span>
     <span class="kw">pub</span> <span class="ident">uuid</span>: <span class="ident">WorkerUuid</span>,
@@ -273,7 +273,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The type parameter `T` is either `SystemTime` for local usage or `Duration` for serialization.</span>
 <span class="doccomment">/// Unfortunately since `Instant` is not serializable by design, it cannot be used.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// List of the connected workers with their uuid, name and if they have some work.</span>
     <span class="kw">pub</span> <span class="ident">connected_workers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExecutorWorkerStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>,
