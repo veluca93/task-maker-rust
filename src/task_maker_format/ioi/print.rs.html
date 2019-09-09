@@ -281,6 +281,10 @@
 <span id="281">281</span>
 <span id="282">282</span>
 <span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cwrite</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">FinishUI</span>;
@@ -391,7 +395,11 @@
                     <span class="ident">status</span>.<span class="ident">ready_execs</span>, <span class="ident">status</span>.<span class="ident">waiting_execs</span>
                 );
                 <span class="kw">for</span> <span class="ident">worker</span> <span class="kw">in</span> <span class="ident">status</span>.<span class="ident">connected_workers</span> {
-                    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {} ({})&quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">worker</span>.<span class="ident">uuid</span>);
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">job</span>, <span class="kw">_</span>)) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">current_job</span> {
+                        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {} ({}): {}&quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">worker</span>.<span class="ident">uuid</span>, <span class="ident">job</span>);
+                    } <span class="kw">else</span> {
+                        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {} ({})&quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">worker</span>.<span class="ident">uuid</span>);
+                    }
                 }
             }
             <span class="ident">UIMessage</span>::<span class="ident">Compilation</span> { <span class="ident">file</span>, <span class="ident">status</span> } <span class="op">=&gt;</span> {

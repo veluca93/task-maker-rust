@@ -196,6 +196,9 @@
 <span id="196">196</span>
 <span id="197">197</span>
 <span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The protocol related structs and enums.</span>
 <span class="doccomment">//!</span>
@@ -252,6 +255,9 @@
     <span class="doccomment">/// The client is providing a file. After this message there is a protocol switch for the file</span>
     <span class="doccomment">/// transmission.</span>
     <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>),
+    <span class="doccomment">/// The client is asking the server to send a file. After this message there is a protocol</span>
+    <span class="doccomment">/// switch for the file transmission.</span>
+    <span class="ident">AskFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>, <span class="ident">bool</span>),
     <span class="doccomment">/// The client is asking to stop the evaluation. All the running executions will be killed and</span>
     <span class="doccomment">/// no more execution will be run. All the callbacks will be called as usual.</span>
     <span class="ident">Stop</span>,
@@ -281,7 +287,7 @@
     <span class="doccomment">/// The server status as asked by the client.</span>
     <span class="ident">Status</span>(<span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>),
     <span class="doccomment">/// The evaluation of the DAG is complete, this message will close the connection.</span>
-    <span class="ident">Done</span>,
+    <span class="ident">Done</span>(<span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>, <span class="ident">bool</span>)<span class="op">&gt;</span>),
 }
 
 <span class="doccomment">/// Messages sent by the workers to the server.</span>
