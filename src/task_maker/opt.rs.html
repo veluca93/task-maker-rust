@@ -82,6 +82,13 @@
 <span id="82">82</span>
 <span id="83">83</span>
 <span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -137,6 +144,12 @@
     <span class="doccomment">/// specifying anything all the solutions are executed.</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
+    <span class="doccomment">/// Evaluate only the solution with the specified path</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The solution can reside anywhere in the filesystem.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;solution&quot;</span>, <span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;-s&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">solution</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+
     <span class="doccomment">/// Look at most for this number of parents for searching the task</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;max-depth&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_depth</span>: <span class="ident">u32</span>,
@@ -164,6 +177,7 @@
         <span class="ident">EvaluationConfig</span> {
             <span class="ident">solution_filter</span>: <span class="self">self</span>.<span class="ident">filter</span>.<span class="ident">clone</span>(),
             <span class="ident">booklet_solutions</span>: <span class="self">self</span>.<span class="ident">booklet_solutions</span>,
+            <span class="ident">solution_paths</span>: <span class="self">self</span>.<span class="ident">solution</span>.<span class="ident">clone</span>(),
         }
     }
 }

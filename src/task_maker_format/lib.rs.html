@@ -186,6 +186,9 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -244,6 +247,9 @@
     <span class="kw">pub</span> <span class="ident">solution_filter</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Include the solutions in the booklet.</span>
     <span class="kw">pub</span> <span class="ident">booklet_solutions</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Execute only the solution with the specified paths, that can reside anywhere in the</span>
+    <span class="doccomment">/// filesystem.</span>
+    <span class="kw">pub</span> <span class="ident">solution_paths</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// The data for an evaluation, including the DAG and the UI channel.</span>
