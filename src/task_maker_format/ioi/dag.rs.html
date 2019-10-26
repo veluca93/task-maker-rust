@@ -1014,6 +1014,10 @@
 <span id="1014">1014</span>
 <span id="1015">1015</span>
 <span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -1391,7 +1395,9 @@
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
                     <span class="macro">format</span><span class="macro">!</span>(
                         <span class="string">&quot;Checking output of {:?} of testcase {}, subtask {}&quot;</span>,
-                        <span class="ident">solution</span>, <span class="ident">testcase_id</span>, <span class="ident">subtask_id</span>
+                        <span class="ident">solution</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>(),
+                        <span class="ident">testcase_id</span>,
+                        <span class="ident">subtask_id</span>
                     ),
                     <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;diff&quot;</span>),
                 );
@@ -1429,7 +1435,9 @@
                     <span class="ident">eval</span>,
                     <span class="macro">format</span><span class="macro">!</span>(
                         <span class="string">&quot;Checking output of {:?} of testcase {}, subtask {}&quot;</span>,
-                        <span class="ident">solution</span>, <span class="ident">testcase_id</span>, <span class="ident">subtask_id</span>
+                        <span class="ident">solution</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>(),
+                        <span class="ident">testcase_id</span>,
+                        <span class="ident">subtask_id</span>
                     ),
                     <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;input&quot;</span>, <span class="string">&quot;correct_output&quot;</span>, <span class="string">&quot;test_output&quot;</span>],
                 )<span class="question-mark">?</span>;
