@@ -101,6 +101,7 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bind_exec_callbacks</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="kw-2">*</span>;
@@ -127,13 +128,14 @@
 <span class="kw">impl</span> <span class="ident">SourceFile</span> {
     <span class="doccomment">/// Make a new `SourceFile`. See</span>
     <span class="doccomment">/// [`task_maker_lang::SourceFile`](../task_maker_lang/struct.SourceFile.html) for the details.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">P2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">P2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">P3</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
         <span class="ident">path</span>: <span class="ident">P</span>,
+        <span class="ident">base_path</span>: <span class="ident">P3</span>,
         <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;&gt;</span>,
         <span class="ident">write_bin_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">P2</span><span class="op">&gt;</span>,
     ) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="ident">SourceFile</span> {
-            <span class="ident">base</span>: <span class="ident">task_maker_lang</span>::<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="ident">grader_map</span>, <span class="ident">write_bin_to</span>)<span class="question-mark">?</span>,
+            <span class="ident">base</span>: <span class="ident">task_maker_lang</span>::<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="ident">base_path</span>, <span class="ident">grader_map</span>, <span class="ident">write_bin_to</span>)<span class="question-mark">?</span>,
         })
     }
 

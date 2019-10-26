@@ -168,6 +168,24 @@
 <span id="168">168</span>
 <span id="169">169</span>
 <span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -280,16 +298,22 @@
 
 <span class="doccomment">/// Make a `SourceFile` with the first file that matches the patterns provided that is in a</span>
 <span class="doccomment">/// recognised language. Returns `None` if no valid source file can be found.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_source_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">P2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_source_file</span><span class="op">&lt;</span>
+    <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
+    <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="ident">P2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+    <span class="ident">P3</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+<span class="op">&gt;</span>(
     <span class="ident">cwd</span>: <span class="ident">P</span>,
     <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>,
+    <span class="ident">base_path</span>: <span class="ident">P3</span>,
     <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;&gt;</span>,
     <span class="ident">write_bin_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">P2</span><span class="op">&gt;</span>,
 ) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
     <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">list_files</span>(<span class="ident">cwd</span>, <span class="ident">patterns</span>) {
         <span class="kw">if</span> <span class="ident">LanguageManager</span>::<span class="ident">detect_language</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">is_some</span>() {
             <span class="comment">// SourceFile::new may fail if the language is unknown</span>
-            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">grader_map</span>, <span class="ident">write_bin_to</span>).<span class="ident">unwrap</span>());
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">base_path</span>, <span class="ident">grader_map</span>, <span class="ident">write_bin_to</span>).<span class="ident">unwrap</span>());
         }
     }
     <span class="prelude-val">None</span>
@@ -324,7 +348,13 @@
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>], <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>);
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
+            <span class="ident">tmpdir</span>.<span class="ident">path</span>(),
+            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
+            <span class="string">&quot;&quot;</span>,
+            <span class="prelude-val">None</span>,
+            <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+        );
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">is_some</span>());
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">unwrap</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">path</span>, <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>));
@@ -335,7 +365,13 @@
         <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>], <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>);
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
+            <span class="ident">tmpdir</span>.<span class="ident">path</span>(),
+            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
+            <span class="string">&quot;&quot;</span>,
+            <span class="prelude-val">None</span>,
+            <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+        );
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">is_none</span>());
     }
 }
