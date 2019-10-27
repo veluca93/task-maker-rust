@@ -329,6 +329,8 @@
 <span id="329">329</span>
 <span id="330">330</span>
 <span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -507,6 +509,8 @@
         <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
         <span class="doccomment">/// The path of the solution.</span>
         <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
+        <span class="doccomment">/// The normalized score, a value between 0 and 1</span>
+        <span class="ident">normalized_score</span>: <span class="ident">f64</span>,
         <span class="doccomment">/// The score of the subtask.</span>
         <span class="ident">score</span>: <span class="ident">f64</span>,
     },
