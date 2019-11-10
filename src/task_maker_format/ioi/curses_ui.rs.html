@@ -587,21 +587,21 @@
 
 <span class="doccomment">/// The type of the terminal with its backend.</span>
 <span class="kw">type</span> <span class="ident">TerminalType</span> <span class="op">=</span>
-    <span class="ident">Terminal</span><span class="op">&lt;</span><span class="ident">TermionBackend</span><span class="op">&lt;</span><span class="ident">AlternateScreen</span><span class="op">&lt;</span><span class="ident">MouseTerminal</span><span class="op">&lt;</span><span class="ident">RawTerminal</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Stdout</span><span class="op">&gt;&gt;</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>;
+    <span class="ident">Terminal</span><span class="op">&lt;</span><span class="ident">TermionBackend</span><span class="op">&lt;</span><span class="ident">AlternateScreen</span><span class="op">&lt;</span><span class="ident">MouseTerminal</span><span class="op">&lt;</span><span class="ident">RawTerminal</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Stdout</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// An animated UI for IOI tasks, dynamically refreshing using curses as a backend.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CursesUI</span> {
     <span class="doccomment">/// The thread where the UI lives.</span>
-    <span class="ident">ui_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;&gt;</span>,
+    <span class="ident">ui_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The state of the task for the UI.</span>
-    <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// When it becomes true the UI will stop.</span>
     <span class="ident">stop</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">CursesUI</span> {
     <span class="doccomment">/// Try to make a new CursesUI setting up the terminal. May fail on unsupported terminals.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CursesUI</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CursesUI</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">stdout</span>().<span class="ident">into_raw_mode</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">MouseTerminal</span>::<span class="ident">from</span>(<span class="ident">stdout</span>);
         <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">AlternateScreen</span>::<span class="ident">from</span>(<span class="ident">stdout</span>);
@@ -615,7 +615,7 @@
         <span class="kw">let</span> <span class="ident">stop2</span> <span class="op">=</span> <span class="ident">stop</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;CursesUI thread&quot;</span>.<span class="ident">to_owned</span>())
-            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                 <span class="ident">ui_body</span>(<span class="ident">terminal</span>, <span class="ident">state2</span>, <span class="ident">stop2</span>);
             })<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">CursesUI</span> {
@@ -660,7 +660,7 @@
 
 <span class="doccomment">/// The main function of the UI thread. This will keep looping until the stop command is issued via</span>
 <span class="doccomment">/// the `stop` `AtomicBool`.</span>
-<span class="kw">fn</span> <span class="ident">ui_body</span>(<span class="kw-2">mut</span> <span class="ident">terminal</span>: <span class="ident">TerminalType</span>, <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;&gt;</span>, <span class="ident">stop</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>) {
+<span class="kw">fn</span> <span class="ident">ui_body</span>(<span class="kw-2">mut</span> <span class="ident">terminal</span>: <span class="ident">TerminalType</span>, <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">stop</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>);
         [
@@ -680,15 +680,15 @@
     <span class="kw">while</span> <span class="op">!</span><span class="ident">stop</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">event</span>)) <span class="op">=</span> <span class="ident">events</span>.<span class="ident">next</span>() {
             <span class="kw">match</span> <span class="ident">event</span> {
-                <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;c&#39;</span>)) <span class="op">|</span> <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;\\&#39;</span>)) <span class="op">=&gt;</span> {
+                <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;c&#39;</span>)) <span class="op">|</span> <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;\\&#39;</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">drop</span>(<span class="ident">terminal</span>);
                     <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">exit</span>(<span class="number">1</span>)
                 }
-                <span class="kw">_</span> <span class="op">=&gt;</span> {}
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
         <span class="kw">let</span> <span class="ident">loading</span> <span class="op">=</span> <span class="ident">loading</span>[<span class="ident">loading_index</span> <span class="op">%</span> <span class="ident">loading</span>.<span class="ident">len</span>()];
-        <span class="ident">loading_index</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="ident">loading_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="ident">terminal</span>
             .<span class="ident">draw</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">f</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>);
@@ -760,7 +760,7 @@
 }
 
 <span class="doccomment">/// Get the rect of the inner rect of a block with the borders.</span>
-<span class="kw">fn</span> <span class="ident">inner_block</span>(<span class="ident">rect</span>: <span class="ident">Rect</span>) <span class="op">-&gt;</span> <span class="ident">Rect</span> {
+<span class="kw">fn</span> <span class="ident">inner_block</span>(<span class="ident">rect</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
     <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">-</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">-</span> <span class="number">2</span>)
 }
 
@@ -798,19 +798,19 @@
 }
 
 <span class="doccomment">/// Get the `Text` relative to the compilation status of a file.</span>
-<span class="kw">fn</span> <span class="ident">compilation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">CompilationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">compilation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">CompilationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">status</span> {
-        <span class="ident">CompilationStatus</span>::<span class="ident">Pending</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;...&quot;</span>),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Running</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { .. } <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">CompilationStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;...&quot;</span>),
+        <span class="ident">CompilationStatus</span>::<span class="ident">Running</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;OK&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> { .. } <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;FAIL&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Skipped</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot;skipped&quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)),
+        <span class="ident">CompilationStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot;skipped&quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)),
     }
 }
 
@@ -845,18 +845,18 @@
     <span class="ident">Paragraph</span>::<span class="ident">new</span>(<span class="ident">text</span>.<span class="ident">iter</span>()).<span class="ident">wrap</span>(<span class="bool-val">false</span>).<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
 }
 
-<span class="kw">fn</span> <span class="ident">ui_execution_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">UIExecutionStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Text</span> {
+<span class="kw">fn</span> <span class="ident">ui_execution_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">UIExecutionStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span> {
     <span class="kw">match</span> <span class="ident">status</span> {
-        <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
-        <span class="ident">UIExecutionStatus</span>::<span class="ident">Started</span> { .. } <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">UIExecutionStatus</span>::<span class="ident">Skipped</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;S&quot;</span>),
-        <span class="ident">UIExecutionStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span> } <span class="op">=&gt;</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">status</span> {
-            <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
+        <span class="ident">UIExecutionStatus</span>::<span class="ident">Started</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">UIExecutionStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;S&quot;</span>),
+        <span class="ident">UIExecutionStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">status</span> {
+            <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
                 <span class="string">&quot;S&quot;</span>,
                 <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
             ),
-            <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;I&quot;</span>),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+            <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;I&quot;</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
                 <span class="string">&quot;F&quot;</span>,
                 <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
             ),
@@ -890,29 +890,29 @@
 }
 
 <span class="doccomment">/// Get the colored character corresponding to the status of the generation of a testcase.</span>
-<span class="kw">fn</span> <span class="ident">generation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">TestcaseGenerationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Text</span> {
+<span class="kw">fn</span> <span class="ident">generation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">TestcaseGenerationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span> {
     <span class="kw">match</span> <span class="ident">status</span> {
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Pending</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Generating</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Generated</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Generating</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Generated</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;G&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Validating</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Validated</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Validating</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Validated</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;V&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Solving</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Solved</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Solving</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Solved</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;S&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Failed</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Failed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;F&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Skipped</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot;s&quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)),
+        <span class="ident">TestcaseGenerationStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot;s&quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)),
     }
 }
 
@@ -952,9 +952,9 @@
 }
 
 <span class="doccomment">/// Get the colored score of a solution.</span>
-<span class="kw">fn</span> <span class="ident">evaluation_score</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UIState</span>, <span class="ident">solution</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">evaluation_score</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UIState</span>, <span class="ident">solution</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">score</span>)) <span class="op">=</span> <span class="ident">state</span>.<span class="ident">evaluations</span>.<span class="ident">get</span>(<span class="ident">solution</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">score</span>) {
-        <span class="kw">if</span> <span class="ident">score</span> <span class="op">==</span> <span class="number">0.0</span> {
+        <span class="kw">if</span> <span class="ident">score</span> <span class="op">=</span><span class="op">=</span> <span class="number">0.0</span> {
             <span class="ident">Text</span>::<span class="ident">styled</span>(
                 <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot; {:&gt;3.0} &quot;</span>, <span class="ident">score</span>),
                 <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
@@ -976,7 +976,7 @@
 }
 
 <span class="doccomment">/// Get the line at the right of the score of a solution.</span>
-<span class="kw">fn</span> <span class="ident">evaluation_line</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UIState</span>, <span class="ident">solution</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> {
+<span class="kw">fn</span> <span class="ident">evaluation_line</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UIState</span>, <span class="ident">solution</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="ident">state</span>
         .<span class="ident">task</span>
         .<span class="ident">subtasks</span>
@@ -993,7 +993,7 @@
     <span class="ident">solution</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
     <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
     <span class="ident">loading</span>: <span class="ident">char</span>,
-) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texts</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
     <span class="kw">let</span> <span class="ident">solution</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">state</span>.<span class="ident">evaluations</span>[<span class="ident">solution</span>];
     <span class="kw">if</span> <span class="op">!</span><span class="ident">solution</span>.<span class="ident">subtasks</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">subtask</span>) {
@@ -1034,48 +1034,48 @@
 }
 
 <span class="doccomment">/// Get the colored character corresponding to the status of the evaluation of a testcase.</span>
-<span class="kw">fn</span> <span class="ident">testcase_evaluation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">TestcaseEvaluationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Text</span> {
+<span class="kw">fn</span> <span class="ident">testcase_evaluation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">TestcaseEvaluationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span> {
     <span class="kw">match</span> <span class="ident">status</span> {
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Pending</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Solving</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Solved</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;s&quot;</span>),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Checking</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Accepted</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;.&quot;</span>),
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Solving</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Solved</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;s&quot;</span>),
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Checking</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Accepted</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;A&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">WrongAnswer</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">WrongAnswer</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;W&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Partial</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Partial</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;P&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">TimeLimitExceeded</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">TimeLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;T&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">WallTimeLimitExceeded</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">WallTimeLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;T&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">MemoryLimitExceeded</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">MemoryLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;M&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">RuntimeError</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">RuntimeError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;R&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Failed</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Failed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
             <span class="string">&quot;F&quot;</span>,
             <span class="ident">Style</span>::<span class="ident">default</span>()
                 .<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Black</span>)
                 .<span class="ident">bg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>)
                 .<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
         ),
-        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Skipped</span> <span class="op">=&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;X&quot;</span>),
+        <span class="ident">TestcaseEvaluationStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;X&quot;</span>),
     }
 }
 

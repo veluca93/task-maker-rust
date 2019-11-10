@@ -124,7 +124,7 @@
     <span class="doccomment">/// generation, evaluation, checking, booklet.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;no-cache&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">option_option</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">no_cache</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">no_cache</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// Do not run in parallel time critical executions on the same machine</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;exclusive&quot;</span>)]</span>
@@ -173,7 +173,7 @@
 
 <span class="kw">impl</span> <span class="ident">Opt</span> {
     <span class="doccomment">/// Make an `EvaluationConfig` from this command line options.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">EvaluationConfig</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EvaluationConfig</span> {
         <span class="ident">EvaluationConfig</span> {
             <span class="ident">solution_filter</span>: <span class="self">self</span>.<span class="ident">filter</span>.<span class="ident">clone</span>(),
             <span class="ident">booklet_solutions</span>: <span class="self">self</span>.<span class="ident">booklet_solutions</span>,

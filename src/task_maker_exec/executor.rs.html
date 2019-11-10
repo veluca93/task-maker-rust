@@ -301,7 +301,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// List of the connected workers with their uuid, name and if they have some work.</span>
-    <span class="kw">pub</span> <span class="ident">connected_workers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExecutorWorkerStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">connected_workers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExecutorWorkerStatus</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Number of executions waiting for workers.</span>
     <span class="kw">pub</span> <span class="ident">ready_execs</span>: <span class="ident">usize</span>,
     <span class="doccomment">/// Number of executions waiting for dependencies.</span>
@@ -318,13 +318,13 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">scheduler_tx</span>: <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">SchedulerInMessage</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The receiving part of the `Scheduler`. Will be consumed when the `Scheduler` is</span>
     <span class="doccomment">/// instantiated.</span>
-    <span class="ident">scheduler_rx</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">SchedulerInMessage</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">scheduler_rx</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">SchedulerInMessage</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Executor</span> {
     <span class="doccomment">/// Make a new `Executor` based on the specified</span>
     <span class="doccomment">/// [`FileStore`](../task_maker_store/struct.FileStore.html).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Executor</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Executor</span> {
         <span class="kw">let</span> (<span class="ident">sched_tx</span>, <span class="ident">sched_rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="ident">Executor</span> {
             <span class="ident">file_store</span>,
@@ -343,14 +343,14 @@
         <span class="ident">client_tx</span>: <span class="ident">ChannelSender</span>,
         <span class="ident">client_rx</span>: <span class="ident">ChannelReceiver</span>,
         <span class="ident">cache</span>: <span class="ident">Cache</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">sched_binder_tx</span>, <span class="ident">sched_binder_rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> <span class="ident">sched_binder_client</span> <span class="op">=</span> <span class="ident">client_tx</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">produced_handles</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>()));
         <span class="kw">let</span> <span class="ident">produced_handles_sched</span> <span class="op">=</span> <span class="ident">produced_handles</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">join_scheduler_binder</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;Scheduler binder&quot;</span>.<span class="ident">into</span>())
-            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                 <span class="ident">Executor</span>::<span class="ident">scheduler_thread</span>(
                     <span class="ident">sched_binder_rx</span>,
                     <span class="ident">sched_binder_client</span>,
@@ -364,10 +364,10 @@
         <span class="kw">let</span> <span class="ident">sched_rx</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">scheduler_rx</span>
             .<span class="ident">take</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Evaluate called more than once&quot;</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Evaluate called more than once&quot;</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">join_scheduler</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;Scheduler&quot;</span>.<span class="ident">into</span>())
-            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+            .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                 <span class="ident">scheduler</span>.<span class="ident">work</span>(<span class="ident">sched_rx</span>).<span class="ident">unwrap</span>();
             })
             .<span class="ident">expect</span>(<span class="string">&quot;Failed to spawn the scheduler&quot;</span>);
@@ -375,7 +375,7 @@
         <span class="kw">loop</span> {
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">deserialize_from</span>::<span class="op">&lt;</span><span class="ident">ExecutorClientMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">client_rx</span>);
             <span class="kw">match</span> <span class="ident">message</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Evaluate</span> { <span class="ident">dag</span>, <span class="ident">callbacks</span> }) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Evaluate</span> { <span class="ident">dag</span>, <span class="ident">callbacks</span> }) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">check_dag</span>(<span class="kw-2">&amp;</span><span class="ident">dag</span>, <span class="kw-2">&amp;</span><span class="ident">callbacks</span>) {
                         <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Invalid DAG: {:?}&quot;</span>, <span class="ident">e</span>);
                         <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">ExecutorServerMessage</span>::<span class="ident">Error</span>(<span class="ident">e</span>.<span class="ident">to_string</span>()), <span class="kw-2">&amp;</span><span class="ident">client_tx</span>)<span class="question-mark">?</span>;
@@ -386,8 +386,8 @@
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ready_files</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
                     <span class="kw">for</span> (<span class="ident">uuid</span>, <span class="ident">file</span>) <span class="kw">in</span> <span class="ident">dag</span>.<span class="ident">provided_files</span>.<span class="ident">iter</span>() {
                         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">file</span> {
-                            <span class="ident">ProvidedFile</span>::<span class="ident">Content</span> { <span class="ident">key</span>, .. } <span class="op">=&gt;</span> <span class="ident">key</span>,
-                            <span class="ident">ProvidedFile</span>::<span class="ident">LocalFile</span> { <span class="ident">key</span>, .. } <span class="op">=&gt;</span> <span class="ident">key</span>,
+                            <span class="ident">ProvidedFile</span>::<span class="ident">Content</span> { <span class="ident">key</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key</span>,
+                            <span class="ident">ProvidedFile</span>::<span class="ident">LocalFile</span> { <span class="ident">key</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key</span>,
                         };
                         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span> <span class="ident">handle</span> {
@@ -407,7 +407,7 @@
                             })<span class="question-mark">?</span>;
                     }
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client provided file {}&quot;</span>, <span class="ident">uuid</span>);
                     <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>
                         .<span class="ident">file_store</span>
@@ -416,7 +416,7 @@
                         .<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">FileReady</span> { <span class="ident">uuid</span>, <span class="ident">handle</span> })
                         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Failed to send message to scheduler: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">AskFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>, <span class="ident">success</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">AskFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>, <span class="ident">success</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking file {:?}&quot;</span>, <span class="ident">key</span>);
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) {
                         <span class="ident">serialize_into</span>(
@@ -431,16 +431,16 @@
                         )<span class="question-mark">?</span>;
                     }
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Status</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Status</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking for the status&quot;</span>);
                     <span class="comment">// this may fail is the scheduler is gone</span>
                     <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">scheduler_tx</span>.<span class="ident">send</span>(<span class="ident">SchedulerInMessage</span>::<span class="ident">Status</span>);
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Stop</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">ExecutorClientMessage</span>::<span class="ident">Stop</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Client asking to stop&quot;</span>);
                     <span class="macro">unimplemented</span><span class="macro">!</span>();
                 }
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// the receiver has been dropped</span>
                     <span class="kw">break</span>;
                 }
@@ -461,30 +461,30 @@
     <span class="kw">fn</span> <span class="ident">scheduler_thread</span>(
         <span class="ident">receiver</span>: <span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">SchedulerOutMessage</span><span class="op">&gt;</span>,
         <span class="ident">client_tx</span>: <span class="ident">ChannelSender</span>,
-        <span class="ident">produced_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreHandle</span>, <span class="ident">bool</span>)<span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">produced_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreHandle</span>, <span class="ident">bool</span>)<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">loop</span> {
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">receiver</span>.<span class="ident">recv</span>();
             <span class="kw">match</span> <span class="ident">message</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionStarted</span>(<span class="ident">exec</span>, <span class="ident">worker</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionStarted</span>(<span class="ident">exec</span>, <span class="ident">worker</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">serialize_into</span>(
                         <span class="kw-2">&amp;</span><span class="ident">ExecutorServerMessage</span>::<span class="ident">NotifyStart</span>(<span class="ident">exec</span>, <span class="ident">worker</span>),
                         <span class="kw-2">&amp;</span><span class="ident">client_tx</span>,
                     )<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionSkipped</span>(<span class="ident">exec</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionSkipped</span>(<span class="ident">exec</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">ExecutorServerMessage</span>::<span class="ident">NotifySkip</span>(<span class="ident">exec</span>), <span class="kw-2">&amp;</span><span class="ident">client_tx</span>)<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionDone</span>(<span class="ident">exec</span>, <span class="ident">result</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">ExecutionDone</span>(<span class="ident">exec</span>, <span class="ident">result</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">ExecutorServerMessage</span>::<span class="ident">NotifyDone</span>(<span class="ident">exec</span>, <span class="ident">result</span>), <span class="kw-2">&amp;</span><span class="ident">client_tx</span>)<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">FileReady</span>(<span class="ident">uuid</span>, <span class="ident">handle</span>, <span class="ident">success</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">FileReady</span>(<span class="ident">uuid</span>, <span class="ident">handle</span>, <span class="ident">success</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">produced_files</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">push</span>((<span class="ident">uuid</span>, <span class="ident">handle</span>, <span class="ident">success</span>));
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">Status</span>(<span class="ident">status</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">SchedulerOutMessage</span>::<span class="ident">Status</span>(<span class="ident">status</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">ExecutorServerMessage</span>::<span class="ident">Status</span>(<span class="ident">status</span>), <span class="kw-2">&amp;</span><span class="ident">client_tx</span>)<span class="question-mark">?</span>;
                 }
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Scheduler is gone.</span>
                     <span class="kw">break</span>;
                 }

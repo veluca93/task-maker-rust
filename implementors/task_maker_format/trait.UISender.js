@@ -6,5 +6,4 @@ implementors["task_maker_format"] = [];
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

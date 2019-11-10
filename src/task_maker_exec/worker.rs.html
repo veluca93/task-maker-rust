@@ -348,7 +348,7 @@
     <span class="doccomment">/// A reference to the [`FileStore`](../task_maker_store/struct.FileStore.html).</span>
     <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Job the worker is currently working on.</span>
-    <span class="ident">current_job</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">WorkerCurrentJob</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">current_job</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">WorkerCurrentJob</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Where to put the sandboxes.</span>
     <span class="ident">sandbox_path</span>: <span class="ident">PathBuf</span>,
 }
@@ -375,7 +375,7 @@
 
 <span class="kw">impl</span> <span class="ident">WorkerCurrentJob</span> {
     <span class="doccomment">/// Make a new [`WorkerCurrentJob`](struct.WorkerCurrentJob.html).</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">WorkerCurrentJob</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WorkerCurrentJob</span> {
         <span class="ident">WorkerCurrentJob</span> {
             <span class="ident">current_job</span>: <span class="prelude-val">None</span>,
             <span class="ident">current_sandbox</span>: <span class="prelude-val">None</span>,
@@ -388,11 +388,11 @@
     <span class="doccomment">/// Make a new worker attached to a [`FileStore`](../task_maker_store/struct.FileStore.html),</span>
     <span class="doccomment">/// will return a pair with the actual `Worker` and an handle with the channels to connect to</span>
     <span class="doccomment">/// communicate with the worker.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">name</span>: <span class="ident">S</span>,
         <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>,
         <span class="ident">sandbox_path</span>: <span class="ident">P</span>,
-    ) <span class="op">-&gt;</span> (<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>) {
+    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>) {
         <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx_worker</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> (<span class="ident">tx_worker</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> <span class="ident">uuid</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">new_v4</span>();
@@ -418,11 +418,11 @@
     }
 
     <span class="doccomment">/// The worker body, this function will block until the worker disconnects.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">work</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">work</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Worker {} ready, asking for work&quot;</span>, <span class="self">self</span>);
         <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerClientMessage</span>::<span class="ident">GetWork</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sender</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">start_job</span> <span class="op">=</span> <span class="op">||</span> <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">start_job</span> <span class="op">=</span> <span class="op">|</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="ident">execute_job</span>(<span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sender</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sandbox_path</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">current_sandbox</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">sandbox</span>);
             <span class="prelude-val">Ok</span>(())
@@ -431,7 +431,7 @@
         <span class="kw">loop</span> {
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">deserialize_from</span>::<span class="op">&lt;</span><span class="ident">WorkerServerMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">receiver</span>);
             <span class="kw">match</span> <span class="ident">message</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">job</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">job</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Worker {} got job: {:?}&quot;</span>, <span class="self">self</span>, <span class="ident">job</span>);
                     <span class="macro">assert</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">current_job</span>.<span class="ident">is_none</span>());
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">missing_deps</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
@@ -442,14 +442,14 @@
                             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>)
                             .<span class="ident">ok_or</span>(<span class="ident">WorkerError</span>::<span class="ident">MissingDependencyKey</span> { <span class="ident">uuid</span>: <span class="kw-2">*</span><span class="ident">input</span> })<span class="question-mark">?</span>;
                         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) {
-                            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+                            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                                 <span class="ident">serialize_into</span>(
                                     <span class="kw-2">&amp;</span><span class="ident">WorkerClientMessage</span>::<span class="ident">AskFile</span>(<span class="ident">key</span>.<span class="ident">clone</span>()),
                                     <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sender</span>,
                                 )<span class="question-mark">?</span>;
                                 <span class="ident">missing_deps</span>.<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">clone</span>(), <span class="kw-2">*</span><span class="ident">input</span>);
                             }
-                            <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">handle</span>) <span class="op">=</span><span class="op">&gt;</span> {
                                 <span class="ident">handles</span>.<span class="ident">insert</span>(<span class="kw-2">*</span><span class="ident">input</span>, <span class="ident">handle</span>);
                             }
                         }
@@ -464,7 +464,7 @@
                         <span class="ident">start_job</span>()<span class="question-mark">?</span>;
                     }
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">key</span>)) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">key</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Server sent file {:?}&quot;</span>, <span class="ident">key</span>);
                     <span class="kw">let</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">ChannelFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">receiver</span>);
                     <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">reader</span>)<span class="question-mark">?</span>;
@@ -482,13 +482,13 @@
                         <span class="ident">start_job</span>()<span class="question-mark">?</span>;
                     }
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Exit</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Exit</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Worker {} ({}) is asked to exit&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">uuid</span>);
                     <span class="kw">break</span>;
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">cause</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">find_root_cause</span>().<span class="ident">to_string</span>();
-                    <span class="kw">if</span> <span class="ident">cause</span> <span class="op">==</span> <span class="string">&quot;receiving on a closed channel&quot;</span> {
+                    <span class="kw">if</span> <span class="ident">cause</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;receiving on a closed channel&quot;</span> {
                         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Connection closed: {}&quot;</span>, <span class="ident">cause</span>);
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sandbox</span>) <span class="op">=</span>
                             <span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">current_sandbox</span>.<span class="ident">as_ref</span>()
@@ -508,10 +508,10 @@
 
 <span class="doccomment">/// Spawn a new thread that will start the sandbox and will send the results back to the server.</span>
 <span class="kw">fn</span> <span class="ident">execute_job</span>(
-    <span class="ident">current_job</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">WorkerCurrentJob</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">current_job</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">WorkerCurrentJob</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="ident">ChannelSender</span>,
     <span class="ident">sandbox_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Sandbox</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Sandbox</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">job</span>, <span class="kw-2">mut</span> <span class="ident">sandbox</span>) <span class="op">=</span> {
         <span class="kw">let</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">current_job</span>
@@ -532,7 +532,7 @@
     <span class="comment">// FIXME: if the sandbox fails badly this may deadlock</span>
     <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
         .<span class="ident">name</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Sandbox of {}&quot;</span>, <span class="ident">job</span>.<span class="ident">execution</span>.<span class="ident">description</span>))
-        .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+        .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">thread_sender</span>;
             <span class="kw">let</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="ident">thread_sandbox</span>;
             <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">thread_job</span>;
@@ -585,20 +585,20 @@
 
 <span class="doccomment">/// Compute the [`ExecutionResult`](../task_maker_dag/struct.ExecutionResult.html) based on the</span>
 <span class="doccomment">/// result of the sandbox.</span>
-<span class="kw">fn</span> <span class="ident">compute_execution_result</span>(<span class="ident">execution</span>: <span class="kw-2">&amp;</span><span class="ident">Execution</span>, <span class="ident">result</span>: <span class="ident">SandboxResult</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionResult</span> {
+<span class="kw">fn</span> <span class="ident">compute_execution_result</span>(<span class="ident">execution</span>: <span class="kw-2">&amp;</span><span class="ident">Execution</span>, <span class="ident">result</span>: <span class="ident">SandboxResult</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionResult</span> {
     <span class="kw">match</span> <span class="ident">result</span> {
         <span class="ident">SandboxResult</span>::<span class="ident">Success</span> {
             <span class="ident">exit_status</span>,
             <span class="ident">signal</span>,
             <span class="ident">resources</span>,
             <span class="ident">was_killed</span>,
-        } <span class="op">=&gt;</span> <span class="ident">ExecutionResult</span> {
+        } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionResult</span> {
             <span class="ident">status</span>: <span class="ident">execution</span>.<span class="ident">status</span>(<span class="ident">exit_status</span>, <span class="ident">signal</span>, <span class="kw-2">&amp;</span><span class="ident">resources</span>),
             <span class="ident">resources</span>,
             <span class="ident">was_killed</span>,
             <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
         },
-        <span class="ident">SandboxResult</span>::<span class="ident">Failed</span> { <span class="ident">error</span> } <span class="op">=&gt;</span> <span class="ident">ExecutionResult</span> {
+        <span class="ident">SandboxResult</span>::<span class="ident">Failed</span> { <span class="ident">error</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionResult</span> {
             <span class="ident">status</span>: <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="ident">error</span>.<span class="ident">to_string</span>()),
             <span class="ident">resources</span>: <span class="ident">ExecutionResourcesUsage</span> {
                 <span class="ident">cpu_time</span>: <span class="number">0.0</span>,
@@ -613,13 +613,13 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">WorkerConn</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;&#39;{}&#39; ({})&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">uuid</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Worker</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;&#39;{}&#39; ({})&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">uuid</span>)
     }
 }

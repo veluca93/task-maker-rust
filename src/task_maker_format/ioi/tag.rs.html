@@ -38,12 +38,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ExecutionTag</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Tag</span> {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionTag</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionTag</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Tag</span>::<span class="ident">Generation</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;generation&quot;</span>),
-            <span class="ident">Tag</span>::<span class="ident">Evaluation</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;evaluation&quot;</span>),
-            <span class="ident">Tag</span>::<span class="ident">Checking</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;checking&quot;</span>),
-            <span class="ident">Tag</span>::<span class="ident">Booklet</span> <span class="op">=&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;booklet&quot;</span>),
+            <span class="ident">Tag</span>::<span class="ident">Generation</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;generation&quot;</span>),
+            <span class="ident">Tag</span>::<span class="ident">Evaluation</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;evaluation&quot;</span>),
+            <span class="ident">Tag</span>::<span class="ident">Checking</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;checking&quot;</span>),
+            <span class="ident">Tag</span>::<span class="ident">Booklet</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;booklet&quot;</span>),
         }
     }
 }

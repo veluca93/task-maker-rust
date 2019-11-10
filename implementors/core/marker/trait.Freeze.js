@@ -12,5 +12,4 @@ implementors["task_maker_test"] = [{text:"impl Freeze for <a class=\"struct\" hr
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

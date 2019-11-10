@@ -179,16 +179,16 @@
 
 <span class="kw">impl</span> <span class="ident">AsyFile</span> {
     <span class="doccomment">/// Compile the asy file and return the handle to the compiled and cropped pdf file.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">source</span>: <span class="ident">P</span>,
         <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>,
         <span class="ident">booklet_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">File</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">File</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">source_path</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">booklet</span> <span class="op">=</span> <span class="ident">booklet_name</span>.<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">source_path</span>
             .<span class="ident">file_name</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid path of asy file: {:?}&quot;</span>, <span class="ident">source_path</span>))<span class="question-mark">?</span>
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid path of asy file: {:?}&quot;</span>, <span class="ident">source_path</span>))<span class="question-mark">?</span>
             .<span class="ident">to_string_lossy</span>()
             .<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">source_file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Source of {}&quot;</span>, <span class="ident">name</span>));
@@ -271,7 +271,7 @@
 
     <span class="doccomment">/// Recursively search for the asy dependencies of the specified file, where the sandbox</span>
     <span class="doccomment">/// directory is at the specified prefix.</span>
-    <span class="kw">fn</span> <span class="ident">find_asy_deps</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">find_asy_deps</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="macro">lazy_static</span><span class="macro">!</span> {
             <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ASY_INCLUDE</span>: <span class="ident">Regex</span> <span class="op">=</span>
                 <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r&quot;(?:include|import) *(.+)(?: +as +.+)?;&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid regex&quot;</span>);
@@ -280,7 +280,7 @@
         }
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">path</span>
             .<span class="ident">parent</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;File {:?} does not have a parent&quot;</span>, <span class="ident">path</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;File {:?} does not have a parent&quot;</span>, <span class="ident">path</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">read_to_string</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="ident">include</span> <span class="kw">in</span> <span class="ident">ASY_INCLUDE</span>.<span class="ident">captures_iter</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>) {

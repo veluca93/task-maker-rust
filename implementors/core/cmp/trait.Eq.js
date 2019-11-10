@@ -8,5 +8,4 @@ implementors["task_maker_store"] = [{text:"impl <a class=\"trait\" href=\"https:
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

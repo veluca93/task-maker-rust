@@ -10,5 +10,4 @@ implementors["task_maker_store"] = [{text:"impl&lt;'de&gt; <a class=\"trait\" hr
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()

@@ -6,5 +6,4 @@ implementors["task_maker_format"] = [{text:"impl Template for <a class=\"struct\
             } else {
                 window.pending_implementors = implementors;
             }
-        
-})()
+        })()
