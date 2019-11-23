@@ -503,7 +503,7 @@
 
 <span class="doccomment">/// Serializable part of the execution DAG: everything except the callbacks (which are not</span>
 <span class="doccomment">/// serializable).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionDAGData</span> {
     <span class="doccomment">/// All the files provided by the client.</span>
     <span class="kw">pub</span> <span class="ident">provided_files</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">ProvidedFile</span><span class="op">&gt;</span>,
