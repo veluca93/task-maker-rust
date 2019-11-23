@@ -621,7 +621,7 @@
                 .<span class="ident">message</span>
                 .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;No output from sandbox&quot;</span>.<span class="ident">into</span>());
             <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">contains</span>(<span class="string">&quot;No such file or directory&quot;</span>) {
-                <span class="ident">error</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;No such file or directory (wrong shebang?)&quot;</span>);
+                <span class="ident">error</span> <span class="op">=</span> <span class="string">&quot;No such file or directory (wrong shebang?)&quot;</span>.<span class="ident">to_string</span>();
             }
             <span class="prelude-val">Ok</span>(<span class="ident">SandboxResult</span>::<span class="ident">Failed</span> { <span class="ident">error</span> })
         } <span class="kw">else</span> {
