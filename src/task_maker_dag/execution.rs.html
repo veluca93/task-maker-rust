@@ -986,7 +986,7 @@
 
 <span class="doccomment">/// Resources used during the execution, note that on some platform these values may not be</span>
 <span class="doccomment">/// accurate.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResourcesUsage</span> {
     <span class="doccomment">/// Number of seconds the process used in user space.</span>
     <span class="kw">pub</span> <span class="ident">cpu_time</span>: <span class="ident">f64</span>,

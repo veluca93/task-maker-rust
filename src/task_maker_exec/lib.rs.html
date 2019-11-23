@@ -207,6 +207,8 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -229,6 +231,8 @@
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">log</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>(<span class="ident">defer</span>)]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">scopeguard</span>;
 
 <span class="kw">use</span> <span class="ident">bincode</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
