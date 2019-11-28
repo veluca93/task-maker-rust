@@ -1111,8 +1111,8 @@
                 <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(
                     <span class="string">&quot;{} {} ({:.2}s)&quot;</span>,
                     <span class="ident">loading</span>,
-                    <span class="ident">job</span>.<span class="number">0</span>,
-                    (<span class="ident">job</span>.<span class="number">1</span>.<span class="ident">elapsed</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">as_millis</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>) <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1000.0</span>
+                    <span class="ident">job</span>.<span class="ident">job</span>,
+                    (<span class="ident">job</span>.<span class="ident">duration</span>.<span class="ident">elapsed</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">as_millis</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>) <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1000.0</span>
                 )));
             }
             <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;\n&quot;</span>));

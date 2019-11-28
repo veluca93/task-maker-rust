@@ -98,6 +98,42 @@
 <span id="98"> 98</span>
 <span id="99"> 99</span>
 <span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -186,6 +222,42 @@
     <span class="doccomment">/// Verbose mode (-v, -vv, -vvv, etc.). Note that it does not play well with curses ui.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">parse</span>(<span class="ident">from_occurrences</span>))]</span>
     <span class="kw">pub</span> <span class="ident">verbose</span>: <span class="ident">u8</span>,
+
+    <span class="doccomment">/// Run the evaluation on a remote server instead of locally.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;evaluate-on&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">evaluate_on</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Run a server instead of the normal task-maker.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">server</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Run a worker instead of the normal task-maker.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">worker</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Address to bind the server on.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option only has effect with `--server`.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;server-address-clients&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27182&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">server_address_clients</span>: <span class="ident">String</span>,
+
+    <span class="doccomment">/// Address to bind the server on.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option only has effect with `--server`.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;server-address-workers&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27183&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">server_address_workers</span>: <span class="ident">String</span>,
+
+    <span class="doccomment">/// Address to which the worker should connect to.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option only has effect with `--worker`.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;worker-address-server&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">worker_address_server</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// The name to use for the workers or for the client in remote executions.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option only has no effect with `--server`.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Opt</span> {

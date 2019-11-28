@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["LocalExecutor","An Executor that runs locally by spawning a number of threads with the workers inside."]]});
+initSidebarItems({"enum":[["RemoteEntityMessage","Message sent only by remote clients and workers for sending its name."]],"struct":[["LocalExecutor","An Executor that runs locally by spawning a number of threads with the workers inside."],["RemoteExecutor","An executor that accepts remote connections from clients and workers."]]});
