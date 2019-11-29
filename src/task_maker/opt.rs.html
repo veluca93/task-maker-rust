@@ -139,6 +139,22 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -157,7 +173,7 @@
     <span class="doccomment">/// Which UI to use, available UIS are: print, raw, curses, json.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that the JSON api is not stable yet.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;ui&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;print&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;ui&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;curses&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ui</span>: <span class="ident">task_maker_format</span>::<span class="ident">ui</span>::<span class="ident">UIType</span>,
 
     <span class="doccomment">/// Keep all the sandbox directories</span>
@@ -216,11 +232,11 @@
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;num-cores&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">num_cores</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 
-    <span class="doccomment">/// Include the solutions in the booklet.</span>
+    <span class="doccomment">/// Include the solutions in the booklet</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;booklet-solutions&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">booklet_solutions</span>: <span class="ident">bool</span>,
 
-    <span class="doccomment">/// Do not build the statement files and the booklets.</span>
+    <span class="doccomment">/// Do not build the statement files and the booklets</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;no-statement&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">no_statement</span>: <span class="ident">bool</span>,
 
@@ -228,11 +244,11 @@
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">parse</span>(<span class="ident">from_occurrences</span>))]</span>
     <span class="kw">pub</span> <span class="ident">verbose</span>: <span class="ident">u8</span>,
 
-    <span class="doccomment">/// Run the evaluation on a remote server instead of locally.</span>
+    <span class="doccomment">/// Run the evaluation on a remote server instead of locally</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;evaluate-on&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">evaluate_on</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
-    <span class="doccomment">/// The name to use for the workers or for the client in remote executions.</span>
+    <span class="doccomment">/// The name to use for the workers or for the client in remote executions</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This option only has no effect with `--server`.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
@@ -246,27 +262,27 @@
 <span class="doccomment">/// Options for spawning a client or a server.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Remote</span> {
-    <span class="doccomment">/// Spawn a server instead of the normal task-maker.</span>
+    <span class="doccomment">/// Spawn a server instead of the normal task-maker</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;--server&quot;</span>)]</span>
     <span class="ident">Server</span>(<span class="ident">ServerOptions</span>),
-    <span class="doccomment">/// Spawn a worker instead of the normal task-maker.</span>
+    <span class="doccomment">/// Spawn a worker instead of the normal task-maker</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;--worker&quot;</span>)]</span>
     <span class="ident">Worker</span>(<span class="ident">WorkerOptions</span>),
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServerOptions</span> {
-    <span class="doccomment">/// Address to bind the server on for listening for the clients.</span>
+    <span class="doccomment">/// Address to bind the server on for listening for the clients</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27182&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">client_addr</span>: <span class="ident">String</span>,
-    <span class="doccomment">/// Address to bind the server on for listening for the workers.</span>
+    <span class="doccomment">/// Address to bind the server on for listening for the workers</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27183&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">worker_addr</span>: <span class="ident">String</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WorkerOptions</span> {
-    <span class="doccomment">/// Address to use to connect to a remote server.</span>
+    <span class="doccomment">/// Address to use to connect to a remote server</span>
     <span class="kw">pub</span> <span class="ident">server_addr</span>: <span class="ident">String</span>,
 }
 
@@ -278,6 +294,22 @@
             <span class="ident">booklet_solutions</span>: <span class="self">self</span>.<span class="ident">booklet_solutions</span>,
             <span class="ident">no_statement</span>: <span class="self">self</span>.<span class="ident">no_statement</span>,
             <span class="ident">solution_paths</span>: <span class="self">self</span>.<span class="ident">solution</span>.<span class="ident">clone</span>(),
+        }
+    }
+
+    <span class="doccomment">/// Get the store directory of this configuration. If nothing is specified a cache directory is</span>
+    <span class="doccomment">/// used if available, otherwise a temporary directory.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">store_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">store_dir</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">dir</span>.<span class="ident">clone</span>(),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">project</span> <span class="op">=</span> <span class="ident">directories</span>::<span class="ident">ProjectDirs</span>::<span class="ident">from</span>(<span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;task-maker&quot;</span>);
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">project</span>) <span class="op">=</span> <span class="ident">project</span> {
+                    <span class="ident">project</span>.<span class="ident">cache_dir</span>().<span class="ident">to_owned</span>()
+                } <span class="kw">else</span> {
+                    <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">temp_dir</span>().<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>)
+                }
+            }
         }
     }
 }
