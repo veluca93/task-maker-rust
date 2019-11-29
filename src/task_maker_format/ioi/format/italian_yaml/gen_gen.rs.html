@@ -377,12 +377,25 @@
 <span id="377">377</span>
 <span id="378">378</span>
 <span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">bail</span>, <span class="ident">format_err</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">pest</span>::<span class="ident">Parser</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">find_source_file</span>;
@@ -493,11 +506,15 @@
                         }
                         <span class="kw">let</span> <span class="ident">cmd</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span>
                             <span class="ident">line</span>.<span class="ident">into_inner</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">as_str</span>().<span class="ident">to_owned</span>()).<span class="ident">collect</span>();
+                        <span class="kw">let</span> <span class="ident">output_generator</span> <span class="op">=</span> <span class="ident">get_output_gen</span>(<span class="ident">testcase_count</span>);
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">OutputGenerator</span>::<span class="ident">StaticFile</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">output_generator</span> {
+                            <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;Generator detected but no solution found. Cannot generate output files.&quot;</span>);
+                        }
                         <span class="ident">entries</span>.<span class="ident">push</span>(<span class="ident">TaskInputEntry</span>::<span class="ident">Testcase</span>(<span class="ident">TestcaseInfo</span> {
                             <span class="ident">id</span>: <span class="ident">testcase_count</span>,
                             <span class="ident">input_generator</span>: <span class="ident">InputGenerator</span>::<span class="ident">Custom</span>(<span class="ident">generator</span>.<span class="ident">clone</span>(), <span class="ident">cmd</span>),
                             <span class="ident">input_validator</span>: <span class="ident">get_validator</span>(<span class="ident">subtask_id</span> <span class="op">-</span> <span class="number">1</span>),
-                            <span class="ident">output_generator</span>: <span class="ident">get_output_gen</span>(<span class="ident">testcase_count</span>),
+                            <span class="ident">output_generator</span>,
                         }));
                         <span class="ident">testcase_count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                     }
@@ -518,9 +535,11 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">format</span>::<span class="ident">italian_yaml</span>::<span class="ident">gen_gen</span>::<span class="ident">parse_gen_gen</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">format</span>::<span class="ident">italian_yaml</span>::<span class="ident">TaskInputEntry</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">InputGenerator</span>, <span class="ident">InputValidator</span>, <span class="ident">OutputGenerator</span>, <span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">SourceFile</span>;
     <span class="kw">use</span> <span class="ident">pretty_assertions</span>::<span class="ident">assert_eq</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
     <span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
     <span class="kw">use</span> <span class="ident">TaskInputEntry</span>::<span class="kw-2">*</span>;
 
@@ -528,9 +547,15 @@
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;task.yaml&quot;</span>), <span class="string">&quot;name: foo\ntitle: foo bar\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">fs</span>::<span class="ident">create_dir</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;gen&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">fs</span>::<span class="ident">create_dir</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;sol&quot;</span>)).<span class="ident">unwrap</span>();
         <span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;gen&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;GEN&quot;</span>), <span class="ident">gen_gen</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
         <span class="ident">fs</span>::<span class="ident">write</span>(
             <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;gen&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;generator.py&quot;</span>),
+            <span class="string">&quot;#!/usr/bin/env python&quot;</span>,
+        )
+        .<span class="ident">unwrap</span>();
+        <span class="ident">fs</span>::<span class="ident">write</span>(
+            <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;sol&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;solution.py&quot;</span>),
             <span class="string">&quot;#!/usr/bin/env python&quot;</span>,
         )
         .<span class="ident">unwrap</span>();
@@ -542,7 +567,8 @@
     }
 
     <span class="kw">fn</span> <span class="ident">get_output_generator</span>(<span class="ident">_testcase</span>: <span class="ident">TestcaseId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutputGenerator</span> {
-        <span class="ident">OutputGenerator</span>::<span class="ident">StaticFile</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;foooo&quot;</span>))
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="string">&quot;a.py&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">OutputGenerator</span>::<span class="ident">Custom</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">source</span>), <span class="macro">vec</span><span class="macro">!</span>[])
     }
 
     <span class="kw">fn</span> <span class="ident">get_entries</span>(<span class="ident">dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span> {
