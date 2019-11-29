@@ -134,6 +134,11 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -142,7 +147,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">structopt</span>(
     <span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;task-maker&quot;</span>,
-    <span class="ident">raw</span>(<span class="ident">setting</span> <span class="op">=</span> <span class="string">&quot;structopt::clap::AppSettings::ColoredHelp&quot;</span>)
+    <span class="ident">setting</span> <span class="op">=</span> <span class="ident">structopt</span>::<span class="ident">clap</span>::<span class="ident">AppSettings</span>::<span class="ident">ColoredHelp</span>,
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Opt</span> {
     <span class="doccomment">/// Directory of the task to evaluate</span>
@@ -227,37 +232,42 @@
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;evaluate-on&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">evaluate_on</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
-    <span class="doccomment">/// Run a server instead of the normal task-maker.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">server</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// Run a worker instead of the normal task-maker.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">worker</span>: <span class="ident">bool</span>,
-
-    <span class="doccomment">/// Address to bind the server on.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This option only has effect with `--server`.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;server-address-clients&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27182&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">server_address_clients</span>: <span class="ident">String</span>,
-
-    <span class="doccomment">/// Address to bind the server on.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This option only has effect with `--server`.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;server-address-workers&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27183&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">server_address_workers</span>: <span class="ident">String</span>,
-
-    <span class="doccomment">/// Address to which the worker should connect to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This option only has effect with `--worker`.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;worker-address-server&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">worker_address_server</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-
     <span class="doccomment">/// The name to use for the workers or for the client in remote executions.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This option only has no effect with `--server`.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Options for spawning a client or a server.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">remote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Remote</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Options for spawning a client or a server.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Remote</span> {
+    <span class="doccomment">/// Spawn a server instead of the normal task-maker.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;--server&quot;</span>)]</span>
+    <span class="ident">Server</span>(<span class="ident">ServerOptions</span>),
+    <span class="doccomment">/// Spawn a worker instead of the normal task-maker.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;--worker&quot;</span>)]</span>
+    <span class="ident">Worker</span>(<span class="ident">WorkerOptions</span>),
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ServerOptions</span> {
+    <span class="doccomment">/// Address to bind the server on for listening for the clients.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27182&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">client_addr</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Address to bind the server on for listening for the workers.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;0.0.0.0:27183&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">worker_addr</span>: <span class="ident">String</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WorkerOptions</span> {
+    <span class="doccomment">/// Address to use to connect to a remote server.</span>
+    <span class="kw">pub</span> <span class="ident">server_addr</span>: <span class="ident">String</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Opt</span> {
