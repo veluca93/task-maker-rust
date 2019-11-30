@@ -58,7 +58,7 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # let tmpdir = TempDir::new(&quot;tm-test&quot;).unwrap();</span>
 <span class="doccomment">//! # let path = tmpdir.path();</span>
-<span class="doccomment">//! let store = FileStore::new(path).unwrap();</span>
+<span class="doccomment">//! let store = FileStore::new(path, 1000, 1000).unwrap();</span>
 <span class="doccomment">//! let cache = Cache::new(path).unwrap();</span>
 <span class="doccomment">//! let num_cores = 4;</span>
 <span class="doccomment">//! let mut executor = LocalExecutor::new(Arc::new(store), num_cores, path);</span>

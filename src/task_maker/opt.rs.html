@@ -186,6 +186,14 @@
 <span id="186">186</span>
 <span id="187">187</span>
 <span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -258,6 +266,14 @@
     <span class="doccomment">/// Where to store the storage files, including the cache</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;store-dir&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">store_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Maximum size of the storage directory, in MiB</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;max-cache&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;3072&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">max_cache</span>: <span class="ident">u64</span>,
+
+    <span class="doccomment">/// When the storage is flushed, this is the new maximum size, in MiB.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;min-cache&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;2048&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">min_cache</span>: <span class="ident">u64</span>,
 
     <span class="doccomment">/// The number of CPU cores to use</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;num-cores&quot;</span>)]</span>
