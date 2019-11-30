@@ -158,6 +158,8 @@
 <span id="158">158</span>
 <span id="159">159</span>
 <span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">opt</span>::<span class="ident">Opt</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
@@ -175,7 +177,9 @@
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="ident">FileStore</span>;
 
 <span class="doccomment">/// Entry point of the local execution.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main_local</span>(<span class="ident">opt</span>: <span class="ident">Opt</span>) {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main_local</span>(<span class="kw-2">mut</span> <span class="ident">opt</span>: <span class="ident">Opt</span>) {
+    <span class="ident">opt</span>.<span class="ident">enable_log</span>();
+
     <span class="kw">if</span> <span class="ident">opt</span>.<span class="ident">exclusive</span> {
         <span class="macro">unimplemented</span><span class="macro">!</span>(<span class="string">&quot;This option is not implemented yet&quot;</span>);
     }
