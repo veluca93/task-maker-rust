@@ -446,11 +446,113 @@
 <span id="446">446</span>
 <span id="447">447</span>
 <span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>::{<span class="ident">Command</span>, <span class="ident">Stdio</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionStatus</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::{
     <span class="ident">CompilationStatus</span>, <span class="ident">SolutionEvaluationState</span>, <span class="ident">SubtaskId</span>, <span class="ident">Task</span>, <span class="ident">TestcaseEvaluationStatus</span>,
@@ -490,6 +592,8 @@
     <span class="kw">pub</span> <span class="ident">generation_fails</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A list with the stderr message of the failing validations.</span>
     <span class="kw">pub</span> <span class="ident">validation_fails</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Whether the cache is allowed.</span>
+    <span class="kw">pub</span> <span class="ident">cache</span>: <span class="ident">bool</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestInterface</span> {
@@ -513,6 +617,7 @@
             <span class="ident">generation_statuses</span>: <span class="prelude-val">None</span>,
             <span class="ident">generation_fails</span>: <span class="prelude-val">None</span>,
             <span class="ident">validation_fails</span>: <span class="prelude-val">None</span>,
+            <span class="ident">cache</span>: <span class="bool-val">false</span>,
         }
     }
 
@@ -615,9 +720,72 @@
         <span class="self">self</span>
     }
 
+    <span class="doccomment">/// Allow or disallow the cache.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cache</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cache</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">cache</span> <span class="op">=</span> <span class="ident">cache</span>;
+        <span class="self">self</span>
+    }
+
     <span class="doccomment">/// Spawn task-maker, reading its json output and checking that all the checks are good.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_local</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+            .<span class="ident">parent</span>()
+            .<span class="ident">unwrap</span>()
+            .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
+            .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
+            .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--task-dir&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--ui&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;json&quot;</span>);
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
+            <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--no-cache&quot;</span>);
+        }
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--dry-run&quot;</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;-vv&quot;</span>);
+        <span class="ident">command</span>.<span class="ident">stdout</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
+        <span class="ident">command</span>.<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
+        <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
+
+        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="ident">command</span>);
+
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Evaluate the task using a &quot;remote&quot; setup (spawning a local server and local workers).</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">port_scanner</span>::<span class="ident">scan_port</span>(<span class="number">27182</span>) {
+            <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Server not spawned, spawning&quot;</span>);
+            <span class="ident">TestInterface</span>::<span class="ident">spawn_server</span>();
+            <span class="ident">TestInterface</span>::<span class="ident">wait_port</span>(<span class="number">27182</span>);
+        }
+
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
+        <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+            .<span class="ident">parent</span>()
+            .<span class="ident">unwrap</span>()
+            .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
+            .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
+            .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--task-dir&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--ui&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;json&quot;</span>);
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
+            <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--no-cache&quot;</span>);
+        }
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--dry-run&quot;</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;-vv&quot;</span>);
+        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--evaluate-on&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;127.0.0.1:27182&quot;</span>);
+        <span class="ident">command</span>.<span class="ident">stdout</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
+        <span class="ident">command</span>.<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
+        <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
+
+        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="ident">command</span>);
+
+        <span class="self">self</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">command</span>: <span class="ident">Command</span>) {
         <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">Task</span>::<span class="ident">new</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>,
             <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span> {
@@ -628,21 +796,6 @@
             },
         )
         .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
-            .<span class="ident">parent</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--task-dir&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--ui&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;json&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--no-cache&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--dry-run&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">env</span>(<span class="string">&quot;RUST_BACKTRACE&quot;</span>, <span class="string">&quot;1&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">stdout</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">output</span>().<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="op">!</span><span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">success</span>() {
             <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stderr</span>);
@@ -674,6 +827,55 @@
         <span class="self">self</span>.<span class="ident">check_generations</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
         <span class="self">self</span>.<span class="ident">check_solution_scores</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
         <span class="self">self</span>.<span class="ident">check_solution_statuses</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
+    }
+
+    <span class="kw">fn</span> <span class="ident">wait_port</span>(<span class="ident">port</span>: <span class="ident">u16</span>) {
+        <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {
+            <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Waiting for the server...&quot;</span>);
+            <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">500</span>));
+            <span class="kw">if</span> <span class="ident">port_scanner</span>::<span class="ident">scan_port</span>(<span class="ident">port</span>) {
+                <span class="kw">break</span>;
+            }
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">spawn_server</span>() {
+        <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
+            .<span class="ident">name</span>(<span class="string">&quot;Test server&quot;</span>.<span class="ident">to_string</span>())
+            .<span class="ident">spawn</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+                <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+                    .<span class="ident">parent</span>()
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
+                    .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
+                    .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--store-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">store</span>.<span class="ident">path</span>());
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--server&quot;</span>);
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;0.0.0.0:27182&quot;</span>);
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;0.0.0.0:27183&quot;</span>);
+                <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">command</span>.<span class="ident">spawn</span>().<span class="ident">unwrap</span>().<span class="ident">wait</span>().<span class="ident">unwrap</span>().<span class="ident">success</span>());
+            })
+            .<span class="ident">unwrap</span>();
+        <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
+            .<span class="ident">name</span>(<span class="string">&quot;Test worker&quot;</span>.<span class="ident">to_string</span>())
+            .<span class="ident">spawn</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="ident">TestInterface</span>::<span class="ident">wait_port</span>(<span class="number">27183</span>);
+                <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+                <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+                    .<span class="ident">parent</span>()
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
+                    .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
+                    .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--store-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">store</span>.<span class="ident">path</span>());
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--worker&quot;</span>);
+                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;127.0.0.1:27183&quot;</span>);
+                <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">command</span>.<span class="ident">spawn</span>().<span class="ident">unwrap</span>().<span class="ident">wait</span>().<span class="ident">unwrap</span>().<span class="ident">success</span>());
+            })
+            .<span class="ident">unwrap</span>();
     }
 
     <span class="doccomment">/// Check the task limits are met.</span>
