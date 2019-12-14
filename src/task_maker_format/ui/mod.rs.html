@@ -331,6 +331,11 @@
 <span id="331">331</span>
 <span id="332">332</span>
 <span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -344,9 +349,11 @@
 
 <span class="kw">mod</span> <span class="ident">json</span>;
 <span class="kw">mod</span> <span class="ident">raw</span>;
+<span class="kw">mod</span> <span class="ident">silent</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json</span>::<span class="ident">JsonUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">raw</span>::<span class="ident">RawUI</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">silent</span>::<span class="ident">SilentUI</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
 
@@ -590,6 +597,8 @@
     <span class="ident">Curses</span>,
     <span class="doccomment">/// The `JsonUI`.</span>
     <span class="ident">Json</span>,
+    <span class="doccomment">/// The `SilentUI`.</span>
+    <span class="ident">Silent</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">UIType</span> {
@@ -601,6 +610,7 @@
             <span class="string">&quot;raw&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Raw</span>),
             <span class="string">&quot;curses&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Curses</span>),
             <span class="string">&quot;json&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Json</span>),
+            <span class="string">&quot;silent&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">UIType</span>::<span class="ident">Silent</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unknown ui: {}&quot;</span>, <span class="ident">s</span>)),
         }
     }

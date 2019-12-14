@@ -346,6 +346,17 @@
 <span id="346">346</span>
 <span id="347">347</span>
 <span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -646,9 +657,10 @@
 
     <span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
 
-    <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">eval_dag_locally</span>;
+    <span class="kw">use</span> <span class="ident">task_maker_exec</span>::{<span class="ident">eval_dag_locally</span>, <span class="ident">RawSandboxResult</span>};
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">tabox</span>::<span class="ident">result</span>::{<span class="ident">ExitStatus</span>, <span class="ident">ResourceUsage</span>, <span class="ident">SandboxExecutionResult</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_source_file_cpp</span>() {
@@ -687,7 +699,17 @@
         });
         <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
 
-        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">1000</span>, <span class="number">1000</span>);
+        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">1000</span>, <span class="number">1000</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+            <span class="ident">RawSandboxResult</span>::<span class="ident">Success</span>(<span class="ident">SandboxExecutionResult</span> {
+                <span class="ident">status</span>: <span class="ident">ExitStatus</span>::<span class="ident">ExitCode</span>(<span class="number">0</span>),
+                <span class="ident">resource_usage</span>: <span class="ident">ResourceUsage</span> {
+                    <span class="ident">memory_usage</span>: <span class="number">0</span>,
+                    <span class="ident">user_cpu_time</span>: <span class="number">0.0</span>,
+                    <span class="ident">system_cpu_time</span>: <span class="number">0.0</span>,
+                    <span class="ident">wall_time_usage</span>: <span class="number">0.0</span>,
+                },
+            })
+        });
 
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_start</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_done</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));

@@ -73,11 +73,10 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">NiceError</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">opt</span>::{<span class="ident">Opt</span>, <span class="ident">WorkerOptions</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sandbox</span>::<span class="ident">self_exec_sandbox</span>;
 
 <span class="doccomment">/// Entry point for the worker.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main_worker</span>(<span class="kw-2">mut</span> <span class="ident">opt</span>: <span class="ident">Opt</span>, <span class="ident">worker_opt</span>: <span class="ident">WorkerOptions</span>) {
-    <span class="ident">opt</span>.<span class="ident">enable_log</span>();
-
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main_worker</span>(<span class="ident">opt</span>: <span class="ident">Opt</span>, <span class="ident">worker_opt</span>: <span class="ident">WorkerOptions</span>) {
     <span class="kw">let</span> <span class="ident">server_addr</span> <span class="op">=</span> <span class="ident">SocketAddr</span>::<span class="ident">from_str</span>(<span class="kw-2">&amp;</span><span class="ident">worker_opt</span>.<span class="ident">server_addr</span>)
         .<span class="ident">nice_expect</span>(<span class="string">&quot;Invalid server address provided&quot;</span>);
 
@@ -111,6 +110,7 @@
             <span class="ident">sandbox_path</span>.<span class="ident">clone</span>(),
             <span class="ident">executor_tx</span>,
             <span class="ident">executor_rx</span>,
+            <span class="ident">self_exec_sandbox</span>,
         );
         <span class="ident">workers</span>.<span class="ident">push</span>(
             <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()

@@ -194,6 +194,12 @@
 <span id="194">194</span>
 <span id="195">195</span>
 <span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -304,6 +310,12 @@
     <span class="doccomment">/// Options for spawning a client or a server.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
     <span class="kw">pub</span> <span class="ident">remote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Remote</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Run the sandbox instead of the normal task-maker.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This option is left as undocumented as it&#39;s not part of the public API.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">hidden</span>(<span class="bool-val">true</span>))]</span>
+    <span class="kw">pub</span> <span class="ident">sandbox</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Options for spawning a client or a server.</span>
@@ -374,9 +386,9 @@
             <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_BACKTRACE&quot;</span>, <span class="string">&quot;1&quot;</span>);
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">verbose</span> {
                 <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
-                <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info&quot;</span>),
-                <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;debug&quot;</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;trace&quot;</span>),
+                <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;info,tabox=info&quot;</span>),
+                <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;debug,tabox=debug&quot;</span>),
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;RUST_LOG&quot;</span>, <span class="string">&quot;trace,tabox=trace&quot;</span>),
             }
         }
 

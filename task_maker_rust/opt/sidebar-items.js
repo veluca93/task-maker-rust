@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Remote","Options for spawning a client or a server."]],"struct":[["Opt",""],["ServerOptions",""],["WorkerOptions",""]]});

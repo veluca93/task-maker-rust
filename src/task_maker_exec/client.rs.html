@@ -327,6 +327,7 @@
 <span id="327">327</span>
 <span id="328">328</span>
 <span id="329">329</span>
+<span id="330">330</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
@@ -382,13 +383,14 @@
     <span class="doccomment">/// let (tx_remote, rx) = new_local_channel();</span>
     <span class="doccomment">/// # let tmpdir = TempDir::new(&quot;tm-test&quot;).unwrap();</span>
     <span class="doccomment">/// # let path = tmpdir.path().to_owned();</span>
+    <span class="doccomment">/// # let sandbox_runner = |_config| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
     <span class="doccomment">/// let file_store = Arc::new(FileStore::new(&amp;path, 1000, 1000).expect(&quot;Cannot create the file store&quot;));</span>
     <span class="doccomment">/// let server_file_store = file_store.clone();</span>
     <span class="doccomment">/// // make a new local executor in a second thread</span>
     <span class="doccomment">/// let server = thread::spawn(move || {</span>
     <span class="doccomment">///     let cache = Cache::new(&amp;path).expect(&quot;Cannot create the cache&quot;);</span>
     <span class="doccomment">///     let mut executor = LocalExecutor::new(server_file_store, 4, path);</span>
-    <span class="doccomment">///     executor.evaluate(tx_remote, rx_remote, cache).unwrap();</span>
+    <span class="doccomment">///     executor.evaluate(tx_remote, rx_remote, cache, sandbox_runner).unwrap();</span>
     <span class="doccomment">/// });</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ExecutorClient::evaluate(dag, tx, &amp;rx, file_store, |_| Ok(())).unwrap(); // this will block!</span>

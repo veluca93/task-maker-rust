@@ -547,19 +547,25 @@
 <span id="547">547</span>
 <span id="548">548</span>
 <span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>::{<span class="ident">Command</span>, <span class="ident">Stdio</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
+<span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionStatus</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::{
     <span class="ident">CompilationStatus</span>, <span class="ident">SolutionEvaluationState</span>, <span class="ident">SubtaskId</span>, <span class="ident">Task</span>, <span class="ident">TestcaseEvaluationStatus</span>,
     <span class="ident">TestcaseGenerationStatus</span>, <span class="ident">UIState</span>,
 };
-<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ui</span>::<span class="ident">UIMessage</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">EvaluationConfig</span>;
+<span class="kw">use</span> <span class="ident">task_maker_rust</span>::{<span class="ident">main_server</span>, <span class="ident">main_worker</span>, <span class="ident">run_evaluation</span>, <span class="ident">Evaluation</span>, <span class="ident">Opt</span>, <span class="ident">Remote</span>};
+<span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
 
 <span class="doccomment">/// Interface for testing a task.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -594,6 +600,9 @@
     <span class="kw">pub</span> <span class="ident">validation_fails</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Whether the cache is allowed.</span>
     <span class="kw">pub</span> <span class="ident">cache</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Storage directory for the test interface. This is used only by the client, not the server</span>
+    <span class="doccomment">/// nor the workers.</span>
+    <span class="kw">pub</span> <span class="ident">store_dir</span>: <span class="ident">TempDir</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestInterface</span> {
@@ -618,6 +627,7 @@
             <span class="ident">generation_fails</span>: <span class="prelude-val">None</span>,
             <span class="ident">validation_fails</span>: <span class="prelude-val">None</span>,
             <span class="ident">cache</span>: <span class="bool-val">false</span>,
+            <span class="ident">store_dir</span>: <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>(),
         }
     }
 
@@ -726,66 +736,46 @@
         <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Spawn task-maker, reading its json output and checking that all the checks are good.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_local</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
-        <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
-            .<span class="ident">parent</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--task-dir&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--ui&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;json&quot;</span>);
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
-            <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--no-cache&quot;</span>);
-        }
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--dry-run&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;-vv&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">stdout</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
-
-        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="ident">command</span>);
-
-        <span class="self">self</span>
+    <span class="doccomment">/// Run the tests using task-maker in local mode, i.e. not spawning a separate server and</span>
+    <span class="doccomment">/// workers.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_local</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span>[]);
     }
 
     <span class="doccomment">/// Evaluate the task using a &quot;remote&quot; setup (spawning a local server and local workers).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">port_scanner</span>::<span class="ident">scan_port</span>(<span class="number">27182</span>) {
             <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Server not spawned, spawning&quot;</span>);
             <span class="ident">TestInterface</span>::<span class="ident">spawn_server</span>();
             <span class="ident">TestInterface</span>::<span class="ident">wait_port</span>(<span class="number">27182</span>);
         }
 
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
-        <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
-            .<span class="ident">parent</span>()
-            .<span class="ident">unwrap</span>()
-            .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
-            .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--task-dir&quot;</span>).<span class="ident">arg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--ui&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;json&quot;</span>);
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
-            <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--no-cache&quot;</span>);
-        }
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--dry-run&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;-vv&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--evaluate-on&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;127.0.0.1:27182&quot;</span>);
-        <span class="ident">command</span>.<span class="ident">stdout</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
-        <span class="ident">command</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>());
-
-        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="ident">command</span>);
-
-        <span class="self">self</span>
+        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;--evaluate-on&quot;</span>, <span class="string">&quot;127.0.0.1:27182&quot;</span>]);
     }
 
-    <span class="kw">fn</span> <span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">command</span>: <span class="ident">Command</span>) {
+    <span class="kw">fn</span> <span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">extra_args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;task-maker&quot;</span>];
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>();
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--task-dir={}&quot;</span>, <span class="ident">path</span>);
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>);
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--ui=silent&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--no-cache&quot;</span>.<span class="ident">into</span>());
+        }
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--dry-run&quot;</span>.<span class="ident">into</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;-vv&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">let</span> <span class="ident">store_dir</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--store-dir={}&quot;</span>, <span class="self">self</span>.<span class="ident">store_dir</span>.<span class="ident">path</span>().<span class="ident">to_string_lossy</span>());
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">store_dir</span>);
+        <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="ident">extra_args</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">arg</span>);
+        }
+        <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(
+            <span class="string">&quot;TASK_MAKER_SANDBOX_BIN&quot;</span>,
+            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OUT_DIR&quot;</span>)).<span class="ident">join</span>(<span class="string">&quot;sandbox&quot;</span>),
+        );
+        <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">Opt</span>::<span class="ident">from_iter</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>);
+
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
         <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">Task</span>::<span class="ident">new</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>,
             <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span> {
@@ -796,30 +786,39 @@
             },
         )
         .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">command</span>.<span class="ident">output</span>().<span class="ident">unwrap</span>();
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">success</span>() {
-            <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stderr</span>);
-            <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Stderr:\n{}&quot;</span>, <span class="ident">stderr</span>);
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">stderr</span>.<span class="ident">contains</span>(<span class="ident">message</span>) {
-                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting task-maker to fail with {:?} but didn&#39;t&quot;</span>, <span class="ident">message</span>);
-                } <span class="kw">else</span> {
-                    <span class="kw">return</span>;
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">UIState</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>)));
+
+        <span class="kw">let</span> <span class="ident">state2</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">clone</span>();
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">run_evaluation</span>(<span class="ident">opt</span>, <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="ident">mex</span><span class="op">|</span> <span class="ident">state2</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">apply</span>(<span class="ident">mex</span>));
+        <span class="kw">match</span> <span class="ident">res</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">Evaluation</span>::<span class="ident">Done</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
+                    <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="string">&quot;Expecting task-maker to fail with \&quot;{}\&quot; but didn&#39;t&quot;</span>,
+                        <span class="ident">message</span>
+                    );
                 }
-            } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;task-maker exited with: {:?}&quot;</span>, <span class="ident">output</span>.<span class="ident">status</span>);
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(
-                <span class="string">&quot;Expecting task-maker to fail with {:?} but didn&#39;t fail&quot;</span>,
-                <span class="ident">message</span>
-            );
+            <span class="prelude-val">Ok</span>(<span class="ident">Evaluation</span>::<span class="ident">Clean</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected task cleaning&quot;</span>);
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
+                    <span class="kw">if</span> <span class="op">!</span><span class="ident">e</span>.<span class="ident">to_string</span>().<span class="ident">contains</span>(<span class="ident">message</span>) {
+                        <span class="macro">panic</span><span class="macro">!</span>(
+                            <span class="string">&quot;Expecting task-maker to fail with \&quot;{}\&quot; but failed with: {:?}&quot;</span>,
+                            <span class="ident">message</span>, <span class="ident">e</span>
+                        );
+                    } <span class="kw">else</span> {
+                        <span class="kw">return</span>;
+                    }
+                } <span class="kw">else</span> {
+                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Task-maker failed unexpectedly with: {:?}&quot;</span>, <span class="ident">e</span>);
+                }
+            }
         }
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">UIState</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>);
-        <span class="kw">for</span> <span class="ident">message</span> <span class="kw">in</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">output</span>.<span class="ident">stdout</span>).<span class="ident">unwrap</span>().<span class="ident">lines</span>() {
-            <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>::<span class="op">&lt;</span><span class="ident">UIMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">message</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid message&quot;</span>);
-            <span class="ident">state</span>.<span class="ident">apply</span>(<span class="ident">message</span>);
-        }
+
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;State is: {:#?}&quot;</span>, <span class="ident">state</span>);
         <span class="self">self</span>.<span class="ident">check_limits</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
         <span class="self">self</span>.<span class="ident">check_compilation</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
@@ -844,18 +843,19 @@
             .<span class="ident">name</span>(<span class="string">&quot;Test server&quot;</span>.<span class="ident">to_string</span>())
             .<span class="ident">spawn</span>(<span class="op">|</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-                <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
-                    .<span class="ident">parent</span>()
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
-                    .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
-                    .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--store-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">store</span>.<span class="ident">path</span>());
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--server&quot;</span>);
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;0.0.0.0:27182&quot;</span>);
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;0.0.0.0:27183&quot;</span>);
-                <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">command</span>.<span class="ident">spawn</span>().<span class="ident">unwrap</span>().<span class="ident">wait</span>().<span class="ident">unwrap</span>().<span class="ident">success</span>());
+                <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">store</span>.<span class="ident">path</span>().<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>();
+                <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">Opt</span>::<span class="ident">from_iter</span>(<span class="kw-2">&amp;</span>[
+                    <span class="string">&quot;task-maker&quot;</span>,
+                    <span class="string">&quot;--store-dir&quot;</span>,
+                    <span class="kw-2">&amp;</span><span class="ident">store</span>,
+                    <span class="string">&quot;--server&quot;</span>,
+                    <span class="string">&quot;0.0.0.0:27182&quot;</span>,
+                    <span class="string">&quot;0.0.0.0:27183&quot;</span>,
+                ]);
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Remote</span>::<span class="ident">Server</span>(<span class="ident">server_opt</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">opt</span>.<span class="ident">remote</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() {
+                    <span class="kw">let</span> <span class="ident">server_opt</span> <span class="op">=</span> <span class="ident">server_opt</span>.<span class="ident">clone</span>();
+                    <span class="ident">main_server</span>(<span class="ident">opt</span>, <span class="ident">server_opt</span>);
+                }
             })
             .<span class="ident">unwrap</span>();
         <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
@@ -863,17 +863,22 @@
             .<span class="ident">spawn</span>(<span class="op">|</span><span class="op">|</span> {
                 <span class="ident">TestInterface</span>::<span class="ident">wait_port</span>(<span class="number">27183</span>);
                 <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-                <span class="kw">let</span> <span class="ident">task_maker</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
-                    .<span class="ident">parent</span>()
-                    .<span class="ident">unwrap</span>()
-                    .<span class="ident">join</span>(<span class="string">&quot;target&quot;</span>)
-                    .<span class="ident">join</span>(<span class="string">&quot;debug&quot;</span>)
-                    .<span class="ident">join</span>(<span class="string">&quot;task-maker&quot;</span>);
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="ident">task_maker</span>);
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--store-dir&quot;</span>).<span class="ident">arg</span>(<span class="ident">store</span>.<span class="ident">path</span>());
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;--worker&quot;</span>);
-                <span class="ident">command</span>.<span class="ident">arg</span>(<span class="string">&quot;127.0.0.1:27183&quot;</span>);
-                <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">command</span>.<span class="ident">spawn</span>().<span class="ident">unwrap</span>().<span class="ident">wait</span>().<span class="ident">unwrap</span>().<span class="ident">success</span>());
+                <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">store</span>.<span class="ident">path</span>().<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>();
+                <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">Opt</span>::<span class="ident">from_iter</span>(<span class="kw-2">&amp;</span>[
+                    <span class="string">&quot;task-maker&quot;</span>,
+                    <span class="string">&quot;--store-dir&quot;</span>,
+                    <span class="kw-2">&amp;</span><span class="ident">store</span>,
+                    <span class="string">&quot;--worker&quot;</span>,
+                    <span class="string">&quot;127.0.0.1:27183&quot;</span>,
+                ]);
+                <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">set_var</span>(
+                    <span class="string">&quot;TASK_MAKER_SANDBOX_BIN&quot;</span>,
+                    <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;OUT_DIR&quot;</span>)).<span class="ident">join</span>(<span class="string">&quot;sandbox&quot;</span>),
+                );
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Remote</span>::<span class="ident">Worker</span>(<span class="ident">worker_opt</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">opt</span>.<span class="ident">remote</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>() {
+                    <span class="kw">let</span> <span class="ident">worker_opt</span> <span class="op">=</span> <span class="ident">worker_opt</span>.<span class="ident">clone</span>();
+                    <span class="ident">main_worker</span>(<span class="ident">opt</span>, <span class="ident">worker_opt</span>);
+                }
             })
             .<span class="ident">unwrap</span>();
     }
@@ -963,11 +968,14 @@
             }
             <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">evaluations</span>[<span class="ident">name</span>];
             <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">iter</span>().<span class="ident">sum</span>();
+            <span class="kw">let</span> <span class="ident">state_score</span> <span class="op">=</span> <span class="ident">state</span>
+                .<span class="ident">score</span>
+                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;missing score of {:?}&quot;</span>, <span class="ident">name</span>));
             <span class="macro">assert</span><span class="macro">!</span>(
-                <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="ident">state</span>.<span class="ident">score</span>.<span class="ident">unwrap</span>()),
+                <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="ident">state_score</span>),
                 <span class="string">&quot;Solution score mismatch: {} != {}&quot;</span>,
                 <span class="ident">score</span>,
-                <span class="ident">state</span>.<span class="ident">score</span>.<span class="ident">unwrap</span>()
+                <span class="ident">state_score</span>
             );
             <span class="macro">assert_eq</span><span class="macro">!</span>(
                 <span class="ident">scores</span>.<span class="ident">len</span>(),
