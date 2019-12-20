@@ -1426,9 +1426,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_check_integrity</span>() {
-        <span class="kw">if</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GITHUB_WORKFLOW&quot;</span>).<span class="ident">is_ok</span>() {
-            <span class="comment">// skip this test on Github Actions because the runner does not support the last</span>
-            <span class="comment">// modified time, so the fast integrity check skips the actual sanity check.</span>
+        <span class="kw">if</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GITHUB_WORKFLOW&quot;</span>).<span class="ident">is_ok</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CI&quot;</span>).<span class="ident">is_ok</span>() {
+            <span class="comment">// skip this test CI because the runner does not support the last modified time, so the</span>
+            <span class="comment">// fast integrity check skips the actual sanity check.</span>
             <span class="kw">return</span>;
         }
         <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">get_cwd</span>();
