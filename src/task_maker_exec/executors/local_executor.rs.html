@@ -113,6 +113,7 @@
 <span id="113">113</span>
 <span id="114">114</span>
 <span id="115">115</span>
+<span id="116">116</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::<span class="ident">channel</span>;
@@ -126,6 +127,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="ident">FileStore</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">executor</span>::{<span class="ident">Executor</span>, <span class="ident">ExecutorInMessage</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::{<span class="ident">ExecutorClientMessage</span>, <span class="ident">ExecutorServerMessage</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">scheduler</span>::<span class="ident">ClientInfo</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ChannelReceiver</span>, <span class="ident">ChannelSender</span>, <span class="ident">RawSandboxResult</span>, <span class="ident">Worker</span>};
 <span class="kw">use</span> <span class="ident">tabox</span>::<span class="ident">configuration</span>::<span class="ident">SandboxConfiguration</span>;
@@ -165,8 +167,8 @@
     <span class="doccomment">/// * `sandbox_runner` - The function to call for running a process in a sandbox.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">evaluate</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
         <span class="self">self</span>,
-        <span class="ident">sender</span>: <span class="ident">ChannelSender</span>,
-        <span class="ident">receiver</span>: <span class="ident">ChannelReceiver</span>,
+        <span class="ident">sender</span>: <span class="ident">ChannelSender</span><span class="op">&lt;</span><span class="ident">ExecutorServerMessage</span><span class="op">&gt;</span>,
+        <span class="ident">receiver</span>: <span class="ident">ChannelReceiver</span><span class="op">&lt;</span><span class="ident">ExecutorClientMessage</span><span class="op">&gt;</span>,
         <span class="ident">cache</span>: <span class="ident">Cache</span>,
         <span class="ident">sandbox_runner</span>: <span class="ident">F</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>

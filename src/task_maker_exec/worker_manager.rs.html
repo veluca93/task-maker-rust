@@ -195,6 +195,7 @@
 <span id="195">195</span>
 <span id="196">196</span>
 <span id="197">197</span>
+<span id="198">198</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::{<span class="ident">Receiver</span>, <span class="ident">Sender</span>};
@@ -211,7 +212,7 @@
     <span class="ident">ChannelFileIterator</span>, <span class="ident">ChannelFileSender</span>, <span class="ident">WorkerClientMessage</span>, <span class="ident">WorkerServerMessage</span>,
 };
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">scheduler</span>::<span class="ident">SchedulerInMessage</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">deserialize_from</span>, <span class="ident">serialize_into</span>, <span class="ident">ChannelSender</span>, <span class="ident">WorkerConn</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ChannelSender</span>, <span class="ident">WorkerConn</span>};
 
 <span class="doccomment">/// Message coming from the Scheduler or the Executor for the WorkerManager</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">WorkerManagerInMessage</span> {
@@ -262,7 +263,8 @@
     <span class="doccomment">/// Run the worker manager blocking until an exit message is received. On exiting the connected</span>
     <span class="doccomment">/// workers will stop.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">connected_workers</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">WorkerUuid</span>, <span class="ident">ChannelSender</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">connected_workers</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">WorkerUuid</span>, <span class="ident">ChannelSender</span><span class="op">&lt;</span><span class="ident">WorkerServerMessage</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
+            <span class="ident">HashMap</span>::<span class="ident">new</span>();
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">receiver</span>.<span class="ident">recv</span>() {
             <span class="kw">match</span> <span class="ident">message</span> {
                 <span class="ident">WorkerManagerInMessage</span>::<span class="ident">WorkerConnected</span> { <span class="ident">worker</span> } <span class="op">=</span><span class="op">&gt;</span> {
@@ -295,7 +297,7 @@
                     <span class="comment">// if the worker is not present, it means it has just disconnected. The</span>
                     <span class="comment">// scheduler should be already informed and should have resheduled the job.</span>
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sender</span>) <span class="op">=</span> <span class="ident">connected_workers</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">worker</span>) {
-                        <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">job</span>)), <span class="kw-2">&amp;</span><span class="ident">sender</span>)<span class="question-mark">?</span>;
+                        <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Work</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">job</span>)))<span class="question-mark">?</span>;
                     }
                 }
                 <span class="ident">WorkerManagerInMessage</span>::<span class="ident">Exit</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -306,7 +308,7 @@
         }
         <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Worker manager exiting&quot;</span>);
         <span class="kw">for</span> (<span class="ident">worker</span>, <span class="ident">sender</span>) <span class="kw">in</span> <span class="ident">connected_workers</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerServerMessage</span>::<span class="ident">Exit</span>, <span class="kw-2">&amp;</span><span class="ident">sender</span>).<span class="ident">is_err</span>() {
+            <span class="kw">if</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Exit</span>).<span class="ident">is_err</span>() {
                 <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Cannot tell worker {} to exit&quot;</span>, <span class="ident">worker</span>);
             }
         }
@@ -322,7 +324,7 @@
         <span class="ident">worker_manager</span>: <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">WorkerManagerInMessage</span><span class="op">&gt;</span>,
         <span class="ident">file_store</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">FileStore</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="ident">deserialize_from</span>::<span class="op">&lt;</span><span class="ident">WorkerClientMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">receiver</span>) {
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="ident">worker</span>.<span class="ident">receiver</span>.<span class="ident">recv</span>() {
             <span class="kw">match</span> <span class="ident">message</span> {
                 <span class="ident">WorkerClientMessage</span>::<span class="ident">GetWork</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// the worker is asking for more work to do</span>
@@ -340,7 +342,7 @@
                     <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">file_store</span>
                         .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>)
                         .<span class="ident">expect</span>(<span class="string">&quot;Worker is asking for an unknown file&quot;</span>);
-                    <span class="ident">serialize_into</span>(<span class="kw-2">&amp;</span><span class="ident">WorkerServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">key</span>), <span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">sender</span>)<span class="question-mark">?</span>;
+                    <span class="ident">worker</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">key</span>))<span class="question-mark">?</span>;
                     <span class="ident">ChannelFileSender</span>::<span class="ident">send</span>(<span class="ident">handle</span>.<span class="ident">path</span>(), <span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">sender</span>)<span class="question-mark">?</span>;
                 }
                 <span class="ident">WorkerClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -353,7 +355,7 @@
                     <span class="comment">// TODO send only the files that are not already present in the local store</span>
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output_handlers</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
                     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">outputs</span>.<span class="ident">len</span>() {
-                        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">deserialize_from</span>::<span class="op">&lt;</span><span class="ident">WorkerClientMessage</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">receiver</span>)<span class="question-mark">?</span>;
+                        <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">worker</span>.<span class="ident">receiver</span>.<span class="ident">recv</span>()<span class="question-mark">?</span>;
                         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">WorkerClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>) <span class="op">=</span> <span class="ident">message</span> {
                             <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">file_store</span>
                                 .<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">ChannelFileIterator</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">receiver</span>))<span class="question-mark">?</span>;
