@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["TestInterface","Interface for testing a task."]]});
+initSidebarItems({"struct":[["TestInterface","Interface for testing a task."],["TestInterfaceSuccessful","Interface for testing a task."]]});

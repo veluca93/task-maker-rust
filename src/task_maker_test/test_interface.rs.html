@@ -517,254 +517,116 @@
 <span id="517">517</span>
 <span id="518">518</span>
 <span id="519">519</span>
-<span id="520">520</span>
-<span id="521">521</span>
-<span id="522">522</span>
-<span id="523">523</span>
-<span id="524">524</span>
-<span id="525">525</span>
-<span id="526">526</span>
-<span id="527">527</span>
-<span id="528">528</span>
-<span id="529">529</span>
-<span id="530">530</span>
-<span id="531">531</span>
-<span id="532">532</span>
-<span id="533">533</span>
-<span id="534">534</span>
-<span id="535">535</span>
-<span id="536">536</span>
-<span id="537">537</span>
-<span id="538">538</span>
-<span id="539">539</span>
-<span id="540">540</span>
-<span id="541">541</span>
-<span id="542">542</span>
-<span id="543">543</span>
-<span id="544">544</span>
-<span id="545">545</span>
-<span id="546">546</span>
-<span id="547">547</span>
-<span id="548">548</span>
-<span id="549">549</span>
-<span id="550">550</span>
-<span id="551">551</span>
-<span id="552">552</span>
-<span id="553">553</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
+
+<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
+<span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
+
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionStatus</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::{
-    <span class="ident">CompilationStatus</span>, <span class="ident">SolutionEvaluationState</span>, <span class="ident">SubtaskId</span>, <span class="ident">Task</span>, <span class="ident">TestcaseEvaluationStatus</span>,
-    <span class="ident">TestcaseGenerationStatus</span>, <span class="ident">UIState</span>,
+    <span class="ident">CompilationStatus</span>, <span class="ident">SubtaskId</span>, <span class="ident">Task</span>, <span class="ident">TestcaseEvaluationStatus</span>, <span class="ident">TestcaseGenerationStatus</span>, <span class="ident">UIState</span>,
 };
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">EvaluationConfig</span>;
 <span class="kw">use</span> <span class="ident">task_maker_rust</span>::{<span class="ident">main_server</span>, <span class="ident">main_worker</span>, <span class="ident">run_evaluation</span>, <span class="ident">Evaluation</span>, <span class="ident">Opt</span>, <span class="ident">Remote</span>};
-<span class="kw">use</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>;
 
 <span class="doccomment">/// Interface for testing a task.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestInterface</span> {
-    <span class="doccomment">/// The path to the task directory.</span>
-    <span class="kw">pub</span> <span class="ident">path</span>: <span class="ident">PathBuf</span>,
-    <span class="doccomment">/// The time limit of the task.</span>
-    <span class="kw">pub</span> <span class="ident">time_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The memory limit of the task.</span>
-    <span class="kw">pub</span> <span class="ident">memory_limit</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The maximum score of the task.</span>
-    <span class="kw">pub</span> <span class="ident">max_score</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The list of the names of the files that must compile.</span>
-    <span class="kw">pub</span> <span class="ident">must_compile</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The list of the names of the files that must fail to compile.</span>
-    <span class="kw">pub</span> <span class="ident">must_not_compile</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The list of the names of the files that should not be compiled.</span>
-    <span class="kw">pub</span> <span class="ident">not_compiled</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The list of the scores of the subtasks.</span>
-    <span class="kw">pub</span> <span class="ident">subtask_scores</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The list of scores, for each subtask, of the solutions.</span>
-    <span class="kw">pub</span> <span class="ident">solution_scores</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The status of the evaluation of some solutions.</span>
-    <span class="kw">pub</span> <span class="ident">solution_statuses</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TestcaseEvaluationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Expect task-maker to fail with the specified message.</span>
-    <span class="kw">pub</span> <span class="ident">fail</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The status of the generations of the testcases.</span>
-    <span class="kw">pub</span> <span class="ident">generation_statuses</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TestcaseGenerationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A list with the stderr message of the failing generators.</span>
-    <span class="kw">pub</span> <span class="ident">generation_fails</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A list with the stderr message of the failing validations.</span>
-    <span class="kw">pub</span> <span class="ident">validation_fails</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Whether the cache is allowed.</span>
-    <span class="kw">pub</span> <span class="ident">cache</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Storage directory for the test interface. This is used only by the client, not the server</span>
-    <span class="doccomment">/// nor the workers.</span>
-    <span class="kw">pub</span> <span class="ident">store_dir</span>: <span class="ident">TempDir</span>,
+    <span class="ident">state</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">UIState</span>, <span class="ident">Error</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// Interface for testing a task.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TestInterfaceSuccessful</span> {
+    <span class="ident">state</span>: <span class="ident">UIState</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TestInterface</span> {
-    <span class="doccomment">/// Make a new `TestInterface` from the specified task directory.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_local</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
             .<span class="ident">join</span>(<span class="string">&quot;tasks&quot;</span>)
             .<span class="ident">join</span>(<span class="ident">path</span>.<span class="ident">into</span>());
+        <span class="kw">let</span> <span class="ident">tempdir</span> <span class="op">=</span> <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tmtest&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot crete tempdir&quot;</span>);
         <span class="ident">TestInterface</span> {
-            <span class="ident">path</span>,
-            <span class="ident">time_limit</span>: <span class="prelude-val">None</span>,
-            <span class="ident">memory_limit</span>: <span class="prelude-val">None</span>,
-            <span class="ident">max_score</span>: <span class="prelude-val">None</span>,
-            <span class="ident">must_compile</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">must_not_compile</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">not_compiled</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">subtask_scores</span>: <span class="prelude-val">None</span>,
-            <span class="ident">solution_scores</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">solution_statuses</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">fail</span>: <span class="prelude-val">None</span>,
-            <span class="ident">generation_statuses</span>: <span class="prelude-val">None</span>,
-            <span class="ident">generation_fails</span>: <span class="prelude-val">None</span>,
-            <span class="ident">validation_fails</span>: <span class="prelude-val">None</span>,
-            <span class="ident">cache</span>: <span class="bool-val">false</span>,
-            <span class="ident">store_dir</span>: <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">state</span>: <span class="ident">TestInterface</span>::<span class="ident">run_task_maker</span>(<span class="ident">path</span>, <span class="bool-val">false</span>, <span class="kw-2">&amp;</span><span class="ident">tempdir</span>, <span class="kw-2">&amp;</span>[]),
         }
     }
 
-    <span class="doccomment">/// Check that task-maker fails with the specified message.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fail</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">fail</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the time limit is the one specified.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">time_limit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">time_limit</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">time_limit</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">time_limit</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the memory limit is the one specified.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory_limit</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">memory_limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">memory_limit</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">memory_limit</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the max score of the task is the one specified.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_score</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max_score</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">max_score</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">max_score</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the specified file is compiled successfully.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">must_compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">must_compile</span>.<span class="ident">push</span>(<span class="ident">source</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the specified file fails to compile.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">must_not_compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">must_not_compile</span>.<span class="ident">push</span>(<span class="ident">source</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the specified file is not compiled.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_compiled</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">not_compiled</span>.<span class="ident">push</span>(<span class="ident">source</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the subtasks have the following scores.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subtask_scores</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">scores</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">subtask_scores</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">scores</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the solution scores those values for each subtask.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">solution_score</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">solution</span>: <span class="ident">P</span>,
-        <span class="ident">scores</span>: <span class="ident">I</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">solution_scores</span>
-            .<span class="ident">entry</span>(<span class="ident">solution</span>.<span class="ident">into</span>())
-            .<span class="ident">or_insert</span>(<span class="ident">scores</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the statuses of the solution starts with the ones specified.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">solution_statuses</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TestcaseEvaluationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">solution</span>: <span class="ident">P</span>,
-        <span class="ident">statuses</span>: <span class="ident">I</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">solution_statuses</span>
-            .<span class="ident">entry</span>(<span class="ident">solution</span>.<span class="ident">into</span>())
-            .<span class="ident">or_insert</span>(<span class="ident">statuses</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the statuses of the generation are those.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_statuses</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TestcaseGenerationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">statuses</span>: <span class="ident">I</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">generation_statuses</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">statuses</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the generators fail with the specified messages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_fails</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">fails</span>: <span class="ident">I</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">generation_fails</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">fails</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Check that the validations fail with the specified messages.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validation_fails</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">fails</span>: <span class="ident">I</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">validation_fails</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">fails</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Allow or disallow the cache.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cache</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cache</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">cache</span> <span class="op">=</span> <span class="ident">cache</span>;
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Run the tests using task-maker in local mode, i.e. not spawning a separate server and</span>
-    <span class="doccomment">/// workers.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_local</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span>[]);
-    }
-
     <span class="doccomment">/// Evaluate the task using a &quot;remote&quot; setup (spawning a local server and local workers).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_remote</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_remote</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">port_scanner</span>::<span class="ident">scan_port</span>(<span class="number">27182</span>) {
             <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Server not spawned, spawning&quot;</span>);
             <span class="ident">TestInterface</span>::<span class="ident">spawn_server</span>();
             <span class="ident">TestInterface</span>::<span class="ident">wait_port</span>(<span class="number">27182</span>);
         }
 
-        <span class="self">self</span>.<span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;--evaluate-on&quot;</span>, <span class="string">&quot;127.0.0.1:27182&quot;</span>]);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+            .<span class="ident">join</span>(<span class="string">&quot;tasks&quot;</span>)
+            .<span class="ident">join</span>(<span class="ident">path</span>.<span class="ident">into</span>());
+        <span class="kw">let</span> <span class="ident">tempdir</span> <span class="op">=</span> <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tmtest&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Cannot crete tempdir&quot;</span>);
+        <span class="ident">TestInterface</span> {
+            <span class="ident">state</span>: <span class="ident">TestInterface</span>::<span class="ident">run_task_maker</span>(
+                <span class="ident">path</span>,
+                <span class="bool-val">false</span>,
+                <span class="kw-2">&amp;</span><span class="ident">tempdir</span>,
+                <span class="kw-2">&amp;</span>[<span class="string">&quot;--evaluate-on&quot;</span>, <span class="string">&quot;127.0.0.1:27182&quot;</span>],
+            ),
+        }
     }
 
-    <span class="kw">fn</span> <span class="ident">run_task_maker</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">extra_args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) {
+    <span class="doccomment">/// Expect task-maker to fail with the specified message.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fail</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">err</span>: <span class="ident">S</span>) {
+        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">err</span>.<span class="ident">as_ref</span>();
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span> {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">e</span>.<span class="ident">to_string</span>().<span class="ident">contains</span>(<span class="ident">err</span>) {
+                <span class="macro">panic</span><span class="macro">!</span>(
+                    <span class="string">&quot;Expecting task-maker to fail with &#39;{}&#39; but failed with {:?}&quot;</span>,
+                    <span class="ident">err</span>, <span class="ident">e</span>
+                );
+            }
+        } <span class="kw">else</span> {
+            <span class="macro">panic</span><span class="macro">!</span>(
+                <span class="string">&quot;Expecting task-maker to fail with &#39;{}&#39; but didn&#39;t fail&quot;</span>,
+                <span class="ident">err</span>
+            );
+        }
+    }
+
+    <span class="doccomment">/// Expect task-maker not to fail, unlocking the possibility to test the final state of the</span>
+    <span class="doccomment">/// execution.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">success</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestInterfaceSuccessful</span> {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">state</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">state</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TestInterfaceSuccessful</span> { <span class="ident">state</span> },
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting task-maker not to fail, but failed with {:?}&quot;</span>, <span class="ident">e</span>),
+        }
+    }
+
+    <span class="doccomment">/// Run task-maker blocking this thread by calling the entry point of the local execution, i.e.</span>
+    <span class="doccomment">/// not sending `--server` nor `--worker`. This approach is used to keep a single process</span>
+    <span class="doccomment">/// running and keep tracing the coverage.</span>
+    <span class="kw">fn</span> <span class="ident">run_task_maker</span>(
+        <span class="ident">task_dir</span>: <span class="ident">PathBuf</span>,
+        <span class="ident">cache</span>: <span class="ident">bool</span>,
+        <span class="ident">store_dir</span>: <span class="kw-2">&amp;</span><span class="ident">TempDir</span>,
+        <span class="ident">extra_args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">UIState</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;task-maker&quot;</span>];
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>();
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">task_dir</span>.<span class="ident">to_string_lossy</span>().<span class="ident">into_owned</span>();
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--task-dir={}&quot;</span>, <span class="ident">path</span>);
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>);
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--ui=silent&quot;</span>.<span class="ident">into</span>());
-        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">cache</span> {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">cache</span> {
             <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--no-cache&quot;</span>.<span class="ident">into</span>());
         }
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;--dry-run&quot;</span>.<span class="ident">into</span>());
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;-vv&quot;</span>.<span class="ident">into</span>());
-        <span class="kw">let</span> <span class="ident">store_dir</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--store-dir={}&quot;</span>, <span class="self">self</span>.<span class="ident">store_dir</span>.<span class="ident">path</span>().<span class="ident">to_string_lossy</span>());
+        <span class="kw">let</span> <span class="ident">store_dir</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;--store-dir={}&quot;</span>, <span class="ident">store_dir</span>.<span class="ident">path</span>().<span class="ident">to_string_lossy</span>());
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="kw-2">&amp;</span><span class="ident">store_dir</span>);
         <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="ident">extra_args</span> {
             <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">arg</span>);
@@ -775,9 +637,8 @@
         );
         <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">Opt</span>::<span class="ident">from_iter</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>);
 
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Expecting: {:#?}&quot;</span>, <span class="self">self</span>);
         <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">Task</span>::<span class="ident">new</span>(
-            <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>,
+            <span class="kw-2">&amp;</span><span class="ident">task_dir</span>,
             <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span> {
                 <span class="ident">solution_filter</span>: <span class="macro">vec</span><span class="macro">!</span>[],
                 <span class="ident">booklet_solutions</span>: <span class="bool-val">false</span>,
@@ -790,44 +651,19 @@
 
         <span class="kw">let</span> <span class="ident">state2</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">clone</span>();
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">run_evaluation</span>(<span class="ident">opt</span>, <span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="ident">mex</span><span class="op">|</span> <span class="ident">state2</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">apply</span>(<span class="ident">mex</span>));
-        <span class="kw">match</span> <span class="ident">res</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">Evaluation</span>::<span class="ident">Done</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
-                    <span class="macro">panic</span><span class="macro">!</span>(
-                        <span class="string">&quot;Expecting task-maker to fail with \&quot;{}\&quot; but didn&#39;t&quot;</span>,
-                        <span class="ident">message</span>
-                    );
-                }
+        <span class="kw">match</span> <span class="ident">res</span><span class="question-mark">?</span> {
+            <span class="ident">Evaluation</span>::<span class="ident">Done</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+                <span class="prelude-val">Ok</span>(<span class="ident">state</span>.<span class="ident">clone</span>())
             }
-            <span class="prelude-val">Ok</span>(<span class="ident">Evaluation</span>::<span class="ident">Clean</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Evaluation</span>::<span class="ident">Clean</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected task cleaning&quot;</span>);
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">message</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fail</span> {
-                    <span class="kw">if</span> <span class="op">!</span><span class="ident">e</span>.<span class="ident">to_string</span>().<span class="ident">contains</span>(<span class="ident">message</span>) {
-                        <span class="macro">panic</span><span class="macro">!</span>(
-                            <span class="string">&quot;Expecting task-maker to fail with \&quot;{}\&quot; but failed with: {:?}&quot;</span>,
-                            <span class="ident">message</span>, <span class="ident">e</span>
-                        );
-                    } <span class="kw">else</span> {
-                        <span class="kw">return</span>;
-                    }
-                } <span class="kw">else</span> {
-                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Task-maker failed unexpectedly with: {:?}&quot;</span>, <span class="ident">e</span>);
-                }
-            }
         }
-
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;State is: {:#?}&quot;</span>, <span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_limits</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_compilation</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_subtasks</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_generations</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_solution_scores</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
-        <span class="self">self</span>.<span class="ident">check_solution_statuses</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
     }
 
+    <span class="doccomment">/// Block until the specified port becomes open, trying many times sleeping for a while in</span>
+    <span class="doccomment">/// between.</span>
     <span class="kw">fn</span> <span class="ident">wait_port</span>(<span class="ident">port</span>: <span class="ident">u16</span>) {
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {
             <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Waiting for the server...&quot;</span>);
@@ -838,6 +674,7 @@
         }
     }
 
+    <span class="doccomment">/// Spawn the server and the worker in different threads by calling their entry points.</span>
     <span class="kw">fn</span> <span class="ident">spawn_server</span>() {
         <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;Test server&quot;</span>.<span class="ident">to_string</span>())
@@ -882,227 +719,322 @@
             })
             .<span class="ident">unwrap</span>();
     }
+}
 
-    <span class="doccomment">/// Check the task limits are met.</span>
-    <span class="kw">fn</span> <span class="ident">check_limits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="ident">actual</span>)) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">time_limit</span>, <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">time_limit</span>) {
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>), <span class="string">&quot;Wrong time limit&quot;</span>);
-        }
-        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="ident">actual</span>)) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">memory_limit</span>, <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">memory_limit</span>) {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>, <span class="string">&quot;Wrong memory limit&quot;</span>);
-        }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">max_score</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">max_score</span> {
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">max_score</span>, <span class="ident">state</span>.<span class="ident">max_score</span>), <span class="string">&quot;Wrong max score&quot;</span>);
-        }
+<span class="kw">impl</span> <span class="ident">TestInterfaceSuccessful</span> {
+    <span class="doccomment">/// Check that the time limit is the one specified.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">time_limit</span>(<span class="self">self</span>, <span class="ident">time_limit</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert</span><span class="macro">!</span>(
+            <span class="macro">abs_diff_eq</span><span class="macro">!</span>(
+                <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">time_limit</span>.<span class="ident">expect</span>(<span class="string">&quot;No time limit in task&quot;</span>),
+                <span class="ident">time_limit</span>
+            ),
+            <span class="string">&quot;Wrong time limit&quot;</span>
+        );
+        <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Check that the compilation of the files is good.</span>
-    <span class="kw">fn</span> <span class="ident">check_compilation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">let</span> <span class="ident">compilations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="kw-2">&amp;</span><span class="ident">CompilationStatus</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">state</span>
-            .<span class="ident">compilations</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">file</span>, <span class="ident">comp</span>)<span class="op">|</span> (<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">file</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>()), <span class="ident">comp</span>))
-            .<span class="ident">collect</span>();
-        <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">must_compile</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">compilations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
-                <span class="kw">match</span> <span class="ident">compilations</span>[<span class="ident">name</span>] {
-                    <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
-                        <span class="string">&quot;Expecting {:?} to compile, but was {:?}&quot;</span>,
-                        <span class="ident">name</span>, <span class="ident">compilations</span>[<span class="ident">name</span>]
-                    ),
-                }
-            } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting {:?} to compile, but was not in the UI&quot;</span>, <span class="ident">name</span>);
-            }
-        }
-        <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">must_not_compile</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">compilations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
-                <span class="kw">match</span> <span class="ident">compilations</span>[<span class="ident">name</span>] {
-                    <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
-                        <span class="string">&quot;Expecting {:?} to not compile, but was {:?}&quot;</span>,
-                        <span class="ident">name</span>, <span class="ident">compilations</span>[<span class="ident">name</span>]
-                    ),
-                }
-            } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting {:?} to not compile, but was not in the UI&quot;</span>, <span class="ident">name</span>);
-            }
-        }
-        <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">not_compiled</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="ident">compilations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
-                <span class="macro">panic</span><span class="macro">!</span>(
-                    <span class="string">&quot;Expecting {:?} not to be compiled, but was {:?}&quot;</span>,
-                    <span class="ident">name</span>, <span class="ident">compilations</span>[<span class="ident">name</span>]
-                );
-            }
-        }
+    <span class="doccomment">/// Check that the memory limit is the one specified.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory_limit</span>(<span class="self">self</span>, <span class="ident">memory_limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">memory_limit</span>.<span class="ident">expect</span>(<span class="string">&quot;No memory limit&quot;</span>),
+            <span class="ident">memory_limit</span>
+        );
+        <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Check that the score of the subtasks are good.</span>
-    <span class="kw">fn</span> <span class="ident">check_subtasks</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">scores</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">subtask_scores</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">scores</span>.<span class="ident">len</span>(),
-                <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>.<span class="ident">len</span>(),
-                <span class="string">&quot;Subtask len mismatch&quot;</span>
+    <span class="doccomment">/// Check that the max score of the task is the one specified.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_score</span>(<span class="self">self</span>, <span class="ident">max_score</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>;
+        <span class="kw">let</span> <span class="ident">actual</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">task</span>.<span class="ident">values</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">max_score</span>).<span class="ident">sum</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">actual</span>, <span class="ident">max_score</span>), <span class="string">&quot;Wrong max score&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(
+            <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="self">self</span>.<span class="ident">state</span>.<span class="ident">max_score</span>, <span class="ident">max_score</span>),
+            <span class="string">&quot;Wrong max score in state&quot;</span>
+        );
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the specified file is compiled successfully.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">must_compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">comp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_path_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">compilations</span>, <span class="kw-2">&amp;</span><span class="ident">source</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">comp</span>) <span class="op">=</span> <span class="ident">comp</span> {
+            <span class="kw">match</span> <span class="ident">comp</span> {
+                <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting {:?} to compile, but was: {:?}&quot;</span>, <span class="ident">source</span>, <span class="ident">comp</span>),
+            }
+        } <span class="kw">else</span> {
+            <span class="macro">panic</span><span class="macro">!</span>(
+                <span class="string">&quot;Compilation {:?} not present: {:?}&quot;</span>,
+                <span class="ident">source</span>, <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">compilations</span>
             );
-            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">scores</span>.<span class="ident">len</span>() {
-                <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">scores</span>[<span class="ident">i</span>];
-                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>[<span class="kw-2">&amp;</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">SubtaskId</span>)].<span class="ident">max_score</span>;
-                <span class="macro">assert</span><span class="macro">!</span>(<span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>), <span class="string">&quot;Subtask score mismatch&quot;</span>);
-            }
         }
+        <span class="self">self</span>
     }
 
-    <span class="doccomment">/// Check that the scores of the solutions are good.</span>
-    <span class="kw">fn</span> <span class="ident">check_solution_scores</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">let</span> <span class="ident">evaluations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="kw-2">&amp;</span><span class="ident">SolutionEvaluationState</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">state</span>
-            .<span class="ident">evaluations</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">file</span>, <span class="ident">eval</span>)<span class="op">|</span> (<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">file</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>()), <span class="ident">eval</span>))
-            .<span class="ident">collect</span>();
-        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">scores</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solution_scores</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">evaluations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;No evaluation score for solution {:?}&quot;</span>, <span class="ident">name</span>)
+    <span class="doccomment">/// Check that the specified file fails to compile.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">must_not_compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">comp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_path_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">compilations</span>, <span class="kw-2">&amp;</span><span class="ident">source</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">comp</span>) <span class="op">=</span> <span class="ident">comp</span> {
+            <span class="kw">match</span> <span class="ident">comp</span> {
+                <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting {:?} not to compile, but was: {:?}&quot;</span>, <span class="ident">source</span>, <span class="ident">comp</span>),
             }
-            <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">evaluations</span>[<span class="ident">name</span>];
-            <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">iter</span>().<span class="ident">sum</span>();
-            <span class="kw">let</span> <span class="ident">state_score</span> <span class="op">=</span> <span class="ident">state</span>
-                .<span class="ident">score</span>
-                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;missing score of {:?}&quot;</span>, <span class="ident">name</span>));
+        } <span class="kw">else</span> {
+            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Compilation not present: {:?}&quot;</span>, <span class="ident">source</span>);
+        }
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the specified file is not compiled.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_compiled</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">source</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">comp</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_path_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">compilations</span>, <span class="kw-2">&amp;</span><span class="ident">source</span>);
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">comp</span>) <span class="op">=</span> <span class="ident">comp</span> {
+            <span class="macro">panic</span><span class="macro">!</span>(
+                <span class="string">&quot;Expecting {:?} not to be compiled, but was {:?}&quot;</span>,
+                <span class="ident">source</span>, <span class="ident">comp</span>
+            );
+        }
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the subtasks have the following scores.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">subtask_scores</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">scores</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">scores</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">subtasks</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>;
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">subtasks</span>.<span class="ident">len</span>(), <span class="ident">scores</span>.<span class="ident">len</span>());
+        <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">scores</span>.<span class="ident">len</span>() {
+            <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">scores</span>[<span class="ident">i</span>];
+            <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">subtasks</span>
+                .<span class="ident">get</span>(<span class="kw-2">&amp;</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">SubtaskId</span>))
+                .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Missing subtask {}&quot;</span>, <span class="ident">i</span>));
             <span class="macro">assert</span><span class="macro">!</span>(
-                <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="ident">state_score</span>),
-                <span class="string">&quot;Solution score mismatch: {} != {}&quot;</span>,
-                <span class="ident">score</span>,
-                <span class="ident">state_score</span>
+                <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">actual</span>.<span class="ident">max_score</span>, <span class="ident">expected</span>),
+                <span class="string">&quot;Wrong subtask score of subtask {}&quot;</span>,
+                <span class="ident">i</span>
             );
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">scores</span>.<span class="ident">len</span>(),
-                <span class="ident">state</span>.<span class="ident">subtasks</span>.<span class="ident">len</span>(),
-                <span class="string">&quot;Wrong number of subtask&quot;</span>
+        }
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the solution scores those values for each subtask.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">solution_score</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">f64</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="self">self</span>,
+        <span class="ident">solution</span>: <span class="ident">P</span>,
+        <span class="ident">scores</span>: <span class="ident">I</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">solution</span> <span class="op">=</span> <span class="ident">solution</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">scores</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">get_path_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">evaluations</span>, <span class="kw-2">&amp;</span><span class="ident">solution</span>)
+            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;No evaluation score for solution {:?}&quot;</span>, <span class="ident">solution</span>));
+
+        <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">scores</span>.<span class="ident">iter</span>().<span class="ident">sum</span>();
+        <span class="kw">let</span> <span class="ident">state_score</span> <span class="op">=</span> <span class="ident">state</span>
+            .<span class="ident">score</span>
+            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Missing score of {:?}&quot;</span>, <span class="ident">solution</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(
+            <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="ident">state_score</span>),
+            <span class="string">&quot;Solution score mismatch for solution {:?}&quot;</span>,
+            <span class="ident">solution</span>
+        );
+        <span class="macro">assert_eq</span><span class="macro">!</span>(
+            <span class="ident">scores</span>.<span class="ident">len</span>(),
+            <span class="ident">state</span>.<span class="ident">subtasks</span>.<span class="ident">len</span>(),
+            <span class="string">&quot;Wrong number of subtask&quot;</span>
+        );
+        <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">scores</span>.<span class="ident">len</span>() {
+            <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">scores</span>[<span class="ident">st</span>];
+            <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">subtasks</span>[<span class="kw-2">&amp;</span>(<span class="ident">st</span> <span class="kw">as</span> <span class="ident">SubtaskId</span>)].<span class="ident">score</span>.<span class="ident">unwrap</span>();
+            <span class="macro">assert</span><span class="macro">!</span>(
+                <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>),
+                <span class="string">&quot;Solution subtask score mismatch of solution {:?} at subtask {}&quot;</span>,
+                <span class="ident">solution</span>,
+                <span class="ident">st</span>
             );
-            <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">scores</span>.<span class="ident">len</span>() {
-                <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">scores</span>[<span class="ident">st</span>];
-                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">subtasks</span>[<span class="kw-2">&amp;</span>(<span class="ident">st</span> <span class="kw">as</span> <span class="ident">SubtaskId</span>)].<span class="ident">score</span>.<span class="ident">unwrap</span>();
-                <span class="macro">assert</span><span class="macro">!</span>(
-                    <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>),
-                    <span class="string">&quot;Solution subtask score mismatch: {} != {}&quot;</span>,
-                    <span class="ident">expected</span>,
-                    <span class="ident">actual</span>
+        }
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the statuses of the solution starts with the ones specified.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">solution_statuses</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TestcaseEvaluationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="self">self</span>,
+        <span class="ident">solution</span>: <span class="ident">P</span>,
+        <span class="ident">statuses</span>: <span class="ident">I</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">solution</span> <span class="op">=</span> <span class="ident">solution</span>.<span class="ident">into</span>();
+        <span class="kw">let</span> <span class="ident">statuses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">statuses</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="ident">actuals</span> <span class="op">=</span> <span class="self">self</span>
+            .<span class="ident">get_path_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">evaluations</span>, <span class="kw-2">&amp;</span><span class="ident">solution</span>)
+            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Evaluation status missing for solution {:?}&quot;</span>, <span class="ident">solution</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="ident">actuals</span>.<span class="ident">subtasks</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+            <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">actuals</span>.<span class="ident">subtasks</span>[<span class="ident">st</span>];
+            <span class="kw">for</span> <span class="ident">tc</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+                <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">statuses</span>[<span class="ident">id</span>];
+                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">testcases</span>[<span class="ident">tc</span>].<span class="ident">status</span>;
+                <span class="macro">assert_eq</span><span class="macro">!</span>(
+                    <span class="ident">actual</span>, <span class="ident">expected</span>,
+                    <span class="string">&quot;Solution status mismatch of {:?} at subtask {}, testcase {}&quot;</span>,
+                    <span class="ident">solution</span>, <span class="ident">st</span>, <span class="ident">tc</span>
                 );
-            }
-        }
-    }
-
-    <span class="doccomment">/// Check that the statuses of the solutions are good.</span>
-    <span class="kw">fn</span> <span class="ident">check_solution_statuses</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">let</span> <span class="ident">evaluations</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TestcaseEvaluationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">state</span>
-            .<span class="ident">evaluations</span>
-            .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">file</span>, <span class="ident">eval</span>)<span class="op">|</span> {
-                (
-                    <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">file</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>()),
-                    <span class="ident">eval</span>.<span class="ident">subtasks</span>
-                        .<span class="ident">keys</span>()
-                        .<span class="ident">sorted</span>()
-                        .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> {
-                            <span class="ident">eval</span>.<span class="ident">subtasks</span>[<span class="ident">st</span>]
-                                .<span class="ident">testcases</span>
-                                .<span class="ident">keys</span>()
-                                .<span class="ident">sorted</span>()
-                                .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="ident">eval</span>.<span class="ident">subtasks</span>[<span class="ident">st</span>].<span class="ident">testcases</span>[<span class="ident">tc</span>].<span class="ident">status</span>.<span class="ident">clone</span>())
-                        })
-                        .<span class="ident">collect</span>(),
-                )
-            })
-            .<span class="ident">collect</span>();
-        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">statuses</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solution_statuses</span>.<span class="ident">iter</span>() {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">evaluations</span>.<span class="ident">contains_key</span>(<span class="ident">name</span>) {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;No evaluation statues for solution {:?}&quot;</span>, <span class="ident">name</span>)
-            }
-            <span class="kw">let</span> <span class="ident">actuals</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">evaluations</span>[<span class="ident">name</span>];
-            <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">actuals</span>.<span class="ident">len</span>() {
-                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">actuals</span>[<span class="ident">i</span>];
-                <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">i</span> <span class="op">&lt;</span> <span class="ident">statuses</span>.<span class="ident">len</span>() {
-                    <span class="kw-2">&amp;</span><span class="ident">statuses</span>[<span class="ident">i</span>]
-                } <span class="kw">else</span> {
-                    <span class="kw-2">&amp;</span><span class="ident">statuses</span>[<span class="ident">statuses</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>]
-                };
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>, <span class="string">&quot;Solution status mismatch of {:?}&quot;</span>, <span class="ident">name</span>);
-            }
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">check_generations</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {
-        <span class="kw">let</span> <span class="ident">generations</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">state</span>
-            .<span class="ident">generations</span>
-            .<span class="ident">keys</span>()
-            .<span class="ident">sorted</span>()
-            .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> {
-                <span class="ident">state</span>.<span class="ident">generations</span>[<span class="ident">st</span>]
-                    .<span class="ident">testcases</span>
-                    .<span class="ident">keys</span>()
-                    .<span class="ident">sorted</span>()
-                    .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="ident">state</span>.<span class="ident">generations</span>[<span class="ident">st</span>].<span class="ident">testcases</span>[<span class="ident">tc</span>].<span class="ident">clone</span>())
-            })
-            .<span class="ident">collect</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">statuses</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">generation_statuses</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">statuses</span>.<span class="ident">len</span>(),
-                <span class="ident">generations</span>.<span class="ident">len</span>(),
-                <span class="string">&quot;Invalid number of testcases&quot;</span>
-            );
-            <span class="kw">for</span> (<span class="ident">expected</span>, <span class="ident">testcase</span>) <span class="kw">in</span> <span class="ident">statuses</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">generations</span>.<span class="ident">iter</span>()) {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">status</span>, <span class="string">&quot;Testcase generation mismatch&quot;</span>);
-            }
-        }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">fails</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">generation_fails</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">fails</span>.<span class="ident">len</span>(),
-                <span class="ident">generations</span>.<span class="ident">len</span>(),
-                <span class="string">&quot;Invalid number of testcases&quot;</span>
-            );
-            <span class="kw">for</span> (<span class="ident">expected</span>, <span class="ident">testcase</span>) <span class="kw">in</span> <span class="ident">fails</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">generations</span>.<span class="ident">iter</span>()) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">expected</span>) <span class="op">=</span> <span class="ident">expected</span> {
-                    <span class="kw">let</span> <span class="ident">gen_result</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">generation</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-                    <span class="kw">let</span> <span class="ident">gen_stderr</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">generation_stderr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-                    <span class="macro">assert_ne</span><span class="macro">!</span>(
-                        <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
-                        <span class="ident">gen_result</span>.<span class="ident">status</span>,
-                        <span class="string">&quot;Expecting generation to fail&quot;</span>
-                    );
-                    <span class="macro">assert</span><span class="macro">!</span>(
-                        <span class="ident">gen_stderr</span>.<span class="ident">contains</span>(<span class="ident">expected</span>),
-                        <span class="string">&quot;Generation stderr does not contain {:?}&quot;</span>,
-                        <span class="ident">expected</span>
-                    );
+                <span class="kw">if</span> <span class="ident">id</span> <span class="op">+</span> <span class="number">1</span> <span class="op">&lt;</span> <span class="ident">statuses</span>.<span class="ident">len</span>() {
+                    <span class="ident">id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                 }
             }
         }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">fails</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">validation_fails</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(
-                <span class="ident">fails</span>.<span class="ident">len</span>(),
-                <span class="ident">generations</span>.<span class="ident">len</span>(),
-                <span class="string">&quot;Invalid number of testcases&quot;</span>
-            );
-            <span class="kw">for</span> (<span class="ident">expected</span>, <span class="ident">testcase</span>) <span class="kw">in</span> <span class="ident">fails</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">generations</span>.<span class="ident">iter</span>()) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">expected</span>) <span class="op">=</span> <span class="ident">expected</span> {
-                    <span class="kw">let</span> <span class="ident">val_result</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">validation</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-                    <span class="kw">let</span> <span class="ident">val_stderr</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">validation_stderr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-                    <span class="macro">assert_ne</span><span class="macro">!</span>(
-                        <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
-                        <span class="ident">val_result</span>.<span class="ident">status</span>,
-                        <span class="string">&quot;Expecting validation to fail&quot;</span>
-                    );
-                    <span class="macro">assert</span><span class="macro">!</span>(
-                        <span class="ident">val_stderr</span>.<span class="ident">contains</span>(<span class="ident">expected</span>),
-                        <span class="string">&quot;Validation stderr does not contain {:?}&quot;</span>,
-                        <span class="ident">expected</span>
-                    );
-                }
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the statuses of the generation are those.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_statuses</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TestcaseGenerationStatus</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+        <span class="self">self</span>,
+        <span class="ident">statuses</span>: <span class="ident">I</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">statuses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">statuses</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+            <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>[<span class="ident">st</span>];
+            <span class="kw">for</span> <span class="ident">tc</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+                <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">testcases</span>[<span class="ident">tc</span>].<span class="ident">status</span>;
+                <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="ident">statuses</span>.<span class="ident">get</span>(<span class="ident">id</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+                    <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="string">&quot;Too few testcases in provided status, needing at least {}&quot;</span>,
+                        <span class="ident">id</span>
+                    )
+                });
+
+                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">actual</span>, <span class="ident">expected</span>);
+                <span class="ident">id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
         }
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">id</span>, <span class="ident">statuses</span>.<span class="ident">len</span>(), <span class="string">&quot;Too many testcases provided&quot;</span>);
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the generators fail with the specified messages.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generation_fails</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">fails</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">fails</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">fails</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+            <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>[<span class="ident">st</span>];
+            <span class="kw">for</span> <span class="ident">tc</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+                <span class="kw">let</span> <span class="ident">testcase</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">testcases</span>[<span class="ident">tc</span>];
+                <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>
+                    .<span class="ident">generation</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">expect</span>(<span class="string">&quot;Missing generation execution&quot;</span>)
+                    .<span class="ident">status</span>;
+                <span class="kw">match</span> <span class="ident">fails</span>.<span class="ident">get</span>(<span class="ident">id</span>) {
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">expected</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="macro">assert_ne</span><span class="macro">!</span>(
+                            <span class="kw-2">&amp;</span><span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
+                            <span class="ident">status</span>,
+                            <span class="string">&quot;Expecting generation of subtask {}, testcase {} to fail&quot;</span>,
+                            <span class="ident">st</span>,
+                            <span class="ident">tc</span>
+                        );
+                        <span class="macro">assert</span><span class="macro">!</span>(
+                            <span class="ident">testcase</span>
+                                .<span class="ident">generation_stderr</span>
+                                .<span class="ident">as_ref</span>()
+                                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_str</span>())
+                                .<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>)
+                                .<span class="ident">contains</span>(<span class="ident">expected</span>),
+                            <span class="string">&quot;Generation stderr of subtask {}, testcase {} does not contain &#39;{}&#39;. It is &#39;{:?}&#39;&quot;</span>,
+                            <span class="ident">st</span>, <span class="ident">tc</span>, <span class="ident">expected</span>, <span class="ident">testcase</span>.<span class="ident">generation_stderr</span>
+                        );
+                    }
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="macro">assert_eq</span><span class="macro">!</span>(
+                            <span class="kw-2">&amp;</span><span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
+                            <span class="ident">status</span>,
+                            <span class="string">&quot;Expecting generation of subtask {}, testcase {} not to fail, but was: {:?}&quot;</span>,
+                            <span class="ident">st</span>,
+                            <span class="ident">tc</span>,
+                            <span class="ident">status</span>
+                        );
+                    }
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="string">&quot;Too few testcases in provided status, needing at least {}&quot;</span>,
+                        <span class="ident">id</span>
+                    ),
+                }
+                <span class="ident">id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            }
+        }
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">id</span>, <span class="ident">fails</span>.<span class="ident">len</span>(), <span class="string">&quot;Too many testcases provided&quot;</span>);
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Check that the validations fail with the specified messages.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validation_fails</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">fails</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">let</span> <span class="ident">fails</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">fails</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span> <span class="op">=</span> <span class="number">0</span>;
+        <span class="kw">for</span> <span class="ident">st</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+            <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">state</span>.<span class="ident">generations</span>[<span class="ident">st</span>];
+            <span class="kw">for</span> <span class="ident">tc</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
+                <span class="kw">let</span> <span class="ident">testcase</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">testcases</span>[<span class="ident">tc</span>];
+                <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>
+                    .<span class="ident">validation</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">expect</span>(<span class="string">&quot;Missing validation execution&quot;</span>)
+                    .<span class="ident">status</span>;
+                <span class="kw">match</span> <span class="ident">fails</span>.<span class="ident">get</span>(<span class="ident">id</span>) {
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">Some</span>(<span class="ident">expected</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="macro">assert_ne</span><span class="macro">!</span>(
+                            <span class="kw-2">&amp;</span><span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
+                            <span class="ident">status</span>,
+                            <span class="string">&quot;Expecting validation of subtask {}, testcase {} to fail&quot;</span>,
+                            <span class="ident">st</span>,
+                            <span class="ident">tc</span>
+                        );
+                        <span class="macro">assert</span><span class="macro">!</span>(
+                            <span class="ident">testcase</span>
+                                .<span class="ident">validation_stderr</span>
+                                .<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_str</span>())
+                                .<span class="ident">unwrap_or</span>(<span class="string">&quot;&quot;</span>)
+                                .<span class="ident">contains</span>(<span class="ident">expected</span>),
+                            <span class="string">&quot;Validation stderr of subtask {}, testcase {} does not contain &#39;{}&#39;. It is &#39;{:?}&#39;&quot;</span>,
+                            <span class="ident">st</span>, <span class="ident">tc</span>, <span class="ident">expected</span>, <span class="ident">testcase</span>.<span class="ident">validation_stderr</span>
+                        );
+                    }
+                    <span class="prelude-val">Some</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="macro">assert_eq</span><span class="macro">!</span>(
+                            <span class="kw-2">&amp;</span><span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>,
+                            <span class="ident">status</span>,
+                            <span class="string">&quot;Expecting validation of subtask {}, testcase {} not to fail, but was: {:?}&quot;</span>,
+                            <span class="ident">st</span>,
+                            <span class="ident">tc</span>,
+                            <span class="ident">status</span>
+                        );
+                    }
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="string">&quot;Too few testcases in provided status, needing at least {}&quot;</span>,
+                        <span class="ident">id</span>
+                    ),
+                }
+                <span class="ident">id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            }
+        }
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">id</span>, <span class="ident">fails</span>.<span class="ident">len</span>(), <span class="string">&quot;Too many testcases provided&quot;</span>);
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Find the value in a map whose key is a path with the file name equal to the one specified.</span>
+    <span class="kw">fn</span> <span class="ident">get_path_key</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">V</span>, <span class="ident">P</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">map</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">V</span><span class="op">&gt;</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">V</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
+    {
+        <span class="kw">for</span> (<span class="ident">k</span>, <span class="ident">v</span>) <span class="kw">in</span> <span class="ident">map</span>.<span class="ident">iter</span>() {
+            <span class="kw">if</span> <span class="ident">k</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">path</span>.<span class="ident">as_ref</span>() {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>);
+            }
+        }
+        <span class="prelude-val">None</span>
     }
 }
 </pre></div>
