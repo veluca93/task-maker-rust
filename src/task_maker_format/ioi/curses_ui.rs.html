@@ -559,6 +559,9 @@
 <span id="559">559</span>
 <span id="560">560</span>
 <span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">finish_ui</span>::<span class="ident">FinishUI</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">ui_state</span>::<span class="kw-2">*</span>;
@@ -761,6 +764,9 @@
 
 <span class="doccomment">/// Get the rect of the inner rect of a block with the borders.</span>
 <span class="kw">fn</span> <span class="ident">inner_block</span>(<span class="ident">rect</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
+    <span class="kw">if</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">&lt;</span> <span class="number">2</span> <span class="op">|</span><span class="op">|</span> <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">&lt;</span> <span class="number">2</span> {
+        <span class="kw">return</span> <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);
+    }
     <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">-</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">-</span> <span class="number">2</span>)
 }
 
