@@ -300,11 +300,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Booklet</span> {
     <span class="doccomment">/// Configuration of the booklet.</span>
-    <span class="ident">config</span>: <span class="ident">BookletConfig</span>,
+    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">BookletConfig</span>,
     <span class="doccomment">/// The list of `Statement`s that are included in this booklet.</span>
     <span class="kw">pub</span> <span class="ident">statements</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Where to copy the booklet.</span>
-    <span class="ident">dest</span>: <span class="ident">PathBuf</span>,
+    <span class="kw">pub</span> <span class="ident">dest</span>: <span class="ident">PathBuf</span>,
 }
 
 <span class="doccomment">/// Part of the schema of `contest.yaml`, used for extracting the configuration of the booklet.</span>

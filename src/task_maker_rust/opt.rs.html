@@ -200,6 +200,10 @@
 <span id="200">200</span>
 <span id="201">201</span>
 <span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -310,6 +314,10 @@
     <span class="doccomment">/// Options for spawning a client or a server.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
     <span class="kw">pub</span> <span class="ident">remote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Remote</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Show task information</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">task_info</span>: <span class="ident">bool</span>,
 
     <span class="doccomment">/// Run the sandbox instead of the normal task-maker.</span>
     <span class="doccomment">///</span>
