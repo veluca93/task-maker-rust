@@ -435,6 +435,15 @@
 <span id="435">435</span>
 <span id="436">436</span>
 <span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -475,6 +484,8 @@
     <span class="kw">pub</span> <span class="ident">extra_time</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// Whether to copy the executables of the compilation inside their default destinations.</span>
     <span class="kw">pub</span> <span class="ident">copy_exe</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether to copy the log files of some interesting executions.</span>
+    <span class="kw">pub</span> <span class="ident">copy_logs</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// A wrapper around a `File` provided by the client, this means that the client knows the</span>
@@ -675,6 +686,7 @@
             <span class="ident">cache_mode</span>: <span class="ident">CacheMode</span>::<span class="ident">Everything</span>,
             <span class="ident">extra_time</span>: <span class="number">0.5</span>,
             <span class="ident">copy_exe</span>: <span class="bool-val">false</span>,
+            <span class="ident">copy_logs</span>: <span class="bool-val">false</span>,
         }
     }
 
@@ -706,6 +718,12 @@
     <span class="doccomment">/// Set whether to copy the executables of the compilation inside their default destinations.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_exe</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">copy_exe</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">copy_exe</span> <span class="op">=</span> <span class="ident">copy_exe</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Set whether to copy the log files of some interesting executions.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_logs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">copy_logs</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">copy_logs</span> <span class="op">=</span> <span class="ident">copy_logs</span>;
         <span class="self">self</span>
     }
 }

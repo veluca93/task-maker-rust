@@ -204,6 +204,10 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -252,6 +256,10 @@
     <span class="doccomment">/// Copy the executables to the bin/ folder</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;copy-exe&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">copy_exe</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Copy the logs of some executions to the bin/logs/ folder</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;copy-logs&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">copy_logs</span>: <span class="ident">bool</span>,
 
     <span class="doccomment">/// Execute only the solutions whose names start with the filter</span>
     <span class="doccomment">///</span>

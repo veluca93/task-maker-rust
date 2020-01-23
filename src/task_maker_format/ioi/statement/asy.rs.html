@@ -166,6 +166,15 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">Tag</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui</span>::<span class="ident">UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">UISender</span>};
@@ -235,6 +244,15 @@
             }
         }
         <span class="kw">let</span> <span class="ident">compiled</span> <span class="op">=</span> <span class="ident">comp</span>.<span class="ident">output</span>(<span class="string">&quot;output.pdf&quot;</span>);
+        <span class="kw">if</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">copy_logs</span> {
+            <span class="kw">let</span> <span class="ident">log_dir</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;bin/logs/asy&quot;</span>);
+            <span class="kw">let</span> <span class="ident">stderr_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stderr.log&quot;</span>, <span class="ident">name</span>));
+            <span class="kw">let</span> <span class="ident">stdout_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stdout.log&quot;</span>, <span class="ident">name</span>));
+            <span class="ident">eval</span>.<span class="ident">dag</span>
+                .<span class="ident">write_file_to_allow_fail</span>(<span class="ident">comp</span>.<span class="ident">stderr</span>(), <span class="ident">stderr_dest</span>, <span class="bool-val">false</span>);
+            <span class="ident">eval</span>.<span class="ident">dag</span>
+                .<span class="ident">write_file_to_allow_fail</span>(<span class="ident">comp</span>.<span class="ident">stdout</span>(), <span class="ident">stdout_dest</span>, <span class="bool-val">false</span>);
+        }
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">comp</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">crop</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(

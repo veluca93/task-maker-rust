@@ -265,6 +265,9 @@
 <span id="265">265</span>
 <span id="266">266</span>
 <span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -406,6 +409,8 @@
 
 <span class="doccomment">/// The data for an evaluation, including the DAG and the UI channel.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EvaluationData</span> {
+    <span class="doccomment">/// Root directory of the task.</span>
+    <span class="kw">pub</span> <span class="ident">task_root</span>: <span class="ident">PathBuf</span>,
     <span class="doccomment">/// The DAG with the evaluation data.</span>
     <span class="kw">pub</span> <span class="ident">dag</span>: <span class="ident">ExecutionDAG</span>,
     <span class="doccomment">/// The sender of the UI.</span>
@@ -414,10 +419,11 @@
 
 <span class="kw">impl</span> <span class="ident">EvaluationData</span> {
     <span class="doccomment">/// Crate a new `EvaluationData` returning the data and the receiving part of the UI channel.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">EvaluationData</span>, <span class="ident">ui</span>::<span class="ident">UIChannelReceiver</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">task_root</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">EvaluationData</span>, <span class="ident">ui</span>::<span class="ident">UIChannelReceiver</span>) {
         <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">ui</span>::<span class="ident">UIMessageSender</span>::<span class="ident">new</span>();
         (
             <span class="ident">EvaluationData</span> {
+                <span class="ident">task_root</span>: <span class="ident">task_root</span>.<span class="ident">into</span>(),
                 <span class="ident">dag</span>: <span class="ident">ExecutionDAG</span>::<span class="ident">new</span>(),
                 <span class="ident">sender</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">sender</span>)),
             },
