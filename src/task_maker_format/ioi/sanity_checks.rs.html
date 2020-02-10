@@ -494,8 +494,10 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">no_sample</span> <span class="op">=</span> <span class="bool-val">true</span>;
     <span class="kw">for</span> <span class="ident">sample</span> <span class="kw">in</span> <span class="ident">list_files</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>.<span class="ident">path</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;att/*input*.txt&quot;</span>, <span class="string">&quot;att/*output*.txt&quot;</span>]) {
         <span class="ident">no_sample</span> <span class="op">=</span> <span class="bool-val">false</span>;
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">sample</span>.<span class="ident">read_link</span>() {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">exists</span>() {
+        <span class="comment">// check if the file is a symlink</span>
+        <span class="kw">if</span> <span class="ident">sample</span>.<span class="ident">read_link</span>().<span class="ident">is_ok</span>() {
+            <span class="comment">// check if the symlink is broken</span>
+            <span class="kw">if</span> <span class="ident">sample</span>.<span class="ident">canonicalize</span>().<span class="ident">is_err</span>() {
                 <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">Warning</span> {
                     <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(
                         <span class="string">&quot;Sample case {} is a broken link&quot;</span>,
@@ -657,6 +659,7 @@
     <span class="kw">match</span> <span class="ident">find_statement_pdf</span>(<span class="ident">task</span>) {
         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(()),
         <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>.<span class="ident">path</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">command</span> <span class="op">=</span> <span class="ident">Command</span>::<span class="ident">new</span>(<span class="string">&quot;git&quot;</span>);
             <span class="ident">command</span>
                 .<span class="ident">arg</span>(<span class="string">&quot;ls-files&quot;</span>)
@@ -674,10 +677,7 @@
                     <span class="comment">// file not know to git</span>
                     <span class="kw">if</span> <span class="ident">output</span>.<span class="ident">stdout</span>.<span class="ident">is_empty</span>() {
                         <span class="ident">ui</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">Warning</span> {
-                            <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(
-                                <span class="string">&quot;File {} is not known to git&quot;</span>,
-                                <span class="ident">path</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="ident">task</span>.<span class="ident">path</span>).<span class="ident">unwrap</span>().<span class="ident">display</span>()
-                            ),
+                            <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;File {} is not known to git&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>()),
                         })<span class="question-mark">?</span>;
                     }
                 }
