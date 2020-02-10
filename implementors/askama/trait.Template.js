@@ -1,5 +1,5 @@
 (function() {var implementors = {};
-implementors["task_maker_format"] = [{text:"impl Template for <a class=\"struct\" href=\"task_maker_format/ioi/struct.BookletTemplate.html\" title=\"struct task_maker_format::ioi::BookletTemplate\">BookletTemplate</a>",synthetic:false,types:["task_maker_format::ioi::statement::booklet::BookletTemplate"]},];
+implementors["task_maker_format"] = [{"text":"impl Template for <a class=\"struct\" href=\"task_maker_format/ioi/struct.BookletTemplate.html\" title=\"struct task_maker_format::ioi::BookletTemplate\">BookletTemplate</a>","synthetic":false,"types":["task_maker_format::ioi::statement::booklet::BookletTemplate"]}];
 
             if (window.register_implementors) {
                 window.register_implementors(implementors);
