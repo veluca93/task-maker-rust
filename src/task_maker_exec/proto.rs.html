@@ -215,6 +215,8 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The protocol related structs and enums.</span>
 <span class="doccomment">//!</span>
@@ -329,6 +331,8 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">WorkerServerMessage</span> {
     <span class="doccomment">/// The job the worker should do. Boxed to reduce the enum size.</span>
     <span class="ident">Work</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">WorkerJob</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// Stop the current worker sandbox if currently running the specified execution.</span>
+    <span class="ident">KillJob</span>(<span class="ident">ExecutionUuid</span>),
     <span class="doccomment">/// The file the workers as asked. After this message there is a protocol switch for the file</span>
     <span class="doccomment">/// transmission.</span>
     <span class="ident">ProvideFile</span>(<span class="ident">FileStoreKey</span>),

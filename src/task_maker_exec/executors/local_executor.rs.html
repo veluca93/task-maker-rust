@@ -114,6 +114,7 @@
 <span id="114">114</span>
 <span id="115">115</span>
 <span id="116">116</span>
+<span id="117">117</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::<span class="ident">channel</span>;
@@ -130,6 +131,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::{<span class="ident">ExecutorClientMessage</span>, <span class="ident">ExecutorServerMessage</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">scheduler</span>::<span class="ident">ClientInfo</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ChannelReceiver</span>, <span class="ident">ChannelSender</span>, <span class="ident">RawSandboxResult</span>, <span class="ident">Worker</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::<span class="ident">AtomicU32</span>;
 <span class="kw">use</span> <span class="ident">tabox</span>::<span class="ident">configuration</span>::<span class="ident">SandboxConfiguration</span>;
 
 <span class="doccomment">/// An Executor that runs locally by spawning a number of threads with the workers inside.</span>
@@ -173,7 +175,7 @@
         <span class="ident">sandbox_runner</span>: <span class="ident">F</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">SandboxConfiguration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">SandboxConfiguration</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicU32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
         <span class="kw">let</span> (<span class="ident">executor_tx</span>, <span class="ident">executor_rx</span>) <span class="op">=</span> <span class="ident">channel</span>();
         <span class="kw">let</span> <span class="ident">executor</span> <span class="op">=</span> <span class="ident">Executor</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(), <span class="ident">cache</span>, <span class="ident">executor_rx</span>, <span class="bool-val">false</span>);
@@ -190,7 +192,7 @@
                 <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Local worker {}&quot;</span>, <span class="ident">i</span>),
                 <span class="self">self</span>.<span class="ident">file_store</span>.<span class="ident">clone</span>(),
                 <span class="self">self</span>.<span class="ident">sandbox_path</span>.<span class="ident">clone</span>(),
-                <span class="kw">move</span> <span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">runner</span>(<span class="ident">c</span>),
+                <span class="kw">move</span> <span class="op">|</span><span class="ident">c</span>, <span class="ident">pid</span><span class="op">|</span> <span class="ident">runner</span>(<span class="ident">c</span>, <span class="ident">pid</span>),
             );
             <span class="ident">executor_tx</span>
                 .<span class="ident">send</span>(<span class="ident">ExecutorInMessage</span>::<span class="ident">WorkerConnected</span> { <span class="ident">worker</span>: <span class="ident">conn</span> })

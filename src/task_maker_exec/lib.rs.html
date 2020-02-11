@@ -517,6 +517,7 @@
 <span id="517">517</span>
 <span id="518">518</span>
 <span id="519">519</span>
+<span id="520">520</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -616,6 +617,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">worker</span>::{<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="ident">FileProtocol</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::<span class="ident">AtomicU32</span>;
 
 <span class="kw">mod</span> <span class="ident">check_dag</span>;
 <span class="kw">mod</span> <span class="ident">client</span>;
@@ -860,7 +862,7 @@
     <span class="ident">min_cache</span>: <span class="ident">u64</span>,
     <span class="ident">sandbox_runner</span>: <span class="ident">F</span>,
 ) <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">SandboxConfiguration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">SandboxConfiguration</span>, <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicU32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx_remote</span>) <span class="op">=</span> <span class="ident">new_local_channel</span>();
     <span class="kw">let</span> (<span class="ident">tx_remote</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">new_local_channel</span>();
@@ -944,7 +946,7 @@
         <span class="ident">client_thread</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>();
     }
 
-    <span class="kw">fn</span> <span class="ident">fake_sandbox</span>(<span class="ident">config</span>: <span class="ident">SandboxConfiguration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> {
+    <span class="kw">fn</span> <span class="ident">fake_sandbox</span>(<span class="ident">config</span>: <span class="ident">SandboxConfiguration</span>, <span class="ident">_pid</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicU32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RawSandboxResult</span> {
         <span class="kw">let</span> <span class="ident">resource_usage</span> <span class="op">=</span> <span class="ident">ResourceUsage</span> {
             <span class="ident">memory_usage</span>: <span class="number">0</span>,
             <span class="ident">user_cpu_time</span>: <span class="number">0.0</span>,

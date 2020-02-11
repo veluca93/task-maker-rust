@@ -374,7 +374,7 @@
     <span class="doccomment">/// let (tx_remote, rx) = new_local_channel();</span>
     <span class="doccomment">/// # let tmpdir = TempDir::new(&quot;tm-test&quot;).unwrap();</span>
     <span class="doccomment">/// # let path = tmpdir.path().to_owned();</span>
-    <span class="doccomment">/// # let sandbox_runner = |_config| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
+    <span class="doccomment">/// # let sandbox_runner = |_config, _pid| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
     <span class="doccomment">/// let file_store = Arc::new(FileStore::new(&amp;path, 1000, 1000).expect(&quot;Cannot create the file store&quot;));</span>
     <span class="doccomment">/// let server_file_store = file_store.clone();</span>
     <span class="doccomment">/// // make a new local executor in a second thread</span>

@@ -699,7 +699,7 @@
         });
         <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
 
-        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">1000</span>, <span class="number">1000</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+        <span class="ident">eval_dag_locally</span>(<span class="ident">dag</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">2</span>, <span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">1000</span>, <span class="number">1000</span>, <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> {
             <span class="ident">RawSandboxResult</span>::<span class="ident">Success</span>(<span class="ident">SandboxExecutionResult</span> {
                 <span class="ident">status</span>: <span class="ident">ExitStatus</span>::<span class="ident">ExitCode</span>(<span class="number">0</span>),
                 <span class="ident">resource_usage</span>: <span class="ident">ResourceUsage</span> {

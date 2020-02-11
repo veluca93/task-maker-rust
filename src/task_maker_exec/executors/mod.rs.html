@@ -68,7 +68,7 @@
 <span class="doccomment">//! let (tx_remote, rx) = new_local_channel();</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # let server = thread::spawn(move || {</span>
-<span class="doccomment">//! # let sandbox_runner = |_config| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
+<span class="doccomment">//! # let sandbox_runner = |_config, _pid| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
 <span class="doccomment">//! executor.evaluate(tx_remote, rx_remote, cache, sandbox_runner).unwrap();  // this will block!!</span>
 <span class="doccomment">//! # });</span>
 <span class="doccomment">//! # drop(tx);</span>
