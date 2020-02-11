@@ -678,6 +678,7 @@
 <span id="678">678</span>
 <span id="679">679</span>
 <span id="680">680</span>
+<span id="681">681</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">UIExecutionStatus</span>, <span class="ident">UIMessage</span>};
@@ -1011,6 +1012,7 @@
     <span class="doccomment">/// Apply a `UIMessage` to this state.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>) {
         <span class="kw">match</span> <span class="ident">message</span> {
+            <span class="ident">UIMessage</span>::<span class="ident">StopUI</span> <span class="op">=</span><span class="op">&gt;</span> {}
             <span class="ident">UIMessage</span>::<span class="ident">ServerStatus</span> { <span class="ident">status</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">executor_status</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">status</span>),
             <span class="ident">UIMessage</span>::<span class="ident">Compilation</span> { <span class="ident">file</span>, <span class="ident">status</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">comp</span> <span class="op">=</span> <span class="self">self</span>

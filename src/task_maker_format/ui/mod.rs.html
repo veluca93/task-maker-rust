@@ -336,6 +336,9 @@
 <span id="336">336</span>
 <span id="337">337</span>
 <span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -385,6 +388,9 @@
 <span class="doccomment">/// A message sent to the UI.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UIMessage</span> {
+    <span class="doccomment">/// A message asking the UI to exit.</span>
+    <span class="ident">StopUI</span>,
+
     <span class="doccomment">/// An update on the status of the executor.</span>
     <span class="ident">ServerStatus</span> {
         <span class="doccomment">/// The status of the executor.</span>
