@@ -55,7 +55,7 @@
 <span class="doccomment">//! # use std::thread;</span>
 <span class="doccomment">//! # use tempdir::TempDir;</span>
 <span class="doccomment">//! use task_maker_cache::Cache;</span>
-<span class="doccomment">//! use task_maker_exec::new_local_channel;</span>
+<span class="doccomment">//! use task_maker_exec::{new_local_channel, ErrorSandboxRunner};</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # let tmpdir = TempDir::new(&quot;tm-test&quot;).unwrap();</span>
 <span class="doccomment">//! # let path = tmpdir.path();</span>
@@ -68,7 +68,7 @@
 <span class="doccomment">//! let (tx_remote, rx) = new_local_channel();</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # let server = thread::spawn(move || {</span>
-<span class="doccomment">//! # let sandbox_runner = |_config, _pid| panic!(&quot;The sandbox should not be called from this example&quot;);</span>
+<span class="doccomment">//! # let sandbox_runner = ErrorSandboxRunner::default();</span>
 <span class="doccomment">//! executor.evaluate(tx_remote, rx_remote, cache, sandbox_runner).unwrap();  // this will block!!</span>
 <span class="doccomment">//! # });</span>
 <span class="doccomment">//! # drop(tx);</span>

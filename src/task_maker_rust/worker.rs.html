@@ -71,7 +71,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">NiceError</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">opt</span>::{<span class="ident">Opt</span>, <span class="ident">WorkerOptions</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sandbox</span>::<span class="ident">self_exec_sandbox</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sandbox</span>::<span class="ident">SelfExecSandboxRunner</span>;
 
 <span class="doccomment">/// Entry point for the worker.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">main_worker</span>(<span class="ident">opt</span>: <span class="ident">Opt</span>, <span class="ident">worker_opt</span>: <span class="ident">WorkerOptions</span>) {
@@ -106,7 +106,7 @@
             <span class="ident">sandbox_path</span>.<span class="ident">clone</span>(),
             <span class="ident">executor_tx</span>.<span class="ident">change_type</span>(),
             <span class="ident">executor_rx</span>.<span class="ident">change_type</span>(),
-            <span class="ident">self_exec_sandbox</span>,
+            <span class="ident">SelfExecSandboxRunner</span>::<span class="ident">default</span>(),
         );
         <span class="ident">workers</span>.<span class="ident">push</span>(
             <span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()

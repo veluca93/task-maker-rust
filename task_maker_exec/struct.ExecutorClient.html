@@ -13,7 +13,7 @@ the files from the server.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionDAG</span>;
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="ident">FileStore</span>;
-<span class="kw">use</span> <span class="ident">task_maker_exec</span>::{<span class="ident">executors</span>::<span class="ident">LocalExecutor</span>, <span class="ident">ExecutorClient</span>, <span class="ident">new_local_channel</span>};
+<span class="kw">use</span> <span class="ident">task_maker_exec</span>::{<span class="ident">executors</span>::<span class="ident">LocalExecutor</span>, <span class="ident">ExecutorClient</span>, <span class="ident">new_local_channel</span>, <span class="ident">ErrorSandboxRunner</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::<span class="ident">channel</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;

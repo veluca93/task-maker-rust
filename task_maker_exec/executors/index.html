@@ -8,7 +8,7 @@ on the client channel and will spawn a list of local workers.</p>
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">executors</span>::<span class="ident">LocalExecutor</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>, <span class="ident">mpsc</span>::<span class="ident">channel</span>};
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
-<span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">new_local_channel</span>;
+<span class="kw">use</span> <span class="ident">task_maker_exec</span>::{<span class="ident">new_local_channel</span>, <span class="ident">ErrorSandboxRunner</span>};
 
 <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="number">1000</span>, <span class="number">1000</span>).<span class="ident">unwrap</span>();
 <span class="kw">let</span> <span class="ident">cache</span> <span class="op">=</span> <span class="ident">Cache</span>::<span class="ident">new</span>(<span class="ident">path</span>).<span class="ident">unwrap</span>();
