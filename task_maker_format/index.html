@@ -9,6 +9,8 @@ execution.</p>
 </td></tr></table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
 <table><tr class='module-item'><td><a class="macro" href="macro.bind_exec_callbacks.html" title='task_maker_format::bind_exec_callbacks macro'>bind_exec_callbacks</a></td><td class='docblock-short'><p>Bind the start/done/skip callbacks of an execution to a ui message sender which sends to the UI
 messages with the correct status field.</p>
+</td></tr><tr class='module-item'><td><a class="macro" href="macro.bind_exec_io.html" title='task_maker_format::bind_exec_io macro'>bind_exec_io</a></td><td class='docblock-short'><p>Bind the input/output of an execution to the input and output file of a testcase. It correctly
+chooses if using stdin/stdout or using normal files by looking at the value set in the <code>Task</code>.</p>
 </td></tr><tr class='module-item'><td><a class="macro" href="macro.cwrite.html" title='task_maker_format::cwrite macro'>cwrite</a></td><td class='docblock-short'><p>Write to <code>$self.stream</code>, in the color specified as second parameter. The arguments that follow
 will be passed to <code>write!</code>.</p>
 </td></tr><tr class='module-item'><td><a class="macro" href="macro.cwriteln.html" title='task_maker_format::cwriteln macro'>cwriteln</a></td><td class='docblock-short'><p>Write to <code>$self.stream</code>, in the color specified as second parameter. The arguments that follow

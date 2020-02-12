@@ -472,6 +472,20 @@
 <span id="472">472</span>
 <span id="473">473</span>
 <span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
@@ -517,6 +531,7 @@
 <span class="kw">mod</span> <span class="ident">tag</span>;
 <span class="kw">mod</span> <span class="ident">ui_state</span>;
 
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityChecks</span>;
 <span class="kw">use</span> <span class="ident">curses_ui</span>::<span class="ident">CursesUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
@@ -566,6 +581,10 @@
     <span class="kw">pub</span> <span class="ident">outfile</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The list of the subtasks.</span>
     <span class="kw">pub</span> <span class="ident">subtasks</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">SubtaskId</span>, <span class="ident">SubtaskInfo</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The default input validator for this task, if any.</span>
+    <span class="kw">pub</span> <span class="ident">input_validator</span>: <span class="ident">InputValidator</span>,
+    <span class="doccomment">/// The default output generator for this task, if any.</span>
+    <span class="kw">pub</span> <span class="ident">output_generator</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OutputGenerator</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The checker to use for this task.</span>
     <span class="kw">pub</span> <span class="ident">checker</span>: <span class="ident">Checker</span>,
     <span class="doccomment">/// The aggregator to use to compute the score of the subtask based on the score of the</span>
@@ -580,6 +599,11 @@
     <span class="doccomment">/// An integer that defines the level inside a _syllabus_ (for example for the Olympiads in</span>
     <span class="doccomment">/// Teams). Used only in booklet compilations.</span>
     <span class="kw">pub</span> <span class="ident">syllabus_level</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The sanity checks attached to this task. Wrapped in Arc since `SanityChecks` is not Clone.</span>
+    <span class="doccomment">/// It&#39;s also not `Serialize` nor `Deserialize`, all the sanity checks will be lost on</span>
+    <span class="doccomment">/// serialization.</span>
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing</span>, <span class="ident">skip_deserializing</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sanity_checks</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SanityChecks</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A subtask of a IOI task.</span>
@@ -632,10 +656,10 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">build_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">eval</span>.<span class="ident">sender</span>
             .<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITask</span> { <span class="ident">task</span>: <span class="self">self</span>.<span class="ident">clone</span>() })<span class="question-mark">?</span>;
-        <span class="ident">sanity_checks</span>::<span class="ident">pre_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">sanity_checks</span>.<span class="ident">pre_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">graders</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">grader_map</span>
             .<span class="ident">all_paths</span>()
@@ -699,15 +723,19 @@
                     <span class="ident">subtask</span>.<span class="ident">id</span>
                 );
 
-                <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span>
-                    <span class="ident">testcase</span>
-                        .<span class="ident">input_generator</span>
-                        .<span class="ident">generate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">val_handle</span> <span class="op">=</span>
-                    <span class="ident">testcase</span>
-                        .<span class="ident">input_validator</span>
-                        .<span class="ident">validate</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>, <span class="ident">input</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">output_generator</span>.<span class="ident">generate</span>(
+                <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">input_generator</span>.<span class="ident">generate_and_bind</span>(
+                    <span class="kw-2">&amp;</span><span class="self">self</span>,
+                    <span class="ident">eval</span>,
+                    <span class="ident">subtask</span>.<span class="ident">id</span>,
+                    <span class="ident">testcase</span>.<span class="ident">id</span>,
+                )<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">val_handle</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">input_validator</span>.<span class="ident">validate_and_bind</span>(
+                    <span class="ident">eval</span>,
+                    <span class="ident">subtask</span>.<span class="ident">id</span>,
+                    <span class="ident">testcase</span>.<span class="ident">id</span>,
+                    <span class="ident">input</span>,
+                )<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">output_generator</span>.<span class="ident">generate_and_bind</span>(
                     <span class="kw-2">&amp;</span><span class="self">self</span>,
                     <span class="ident">eval</span>,
                     <span class="ident">subtask</span>.<span class="ident">id</span>,
@@ -745,7 +773,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">sanity_check_post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UIMessageSender</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">sanity_checks</span>::<span class="ident">post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>)
+        <span class="self">self</span>.<span class="ident">sanity_checks</span>.<span class="ident">post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">clean</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
