@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SanityChecks","Sanity checks for a IOI task."]]});
+initSidebarItems({"fn":[["get_sanity_check_names","Return a comma separated list of the names of all the sanity checks."]],"struct":[["SanityChecks","Sanity checks for a IOI task."]]});

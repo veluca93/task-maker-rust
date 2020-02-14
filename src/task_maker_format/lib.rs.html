@@ -273,6 +273,8 @@
 <span id="273">273</span>
 <span id="274">274</span>
 <span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
@@ -413,6 +415,8 @@
     <span class="doccomment">/// Execute only the solution with the specified paths, that can reside anywhere in the</span>
     <span class="doccomment">/// filesystem.</span>
     <span class="kw">pub</span> <span class="ident">solution_paths</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// List of disabled sanity check names.</span>
+    <span class="kw">pub</span> <span class="ident">disabled_sanity_checks</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// The data for an evaluation, including the DAG and the UI channel.</span>
