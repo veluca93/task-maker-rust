@@ -267,9 +267,9 @@
     <span class="doccomment">/// The client is asking to evaluate a DAG.</span>
     <span class="ident">Evaluate</span> {
         <span class="doccomment">/// The DAG to evaluate.</span>
-        <span class="ident">dag</span>: <span class="ident">ExecutionDAGData</span>,
+        <span class="ident">dag</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ExecutionDAGData</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The list of the executions and files to keep track of.</span>
-        <span class="ident">callbacks</span>: <span class="ident">ExecutionDAGWatchSet</span>,
+        <span class="ident">callbacks</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">ExecutionDAGWatchSet</span><span class="op">&gt;</span>,
     },
     <span class="doccomment">/// The client is providing a file. After this message there is a protocol switch for the file</span>
     <span class="doccomment">/// transmission.</span>

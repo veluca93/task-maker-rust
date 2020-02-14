@@ -155,7 +155,7 @@
 <span class="kw">mod</span> <span class="ident">task</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Mutex</span>;
 
-<span class="doccomment">/// Trait that describes the behaviour of a sanity check.</span>
+<span class="doccomment">/// Trait that describes the behavior of a sanity check.</span>
 <span class="kw">trait</span> <span class="ident">SanityCheck</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> {
     <span class="doccomment">/// The name of the sanity check.</span>
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;

@@ -111,6 +111,7 @@
 <span id="111">111</span>
 <span id="112">112</span>
 <span id="113">113</span>
+<span id="114">114</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
@@ -124,7 +125,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">bind_exec_io</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>};
 
-<span class="doccomment">/// The type of the task. This changes the behaviour of the solutions.</span>
+<span class="doccomment">/// The type of the task. This changes the behavior of the solutions.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskType</span> {
     <span class="doccomment">/// The solution is a single file that will be executed once per testcase, feeding in the input</span>
@@ -136,6 +137,7 @@
 <span class="kw">impl</span> <span class="ident">TaskType</span> {
     <span class="doccomment">/// Evaluate a solution on a testcase, eventually adding to the `ScoreManager` the result of the</span>
     <span class="doccomment">/// evaluation. This will add both the execution as well as the checking to the DAG.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">evaluate</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">Task</span>,
