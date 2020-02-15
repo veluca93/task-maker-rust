@@ -22,8 +22,36 @@
 <span id="22">22</span>
 <span id="23">23</span>
 <span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionTag</span>;
+
+<span class="macro">lazy_static</span><span class="macro">!</span> {
+    <span class="doccomment">/// The list of all the ExecutionTags used for the evaluation.</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">VALID_TAGS</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> [
+        <span class="string">&quot;compilation&quot;</span>,
+        <span class="string">&quot;generation&quot;</span>,
+        <span class="string">&quot;evaluation&quot;</span>,
+        <span class="string">&quot;checking&quot;</span>,
+        <span class="string">&quot;booklet&quot;</span>
+    ]
+    .<span class="ident">iter</span>()
+    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">s</span>))
+    .<span class="ident">collect</span>();
+}
 
 <span class="doccomment">/// Tags of the various executions inside a IOI task.</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Tag</span> {

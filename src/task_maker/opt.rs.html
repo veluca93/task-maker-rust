@@ -224,10 +224,27 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
+
+<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">get_sanity_check_names</span>;
+<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::<span class="ident">VALID_TAGS</span>;
 <span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">EvaluationConfig</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
@@ -255,10 +272,7 @@
     <span class="kw">pub</span> <span class="ident">dry_run</span>: <span class="ident">bool</span>,
 
     <span class="doccomment">/// Disable the cache for this comma separated list of tags</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Providing an empty list will disable all the caches. The supported tags are: compilation,</span>
-    <span class="doccomment">/// generation, evaluation, checking, booklet.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;no-cache&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;no-cache&quot;</span>, <span class="ident">long_help</span> <span class="op">=</span> <span class="ident">no_cache_long_help</span>())]</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">option_option</span>)]</span>
     <span class="kw">pub</span> <span class="ident">no_cache</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 
@@ -382,11 +396,23 @@
     <span class="kw">pub</span> <span class="ident">server_addr</span>: <span class="ident">String</span>,
 }
 
+<span class="doccomment">/// Returns the long-help for the &quot;skip sanity checks&quot; option.</span>
 <span class="kw">fn</span> <span class="ident">skip_sanity_checks_long_help</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
     <span class="macro">lazy_static</span><span class="macro">!</span> {
         <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">DOC</span>: <span class="ident">String</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
             <span class="string">&quot;List of sanity checks to skip.\n\nThe available checks are: {}.&quot;</span>,
             <span class="ident">get_sanity_check_names</span>()
+        );
+    }
+    <span class="kw-2">&amp;</span><span class="ident">DOC</span>
+}
+
+<span class="doccomment">/// Returns the long-help for the --no-cache option.</span>
+<span class="kw">fn</span> <span class="ident">no_cache_long_help</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="macro">lazy_static</span><span class="macro">!</span> {
+        <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">DOC</span>: <span class="ident">String</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
+            <span class="string">&quot;Disable the cache for this comma separated list of tags\n\nProviding an empty list will disable all the caches. The supported tags are: {}.&quot;</span>,
+            <span class="ident">VALID_TAGS</span>.<span class="ident">iter</span>().<span class="ident">join</span>(<span class="string">&quot;, &quot;</span>)
         );
     }
     <span class="kw-2">&amp;</span><span class="ident">DOC</span>
