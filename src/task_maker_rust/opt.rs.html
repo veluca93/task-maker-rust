@@ -237,6 +237,12 @@
 <span id="237">237</span>
 <span id="238">238</span>
 <span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 
@@ -361,6 +367,12 @@
     <span class="doccomment">/// Show task information</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
     <span class="kw">pub</span> <span class="ident">task_info</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Wipe the internal storage of task-maker</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Warning: no other instances of task-maker should be running when this flag is provided.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">dont_panic</span>: <span class="ident">bool</span>,
 
     <span class="doccomment">/// Run the sandbox instead of the normal task-maker.</span>
     <span class="doccomment">///</span>
