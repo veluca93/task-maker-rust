@@ -446,6 +446,9 @@
 <span id="446">446</span>
 <span id="447">447</span>
 <span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
@@ -710,7 +713,7 @@
         }
     }
 
-    <span class="doccomment">/// Print the state of the evalution of a single solution.</span>
+    <span class="doccomment">/// Print the state of the evaluation of a single solution.</span>
     <span class="kw">fn</span> <span class="ident">print_evaluation</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
@@ -800,16 +803,15 @@
             <span class="kw">for</span> <span class="ident">st_num</span> <span class="kw">in</span> <span class="ident">eval</span>.<span class="ident">subtasks</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
                 <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">eval</span>.<span class="ident">subtasks</span>[<span class="kw-2">&amp;</span><span class="ident">st_num</span>];
                 <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">subtask</span>.<span class="ident">score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
-                <span class="kw">let</span> <span class="ident">max_score</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>[<span class="ident">st_num</span>].<span class="ident">max_score</span>;
-                <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">score</span>, <span class="ident">max_score</span>);
+                <span class="kw">let</span> <span class="ident">normalized_score</span> <span class="op">=</span> <span class="ident">subtask</span>.<span class="ident">normalized_score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
+                <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">normalized_score</span>);
                 <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">color</span>, <span class="string">&quot; {:^3.0} &quot;</span>, <span class="ident">score</span>);
             }
             <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;  &quot;</span>);
             <span class="kw">for</span> <span class="ident">st_num</span> <span class="kw">in</span> <span class="ident">eval</span>.<span class="ident">subtasks</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
                 <span class="kw">let</span> <span class="ident">subtask</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">eval</span>.<span class="ident">subtasks</span>[<span class="kw-2">&amp;</span><span class="ident">st_num</span>];
-                <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">subtask</span>.<span class="ident">score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
-                <span class="kw">let</span> <span class="ident">max_score</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">subtasks</span>[<span class="ident">st_num</span>].<span class="ident">max_score</span>;
-                <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">score</span>, <span class="ident">max_score</span>);
+                <span class="kw">let</span> <span class="ident">normalized_score</span> <span class="op">=</span> <span class="ident">subtask</span>.<span class="ident">normalized_score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
+                <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">normalized_score</span>);
                 <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">color</span>, <span class="string">&quot;[&quot;</span>);
                 <span class="kw">for</span> <span class="ident">tc_num</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">keys</span>().<span class="ident">sorted</span>() {
                     <span class="kw">let</span> <span class="ident">testcase</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">testcases</span>[<span class="ident">tc_num</span>];
@@ -855,14 +857,18 @@
 
     <span class="doccomment">/// Print the score fraction of a solution using colors.</span>
     <span class="kw">fn</span> <span class="ident">print_score_frac</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">score</span>: <span class="ident">f64</span>, <span class="ident">max_score</span>: <span class="ident">f64</span>) {
-        <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">score</span>, <span class="ident">max_score</span>);
-        <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">color</span>, <span class="string">&quot;{:.2} / {:.2}&quot;</span>, <span class="ident">score</span>, <span class="ident">max_score</span>);
+        <span class="kw">if</span> <span class="ident">max_score</span> <span class="op">=</span><span class="op">=</span> <span class="number">0.0</span> {
+            <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;{:.2} / {:.2}&quot;</span>, <span class="ident">score</span>, <span class="ident">max_score</span>);
+        } <span class="kw">else</span> {
+            <span class="kw">let</span> <span class="ident">color</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">score_color</span>(<span class="ident">score</span> <span class="op">/</span> <span class="ident">max_score</span>);
+            <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">color</span>, <span class="string">&quot;{:.2} / {:.2}&quot;</span>, <span class="ident">score</span>, <span class="ident">max_score</span>);
+        }
     }
 
-    <span class="kw">fn</span> <span class="ident">score_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">score</span>: <span class="ident">f64</span>, <span class="ident">max_score</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ColorSpec</span> {
-        <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="ident">max_score</span>) {
+    <span class="kw">fn</span> <span class="ident">score_color</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">normalized_score</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ColorSpec</span> {
+        <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">normalized_score</span>, <span class="number">1.0</span>) {
             <span class="kw-2">&amp;</span><span class="ident">GREEN</span>
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="number">0.0</span>) {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">normalized_score</span>, <span class="number">0.0</span>) {
             <span class="kw-2">&amp;</span><span class="ident">RED</span>
         } <span class="kw">else</span> {
             <span class="kw-2">&amp;</span><span class="ident">YELLOW</span>
