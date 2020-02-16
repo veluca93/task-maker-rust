@@ -807,6 +807,7 @@
 <span id="807">807</span>
 <span id="808">808</span>
 <span id="809">809</span>
+<span id="810">810</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">BinaryHeap</span>, <span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
@@ -820,7 +821,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::{<span class="ident">Cache</span>, <span class="ident">CacheResult</span>};
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{
     <span class="ident">CacheMode</span>, <span class="ident">Execution</span>, <span class="ident">ExecutionDAGData</span>, <span class="ident">ExecutionResult</span>, <span class="ident">ExecutionStatus</span>, <span class="ident">ExecutionUuid</span>,
-    <span class="ident">FileUuid</span>, <span class="ident">WorkerUuid</span>,
+    <span class="ident">FileUuid</span>, <span class="ident">Priority</span>, <span class="ident">WorkerUuid</span>,
 };
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::{<span class="ident">FileStore</span>, <span class="ident">FileStoreHandle</span>, <span class="ident">FileStoreKey</span>};
 
@@ -1019,9 +1020,7 @@
     <span class="ident">worker_manager</span>: <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">WorkerManagerInMessage</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// The priority queue of the ready tasks, waiting for the workers.</span>
-    <span class="doccomment">///</span>
-    <span class="comment">// TODO use something else for the priority</span>
-    <span class="ident">ready_execs</span>: <span class="ident">BinaryHeap</span><span class="op">&lt;</span>(<span class="ident">ClientUuid</span>, <span class="ident">ExecutionUuid</span>)<span class="op">&gt;</span>,
+    <span class="ident">ready_execs</span>: <span class="ident">BinaryHeap</span><span class="op">&lt;</span>(<span class="ident">Priority</span>, <span class="ident">ExecutionUuid</span>, <span class="ident">ClientUuid</span>)<span class="op">&gt;</span>,
     <span class="doccomment">/// The data about the clients currently working.</span>
     <span class="ident">clients</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ClientUuid</span>, <span class="ident">SchedulerClientData</span><span class="op">&gt;</span>,
 
@@ -1217,7 +1216,8 @@
                     <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Worker was doing something for a gone client&quot;</span>);
                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
                 };
-                <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">push</span>((<span class="ident">client_uuid</span>, <span class="ident">job</span>));
+                <span class="kw">let</span> <span class="ident">priority</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">dag</span>.<span class="ident">executions</span>[<span class="kw-2">&amp;</span><span class="ident">job</span>].<span class="ident">priority</span>;
+                <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">push</span>((<span class="ident">priority</span>, <span class="ident">job</span>, <span class="ident">client_uuid</span>));
                 <span class="ident">client</span>.<span class="ident">ready_execs</span>.<span class="ident">insert</span>(<span class="ident">job</span>);
                 <span class="ident">client</span>.<span class="ident">running_execs</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">job</span>);
             }
@@ -1235,9 +1235,9 @@
         }
         <span class="self">self</span>.<span class="ident">clients</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">remaining</span> <span class="op">=</span> <span class="ident">BinaryHeap</span>::<span class="ident">new</span>();
-        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">client</span>, <span class="ident">exec</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">pop</span>() {
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">priority</span>, <span class="ident">exec</span>, <span class="ident">client</span>)) <span class="op">=</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">pop</span>() {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">clients</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">client</span>) {
-                <span class="ident">remaining</span>.<span class="ident">push</span>((<span class="ident">client</span>, <span class="ident">exec</span>));
+                <span class="ident">remaining</span>.<span class="ident">push</span>((<span class="ident">priority</span>, <span class="ident">exec</span>, <span class="ident">client</span>));
             }
         }
         <span class="self">self</span>.<span class="ident">ready_execs</span> <span class="op">=</span> <span class="ident">remaining</span>;
@@ -1378,13 +1378,15 @@
         <span class="kw">if</span> <span class="op">!</span><span class="ident">client</span>.<span class="ident">input_of</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>) {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
         }
-        <span class="kw">for</span> <span class="ident">exec</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">client</span>.<span class="ident">input_of</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>] {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">files</span>) <span class="op">=</span> <span class="ident">client</span>.<span class="ident">missing_deps</span>.<span class="ident">get_mut</span>(<span class="ident">exec</span>) {
+        <span class="kw">for</span> <span class="ident">exec_uuid</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">client</span>.<span class="ident">input_of</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>] {
+            <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">client</span>.<span class="ident">dag</span>.<span class="ident">executions</span>[<span class="kw-2">&amp;</span><span class="ident">exec_uuid</span>];
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">files</span>) <span class="op">=</span> <span class="ident">client</span>.<span class="ident">missing_deps</span>.<span class="ident">get_mut</span>(<span class="ident">exec_uuid</span>) {
                 <span class="ident">files</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>);
                 <span class="kw">if</span> <span class="ident">files</span>.<span class="ident">is_empty</span>() {
-                    <span class="ident">client</span>.<span class="ident">missing_deps</span>.<span class="ident">remove</span>(<span class="ident">exec</span>);
-                    <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">push</span>((<span class="ident">client_uuid</span>, <span class="kw-2">*</span><span class="ident">exec</span>));
-                    <span class="ident">client</span>.<span class="ident">ready_execs</span>.<span class="ident">insert</span>(<span class="kw-2">*</span><span class="ident">exec</span>);
+                    <span class="ident">client</span>.<span class="ident">missing_deps</span>.<span class="ident">remove</span>(<span class="ident">exec_uuid</span>);
+                    <span class="self">self</span>.<span class="ident">ready_execs</span>
+                        .<span class="ident">push</span>((<span class="ident">exec</span>.<span class="ident">priority</span>, <span class="kw-2">*</span><span class="ident">exec_uuid</span>, <span class="ident">client_uuid</span>));
+                    <span class="ident">client</span>.<span class="ident">ready_execs</span>.<span class="ident">insert</span>(<span class="kw-2">*</span><span class="ident">exec_uuid</span>);
                 }
             }
         }
@@ -1504,7 +1506,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">not_cached</span> <span class="op">=</span> <span class="ident">BinaryHeap</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cached</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
 
-        <span class="kw">for</span> (<span class="ident">client_uuid</span>, <span class="ident">exec</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">iter</span>() {
+        <span class="kw">for</span> (<span class="ident">priority</span>, <span class="ident">exec</span>, <span class="ident">client_uuid</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">iter</span>() {
             <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">client</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">clients</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">client_uuid</span>) {
                 <span class="ident">client</span>
             } <span class="kw">else</span> {
@@ -1515,12 +1517,12 @@
             <span class="kw">let</span> <span class="ident">cache_mode</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">dag</span>.<span class="ident">config</span>.<span class="ident">cache_mode</span>;
             <span class="comment">// disable the cache for the execution</span>
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">CacheMode</span>::<span class="ident">Nothing</span> <span class="op">=</span> <span class="ident">cache_mode</span> {
-                <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">client_uuid</span>, <span class="kw-2">*</span><span class="ident">exec</span>));
+                <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">priority</span>, <span class="kw-2">*</span><span class="ident">exec</span>, <span class="kw-2">*</span><span class="ident">client_uuid</span>));
                 <span class="kw">continue</span>;
             }
             <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">executions</span>[<span class="ident">exec</span>].<span class="ident">clone</span>();
             <span class="kw">if</span> <span class="op">!</span><span class="ident">Scheduler</span>::<span class="ident">is_cacheable</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>, <span class="kw-2">&amp;</span><span class="ident">cache_mode</span>) {
-                <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">client_uuid</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>));
+                <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">priority</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="kw-2">*</span><span class="ident">client_uuid</span>));
                 <span class="kw">continue</span>;
             }
             <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>
@@ -1533,7 +1535,7 @@
                     <span class="ident">cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">client_uuid</span>, <span class="ident">exec</span>, <span class="ident">result</span>, <span class="ident">outputs</span>));
                 }
                 <span class="ident">CacheResult</span>::<span class="ident">Miss</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">client_uuid</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>));
+                    <span class="ident">not_cached</span>.<span class="ident">push</span>((<span class="kw-2">*</span><span class="ident">priority</span>, <span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="kw-2">*</span><span class="ident">client_uuid</span>));
                 }
             }
         }
@@ -1562,7 +1564,7 @@
             <span class="kw">if</span> <span class="ident">worker</span>.<span class="ident">current_job</span>.<span class="ident">is_some</span>() {
                 <span class="kw">continue</span>;
             }
-            <span class="kw">let</span> (<span class="ident">client_uuid</span>, <span class="ident">exec</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">pop</span>() {
+            <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">exec</span>, <span class="ident">client_uuid</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">ready_execs</span>.<span class="ident">pop</span>() {
                 <span class="prelude-val">Some</span>(<span class="ident">exec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">exec</span>,
                 <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
             };

@@ -354,6 +354,9 @@
 <span id="354">354</span>
 <span id="355">355</span>
 <span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
@@ -365,6 +368,8 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">GraderMap</span>, <span class="ident">LanguageManager</span>};
+
+<span class="kw">const</span> <span class="ident">COMPILATION_PRIORITY</span>: <span class="ident">Priority</span> <span class="op">=</span> <span class="number">1_000_000_000</span>;
 
 <span class="doccomment">/// A source file that will be able to be executed (with an optional compilation step).</span>
 <span class="doccomment">///</span>
@@ -574,6 +579,7 @@
                 <span class="self">self</span>.<span class="ident">language</span>.<span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>),
             );
             <span class="ident">comp</span>.<span class="ident">tag</span>(<span class="ident">ExecutionTag</span>::<span class="ident">from</span>(<span class="string">&quot;compilation&quot;</span>));
+            <span class="ident">comp</span>.<span class="ident">priority</span>(<span class="ident">COMPILATION_PRIORITY</span>);
             <span class="ident">comp</span>.<span class="ident">args</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">language</span>.<span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
             <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Source file of {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">path</span>));
             <span class="ident">comp</span>.<span class="ident">input</span>(

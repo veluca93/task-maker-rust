@@ -112,15 +112,16 @@
 <span id="112">112</span>
 <span id="113">113</span>
 <span id="114">114</span>
+<span id="115">115</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
-<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionStatus</span>, <span class="ident">FileUuid</span>};
+<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionStatus</span>, <span class="ident">FileUuid</span>, <span class="ident">Priority</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">Tag</span>, <span class="ident">Task</span>, <span class="ident">TestcaseId</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">Tag</span>, <span class="ident">Task</span>, <span class="ident">TestcaseId</span>, <span class="ident">EVALUATION_PRIORITY</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIMessage</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">bind_exec_io</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>};
@@ -163,6 +164,7 @@
                     <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>::<span class="ident">new</span>(),
                 )<span class="question-mark">?</span>;
                 <span class="ident">exec</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Evaluation</span>.<span class="ident">into</span>());
+                <span class="ident">exec</span>.<span class="ident">priority</span>(<span class="ident">EVALUATION_PRIORITY</span> <span class="op">-</span> <span class="ident">testcase_id</span> <span class="kw">as</span> <span class="ident">Priority</span>);
                 <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="macro">bind_exec_io</span><span class="macro">!</span>(<span class="ident">exec</span>, <span class="ident">task</span>, <span class="ident">input</span>, <span class="ident">validation_handle</span>);
                 <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">source_file</span>.<span class="ident">path</span>.<span class="ident">clone</span>();
                 <span class="kw">let</span> <span class="ident">limits</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">limits_mut</span>();

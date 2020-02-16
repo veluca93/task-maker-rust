@@ -60,6 +60,7 @@ remote executor listens for client and worker connections. The workers then conn
 some files and receives the callbacks from the server. When the server notifies a callback
 function is called by the client.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ExecutorStatus.html" title='task_maker_exec::ExecutorStatus struct'>ExecutorStatus</a></td><td class='docblock-short'><p>The current status of the <code>Executor</code>, this is sent to the user when the server status is asked.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.ExecutorWorkerStatus.html" title='task_maker_exec::ExecutorWorkerStatus struct'>ExecutorWorkerStatus</a></td><td class='docblock-short'><p>Status of a worker of an <code>Executor</code>.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.FakeSandboxRunner.html" title='task_maker_exec::FakeSandboxRunner struct'>FakeSandboxRunner</a></td><td class='docblock-short'><p>A fake sandbox that don't actually spawn anything and return with success, if the command was
 <code>true</code> the exit code is zero, otherwise it's 1.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.SuccessSandboxRunner.html" title='task_maker_exec::SuccessSandboxRunner struct'>SuccessSandboxRunner</a></td><td class='docblock-short'><p>A fake sandbox that don't actually spawn anything and always return successfully with exit code
