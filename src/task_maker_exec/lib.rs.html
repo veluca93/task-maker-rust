@@ -507,6 +507,7 @@
 <span id="507">507</span>
 <span id="508">508</span>
 <span id="509">509</span>
+<span id="510">510</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -597,11 +598,12 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client</span>::<span class="ident">ExecutorClient</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">executor</span>::{<span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">executor</span>::{<span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>, <span class="ident">WorkerCurrentJobStatus</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox</span>::<span class="ident">RawSandboxResult</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox_runner</span>::{
     <span class="ident">ErrorSandboxRunner</span>, <span class="ident">FakeSandboxRunner</span>, <span class="ident">SandboxRunner</span>, <span class="ident">SuccessSandboxRunner</span>,
 };
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">scheduler</span>::<span class="ident">ClientInfo</span>;
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionDAG</span>;
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="ident">FileStore</span>;
