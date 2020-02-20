@@ -113,11 +113,13 @@
 <span id="113">113</span>
 <span id="114">114</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
+
+<span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
+
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::<span class="ident">cpp</span>::<span class="ident">find_cpp_deps</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::<span class="ident">Language</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Dependency</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Version of the C standard and compiler to use.</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
@@ -158,12 +160,12 @@
         <span class="bool-val">true</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
         <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;gcc&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">executable_name</span>(<span class="ident">path</span>);
+    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compiled_file_name</span>(<span class="ident">path</span>, <span class="ident">write_to</span>);
         <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="ident">exe_name</span>.<span class="ident">to_string_lossy</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-O2&quot;</span>, <span class="string">&quot;-Wall&quot;</span>, <span class="string">&quot;-ggdb3&quot;</span>, <span class="string">&quot;-DEVAL&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="ident">exe_name</span>.<span class="ident">as_ref</span>()];
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">version</span> {
@@ -189,33 +191,30 @@
     <span class="kw">fn</span> <span class="ident">compilation_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span> {
         <span class="ident">find_cpp_deps</span>(<span class="ident">path</span>)
     }
-
-    <span class="doccomment">/// The executable name is the source file&#39;s one without the extension.</span>
-    <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid source file name&quot;</span>));
-        <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">name</span>.<span class="ident">file_stem</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid source file name&quot;</span>))
-    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+
     <span class="kw">use</span> <span class="ident">spectral</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_compilation_args</span>() {
         <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageC</span>::<span class="ident">new</span>(<span class="ident">LanguageCVersion</span>::<span class="ident">GccC11</span>);
-        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>));
+        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>), <span class="prelude-val">None</span>);
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;foo.c&quot;</span>.<span class="ident">to_string</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;-std=c11&quot;</span>.<span class="ident">to_string</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;-o&quot;</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;foo&quot;</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;compiled&quot;</span>.<span class="ident">to_string</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_compilation_add_file</span>() {
         <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageC</span>::<span class="ident">new</span>(<span class="ident">LanguageCVersion</span>::<span class="ident">GccC11</span>);
-        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>));
+        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>), <span class="prelude-val">None</span>);
         <span class="kw">let</span> <span class="ident">new_args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_add_file</span>(<span class="ident">args</span>.<span class="ident">clone</span>(), <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;bar.c&quot;</span>));
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">new_args</span>.<span class="ident">iter</span>()).<span class="ident">contains_all_of</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>.<span class="ident">iter</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">new_args</span>.<span class="ident">iter</span>()).<span class="ident">contains</span>(<span class="string">&quot;bar.c&quot;</span>.<span class="ident">to_string</span>());
@@ -224,7 +223,8 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_executable_name</span>() {
         <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageC</span>::<span class="ident">new</span>(<span class="ident">LanguageCVersion</span>::<span class="ident">GccC11</span>);
-        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">lang</span>.<span class="ident">executable_name</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>))).<span class="ident">is_equal_to</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">lang</span>.<span class="ident">executable_name</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.c&quot;</span>), <span class="prelude-val">None</span>))
+            .<span class="ident">is_equal_to</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;foo&quot;</span>));
     }
 }
 </pre></div>

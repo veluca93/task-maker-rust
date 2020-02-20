@@ -121,10 +121,10 @@
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionStatus</span>, <span class="ident">FileUuid</span>, <span class="ident">Priority</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">Tag</span>, <span class="ident">Task</span>, <span class="ident">TestcaseId</span>, <span class="ident">EVALUATION_PRIORITY</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">Task</span>, <span class="ident">TestcaseId</span>, <span class="ident">EVALUATION_PRIORITY</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIMessage</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">bind_exec_io</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">Tag</span>};
 
 <span class="doccomment">/// The type of the task. This changes the behavior of the solutions.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>

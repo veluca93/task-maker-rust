@@ -81,15 +81,6 @@
 <span id="81">81</span>
 <span id="82">82</span>
 <span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
-<span id="86">86</span>
-<span id="87">87</span>
-<span id="88">88</span>
-<span id="89">89</span>
-<span id="90">90</span>
-<span id="91">91</span>
-<span id="92">92</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
@@ -99,9 +90,9 @@
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">FileUuid</span>, <span class="ident">Priority</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bind_exec_callbacks</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">Tag</span>, <span class="ident">TestcaseId</span>, <span class="ident">GENERATION_PRIORITY</span>, <span class="ident">STDERR_CONTENT_LENGTH</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>, <span class="ident">GENERATION_PRIORITY</span>, <span class="ident">STDERR_CONTENT_LENGTH</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIMessage</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">UISender</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">Tag</span>};
 
 <span class="doccomment">/// An input file validator is responsible for checking that the input file follows the format and</span>
 <span class="doccomment">/// constraints defined by the task.</span>
@@ -163,21 +154,12 @@
             <span class="ident">input</span>,
         )<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">val</span>) <span class="op">=</span> <span class="ident">val</span> {
+            <span class="ident">val</span>.<span class="ident">capture_stderr</span>(<span class="ident">STDERR_CONTENT_LENGTH</span>);
             <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(<span class="ident">eval</span>, <span class="ident">val</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">status</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIValidation</span> {
                 <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                 <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
                 <span class="ident">status</span>
             })<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
-            <span class="ident">eval</span>.<span class="ident">dag</span>
-                .<span class="ident">get_file_content</span>(<span class="ident">val</span>.<span class="ident">stderr</span>(), <span class="ident">STDERR_CONTENT_LENGTH</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">content</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>);
-                    <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOIValidationStderr</span> {
-                        <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
-                        <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
-                        <span class="ident">content</span>: <span class="ident">content</span>.<span class="ident">into</span>(),
-                    })
-                });
             <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">val</span>);
         }
         <span class="prelude-val">Ok</span>(<span class="ident">handle</span>)

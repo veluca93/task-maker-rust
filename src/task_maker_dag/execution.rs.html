@@ -804,6 +804,46 @@
 <span id="804">804</span>
 <span id="805">805</span>
 <span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
@@ -939,6 +979,10 @@
     <span class="kw">pub</span> <span class="ident">stdout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional standard error to capture.</span>
     <span class="kw">pub</span> <span class="ident">stderr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// When not `None`, ask the sandbox to capture that many bytes from the standard output.</span>
+    <span class="kw">pub</span> <span class="ident">capture_stdout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// When not `None`, ask the sandbox to capture that many bytes from the standard error.</span>
+    <span class="kw">pub</span> <span class="ident">capture_stderr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
     <span class="doccomment">/// List of input files that should be put inside the sandbox.</span>
     <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">ExecutionInput</span><span class="op">&gt;</span>,
     <span class="doccomment">/// List of the output files that should be capture from the sandbox.</span>
@@ -1040,12 +1084,16 @@
     <span class="kw">pub</span> <span class="ident">was_cached</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Resources used by the execution.</span>
     <span class="kw">pub</span> <span class="ident">resources</span>: <span class="ident">ExecutionResourcesUsage</span>,
+    <span class="doccomment">/// Captured standard output of the execution, if the capture was requested.</span>
+    <span class="kw">pub</span> <span class="ident">stdout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Captured standard error of the execution, if the capture was requested.</span>
+    <span class="kw">pub</span> <span class="ident">stderr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ExecutionLimits</span> {
     <span class="doccomment">/// Make an empty limits where all the limits are disabled. You may want to</span>
     <span class="doccomment">/// use `default()` instead of this</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionLimits</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unrestricted</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionLimits</span> {
         <span class="ident">ExecutionLimits</span> {
             <span class="ident">cpu_time</span>: <span class="prelude-val">None</span>,
             <span class="ident">sys_time</span>: <span class="prelude-val">None</span>,
@@ -1198,6 +1246,8 @@
             <span class="ident">stdin</span>: <span class="prelude-val">None</span>,
             <span class="ident">stdout</span>: <span class="prelude-val">None</span>,
             <span class="ident">stderr</span>: <span class="prelude-val">None</span>,
+            <span class="ident">capture_stdout</span>: <span class="prelude-val">None</span>,
+            <span class="ident">capture_stderr</span>: <span class="prelude-val">None</span>,
             <span class="ident">inputs</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
             <span class="ident">outputs</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
 
@@ -1326,6 +1376,36 @@
             <span class="self">self</span>.<span class="ident">stderr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">file</span>);
         }
         <span class="self">self</span>.<span class="ident">stderr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>()
+    }
+
+    <span class="doccomment">/// Tell the executor to include the first `count` bytes of the standard output in the result.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.capture_stdout(1234);</span>
+    <span class="doccomment">/// assert_eq!(exec.capture_stdout, Some(1234));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stdout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stdout</span>(); <span class="comment">// make sure stdout is captured</span>
+        <span class="self">self</span>.<span class="ident">capture_stdout</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">count</span>);
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Tell the executor to include the first `count` bytes of the standard error in the result.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.capture_stderr(1234);</span>
+    <span class="doccomment">/// assert_eq!(exec.capture_stderr, Some(1234));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stderr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stderr</span>(); <span class="comment">// make sure stderr is captured</span>
+        <span class="self">self</span>.<span class="ident">capture_stderr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">count</span>);
+        <span class="self">self</span>
     }
 
     <span class="doccomment">/// Bind a file inside the sandbox to the specified file. Calling again this method will</span>

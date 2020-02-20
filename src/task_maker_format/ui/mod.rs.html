@@ -339,31 +339,135 @@
 <span id="339">339</span>
 <span id="340">340</span>
 <span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionResult</span>, <span class="ident">WorkerUuid</span>};
-
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::{<span class="ident">channel</span>, <span class="ident">Receiver</span>, <span class="ident">Sender</span>};
 
-<span class="kw">mod</span> <span class="ident">json</span>;
-<span class="kw">mod</span> <span class="ident">raw</span>;
-<span class="kw">mod</span> <span class="ident">silent</span>;
+<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">termcolor</span>::{<span class="ident">Color</span>, <span class="ident">ColorSpec</span>, <span class="ident">StandardStream</span>};
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json</span>::<span class="ident">JsonUI</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">print</span>::<span class="ident">PrintUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">raw</span>::<span class="ident">RawUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">silent</span>::<span class="ident">SilentUI</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
-<span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorStatus</span>;
+<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionResourcesUsage</span>, <span class="ident">ExecutionResult</span>, <span class="ident">ExecutionStatus</span>, <span class="ident">WorkerUuid</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ui_message</span>::<span class="ident">UIMessage</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">cwrite</span>, <span class="ident">cwriteln</span>};
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">curses</span>;
+<span class="kw">mod</span> <span class="ident">json</span>;
+<span class="kw">mod</span> <span class="ident">print</span>;
+<span class="kw">mod</span> <span class="ident">raw</span>;
+<span class="kw">mod</span> <span class="ident">silent</span>;
+<span class="kw">mod</span> <span class="ident">ui_message</span>;
 
 <span class="doccomment">/// Channel type for sending `UIMessage`s.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UIChannelSender</span> <span class="op">=</span> <span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">UIMessage</span><span class="op">&gt;</span>;
 <span class="doccomment">/// Channel type for receiving `UIMessage`s.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UIChannelReceiver</span> <span class="op">=</span> <span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">UIMessage</span><span class="op">&gt;</span>;
+
+<span class="macro">lazy_static</span><span class="macro">!</span> {
+    <span class="doccomment">/// The RED color to use with `cwrite!` and `cwriteln!`</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">RED</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec</span>::<span class="ident">new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color</span>::<span class="ident">Red</span>))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
+            .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The GREEN color to use with `cwrite!` and `cwriteln!`</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">GREEN</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec</span>::<span class="ident">new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color</span>::<span class="ident">Green</span>))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
+            .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The YELLOW color to use with `cwrite!` and `cwriteln!`</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">YELLOW</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec</span>::<span class="ident">new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
+            .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The BLUE color to use with `cwrite!` and `cwriteln!`</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">BLUE</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec</span>::<span class="ident">new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
+            .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The bold style to use with `cwrite!` and `cwriteln!`</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">BOLD</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec</span>::<span class="ident">new</span>();
+        <span class="ident">color</span>.<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+}
 
 <span class="doccomment">/// The status of an execution.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
@@ -385,185 +489,187 @@
     <span class="ident">Skipped</span>,
 }
 
-<span class="doccomment">/// A message sent to the UI.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UIMessage</span> {
-    <span class="doccomment">/// A message asking the UI to exit.</span>
-    <span class="ident">StopUI</span>,
-
-    <span class="doccomment">/// An update on the status of the executor.</span>
-    <span class="ident">ServerStatus</span> {
-        <span class="doccomment">/// The status of the executor.</span>
-        <span class="ident">status</span>: <span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span>,
+<span class="doccomment">/// The status of the compilation of a file.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CompilationStatus</span> {
+    <span class="doccomment">/// The compilation is known but it has not started yet.</span>
+    <span class="ident">Pending</span>,
+    <span class="doccomment">/// The compilation is running on a worker.</span>
+    <span class="ident">Running</span>,
+    <span class="doccomment">/// The compilation has completed.</span>
+    <span class="ident">Done</span> {
+        <span class="doccomment">/// The result of the compilation.</span>
+        <span class="ident">result</span>: <span class="ident">ExecutionResult</span>,
+        <span class="doccomment">/// The standard output of the compilation.</span>
+        <span class="ident">stdout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// The standard error of the compilation.</span>
+        <span class="ident">stderr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     },
-
-    <span class="doccomment">/// An update on the compilation status.</span>
-    <span class="ident">Compilation</span> {
-        <span class="doccomment">/// The compilation of this file.</span>
-        <span class="ident">file</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The status of the compilation.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
+    <span class="doccomment">/// The compilation has failed.</span>
+    <span class="ident">Failed</span> {
+        <span class="doccomment">/// The result of the compilation.</span>
+        <span class="ident">result</span>: <span class="ident">ExecutionResult</span>,
+        <span class="doccomment">/// The standard output of the compilation.</span>
+        <span class="ident">stdout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// The standard error of the compilation.</span>
+        <span class="ident">stderr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     },
+    <span class="doccomment">/// The compilation has been skipped.</span>
+    <span class="ident">Skipped</span>,
+}
 
-    <span class="doccomment">/// An update on the stdout of a compilation.</span>
-    <span class="ident">CompilationStdout</span> {
-        <span class="doccomment">/// The compilation of this file.</span>
-        <span class="ident">file</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The prefix of the stdout of the compilation.</span>
-        <span class="ident">content</span>: <span class="ident">String</span>,
-    },
+<span class="kw">impl</span> <span class="ident">CompilationStatus</span> {
+    <span class="doccomment">/// Apply to this `CompilationStatus` a new `UIExecutionStatus`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">apply_status</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>) {
+        <span class="kw">match</span> <span class="ident">status</span> {
+            <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CompilationStatus</span>::<span class="ident">Pending</span>,
+            <span class="ident">UIExecutionStatus</span>::<span class="ident">Started</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CompilationStatus</span>::<span class="ident">Running</span>,
+            <span class="ident">UIExecutionStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">result</span>
+                    .<span class="ident">stdout</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>).<span class="ident">into</span>());
+                <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">result</span>
+                    .<span class="ident">stderr</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>).<span class="ident">into</span>());
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">status</span> {
+                    <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> {
+                        <span class="ident">result</span>,
+                        <span class="ident">stdout</span>,
+                        <span class="ident">stderr</span>,
+                    };
+                } <span class="kw">else</span> {
+                    <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> {
+                        <span class="ident">result</span>,
+                        <span class="ident">stdout</span>,
+                        <span class="ident">stderr</span>,
+                    };
+                }
+            }
+            <span class="ident">UIExecutionStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident">CompilationStatus</span>::<span class="ident">Skipped</span>,
+        }
+    }
+}
 
-    <span class="doccomment">/// An update on the stderr of a compilation.</span>
-    <span class="ident">CompilationStderr</span> {
-        <span class="doccomment">/// The compilation of this file.</span>
-        <span class="ident">file</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The prefix of the stderr of the compilation.</span>
-        <span class="ident">content</span>: <span class="ident">String</span>,
-    },
+<span class="doccomment">/// The state of a task, all the information for the UI are stored here.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The `T` at the end is to disambiguate from `UIState` due to a strange behaviour of the compiler.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UIStateT</span> {
+    <span class="doccomment">/// Apply a `UIMessage` to this state.</span>
+    <span class="kw">fn</span> <span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>);
+}
 
-    <span class="doccomment">/// The information about the task which is being run.</span>
-    <span class="ident">IOITask</span> {
-        <span class="doccomment">/// The task information.</span>
-        <span class="ident">task</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>,
-    },
+<span class="doccomment">/// UI that prints to `stdout` the ending result of the evaluation of a task.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FinishUI</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Print the final state of the UI.</span>
+    <span class="kw">fn</span> <span class="ident">print</span>(<span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">State</span>);
+}
 
-    <span class="doccomment">/// The generation of a testcase in a IOI task.</span>
-    <span class="ident">IOIGeneration</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The status of the generation.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
+<span class="doccomment">/// Collection of utilities for drawing the finish UI.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FinishUIUtils</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Stream where to print to.</span>
+    <span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">StandardStream</span>,
+}
 
-    <span class="doccomment">/// An update on the stderr of the generation of a testcase.</span>
-    <span class="ident">IOIGenerationStderr</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The prefix of the stderr of the generation.</span>
-        <span class="ident">content</span>: <span class="ident">String</span>,
-    },
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FinishUIUtils</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Make a new `FinishUIUtils` borrowing a `StandardStream`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">StandardStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FinishUIUtils</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">FinishUIUtils</span> { <span class="ident">stream</span> }
+    }
 
-    <span class="doccomment">/// The validation of a testcase in a IOI task.</span>
-    <span class="ident">IOIValidation</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The status of the validation.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
+    <span class="doccomment">/// Print all the compilation statuses.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_compilations</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">compilations</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">CompilationStatus</span><span class="op">&gt;</span>) {
+        <span class="macro">cwriteln</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">BLUE</span>, <span class="string">&quot;Compilations&quot;</span>);
+        <span class="kw">let</span> <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">compilations</span>
+            .<span class="ident">keys</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>).<span class="ident">len</span>())
+            .<span class="ident">max</span>()
+            .<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+        <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">status</span>) <span class="kw">in</span> <span class="ident">compilations</span> {
+            <span class="macro">print</span><span class="macro">!</span>(
+                <span class="string">&quot;{:width$}  &quot;</span>,
+                <span class="ident">path</span>.<span class="ident">file_name</span>()
+                    .<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)
+                    .<span class="ident">to_string_lossy</span>(),
+                <span class="ident">width</span> <span class="op">=</span> <span class="ident">max_len</span>
+            );
+            <span class="kw">match</span> <span class="ident">status</span> {
+                <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">GREEN</span>, <span class="string">&quot; OK  &quot;</span>);
+                    <span class="ident">FinishUIUtils</span>::<span class="ident">print_time_memory</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">resources</span>);
+                }
+                <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> {
+                    <span class="ident">result</span>,
+                    <span class="ident">stdout</span>,
+                    <span class="ident">stderr</span>,
+                } <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">RED</span>, <span class="string">&quot;FAIL &quot;</span>);
+                    <span class="ident">FinishUIUtils</span>::<span class="ident">print_time_memory</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">resources</span>);
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdout</span>) <span class="op">=</span> <span class="ident">stdout</span> {
+                        <span class="kw">if</span> <span class="op">!</span><span class="ident">stdout</span>.<span class="ident">trim</span>().<span class="ident">is_empty</span>() {
+                            <span class="macro">println</span><span class="macro">!</span>();
+                            <span class="macro">cwriteln</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">BOLD</span>, <span class="string">&quot;stdout:&quot;</span>);
+                            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">stdout</span>.<span class="ident">trim</span>());
+                        }
+                    }
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stderr</span>) <span class="op">=</span> <span class="ident">stderr</span> {
+                        <span class="kw">if</span> <span class="op">!</span><span class="ident">stderr</span>.<span class="ident">trim</span>().<span class="ident">is_empty</span>() {
+                            <span class="macro">println</span><span class="macro">!</span>();
+                            <span class="macro">cwriteln</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">BOLD</span>, <span class="string">&quot;stderr:&quot;</span>);
+                            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">stderr</span>.<span class="ident">trim</span>());
+                        }
+                    }
+                }
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="ident">status</span>);
+                }
+            }
+            <span class="macro">println</span><span class="macro">!</span>();
+        }
+    }
 
-    <span class="doccomment">/// An update on the stderr of the validation of a testcase.</span>
-    <span class="ident">IOIValidationStderr</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The prefix of the stderr of the validator.</span>
-        <span class="ident">content</span>: <span class="ident">String</span>,
-    },
+    <span class="doccomment">/// Print the time and memory usage of an execution.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_time_memory</span>(<span class="ident">resources</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionResourcesUsage</span>) {
+        <span class="macro">print</span><span class="macro">!</span>(
+            <span class="string">&quot;{:2.3}s | {:3.1}MiB&quot;</span>,
+            <span class="ident">resources</span>.<span class="ident">cpu_time</span>,
+            (<span class="ident">resources</span>.<span class="ident">memory</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1024.0</span>
+        );
+    }
 
-    <span class="doccomment">/// The solution of a testcase in a IOI task.</span>
-    <span class="ident">IOISolution</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The status of the solution.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
+    <span class="doccomment">/// Print a message for the non-successful variants of the provided status.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_fail_execution_status</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionStatus</span>) {
+        <span class="kw">match</span> <span class="ident">status</span> {
+            <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Exited with {}&quot;</span>, <span class="ident">code</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="ident">sig</span>, <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Signal {} ({})&quot;</span>, <span class="ident">sig</span>, <span class="ident">name</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">TimeLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Time limit exceeded&quot;</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">SysTimeLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Kernel time limit exceeded&quot;</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">WallTimeLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Wall time limit exceeded&quot;</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">MemoryLimitExceeded</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Memory limit exceeded&quot;</span>),
+            <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;Internal error: {}&quot;</span>, <span class="ident">err</span>),
+        }
+    }
 
-    <span class="doccomment">/// The evaluation of a solution in a IOI task.</span>
-    <span class="ident">IOIEvaluation</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The path of the solution.</span>
-        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The status of the solution.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
+    <span class="doccomment">/// Find the maximum length of the solutions name from the keys of the given structure.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_max_len</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">solutions</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+        <span class="ident">solutions</span>
+            .<span class="ident">keys</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>).<span class="ident">len</span>())
+            .<span class="ident">max</span>()
+            .<span class="ident">unwrap_or</span>(<span class="number">0</span>)
+    }
 
-    <span class="doccomment">/// The checking of a solution in a IOI task.</span>
-    <span class="ident">IOIChecker</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The path of the solution.</span>
-        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The status of the solution. Note that a failure of this execution</span>
-        <span class="doccomment">/// may not mean that the checker failed.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
-
-    <span class="doccomment">/// The score of a testcase is ready.</span>
-    <span class="ident">IOITestcaseScore</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The id of the testcase.</span>
-        <span class="ident">testcase</span>: <span class="ident">TestcaseId</span>,
-        <span class="doccomment">/// The path of the solution.</span>
-        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The score of the testcase.</span>
-        <span class="ident">score</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// The message associated with the score.</span>
-        <span class="ident">message</span>: <span class="ident">String</span>,
-    },
-
-    <span class="doccomment">/// The score of a subtask is ready.</span>
-    <span class="ident">IOISubtaskScore</span> {
-        <span class="doccomment">/// The id of the subtask.</span>
-        <span class="ident">subtask</span>: <span class="ident">SubtaskId</span>,
-        <span class="doccomment">/// The path of the solution.</span>
-        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The normalized score, a value between 0 and 1</span>
-        <span class="ident">normalized_score</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// The score of the subtask.</span>
-        <span class="ident">score</span>: <span class="ident">f64</span>,
-    },
-
-    <span class="doccomment">/// The score of a task is ready.</span>
-    <span class="ident">IOITaskScore</span> {
-        <span class="doccomment">/// The path of the solution.</span>
-        <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-        <span class="doccomment">/// The score of the task.</span>
-        <span class="ident">score</span>: <span class="ident">f64</span>,
-    },
-
-    <span class="doccomment">/// The compilation of a booklet.</span>
-    <span class="ident">IOIBooklet</span> {
-        <span class="doccomment">/// The name of the booklet.</span>
-        <span class="ident">name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// The status of the compilation.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
-
-    <span class="doccomment">/// The compilation of a dependency of a booklet. It can be processed many times, for example an</span>
-    <span class="doccomment">/// asy file is compiled first, and then cropped.</span>
-    <span class="ident">IOIBookletDependency</span> {
-        <span class="doccomment">/// The name of the booklet.</span>
-        <span class="ident">booklet</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// The name of the dependency.</span>
-        <span class="ident">name</span>: <span class="ident">String</span>,
-        <span class="doccomment">/// The index (0-based) of the step of this compilation.</span>
-        <span class="ident">step</span>: <span class="ident">usize</span>,
-        <span class="doccomment">/// The number of steps of the compilation of this dependency.</span>
-        <span class="ident">num_steps</span>: <span class="ident">usize</span>,
-        <span class="doccomment">/// The status of this step.</span>
-        <span class="ident">status</span>: <span class="ident">UIExecutionStatus</span>,
-    },
-
-    <span class="doccomment">/// A warning has been emitted.</span>
-    <span class="ident">Warning</span> {
-        <span class="doccomment">/// The message of the warning.</span>
-        <span class="ident">message</span>: <span class="ident">String</span>,
-    },
+    <span class="doccomment">/// Print the warnings.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_messages</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">warnings</span>: <span class="kw-2">&amp;</span>[<span class="ident">String</span>]) {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">warnings</span>.<span class="ident">is_empty</span>() {
+            <span class="macro">cwriteln</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;Warnings:&quot;</span>);
+            <span class="kw">for</span> <span class="ident">warning</span> <span class="kw">in</span> <span class="ident">warnings</span>.<span class="ident">iter</span>() {
+                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot; - {}&quot;</span>, <span class="ident">warning</span>);
+            }
+        }
+    }
 }
 
 <span class="doccomment">/// The sender of the UIMessage</span>

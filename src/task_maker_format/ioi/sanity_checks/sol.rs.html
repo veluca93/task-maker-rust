@@ -65,11 +65,13 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::{<span class="ident">check_missing_graders</span>, <span class="ident">SanityCheck</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">check_missing_graders</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">Task</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityCheck</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIMessage</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">list_files</span>, <span class="ident">EvaluationData</span>, <span class="ident">UISender</span>};
 
@@ -77,7 +79,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolGraders</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">SolGraders</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SolGraders</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;SolGraders&quot;</span>
     }
@@ -91,7 +93,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolSymlink</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">SolSymlink</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SolSymlink</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;SolSymlink&quot;</span>
     }
@@ -115,7 +117,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SolUnique</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">SolUnique</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SolUnique</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;SolUnique&quot;</span>
     }

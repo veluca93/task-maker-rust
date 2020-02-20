@@ -264,8 +264,8 @@
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityCheck</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">Task</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityCheck</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">UIMessage</span>, <span class="ident">UIMessageSender</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">UISender</span>};
 
@@ -273,7 +273,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatementSubtasks</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">StatementSubtasks</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StatementSubtasks</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;StatementSubtasks&quot;</span>
     }
@@ -334,7 +334,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatementValid</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">StatementValid</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StatementValid</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;StatementValid&quot;</span>
     }
@@ -389,7 +389,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StatementGit</span>;
 
-<span class="kw">impl</span> <span class="ident">SanityCheck</span> <span class="kw">for</span> <span class="ident">StatementGit</span> {
+<span class="kw">impl</span> <span class="ident">SanityCheck</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StatementGit</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;StatementGit&quot;</span>
     }

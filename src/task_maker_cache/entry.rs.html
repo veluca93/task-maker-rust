@@ -365,6 +365,8 @@
 <span id="365">365</span>
 <span id="366">366</span>
 <span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
@@ -540,6 +542,8 @@
                         <span class="ident">wall_time</span>: <span class="number">0.0</span>,
                         <span class="ident">memory</span>: <span class="number">0</span>,
                     },
+                    <span class="ident">stdout</span>: <span class="prelude-val">None</span>,
+                    <span class="ident">stderr</span>: <span class="prelude-val">None</span>,
                 },
                 <span class="ident">limits</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
                 <span class="ident">extra_time</span>: <span class="ident">exec</span>.<span class="ident">config</span>().<span class="ident">extra_time</span>,

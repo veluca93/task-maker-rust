@@ -243,15 +243,20 @@
 <span id="243">243</span>
 <span id="244">244</span>
 <span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
 
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">get_sanity_check_names</span>;
-<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">ioi</span>::<span class="ident">VALID_TAGS</span>;
-<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">EvaluationConfig</span>;
+<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">get_sanity_check_names</span>;
+<span class="kw">use</span> <span class="ident">task_maker_format</span>::<span class="ident">terry</span>::<span class="ident">Seed</span>;
+<span class="kw">use</span> <span class="ident">task_maker_format</span>::{<span class="ident">EvaluationConfig</span>, <span class="ident">VALID_TAGS</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">structopt</span>(
@@ -309,6 +314,10 @@
     <span class="doccomment">/// The solution can reside anywhere in the filesystem.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;solution&quot;</span>, <span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;-s&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">solution</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Force this seed instead of a random one in Terry.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">seed</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Seed</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// Look at most for this number of parents for searching the task</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;max-depth&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -439,6 +448,7 @@
             <span class="ident">no_statement</span>: <span class="self">self</span>.<span class="ident">no_statement</span>,
             <span class="ident">solution_paths</span>: <span class="self">self</span>.<span class="ident">solution</span>.<span class="ident">clone</span>(),
             <span class="ident">disabled_sanity_checks</span>: <span class="self">self</span>.<span class="ident">skip_sanity_checks</span>.<span class="ident">clone</span>(),
+            <span class="ident">seed</span>: <span class="self">self</span>.<span class="ident">seed</span>,
         }
     }
 

@@ -163,6 +163,21 @@
 <span id="163">163</span>
 <span id="164">164</span>
 <span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashSet</span>, <span class="ident">VecDeque</span>};
@@ -217,17 +232,17 @@
     <span class="doccomment">/// compiled languages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
     <span class="doccomment">/// Arguments to pass to the compiler to compile to source file. The source file is located at</span>
     <span class="doccomment">/// `path.file_name()` inside the sandbox and the result of the compilation should placed at</span>
-    <span class="doccomment">/// `self.executable_name(path)`. The blanked implementation is intended for not compiled</span>
+    <span class="doccomment">/// `self.compiled_file_name(path)`. The blanked implementation is intended for not compiled</span>
     <span class="doccomment">/// languages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
@@ -247,15 +262,25 @@
         <span class="macro">vec</span><span class="macro">!</span>[]
     }
 
+    <span class="doccomment">/// The name that the compiled file will have inside the compilation sandbox.</span>
+    <span class="kw">fn</span> <span class="ident">compiled_file_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+        <span class="string">&quot;compiled&quot;</span>.<span class="ident">into</span>()
+    }
+
     <span class="doccomment">/// Command to use to run the program. It defaults to the executable name of the program.</span>
     <span class="doccomment">/// Languages that need to run a separate program (e.g. a system-wise interpreter) may change</span>
     <span class="doccomment">/// the return value of this method.</span>
-    <span class="kw">fn</span> <span class="ident">runtime_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
-        <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="self">self</span>.<span class="ident">executable_name</span>(<span class="ident">path</span>))
+    <span class="kw">fn</span> <span class="ident">runtime_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
+        <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="self">self</span>.<span class="ident">executable_name</span>(<span class="ident">path</span>, <span class="ident">write_to</span>))
     }
 
     <span class="doccomment">/// Arguments to pass to the executable to start the evaluation.</span>
-    <span class="kw">fn</span> <span class="ident">runtime_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">runtime_args</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
+        <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
+        <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">args</span>
     }
 
@@ -276,10 +301,15 @@
     <span class="doccomment">/// need to fork (hence use more processes).</span>
     <span class="kw">fn</span> <span class="ident">custom_limits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_limits</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExecutionLimits</span>) {}
 
-    <span class="doccomment">/// The name of the executable to call inside the sandbox. It defaults to the file name of</span>
-    <span class="doccomment">/// program.</span>
-    <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
-        <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>))
+    <span class="doccomment">/// The name of the executable inside the sandbox. If this binary will be written elsewhere in</span>
+    <span class="doccomment">/// the system, use the same name. Otherwise fallback to the original file name, without</span>
+    <span class="doccomment">/// extension.</span>
+    <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">write_to</span>) <span class="op">=</span> <span class="ident">write_to</span> {
+            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">write_to</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>))
+        } <span class="kw">else</span> {
+            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">path</span>.<span class="ident">file_stem</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>))
+        }
     }
 }
 

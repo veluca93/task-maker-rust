@@ -273,6 +273,10 @@
 <span id="273">273</span>
 <span id="274">274</span>
 <span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -327,6 +331,8 @@
 <span class="doccomment">//!     },</span>
 <span class="doccomment">//!     was_killed: false,</span>
 <span class="doccomment">//!     was_cached: false,</span>
+<span class="doccomment">//!     stderr: None,</span>
+<span class="doccomment">//!     stdout: None,</span>
 <span class="doccomment">//! };</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! // make the FileUuid -&gt; FileStoreHandle map</span>
@@ -501,6 +507,8 @@
                                 <span class="ident">was_killed</span>: <span class="ident">entry</span>.<span class="ident">result</span>.<span class="ident">was_killed</span>,
                                 <span class="ident">was_cached</span>: <span class="bool-val">true</span>,
                                 <span class="ident">resources</span>: <span class="ident">entry</span>.<span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">clone</span>(),
+                                <span class="ident">stdout</span>: <span class="ident">entry</span>.<span class="ident">result</span>.<span class="ident">stdout</span>.<span class="ident">clone</span>(),
+                                <span class="ident">stderr</span>: <span class="ident">entry</span>.<span class="ident">result</span>.<span class="ident">stderr</span>.<span class="ident">clone</span>(),
                             },
                             <span class="ident">outputs</span>,
                         };

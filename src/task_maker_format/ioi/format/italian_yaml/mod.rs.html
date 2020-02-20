@@ -328,7 +328,7 @@
 
 <span class="kw">use</span> <span class="ident">task_maker_lang</span>::<span class="ident">GraderMap</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityChecks</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">get_sanity_checks</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{
     <span class="ident">make_booklets</span>, <span class="ident">Checker</span>, <span class="ident">InputValidator</span>, <span class="ident">OutputGenerator</span>, <span class="ident">SubtaskId</span>, <span class="ident">SubtaskInfo</span>, <span class="ident">Task</span>,
     <span class="ident">TaskType</span>, <span class="ident">TestcaseId</span>, <span class="ident">TestcaseInfo</span>, <span class="ident">TestcaseScoreAggregator</span>,
@@ -513,7 +513,7 @@
         <span class="ident">booklets</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         <span class="ident">difficulty</span>: <span class="ident">yaml</span>.<span class="ident">difficulty</span>,
         <span class="ident">syllabus_level</span>: <span class="ident">yaml</span>.<span class="ident">syllabuslevel</span>,
-        <span class="ident">sanity_checks</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">SanityChecks</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">eval_config</span>.<span class="ident">disabled_sanity_checks</span>)),
+        <span class="ident">sanity_checks</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">get_sanity_checks</span>(<span class="kw-2">&amp;</span><span class="ident">eval_config</span>.<span class="ident">disabled_sanity_checks</span>)),
         <span class="ident">input_validator</span>: <span class="ident">detect_validator</span>(<span class="ident">task_dir</span>.<span class="ident">to_path_buf</span>())(<span class="number">0</span>),
         <span class="ident">output_generator</span>: <span class="ident">official_solution</span>,
     };
