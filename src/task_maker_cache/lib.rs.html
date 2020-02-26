@@ -277,6 +277,7 @@
 <span id="277">277</span>
 <span id="278">278</span>
 <span id="279">279</span>
+<span id="280">280</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -414,6 +415,7 @@
                     <span class="ident">cache_file</span>: <span class="ident">path</span>,
                 })
             } <span class="kw">else</span> {
+                <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Cache store is broken, resetting&quot;</span>);
                 <span class="prelude-val">Ok</span>(<span class="ident">Cache</span> {
                     <span class="ident">entries</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
                     <span class="ident">cache_file</span>: <span class="ident">path</span>,
