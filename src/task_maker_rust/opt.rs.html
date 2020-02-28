@@ -265,7 +265,7 @@
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Opt</span> {
     <span class="doccomment">/// Directory of the task to evaluate</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;t&quot;</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;task-dir&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;.&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;t&quot;</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;task-dir&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">task_dir</span>: <span class="ident">PathBuf</span>,
 
     <span class="doccomment">/// Which UI to use, available UIS are: print, raw, curses, json.</span>
