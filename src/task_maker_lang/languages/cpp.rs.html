@@ -203,45 +203,79 @@
 <span id="203">203</span>
 <span id="204">204</span>
 <span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::{<span class="ident">find_dependencies</span>, <span class="ident">Language</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Dependency</span>;
-<span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+
+<span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
+
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Version of the C++ standard and compiler to use.</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LanguageCppVersion</span> {
-    <span class="doccomment">/// g++ with -std=c++11</span>
-    <span class="ident">GccCpp11</span>,
-    <span class="doccomment">/// g++ with -std=c++14</span>
-    <span class="ident">GccCpp14</span>,
-    <span class="doccomment">/// clang++ with -std=c++11</span>
-    <span class="ident">ClangCpp11</span>,
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">languages</span>::{<span class="ident">find_dependencies</span>, <span class="ident">Language</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Dependency</span>;
+
+<span class="doccomment">/// Configuration of the C++ language to use.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LanguageCppConfiguration</span> {
+    <span class="doccomment">/// Compiler to use (e.g. ExecutionCommand::system(&quot;g++&quot;) ).</span>
+    <span class="kw">pub</span> <span class="ident">compiler</span>: <span class="ident">ExecutionCommand</span>,
+    <span class="doccomment">/// Version of the C++ standard library to use (e.g. c++11).</span>
+    <span class="kw">pub</span> <span class="ident">std_version</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// Extra flags to pass to the compiler.</span>
+    <span class="kw">pub</span> <span class="ident">extra_flags</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// The C++ language.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LanguageCpp</span> {
-    <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">LanguageCppVersion</span>,
+    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">LanguageCppConfiguration</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">LanguageCppConfiguration</span> {
+    <span class="doccomment">/// Get the configuration of C++ from the environment variables.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_env</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LanguageCppConfiguration</span> {
+        <span class="kw">let</span> <span class="ident">compiler</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var_os</span>(<span class="string">&quot;TM_CXX&quot;</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;g++&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">let</span> <span class="ident">std_version</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;TM_CXX_STD_VERSION&quot;</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="string">&quot;c++11&quot;</span>.<span class="ident">into</span>());
+        <span class="kw">let</span> <span class="ident">extra_flags</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;TM_CXXFLAGS&quot;</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">new</span>());
+        <span class="kw">let</span> <span class="ident">extra_flags</span> <span class="op">=</span> <span class="ident">shell_words</span>::<span class="ident">split</span>(<span class="kw-2">&amp;</span><span class="ident">extra_flags</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid $TM_CXXFLAGS&quot;</span>);
+        <span class="ident">LanguageCppConfiguration</span> {
+            <span class="ident">compiler</span>: <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="ident">compiler</span>.<span class="ident">into</span>()),
+            <span class="ident">std_version</span>,
+            <span class="ident">extra_flags</span>,
+        }
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">LanguageCpp</span> {
     <span class="doccomment">/// Make a new LanguageCpp using the specified version.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">version</span>: <span class="ident">LanguageCppVersion</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LanguageCpp</span> {
-        <span class="ident">LanguageCpp</span> { <span class="ident">version</span> }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">config</span>: <span class="ident">LanguageCppConfiguration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LanguageCpp</span> {
+        <span class="ident">LanguageCpp</span> { <span class="ident">config</span> }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Language</span> <span class="kw">for</span> <span class="ident">LanguageCpp</span> {
     <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">version</span> {
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;C++11 / gcc&quot;</span>,
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;C++14 / gcc&quot;</span>,
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">ClangCpp11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;C++11 / clang&quot;</span>,
-        }
+        <span class="string">&quot;C++&quot;</span>
     }
 
     <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
@@ -253,25 +287,26 @@
     }
 
     <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">version</span> {
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp11</span> <span class="op">|</span> <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;g++&quot;</span>)
-            }
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">ClangCpp11</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;clang++&quot;</span>),
-        }
+        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">compiler</span>.<span class="ident">clone</span>()
     }
 
     <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">compiled_file_name</span>(<span class="ident">path</span>, <span class="ident">write_to</span>);
         <span class="kw">let</span> <span class="ident">exe_name</span> <span class="op">=</span> <span class="ident">exe_name</span>.<span class="ident">to_string_lossy</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-O2&quot;</span>, <span class="string">&quot;-Wall&quot;</span>, <span class="string">&quot;-ggdb3&quot;</span>, <span class="string">&quot;-DEVAL&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="ident">exe_name</span>.<span class="ident">as_ref</span>()];
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">version</span> {
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp11</span> <span class="op">|</span> <span class="ident">LanguageCppVersion</span>::<span class="ident">ClangCpp11</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;-std=c++11&quot;</span>)
-            }
-            <span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">args</span>.<span class="ident">push</span>(<span class="string">&quot;-std=c++14&quot;</span>),
-        }
+        <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[
+            <span class="string">&quot;-O2&quot;</span>,
+            <span class="string">&quot;-Wall&quot;</span>,
+            <span class="string">&quot;-ggdb3&quot;</span>,
+            <span class="string">&quot;-DEVAL&quot;</span>,
+            <span class="string">&quot;-fdiagnostics-color=always&quot;</span>,
+            <span class="string">&quot;-o&quot;</span>,
+            <span class="ident">exe_name</span>.<span class="ident">as_ref</span>(),
+        ];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()).<span class="ident">collect</span>();
+        <span class="ident">args</span>.<span class="ident">push</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;-std={}&quot;</span>, <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">std_version</span>));
+        <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>.<span class="ident">extra_flags</span> {
+            <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">arg</span>.<span class="ident">clone</span>());
+        }
         <span class="ident">args</span>.<span class="ident">push</span>(
             <span class="ident">path</span>.<span class="ident">file_name</span>()
                 .<span class="ident">expect</span>(<span class="string">&quot;Invalid source file name&quot;</span>)
@@ -331,23 +366,30 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">spectral</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>;
+
+    <span class="kw">use</span> <span class="ident">spectral</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_compilation_args</span>() {
-        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span>);
+        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppConfiguration</span> {
+            <span class="ident">compiler</span>: <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="string">&quot;g++&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">std_version</span>: <span class="string">&quot;c++14&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">extra_flags</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-lfoobar&quot;</span>.<span class="ident">into</span>()],
+        });
         <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.cpp&quot;</span>), <span class="prelude-val">None</span>);
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;foo.cpp&quot;</span>.<span class="ident">to_string</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;-std=c++14&quot;</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;-lfoobar&quot;</span>.<span class="ident">to_string</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;-o&quot;</span>.<span class="ident">to_string</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">args</span>).<span class="ident">contains</span>(<span class="string">&quot;compiled&quot;</span>.<span class="ident">to_string</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_compilation_add_file</span>() {
-        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span>);
+        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppConfiguration</span>::<span class="ident">from_env</span>());
         <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_args</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.cpp&quot;</span>), <span class="prelude-val">None</span>);
         <span class="kw">let</span> <span class="ident">new_args</span> <span class="op">=</span> <span class="ident">lang</span>.<span class="ident">compilation_add_file</span>(<span class="ident">args</span>.<span class="ident">clone</span>(), <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;bar.cpp&quot;</span>));
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">new_args</span>.<span class="ident">iter</span>()).<span class="ident">contains_all_of</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>.<span class="ident">iter</span>());
@@ -356,7 +398,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_executable_name</span>() {
-        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppVersion</span>::<span class="ident">GccCpp14</span>);
+        <span class="kw">let</span> <span class="ident">lang</span> <span class="op">=</span> <span class="ident">LanguageCpp</span>::<span class="ident">new</span>(<span class="ident">LanguageCppConfiguration</span>::<span class="ident">from_env</span>());
         <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">lang</span>.<span class="ident">executable_name</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.cpp&quot;</span>), <span class="prelude-val">None</span>))
             .<span class="ident">is_equal_to</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;foo&quot;</span>));
     }
