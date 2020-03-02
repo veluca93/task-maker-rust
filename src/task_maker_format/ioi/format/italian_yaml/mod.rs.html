@@ -566,6 +566,7 @@
 <span id="566">566</span>
 <span id="567">567</span>
 <span id="568">568</span>
+<span id="569">569</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -822,6 +823,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_lang</span>::<span class="ident">GraderMap</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">sanity_checks</span>::<span class="ident">get_sanity_checks</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">TM_VALIDATION_FILE_NAME</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{
     <span class="ident">make_booklets</span>, <span class="ident">Checker</span>, <span class="ident">InputValidator</span>, <span class="ident">OutputGenerator</span>, <span class="ident">SubtaskId</span>, <span class="ident">SubtaskInfo</span>, <span class="ident">Task</span>,
     <span class="ident">TaskType</span>, <span class="ident">TestcaseId</span>, <span class="ident">TestcaseInfo</span>, <span class="ident">TestcaseScoreAggregator</span>,
@@ -1053,7 +1055,7 @@
             <span class="ident">InputValidator</span>::<span class="ident">Custom</span>(
                 <span class="ident">validator</span>.<span class="ident">clone</span>(),
                 <span class="comment">// for legacy support reasons the subtask is passed 1-based</span>
-                <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;tm_validation_file&quot;</span>.<span class="ident">to_string</span>(), (<span class="ident">st</span> <span class="op">+</span> <span class="number">1</span>).<span class="ident">to_string</span>()],
+                <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">TM_VALIDATION_FILE_NAME</span>.<span class="ident">to_string</span>(), (<span class="ident">st</span> <span class="op">+</span> <span class="number">1</span>).<span class="ident">to_string</span>()],
             )
         } <span class="kw">else</span> {
             <span class="ident">InputValidator</span>::<span class="ident">AssumeValid</span>
