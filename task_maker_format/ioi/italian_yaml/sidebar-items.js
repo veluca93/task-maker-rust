@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["parse_task","Given the path to the task directory, try to parse the task inside of it assuming the format is `italian_yaml`."]]});

@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `italian_yaml` mod in crate `task_maker_format`."><meta name="keywords" content="rust, rustlang, rust-lang, italian_yaml"><title>task_maker_format::ioi::italian_yaml - Rust</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../task_maker_format/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a><p class='location'>Module italian_yaml</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#functions">Functions</a></li></ul></div><p class='location'><a href='../../index.html'>task_maker_format</a>::<wbr><a href='../index.html'>ioi</a></p><script>window.sidebarCurrent = {name: 'italian_yaml', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../../src/task_maker_format/ioi/format/italian_yaml/mod.rs.html#1-568' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../../index.html'>task_maker_format</a>::<wbr><a href='../index.html'>ioi</a>::<wbr><a class="mod" href=''>italian_yaml</a></span></h1><div class='docblock'><p>The <code>italian_yaml</code> format is defined by <a href="https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format"><code>cms</code></a>
+and it's the most used format in the Italian Olympiads.</p>
+<h1 id="gengen-format" class="section-header"><a href="#gengen-format"><code>gen/GEN</code> format</a></h1>
+<p>Here it's provided the definition of the format of the <code>gen/GEN</code> file, as interpreted by
+task-maker. The aim is to be as compatible as possible to the format accepted by <code>cmsMake</code> and
+<code>cmsImportTask</code>.</p>
+<p>The <code>gen/GEN</code> file describes how the input files of the testcases should be generated and how
+the subtasks are composed. The formal definition of the format can be found looking at the
+<a href="https://github.com/edomora97/task-maker-rust/blob/master/task-maker-format/src/ioi/format/italian_yaml/GEN.pest">parsing grammar</a>.
+The format is described here informally.</p>
+<p>Each line of that file can be of one of the following types:</p>
+<ul>
+<li>if the line starts with <code># </code> (number sign followed by a space) it is a comment and will be
+ignored. Example: <code># this is a comment</code></li>
+<li>if the line starts with <code>#ST:</code> it is the marker of the start of a new subtask. Following the
+column there is the score of the subtask, an integer number. Example: <code>#ST: 20</code>, meaning that
+all the following testcases, before the next <code>#ST:</code> are grouped in a single subtask worth 20
+points.</li>
+<li>if the line starts with <code>#COPY:</code> it is a testcase with a static input file, meaning that the
+input file will be simply copied from the path specified after the column. Example:
+<code>#COPY: gen/hardcoded.in</code>. The path is relative to the task root directory and the file must
+exists and be readable from task-maker. The path should not contain spaces.</li>
+<li>non-empty lines not starting with <code>#</code> defines a new testcases each. Each line contains
+command line arguments to pass to the generator executable. The generator should be named
+<code>gen/generator.*</code> or <code>gen/generatore.*</code>. Example: <code>1 2 3</code>, the generator will be invoked
+passing the three arguments.</li>
+</ul>
+<p>If a line contains a <code>#</code>, all the characters following it (<code>#</code> included) will be ignored as they
+are considered comments. Example: <code>1 2 3 # inline comment</code>.</p>
+<p>If no <code>#ST</code> lines are present, a single subtask worth 100 points is automatically added.</p>
+<h2 id="full-example-of-gengen" class="section-header"><a href="#full-example-of-gengen">Full example of <code>gen/GEN</code></a></h2>
+<pre><code class="language-text"># N     M       seed
+#ST: 0
+#COPY: gen/example1.txt
+#COPY: gen/example2.txt
+
+#ST: 30
+10      1000    101
+20      1000    102
+1       1       103 # corner case!
+
+#ST: 70
+1000    10000   201
+2000    10000   202
+</code></pre>
+<p>In this example the first line is ignored since it's a comment, then the definition of a subtask
+of zero points starts. The content of that subtask are 2 hardcoded input files, for example the
+sample cases in the text statement.</p>
+<p>Then a new subtask of 30 points starts, it's composed of 3 testcases. Note that the comment on
+the third will be ignored and just the 3 numbers will be passed to the generator.</p>
+<p>Then there is a third subtask with 2 testcases.</p>
+<h1 id="gencasesgen-format" class="section-header"><a href="#gencasesgen-format"><code>gen/cases.gen</code> format</a></h1>
+<p>The <code>gen/GEN</code> format is pretty limited regarding some important aspects of task preparation. For
+example it allows you to use just a single generator and a single validator. A new format, not
+yet officially supported by <code>cms</code> (but workaround exists!), is here described.</p>
+<p>The formal definition of the format can be found in the
+<a href="https://github.com/edomora97/task-maker-rust/blob/master/task-maker-format/src/ioi/format/italian_yaml/cases.gen.pest">parsing grammar</a>.
+An informal explanation is here provided.</p>
+<p>Similarly to <code>gen/GEN</code>, each line is independent and can be one of the following:</p>
+<ul>
+<li>if it starts with <code>#</code> it is a comment and will be ignored.</li>
+<li>if it starts with <code>:</code> it is a command and what follows is described below.</li>
+<li>otherwise if it does not start with <code>#</code> nor <code>:</code>, it's a simple testcase definition. The
+testcases will be generated using the <em>current generator</em>, which is either the default one or
+the overridden one in the current subtask.</li>
+</ul>
+<p>If a line contains a <code>#</code>, all the characters following it (<code>#</code> included) will be ignored as they
+are considered comments. Example: <code>1 2 3 # inline comment</code>.</p>
+<h2 id="casesgen-commands" class="section-header"><a href="#casesgen-commands"><code>cases.gen</code> commands</a></h2>
+<p>The lines starting with a column <code>:</code> are commands. What follows the column is the actual command
+which can be of many types.</p>
+<h3 id="-gen-name-path-args" class="section-header"><a href="#-gen-name-path-args"><code>: GEN name path [args...]</code></a></h3>
+<p>This command registers a new generator for the task. The generator is referenced in the file
+with the specified <code>name</code>, a unique string without spaces. That generator's source file will be
+found at the specified <code>path</code>. The optional following <code>args...</code> define the command line
+arguments of this generator, they will be used for validating the constraints (see below).</p>
+<p>If the name is <code>default</code> the generator will be considered the default one and will be used when
+no specific generator is selected.</p>
+<p>Example: <code>: GEN default gen/generator.py N M seed</code> defines the <em>default</em> generator for the task,
+whose source file is at <code>gen/generator.py</code> (relative to the task's root directory) and will
+accept 3 arguments named <code>N</code>, <code>M</code> and <code>seed</code>. When this generator will be used the variables
+<code>$N</code>, <code>$M</code> and <code>$seed</code> will be set and available for the constraint evaluation.</p>
+<p>Example: <code>: GEN line gen/line.py</code> defines a new generator named <code>line</code> whose parameters are not
+known and won't be validated.</p>
+<h3 id="-val-name-path-args" class="section-header"><a href="#-val-name-path-args"><code>: VAL name path [args...]</code></a></h3>
+<p>This command registers a new validator for the task. The semantics of the command are the same
+of <code>: GEN name path [args...]</code>, including the behaviour of the <code>default</code> name.</p>
+<p>If no arguments are specified for the validator the default behaviour is to pass the same
+arguments as <code>gen/GEN</code>, i.e. the path to the file to validate and the 1-based index of the
+subtask.</p>
+<p>Note that the <code>name</code> must be unique among the validators, but it can be the same of the one of
+a generator.</p>
+<p>Example: <code>: VAL default gen/validator.py</code> defines the <em>default</em> validator for the task.</p>
+<p>Example: <code>: VAL line gen/val_line.py $INPUT $ST_NUM</code> defines the <code>line</code> validator which takes 2
+arguments, the same as the default behaviour, but using the variables to specify them.</p>
+<h3 id="-gen-name" class="section-header"><a href="#-gen-name"><code>: GEN name</code></a></h3>
+<p>This command overrides the default generator for the current subtask, meaning that all the
+testcases in the current subtask, following this command, will use the generator named <code>name</code> by
+default. A generator named <code>name</code> must have been previously defined.</p>
+<p>Example: <code>: GEN line</code> sets the current generator to <code>line</code>.</p>
+<h3 id="-val-name" class="section-header"><a href="#-val-name"><code>: VAL name</code></a></h3>
+<p>This command overrides the default validator for the current subtask, meaning that all the
+testcases in the current subtask, following this command, will use the validator named <code>name</code>.
+A validator named <code>name</code> must have been previously defined.</p>
+<p>Example: <code>: VAL line</code> sets the current validator to <code>line</code>.</p>
+<h3 id="-constraint-operand-operator-operand" class="section-header"><a href="#-constraint-operand-operator-operand"><code>: CONSTRAINT operand (operator operand)+</code></a></h3>
+<p>This command adds a constraint that validates the parameters of the testcases. The arguments of
+<code>: CONSTRAINT</code> form an expression that is an inequality (with equalities allowed) between
+constants and variables. When a testcase is defined using a generator with the arguments known,
+all those variables become defined and will be checked with all the constraints.</p>
+<p>The operators available are: &lt; &lt;= &gt; &gt;= =, but note that the inequalities must have the same
+direction (cannot mix &lt; and &gt;).</p>
+<p>Constraints defined before the first subtask will be used for all the subtasks. Constraints
+defined inside a subtask will be used only for that subtask.</p>
+<p>Example: <code>:CONSTRAINT 0 &lt;= $N &lt; $M &lt;= 1000000</code> will check that the variables <code>$N</code> and <code>$M</code> are
+between 0 and 1000000 and <code>$N</code> is smaller than <code>$M</code>.</p>
+<h3 id="-subtask-score-description" class="section-header"><a href="#-subtask-score-description"><code>: SUBTASK score [description]</code></a></h3>
+<p>This command marks the start of a new subtask, just like how <code>#ST</code> in <code>gen/GEN</code> did. The score
+can be a simple floating point number (either an integer or an integer.integer). The description
+that follows is optional and will be included in the subtask metadata.</p>
+<p>When a new subtask is started the generator and validator will be reset to the default ones.</p>
+<p>Example: <code>: SUBTASK 40 All the nodes are in a line</code> defines a new subtask worth 40 points, with
+the provided description.</p>
+<h3 id="-copy-path" class="section-header"><a href="#-copy-path"><code>: COPY path</code></a></h3>
+<p>This command creates a new testcase coping the input file from the specified path, relative to
+the task root directory. The file will be validated using the current validator of the subtask.</p>
+<p>Example: <code>: COPY gen/hardcoded.in</code></p>
+<h3 id="-run-name-args" class="section-header"><a href="#-run-name-args"><code>: RUN name args...</code></a></h3>
+<p>This command creates a new testcase using the generator named <code>name</code>, passing to it the
+following arguments. The generator must have been previously defined.</p>
+<p>If the generator has the definition of its parameters, they will be used for assigning the
+variables for checking the constraints. All the constraints must be satisfied for each testcase.</p>
+<p>The arguments provided are parsed with a shell lexer, meaning that <code>&quot;</code> and <code>'</code> have a semantic
+value (the same as a shell). Unlike <code>gen/GEN</code> you can pass arguments with a space in it using
+the quotes.</p>
+<p>Example: <code>: RUN line 1 2 3</code> will run the <code>line</code> generator passing the three integers as
+arguments.</p>
+<h2 id="testcase-definition" class="section-header"><a href="#testcase-definition">Testcase definition</a></h2>
+<p>Similarly to <code>gen/GEN</code> lines that are not commands nor comments are simple testcase definition.
+Their semantics is the same of <code>: RUN default args...</code>.</p>
+<h2 id="automatic-variables" class="section-header"><a href="#automatic-variables">Automatic variables</a></h2>
+<p>In the constraint evaluation and in the validator argument specification all the variables
+obtained from the parsing of the generator's arguments will be available. Also some automatic
+variables will be available:</p>
+<ul>
+<li><code>$ST_NUM</code>: the 0-based index of the subtask</li>
+<li><code>$ST_DESCRIPTION</code>: the description of the subtask</li>
+<li><code>$TC_NUM</code>: the 0-based index of the testcase</li>
+<li><code>$INPUT</code> <em>(only for validators)</em>: the name of the file to validate</li>
+</ul>
+<h2 id="full-example-of-casesgen" class="section-header"><a href="#full-example-of-casesgen">Full example of <code>cases.gen</code></a></h2>
+<pre><code class="language-text">: GEN default gen/generator.py N M seed
+: GEN line gen/line.py N seed
+: GEN hard gen/hard.py
+
+: VAL default gen/validator.py
+: VAL line gen/val_line.py $INPUT $ST_NUM # same as default
+
+: CONSTRAINT 1 &lt;= $N &lt;= 1000
+: CONSTRAINT 1 &lt;= $M &lt;= 1000000
+
+: SUBTASK 0 Examples
+: COPY gen/example1.in
+: COPY gen/example2.in
+
+: SUBTASK 30 Nodes are in a line
+: GEN line
+: VAL line
+: CONSTRAINT $N &lt;= 500
+500   101
+500   102
+
+: SUBTASK 70
+1000   1000      201
+1000   1000000   202
+: RUN hard 1000 1000 95% 12.3 203
+</code></pre>
+<p>In this example 3 generators and 2 validators are defined, named <code>default</code>, <code>line</code>, <code>hard</code> and
+<code>default</code>, <code>line</code> respectively. The <code>default</code> and <code>line</code> generators have their parameters
+specified, they will be used for the constraints check; the <code>hard</code> generator arguments won't be
+validated.</p>
+<p>Note that the second validator has the arguments specified, and they are the same as the default
+ones. Also note that the inline comment will be ignored.</p>
+<p>This file defines 3 subtasks, worth 0, 30 and 70 points each.</p>
+<p>The first subtask contains 2 testcases whose file will be simply copied from the specified
+paths.</p>
+<p>The second subtask has 2 testcases each generated with the <code>line</code> generator and validated with
+the <code>line</code> validator. Note that there is an additional constraint for the subtask, it will be
+checked only in this subtask.</p>
+<p>The third subtask will use the <code>default</code> generator and validator, except for the last testcase
+which will use the <code>hard</code> one. Note that since the <code>hard</code> generator does not have the argument
+specification, its parameters won't be checked. Also note that the constraint <code>$N &lt;= 500</code> won't
+be checked because it was scoped only to the second subtask.
+The subtask also does not have a description, the default one (<code>Subtask 2</code>) will be used.</p>
+</div><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table><tr class='module-item'><td><a class="fn" href="fn.parse_task.html" title='task_maker_format::ioi::italian_yaml::parse_task fn'>parse_task</a></td><td class='docblock-short'><p>Given the path to the task directory, try to parse the task inside of it assuming the format is
+<code>italian_yaml</code>.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "task_maker_format";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

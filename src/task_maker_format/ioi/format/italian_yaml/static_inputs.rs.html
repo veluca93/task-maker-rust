@@ -156,6 +156,7 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
+<span id="159">159</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -197,6 +198,7 @@
             <span class="self">self</span>.<span class="ident">index</span> <span class="op">=</span> <span class="number">1</span>;
             <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">TaskInputEntry</span>::<span class="ident">Subtask</span>(<span class="ident">SubtaskInfo</span> {
                 <span class="ident">id</span>: <span class="number">0</span>,
+                <span class="ident">description</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Static testcases&quot;</span>.<span class="ident">into</span>()),
                 <span class="ident">max_score</span>: <span class="number">100.0</span>,
                 <span class="ident">testcases</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
             }));
