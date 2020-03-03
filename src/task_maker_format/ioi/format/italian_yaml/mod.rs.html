@@ -567,6 +567,9 @@
 <span id="567">567</span>
 <span id="568">568</span>
 <span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -675,9 +678,12 @@
 <span class="doccomment">//! This command registers a new validator for the task. The semantics of the command are the same</span>
 <span class="doccomment">//! of `: GEN name path [args...]`, including the behaviour of the `default` name.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! If no arguments are specified for the validator the default behaviour is to pass the same</span>
-<span class="doccomment">//! arguments as `gen/GEN`, i.e. the path to the file to validate and the 1-based index of the</span>
-<span class="doccomment">//! subtask.</span>
+<span class="doccomment">//! If no arguments are specified for the validator the default behaviour is to pass the variables</span>
+<span class="doccomment">//! `$INPUT` and `$ST_NUM` (similar to `gen/GEN`, but the subtask is 0-based).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Note that, differently than `: GEN` the arguments of the validator do not define new variables,</span>
+<span class="doccomment">//! instead defines which parameters task-maker will pass to the validator. Because of that the</span>
+<span class="doccomment">//! variables should be prefixed with `$` (the variables are used, not declared).</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Note that the `name` must be unique among the validators, but it can be the same of the one of</span>
 <span class="doccomment">//! a generator.</span>
