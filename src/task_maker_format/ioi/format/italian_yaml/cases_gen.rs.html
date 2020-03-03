@@ -1501,6 +1501,93 @@
 <span id="1501">1501</span>
 <span id="1502">1502</span>
 <span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
+<span id="1508">1508</span>
+<span id="1509">1509</span>
+<span id="1510">1510</span>
+<span id="1511">1511</span>
+<span id="1512">1512</span>
+<span id="1513">1513</span>
+<span id="1514">1514</span>
+<span id="1515">1515</span>
+<span id="1516">1516</span>
+<span id="1517">1517</span>
+<span id="1518">1518</span>
+<span id="1519">1519</span>
+<span id="1520">1520</span>
+<span id="1521">1521</span>
+<span id="1522">1522</span>
+<span id="1523">1523</span>
+<span id="1524">1524</span>
+<span id="1525">1525</span>
+<span id="1526">1526</span>
+<span id="1527">1527</span>
+<span id="1528">1528</span>
+<span id="1529">1529</span>
+<span id="1530">1530</span>
+<span id="1531">1531</span>
+<span id="1532">1532</span>
+<span id="1533">1533</span>
+<span id="1534">1534</span>
+<span id="1535">1535</span>
+<span id="1536">1536</span>
+<span id="1537">1537</span>
+<span id="1538">1538</span>
+<span id="1539">1539</span>
+<span id="1540">1540</span>
+<span id="1541">1541</span>
+<span id="1542">1542</span>
+<span id="1543">1543</span>
+<span id="1544">1544</span>
+<span id="1545">1545</span>
+<span id="1546">1546</span>
+<span id="1547">1547</span>
+<span id="1548">1548</span>
+<span id="1549">1549</span>
+<span id="1550">1550</span>
+<span id="1551">1551</span>
+<span id="1552">1552</span>
+<span id="1553">1553</span>
+<span id="1554">1554</span>
+<span id="1555">1555</span>
+<span id="1556">1556</span>
+<span id="1557">1557</span>
+<span id="1558">1558</span>
+<span id="1559">1559</span>
+<span id="1560">1560</span>
+<span id="1561">1561</span>
+<span id="1562">1562</span>
+<span id="1563">1563</span>
+<span id="1564">1564</span>
+<span id="1565">1565</span>
+<span id="1566">1566</span>
+<span id="1567">1567</span>
+<span id="1568">1568</span>
+<span id="1569">1569</span>
+<span id="1570">1570</span>
+<span id="1571">1571</span>
+<span id="1572">1572</span>
+<span id="1573">1573</span>
+<span id="1574">1574</span>
+<span id="1575">1575</span>
+<span id="1576">1576</span>
+<span id="1577">1577</span>
+<span id="1578">1578</span>
+<span id="1579">1579</span>
+<span id="1580">1580</span>
+<span id="1581">1581</span>
+<span id="1582">1582</span>
+<span id="1583">1583</span>
+<span id="1584">1584</span>
+<span id="1585">1585</span>
+<span id="1586">1586</span>
+<span id="1587">1587</span>
+<span id="1588">1588</span>
+<span id="1589">1589</span>
+<span id="1590">1590</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
@@ -1518,6 +1605,10 @@
     <span class="ident">TestcaseInfo</span>, <span class="ident">TM_VALIDATION_FILE_NAME</span>,
 };
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">SourceFile</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span>;
+
+<span class="doccomment">/// String placed in the auto-generated gen/GEN marking it as safely deletable.</span>
+<span class="kw">const</span> <span class="ident">TM_ALLOW_DELETE_COOKIE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;tm-allow-delete&quot;</span>;
 
 <span class="doccomment">/// This module exists because of a `pest`&#39;s bug: https://github.com/pest-parser/pest/issues/326</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
@@ -1585,7 +1676,7 @@
 <span class="doccomment">/// is filled and updated during the parsing of the file.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Derivative</span>)]</span>
 <span class="attribute">#[<span class="ident">derivative</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">CasesGen</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">CasesGen</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O</span>: <span class="ident">Fn</span>(<span class="ident">TestcaseId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutputGenerator</span>,
 {
@@ -1600,7 +1691,7 @@
     <span class="doccomment">/// The list of constraints found in the file.</span>
     <span class="ident">constraints</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Constraint</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The list of additional constraints for the current subtask.</span>
-    <span class="ident">subtask_constraints</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Constraint</span><span class="op">&gt;</span>,
+    <span class="ident">subtask_constraints</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Constraint</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The list of all the generators found, indexed by generator name.</span>
     <span class="ident">generators</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Manager</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The list of all the validators found, indexed by validator name.</span>
@@ -1623,25 +1714,12 @@
     <span class="ident">testcase_id</span>: <span class="ident">TestcaseId</span>,
 }
 
-<span class="doccomment">/// Parse the `gen/cases.gen` file extracting the subtasks and the testcases.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_cases_gen</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">O</span><span class="op">&gt;</span>(
-    <span class="ident">path</span>: <span class="ident">P</span>,
-    <span class="ident">output_gen</span>: <span class="ident">O</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TaskInputEntry</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">O</span>: <span class="ident">Fn</span>(<span class="ident">TestcaseId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutputGenerator</span>,
-{
-    <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(
-        <span class="ident">CasesGen</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="ident">output_gen</span>)<span class="question-mark">?</span>.<span class="ident">result</span>.<span class="ident">into_iter</span>(),
-    ))
-}
-
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> <span class="ident">CasesGen</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">O</span>: <span class="ident">Fn</span>(<span class="ident">TestcaseId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OutputGenerator</span>,
 {
     <span class="doccomment">/// Parse the `cases.gen` file pointed at the specified path.</span>
-    <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">output_gen</span>: <span class="ident">O</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CasesGen</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">output_gen</span>: <span class="ident">O</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CasesGen</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">task_dir</span> <span class="op">=</span> <span class="ident">path</span>
             .<span class="ident">as_ref</span>()
             .<span class="ident">parent</span>()
@@ -1699,6 +1777,73 @@
         <span class="prelude-val">Ok</span>(<span class="ident">cases</span>)
     }
 
+    <span class="doccomment">/// Return the list of `TaskInputEntry` from the `cases.gen` file.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_task_entries</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">result</span>.<span class="ident">clone</span>()
+    }
+
+    <span class="doccomment">/// Write an auto-generated version of the gen/GEN file inside the task directory.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">write_gen_gen</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">dest</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;gen/GEN&quot;</span>);
+        <span class="kw">if</span> <span class="ident">dest</span>.<span class="ident">exists</span>() {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">dest</span>)<span class="question-mark">?</span>;
+            <span class="ident">file</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">buffer</span>);
+            <span class="comment">// if the gen/GEN is present and it does not contain the cookie, skip all the generation</span>
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">content</span>.<span class="ident">contains</span>(<span class="ident">TM_ALLOW_DELETE_COOKIE</span>) {
+                <span class="macro">warn</span><span class="macro">!</span>(
+                    <span class="string">&quot;The gen/GEN file does not contain {}. Won&#39;t overwrite&quot;</span>,
+                    <span class="ident">TM_ALLOW_DELETE_COOKIE</span>
+                );
+                <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+            }
+        }
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gen</span> <span class="op">=</span> <span class="string">&quot;# Generated by task-maker. Do not edit!\n&quot;</span>.<span class="ident">to_string</span>();
+        <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;# {}\n&quot;</span>, <span class="ident">TM_ALLOW_DELETE_COOKIE</span>);
+        <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="string">&quot;# Removing or changing the line above will prevent task-maker from touching this file again.\n\n&quot;</span>;
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">constraints</span>.<span class="ident">is_empty</span>() {
+            <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="string">&quot;# Constraints:\n&quot;</span>;
+            <span class="kw">for</span> <span class="ident">constr</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">constraints</span> {
+                <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;# {:?}\n&quot;</span>, <span class="ident">constr</span>);
+            }
+        }
+        <span class="kw">for</span> <span class="ident">entry</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">result</span> {
+            <span class="kw">match</span> <span class="ident">entry</span> {
+                <span class="ident">TaskInputEntry</span>::<span class="ident">Subtask</span>(<span class="ident">subtask</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">descr</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">subtask</span>.<span class="ident">description</span> {
+                        <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;\n# Subtask {}: {}\n&quot;</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">descr</span>);
+                    } <span class="kw">else</span> {
+                        <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;\n# Subtask {}\n&quot;</span>, <span class="ident">subtask</span>.<span class="ident">id</span>);
+                    }
+                    <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;#ST: {}\n&quot;</span>, <span class="ident">subtask</span>.<span class="ident">max_score</span>);
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">constraints</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">subtask_constraints</span>.<span class="ident">get</span>(<span class="ident">subtask</span>.<span class="ident">id</span> <span class="kw">as</span> <span class="ident">usize</span>) {
+                        <span class="kw">for</span> <span class="ident">constr</span> <span class="kw">in</span> <span class="ident">constraints</span> {
+                            <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;# {:?}\n&quot;</span>, <span class="ident">constr</span>);
+                        }
+                    }
+                }
+                <span class="ident">TaskInputEntry</span>::<span class="ident">Testcase</span>(<span class="ident">testcase</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;# Testcase {}\n&quot;</span>, <span class="ident">testcase</span>.<span class="ident">id</span>);
+                    <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">input_generator</span> {
+                        <span class="ident">InputGenerator</span>::<span class="ident">StaticFile</span>(<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">path</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">task_dir</span>) {
+                                <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;#COPY: {}\n&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>());
+                            } <span class="kw">else</span> {
+                                <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;#COPY: {}\n&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>());
+                            }
+                        }
+                        <span class="ident">InputGenerator</span>::<span class="ident">Custom</span>(<span class="ident">source</span>, <span class="ident">args</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">gen</span> <span class="op">+</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} {}\n&quot;</span>, <span class="ident">source</span>.<span class="ident">name</span>(), <span class="ident">args</span>.<span class="ident">join</span>(<span class="string">&quot; &quot;</span>));
+                        }
+                    }
+                }
+            }
+        }
+        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="self">self</span>.<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;gen/GEN&quot;</span>), <span class="ident">gen</span>)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(())
+    }
+
     <span class="doccomment">/// Parse a line with a command: one of the `:` prefixed actions.</span>
     <span class="kw">fn</span> <span class="ident">parse_command</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">line</span>: <span class="ident">Pair</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">line</span>.<span class="ident">as_rule</span>() {
@@ -1746,7 +1891,11 @@
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">current_generator</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;invalid current generator&quot;</span>);
         <span class="kw">let</span> <span class="ident">variables</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_variables</span>(<span class="kw-2">&amp;</span><span class="ident">generator</span>.<span class="ident">args</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>);
-        <span class="kw">for</span> <span class="ident">constr</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">constraints</span> {
+        <span class="kw">for</span> <span class="ident">constr</span> <span class="kw">in</span> <span class="self">self</span>
+            .<span class="ident">constraints</span>
+            .<span class="ident">iter</span>()
+            .<span class="ident">chain</span>(<span class="self">self</span>.<span class="ident">subtask_constraints</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>())
+        {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="bool-val">false</span>) <span class="op">=</span> <span class="ident">constr</span>.<span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">variables</span>) {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(
                     <span class="string">&quot;Testcase &#39;{}&#39; violates constraint {:?}\nWith:&quot;</span>,
@@ -1925,7 +2074,10 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">subtask_id</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">constraints</span>.<span class="ident">push</span>(<span class="ident">constraint</span>);
         } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">subtask_constraints</span>.<span class="ident">push</span>(<span class="ident">constraint</span>);
+            <span class="self">self</span>.<span class="ident">subtask_constraints</span>
+                .<span class="ident">last_mut</span>()
+                .<span class="ident">unwrap</span>()
+                .<span class="ident">push</span>(<span class="ident">constraint</span>);
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -1935,6 +2087,7 @@
         <span class="kw">let</span> <span class="ident">line</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">line</span>.<span class="ident">into_inner</span>().<span class="ident">collect</span>();
         <span class="self">self</span>.<span class="ident">current_generator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">default_generator</span>.<span class="ident">clone</span>();
         <span class="self">self</span>.<span class="ident">current_validator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">default_validator</span>.<span class="ident">clone</span>();
+        <span class="self">self</span>.<span class="ident">subtask_constraints</span>.<span class="ident">push</span>(<span class="macro">vec</span><span class="macro">!</span>[]);
         <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">f64</span>::<span class="ident">from_str</span>(<span class="ident">line</span>[<span class="number">0</span>].<span class="ident">as_str</span>()).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
             <span class="macro">format_err</span><span class="macro">!</span>(
                 <span class="string">&quot;Invalid subtask score for subtask {}: {}&quot;</span>,
@@ -2190,6 +2343,27 @@
             <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">dest</span>, <span class="ident">content</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
             <span class="ident">CasesGen</span>::<span class="ident">new</span>(<span class="ident">dest</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">OutputGenerator</span>::<span class="ident">StaticFile</span>(<span class="string">&quot;nope&quot;</span>.<span class="ident">into</span>()))
         }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_gen_gen</span>() {
+        <span class="kw">let</span> <span class="ident">helper</span> <span class="op">=</span> <span class="ident">TestHelper</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">helper</span>
+            .<span class="ident">add_file</span>(<span class="string">&quot;gen/generator.py&quot;</span>)
+            .<span class="ident">cases_gen</span>(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34\n:SUBTASK 24\n21 21&quot;</span>)
+            .<span class="ident">unwrap</span>();
+        <span class="ident">gen</span>.<span class="ident">write_gen_gen</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">gen</span>.<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;gen/GEN&quot;</span>);
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">read_to_string</span>(<span class="ident">path</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">data</span>
+            .<span class="ident">split</span>(<span class="string">&#39;\n&#39;</span>)
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="op">!</span><span class="ident">s</span>.<span class="ident">is_empty</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&quot;# &quot;</span>) <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&quot;#COPY&quot;</span>))
+            .<span class="ident">collect</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>.<span class="ident">len</span>(), <span class="number">4</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>[<span class="number">0</span>], <span class="string">&quot;#ST: 42&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">res</span>[<span class="number">1</span>].<span class="ident">contains</span>(<span class="string">&quot;12 34&quot;</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>[<span class="number">2</span>], <span class="string">&quot;#ST: 24&quot;</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">res</span>[<span class="number">3</span>].<span class="ident">contains</span>(<span class="string">&quot;21 21&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

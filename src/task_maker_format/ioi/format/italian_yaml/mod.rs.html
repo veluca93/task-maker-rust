@@ -570,6 +570,23 @@
 <span id="570">570</span>
 <span id="571">571</span>
 <span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -652,6 +669,18 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! If a line contains a `#`, all the characters following it (`#` included) will be ignored as they</span>
 <span class="doccomment">//! are considered comments. Example: `1 2 3 # inline comment`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Backwards compatibility with cms</span>
+<span class="doccomment">//! Since the importers of cms do not yet support the `cases.gen` format, there is a workaround that</span>
+<span class="doccomment">//! works as follows: when the task is built task-maker will create a _fake_ `gen/GEN` with just the</span>
+<span class="doccomment">//! metadata needed by `cmsImportTask` (like the number of testcases and subtasks).</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This file also contains some comments that may be found useful for debugging the generations.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! That file will be ignore by task-maker if the `cases.gen` file is present and will be removed</span>
+<span class="doccomment">//! with `--clean`. Note that you should not edit that file because it will be overwritten the next</span>
+<span class="doccomment">//! time task-maker will be launched. To keep that file you should remove the comment containing</span>
+<span class="doccomment">//! `tm-allow-delete`.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ## `cases.gen` commands</span>
 <span class="doccomment">//! The lines starting with a column `:` are commands. What follows the column is the actual command</span>
@@ -879,7 +908,7 @@
 }
 
 <span class="doccomment">/// The iterator item type when following the task input testcases.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">TaskInputEntry</span> {
     <span class="doccomment">/// Create a new subtask given its information.</span>
     <span class="ident">Subtask</span>(<span class="ident">SubtaskInfo</span>),
@@ -933,10 +962,14 @@
     <span class="kw">let</span> <span class="ident">cases_gen</span> <span class="op">=</span> <span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;gen&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;cases.gen&quot;</span>);
     <span class="kw">let</span> <span class="ident">inputs</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">cases_gen</span>.<span class="ident">exists</span>() {
         <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Parsing testcases from gen/cases.gen&quot;</span>);
-        <span class="ident">cases_gen</span>::<span class="ident">parse_cases_gen</span>(
+        <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">cases_gen</span>::<span class="ident">CasesGen</span>::<span class="ident">new</span>(
             <span class="kw-2">&amp;</span><span class="ident">cases_gen</span>,
             <span class="ident">detect_output_generator</span>(<span class="ident">task_dir</span>.<span class="ident">to_path_buf</span>(), <span class="ident">grader_map</span>.<span class="ident">clone</span>()),
-        )<span class="question-mark">?</span>
+        )<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">eval_config</span>.<span class="ident">dry_run</span> {
+            <span class="ident">gen</span>.<span class="ident">write_gen_gen</span>()<span class="question-mark">?</span>;
+        }
+        <span class="ident">gen</span>.<span class="ident">get_task_entries</span>()
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">gen_gen</span>.<span class="ident">exists</span>() {
         <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Parsing testcases from gen/GEN&quot;</span>);
         <span class="ident">gen_gen</span>::<span class="ident">parse_gen_gen</span>(
@@ -951,6 +984,7 @@
             <span class="ident">detect_validator</span>(<span class="ident">task_dir</span>.<span class="ident">to_path_buf</span>()),
             <span class="ident">detect_output_generator</span>(<span class="ident">task_dir</span>.<span class="ident">to_path_buf</span>(), <span class="ident">grader_map</span>.<span class="ident">clone</span>()),
         )
+        .<span class="ident">collect</span>()
     };
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">subtasks</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
