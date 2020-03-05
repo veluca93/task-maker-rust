@@ -587,6 +587,7 @@
 <span id="587">587</span>
 <span id="588">588</span>
 <span id="589">589</span>
+<span id="590">590</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -868,6 +869,7 @@
 <span class="kw">mod</span> <span class="ident">cases_gen</span>;
 <span class="kw">mod</span> <span class="ident">gen_gen</span>;
 <span class="kw">mod</span> <span class="ident">static_inputs</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">cases_gen</span>::{<span class="ident">is_gen_gen_deletable</span>, <span class="ident">TM_ALLOW_DELETE_COOKIE</span>};
 
 <span class="doccomment">/// Deserialized data from the task.yaml of a IOI format task.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
