@@ -497,6 +497,20 @@
 <span id="497">497</span>
 <span id="498">498</span>
 <span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -572,7 +586,7 @@
     <span class="doccomment">/// All the files provided by the client.</span>
     <span class="kw">pub</span> <span class="ident">provided_files</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">ProvidedFile</span><span class="op">&gt;</span>,
     <span class="doccomment">/// All the executions to run.</span>
-    <span class="kw">pub</span> <span class="ident">executions</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ExecutionUuid</span>, <span class="ident">Execution</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">execution_groups</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ExecutionGroupUuid</span>, <span class="ident">ExecutionGroup</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The configuration of this DAG.</span>
     <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>,
 }
@@ -598,7 +612,7 @@
         <span class="ident">ExecutionDAG</span> {
             <span class="ident">data</span>: <span class="ident">ExecutionDAGData</span> {
                 <span class="ident">provided_files</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-                <span class="ident">executions</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+                <span class="ident">execution_groups</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
                 <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>::<span class="ident">new</span>(),
             },
             <span class="ident">execution_callbacks</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
@@ -636,7 +650,17 @@
     <span class="doccomment">/// Add an execution to the DAG.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_execution</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">execution</span>: <span class="ident">Execution</span>) {
         <span class="ident">execution</span>.<span class="ident">config</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">clone</span>();
-        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">executions</span>.<span class="ident">insert</span>(<span class="ident">execution</span>.<span class="ident">uuid</span>, <span class="ident">execution</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">group</span> <span class="op">=</span> <span class="ident">ExecutionGroup</span>::<span class="ident">new</span>(<span class="ident">execution</span>.<span class="ident">description</span>.<span class="ident">clone</span>());
+        <span class="ident">group</span>.<span class="ident">add_execution</span>(<span class="ident">execution</span>);
+        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">insert</span>(<span class="ident">group</span>.<span class="ident">uuid</span>, <span class="ident">group</span>);
+    }
+
+    <span class="doccomment">/// Add an execution group to the DAG.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_execution_group</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">group</span>: <span class="ident">ExecutionGroup</span>) {
+        <span class="kw">for</span> <span class="ident">exec</span> <span class="kw">in</span> <span class="ident">group</span>.<span class="ident">executions</span>.<span class="ident">iter_mut</span>() {
+            <span class="ident">exec</span>.<span class="ident">config</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">clone</span>();
+        }
+        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">insert</span>(<span class="ident">group</span>.<span class="ident">uuid</span>, <span class="ident">group</span>);
     }
 
     <span class="doccomment">/// When `file` is ready it will be written to `path`. The file must be present in the dag</span>
@@ -883,9 +907,13 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG</span>::<span class="ident">new</span>();
         <span class="ident">dag</span>.<span class="ident">config_mut</span>().<span class="ident">extra_time</span>(<span class="number">42.0</span>);
         <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;exec&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
-        <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>.<span class="ident">clone</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;exec&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">executions</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>].<span class="ident">description</span>);
-        <span class="macro">assert_abs_diff_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="number">42.0</span>, <span class="kw-2">&amp;</span><span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">executions</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>].<span class="ident">config</span>.<span class="ident">extra_time</span>);
+        <span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
+        <span class="kw">let</span> <span class="ident">group_uuid</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">keys</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;exec&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>[<span class="ident">group_uuid</span>].<span class="ident">description</span>);
+        <span class="macro">assert_abs_diff_eq</span><span class="macro">!</span>(
+            <span class="kw-2">&amp;</span><span class="number">42.0</span>,
+            <span class="kw-2">&amp;</span><span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>[<span class="kw-2">&amp;</span><span class="ident">group_uuid</span>].<span class="ident">config</span>().<span class="ident">extra_time</span>
+        );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

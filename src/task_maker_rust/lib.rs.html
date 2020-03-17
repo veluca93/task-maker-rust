@@ -23,6 +23,7 @@
 <span id="23">23</span>
 <span id="24">24</span>
 <span id="25">25</span>
+<span id="26">26</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! # task-maker-rust</span>
 <span class="doccomment">//!</span>
@@ -39,6 +40,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">local</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">opt</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">server</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">worker</span>::<span class="kw-2">*</span>;
 
@@ -46,7 +48,7 @@
 <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">local</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">opt</span>;
-<span class="kw">mod</span> <span class="ident">sandbox</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sandbox</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">server</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">worker</span>;
 </pre></div>

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["local",""],["opt",""],["server",""],["worker",""]]});
+initSidebarItems({"mod":[["local",""],["opt",""],["sandbox",""],["server",""],["worker",""]]});

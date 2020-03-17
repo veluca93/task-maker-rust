@@ -601,7 +601,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">executor</span>::{<span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>, <span class="ident">WorkerCurrentJobStatus</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox</span>::<span class="ident">RawSandboxResult</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox_runner</span>::{
-    <span class="ident">ErrorSandboxRunner</span>, <span class="ident">FakeSandboxRunner</span>, <span class="ident">SandboxRunner</span>, <span class="ident">SuccessSandboxRunner</span>,
+    <span class="ident">ErrorSandboxRunner</span>, <span class="ident">SandboxRunner</span>, <span class="ident">SuccessSandboxRunner</span>, <span class="ident">UnsafeSandboxRunner</span>,
 };
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">scheduler</span>::<span class="ident">ClientInfo</span>;
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
@@ -1006,7 +1006,7 @@
             <span class="ident">cwd</span>.<span class="ident">path</span>(),
             <span class="number">1000</span>,
             <span class="number">1000</span>,
-            <span class="ident">FakeSandboxRunner</span>::<span class="ident">default</span>(),
+            <span class="ident">UnsafeSandboxRunner</span>::<span class="ident">default</span>(),
         );
 
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">exec_done2</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>));

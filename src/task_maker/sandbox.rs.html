@@ -160,8 +160,8 @@
     <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">cmd</span>.<span class="ident">wait_with_output</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="op">!</span><span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">success</span>() {
         <span class="macro">bail</span><span class="macro">!</span>(
-            <span class="string">&quot;Sandbox failed with code: {:?}\n{}&quot;</span>,
-            <span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">code</span>(),
+            <span class="string">&quot;Sandbox process failed: {}\n{}&quot;</span>,
+            <span class="ident">output</span>.<span class="ident">status</span>.<span class="ident">to_string</span>(),
             <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">output</span>.<span class="ident">stderr</span>)
         );
     }

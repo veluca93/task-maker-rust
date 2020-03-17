@@ -395,6 +395,36 @@
 <span id="395">395</span>
 <span id="396">396</span>
 <span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
@@ -404,6 +434,7 @@
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionStatus</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">ui_state</span>::{<span class="ident">SolutionEvaluationState</span>, <span class="ident">TestcaseEvaluationStatus</span>, <span class="ident">UIState</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">SolutionTestcaseEvaluationState</span>, <span class="ident">TestcaseId</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{
     <span class="ident">FinishUI</span> <span class="kw">as</span> <span class="ident">FinishUITrait</span>, <span class="ident">FinishUIUtils</span>, <span class="ident">UIExecutionStatus</span>, <span class="ident">BLUE</span>, <span class="ident">BOLD</span>, <span class="ident">GREEN</span>, <span class="ident">RED</span>, <span class="ident">YELLOW</span>,
 };
@@ -605,7 +636,8 @@
         <span class="kw">let</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">eval</span>
             .<span class="ident">subtasks</span>
             .<span class="ident">values</span>()
-            .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">testcases</span>.<span class="ident">values</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="ident">tc</span>.<span class="ident">result</span>.<span class="ident">as_ref</span>()))
+            .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">testcases</span>.<span class="ident">values</span>().<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="ident">tc</span>.<span class="ident">results</span>.<span class="ident">iter</span>()))
+            .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">as_ref</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">r</span>.<span class="ident">resources</span>);
         <span class="kw">let</span> (<span class="ident">max_time</span>, <span class="ident">max_memory</span>) <span class="op">=</span> <span class="ident">results</span>.<span class="ident">fold</span>((<span class="number">0.0</span>, <span class="number">0</span>), <span class="op">|</span>(<span class="ident">time</span>, <span class="ident">mem</span>), <span class="ident">r</span><span class="op">|</span> {
             (<span class="ident">f64</span>::<span class="ident">max</span>(<span class="ident">time</span>, <span class="ident">r</span>.<span class="ident">cpu_time</span>), <span class="ident">u64</span>::<span class="ident">max</span>(<span class="ident">mem</span>, <span class="ident">r</span>.<span class="ident">memory</span>))
@@ -622,60 +654,88 @@
             <span class="self">self</span>.<span class="ident">print_score_frac</span>(<span class="ident">score</span>, <span class="ident">max_score</span>);
             <span class="macro">println</span><span class="macro">!</span>();
             <span class="kw">for</span> (<span class="ident">tc_num</span>, <span class="ident">testcase</span>) <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">iter</span>().<span class="ident">sorted_by_key</span>(<span class="op">|</span>(<span class="ident">n</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">n</span>) {
-                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;{:3}) &quot;</span>, <span class="ident">tc_num</span>);
-                <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
-                <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="number">1.0</span>) {
-                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">GREEN</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
-                } <span class="kw">else</span> <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="number">0.0</span>) {
-                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">RED</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
-                } <span class="kw">else</span> {
-                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
-                }
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">result</span> {
-                    <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; [&quot;</span>);
-                    <span class="kw">let</span> <span class="ident">time_color</span> <span class="op">=</span> <span class="ident">FinishUI</span>::<span class="ident">resource_color</span>(
-                        <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">cpu_time</span>,
-                        <span class="ident">max_time</span> <span class="op">*</span> <span class="ident">BOLD_RESOURCE_THRESHOLD</span>,
-                        <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">time_limit</span>.<span class="ident">unwrap_or</span>(<span class="number">1.0</span> <span class="op">/</span> <span class="number">0.0</span>) <span class="op">*</span> <span class="ident">YELLOW_RESOURCE_THRESHOLD</span>,
-                    );
-                    <span class="kw">let</span> <span class="ident">memory_color</span> <span class="op">=</span> <span class="ident">FinishUI</span>::<span class="ident">resource_color</span>(
-                        <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">memory</span> <span class="kw">as</span> <span class="ident">f64</span>,
-                        <span class="ident">max_memory</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">*</span> <span class="ident">BOLD_RESOURCE_THRESHOLD</span>,
-                        <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">memory_limit</span>.<span class="ident">unwrap_or</span>(<span class="ident">u64</span>::<span class="ident">max_value</span>()) <span class="kw">as</span> <span class="ident">f64</span>
-                            <span class="op">*</span> <span class="number">1024.0</span>
-                            <span class="op">*</span> <span class="ident">YELLOW_RESOURCE_THRESHOLD</span>,
-                    );
-                    <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">time_color</span>, <span class="string">&quot;{:2.3}s&quot;</span>, <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">cpu_time</span>);
-                    <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; | &quot;</span>);
-                    <span class="macro">cwrite</span><span class="macro">!</span>(
-                        <span class="self">self</span>,
-                        <span class="ident">memory_color</span>,
-                        <span class="string">&quot;{:3.1}MiB&quot;</span>,
-                        (<span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">memory</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1024.0</span>
-                    );
-                    <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;]&quot;</span>);
-                }
-                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; {}&quot;</span>, <span class="ident">testcase</span>.<span class="ident">status</span>.<span class="ident">message</span>());
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">result</span> {
-                    <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">status</span> {
-                        <span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Exited with {}&quot;</span>, <span class="ident">code</span>),
-                        <span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="ident">sig</span>, <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Signal {} ({})&quot;</span>, <span class="ident">sig</span>, <span class="ident">name</span>),
-                        <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Internal error: {}&quot;</span>, <span class="ident">err</span>),
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
-                    }
-                    <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">was_killed</span> {
-                        <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; (killed)&quot;</span>);
-                    }
-                    <span class="kw">if</span> <span class="ident">result</span>.<span class="ident">was_cached</span> {
-                        <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; (from cache)&quot;</span>);
-                    }
-                }
-                <span class="kw">if</span> <span class="ident">FinishUI</span>::<span class="ident">is_ansi</span>() {
-                    <span class="self">self</span>.<span class="ident">print_right</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="ident">name</span>));
-                }
-                <span class="macro">println</span><span class="macro">!</span>();
+                <span class="self">self</span>.<span class="ident">print_testcase_outcome</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="kw-2">*</span><span class="ident">tc_num</span>, <span class="ident">testcase</span>, <span class="ident">max_time</span>, <span class="ident">max_memory</span>, <span class="ident">state</span>);
             }
         }
+    }
+
+    <span class="doccomment">/// Print the testcase info line for a single solution.</span>
+    <span class="kw">fn</span> <span class="ident">print_testcase_outcome</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+        <span class="ident">tc_num</span>: <span class="ident">TestcaseId</span>,
+        <span class="ident">testcase</span>: <span class="kw-2">&amp;</span><span class="ident">SolutionTestcaseEvaluationState</span>,
+        <span class="ident">max_time</span>: <span class="ident">f64</span>,
+        <span class="ident">max_memory</span>: <span class="ident">u64</span>,
+        <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>,
+    ) {
+        <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;{:3}) &quot;</span>, <span class="ident">tc_num</span>);
+        <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">score</span>.<span class="ident">unwrap_or</span>(<span class="number">0.0</span>);
+        <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="number">1.0</span>) {
+            <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">GREEN</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="macro">abs_diff_eq</span><span class="macro">!</span>(<span class="ident">score</span>, <span class="number">0.0</span>) {
+            <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">RED</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
+        } <span class="kw">else</span> {
+            <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;[{:.2}]&quot;</span>, <span class="ident">score</span>);
+        }
+        <span class="comment">// print the time and memory info</span>
+        <span class="kw">for</span> <span class="ident">result</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">results</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span> <span class="ident">result</span> {
+                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; [&quot;</span>);
+                <span class="kw">let</span> <span class="ident">time_color</span> <span class="op">=</span> <span class="ident">FinishUI</span>::<span class="ident">resource_color</span>(
+                    <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">cpu_time</span>,
+                    <span class="ident">max_time</span> <span class="op">*</span> <span class="ident">BOLD_RESOURCE_THRESHOLD</span>,
+                    <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">time_limit</span>.<span class="ident">unwrap_or</span>(<span class="number">1.0</span> <span class="op">/</span> <span class="number">0.0</span>) <span class="op">*</span> <span class="ident">YELLOW_RESOURCE_THRESHOLD</span>,
+                );
+                <span class="kw">let</span> <span class="ident">memory_color</span> <span class="op">=</span> <span class="ident">FinishUI</span>::<span class="ident">resource_color</span>(
+                    <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">memory</span> <span class="kw">as</span> <span class="ident">f64</span>,
+                    <span class="ident">max_memory</span> <span class="kw">as</span> <span class="ident">f64</span> <span class="op">*</span> <span class="ident">BOLD_RESOURCE_THRESHOLD</span>,
+                    <span class="ident">state</span>.<span class="ident">task</span>.<span class="ident">memory_limit</span>.<span class="ident">unwrap_or</span>(<span class="ident">u64</span>::<span class="ident">max_value</span>()) <span class="kw">as</span> <span class="ident">f64</span>
+                        <span class="op">*</span> <span class="number">1024.0</span>
+                        <span class="op">*</span> <span class="ident">YELLOW_RESOURCE_THRESHOLD</span>,
+                );
+                <span class="macro">cwrite</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">time_color</span>, <span class="string">&quot;{:2.3}s&quot;</span>, <span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">cpu_time</span>);
+                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; | &quot;</span>);
+                <span class="macro">cwrite</span><span class="macro">!</span>(
+                    <span class="self">self</span>,
+                    <span class="ident">memory_color</span>,
+                    <span class="string">&quot;{:3.1}MiB&quot;</span>,
+                    (<span class="ident">result</span>.<span class="ident">resources</span>.<span class="ident">memory</span> <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1024.0</span>
+                );
+                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;]&quot;</span>);
+            } <span class="kw">else</span> {
+                <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; [???]&quot;</span>)
+            }
+        }
+        <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; {}&quot;</span>, <span class="ident">testcase</span>.<span class="ident">status</span>.<span class="ident">message</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">was_killed</span> <span class="op">=</span> <span class="bool-val">false</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">was_cached</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">for</span> <span class="ident">res</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">results</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">res</span>) <span class="op">=</span> <span class="ident">res</span> {
+                <span class="ident">was_killed</span> <span class="op">|</span><span class="op">=</span> <span class="ident">res</span>.<span class="ident">was_killed</span>;
+                <span class="ident">was_cached</span> <span class="kw-2">&amp;</span><span class="op">=</span> <span class="ident">res</span>.<span class="ident">was_cached</span>;
+            }
+        }
+        <span class="kw">for</span> <span class="ident">result</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">testcase</span>.<span class="ident">results</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span> <span class="ident">result</span> {
+                <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">result</span>.<span class="ident">status</span> {
+                    <span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Exited with {}&quot;</span>, <span class="ident">code</span>),
+                    <span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="ident">sig</span>, <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Signal {} ({})&quot;</span>, <span class="ident">sig</span>, <span class="ident">name</span>),
+                    <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot;: Internal error: {}&quot;</span>, <span class="ident">err</span>),
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                }
+            }
+        }
+        <span class="kw">if</span> <span class="ident">was_killed</span> {
+            <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; (killed)&quot;</span>);
+        }
+        <span class="kw">if</span> <span class="ident">was_cached</span> {
+            <span class="macro">print</span><span class="macro">!</span>(<span class="string">&quot; (from cache)&quot;</span>);
+        }
+        <span class="kw">if</span> <span class="ident">FinishUI</span>::<span class="ident">is_ansi</span>() {
+            <span class="self">self</span>.<span class="ident">print_right</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;[{}]&quot;</span>, <span class="ident">name</span>));
+        }
+        <span class="macro">println</span><span class="macro">!</span>();
     }
 
     <span class="kw">fn</span> <span class="ident">print_summary</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">UIState</span>) {

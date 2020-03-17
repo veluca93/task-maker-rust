@@ -217,6 +217,8 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The protocol related structs and enums.</span>
 <span class="doccomment">//!</span>
@@ -317,7 +319,9 @@
     <span class="ident">GetWork</span>,
     <span class="doccomment">/// The worker completed the job with this result producing those files. The actual files will</span>
     <span class="doccomment">/// be sent immediately after using `ProvideFile` messages.</span>
-    <span class="ident">WorkerDone</span>(<span class="ident">ExecutionResult</span>, <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span><span class="op">&gt;</span>),
+    <span class="doccomment">/// The list of `ExecutionResult` contains the results of all the executions inside the group,</span>
+    <span class="doccomment">/// in the same order.</span>
+    <span class="ident">WorkerDone</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ExecutionResult</span><span class="op">&gt;</span>, <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span><span class="op">&gt;</span>),
     <span class="doccomment">/// The worker is sending a file to the server. After this message there is a protocol switch</span>
     <span class="doccomment">/// for the file transmission.</span>
     <span class="ident">ProvideFile</span>(<span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span>),
@@ -332,7 +336,7 @@
     <span class="doccomment">/// The job the worker should do. Boxed to reduce the enum size.</span>
     <span class="ident">Work</span>(<span class="ident">Box</span><span class="op">&lt;</span><span class="ident">WorkerJob</span><span class="op">&gt;</span>),
     <span class="doccomment">/// Stop the current worker sandbox if currently running the specified execution.</span>
-    <span class="ident">KillJob</span>(<span class="ident">ExecutionUuid</span>),
+    <span class="ident">KillJob</span>(<span class="ident">ExecutionGroupUuid</span>),
     <span class="doccomment">/// The file the workers as asked. After this message there is a protocol switch for the file</span>
     <span class="doccomment">/// transmission.</span>
     <span class="ident">ProvideFile</span>(<span class="ident">FileStoreKey</span>),

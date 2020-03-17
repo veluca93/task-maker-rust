@@ -426,7 +426,7 @@
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
-<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionUuid</span>, <span class="ident">FileUuid</span>, <span class="ident">ProvidedFile</span>, <span class="ident">WorkerUuid</span>};
+<span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionGroup</span>, <span class="ident">ExecutionUuid</span>, <span class="ident">FileUuid</span>, <span class="ident">ProvidedFile</span>, <span class="ident">WorkerUuid</span>};
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::{<span class="ident">FileStore</span>, <span class="ident">FileStoreHandle</span>, <span class="ident">FileStoreKey</span>};
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">check_dag</span>::<span class="ident">check_dag</span>;
@@ -461,7 +461,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WorkerJob</span> {
     <span class="doccomment">/// What the worker should do.</span>
-    <span class="kw">pub</span> <span class="ident">execution</span>: <span class="ident">Execution</span>,
+    <span class="kw">pub</span> <span class="ident">group</span>: <span class="ident">ExecutionGroup</span>,
     <span class="doccomment">/// The `FileStoreKey`s the worker has to know to start the evaluation.</span>
     <span class="kw">pub</span> <span class="ident">dep_keys</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span><span class="op">&gt;</span>,
 }
