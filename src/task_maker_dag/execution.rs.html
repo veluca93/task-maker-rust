@@ -852,12 +852,39 @@
 <span id="852">852</span>
 <span id="853">853</span>
 <span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">signals</span>::<span class="ident">strsignal</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">_core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
@@ -1082,7 +1109,7 @@
 }
 
 <span class="doccomment">/// The result of an [`Execution`](struct.Execution.html).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResult</span> {
     <span class="doccomment">/// Status of the completed execution.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">ExecutionStatus</span>,
@@ -1577,6 +1604,31 @@
             <span class="ident">on_done</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
             <span class="ident">on_skip</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExecutionResult</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExecutionResult&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;status&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">status</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;was_killed&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">was_killed</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;was_cached&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">was_cached</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;resources&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">resources</span>)
+            .<span class="ident">field</span>(
+                <span class="string">&quot;stdout&quot;</span>,
+                <span class="kw-2">&amp;</span><span class="self">self</span>
+                    .<span class="ident">stdout</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
+            )
+            .<span class="ident">field</span>(
+                <span class="string">&quot;stderr&quot;</span>,
+                <span class="kw-2">&amp;</span><span class="self">self</span>
+                    .<span class="ident">stderr</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
+            )
+            .<span class="ident">finish</span>()
     }
 }
 
