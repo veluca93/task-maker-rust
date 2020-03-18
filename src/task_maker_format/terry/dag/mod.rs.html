@@ -297,6 +297,14 @@
 <span id="297">297</span>
 <span id="298">298</span>
 <span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
@@ -311,6 +319,10 @@
 
 <span class="doccomment">/// Maximum number of bytes of the checker&#39;s standard output.</span>
 <span class="kw">const</span> <span class="ident">OUTCOME_SIZE_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>; <span class="comment">// 1MiB</span>
+<span class="doccomment">/// Maximum number of bytes of the standard error of the executions.</span>
+<span class="kw">const</span> <span class="ident">STDERR_SIZE_LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">10</span> <span class="op">*</span> <span class="number">1024</span>;
+<span class="doccomment">/// Time limit for the execution of the solutions.</span>
+<span class="kw">const</span> <span class="ident">SOLUTION_TIME_LIMIT</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="number">20.0</span>;
 
 <span class="doccomment">/// The source of the input files.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
@@ -370,7 +382,7 @@
         <span class="ident">seed</span>: <span class="ident">Seed</span>,
         <span class="ident">official_solution</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">input</span>, <span class="ident">gen</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">generate</span>(
+        <span class="kw">let</span> (<span class="ident">input</span>, <span class="kw-2">mut</span> <span class="ident">gen</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">generate</span>(
             <span class="ident">eval</span>,
             <span class="macro">format</span><span class="macro">!</span>(
                 <span class="string">&quot;Generation of input file for {} with seed {}&quot;</span>,
@@ -400,7 +412,7 @@
             <span class="ident">path</span>,
             <span class="ident">seed</span>
         )<span class="question-mark">?</span>;
-        <span class="comment">// TODO: bind stdout/stderr</span>
+        <span class="ident">gen</span>.<span class="ident">capture_stderr</span>(<span class="ident">STDERR_SIZE_LIMIT</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">gen</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">input</span>)
     }
@@ -437,7 +449,7 @@
         <span class="ident">input</span>: <span class="ident">FileUuid</span>,
         <span class="ident">official_solution</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">handle</span>, <span class="ident">val</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">validate</span>(
+        <span class="kw">let</span> (<span class="ident">handle</span>, <span class="kw-2">mut</span> <span class="ident">val</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">validate</span>(
             <span class="ident">eval</span>,
             <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Validation of input file for {}&quot;</span>, <span class="ident">solution</span>.<span class="ident">name</span>()),
             <span class="ident">input</span>,
@@ -450,7 +462,7 @@
             <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">TerryValidation</span> { <span class="ident">solution</span>, <span class="ident">status</span> },
             <span class="ident">path</span>
         )<span class="question-mark">?</span>;
-        <span class="comment">// TODO bind stdout/stderr</span>
+        <span class="ident">val</span>.<span class="ident">capture_stderr</span>(<span class="ident">STDERR_SIZE_LIMIT</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">val</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">handle</span>)
     }
@@ -477,7 +489,9 @@
             <span class="ident">exec</span>.<span class="ident">input</span>(<span class="ident">validation</span>, <span class="string">&quot;wait_for_validation&quot;</span>, <span class="bool-val">false</span>);
         }
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">stdout</span>();
-        <span class="ident">exec</span>.<span class="ident">limits_mut</span>().<span class="ident">cpu_time</span>(<span class="number">20.0</span>).<span class="ident">wall_time</span>(<span class="number">21.0</span>); <span class="comment">// TODO set limits</span>
+        <span class="ident">exec</span>.<span class="ident">limits_mut</span>()
+            .<span class="ident">cpu_time</span>(<span class="ident">SOLUTION_TIME_LIMIT</span>)
+            .<span class="ident">wall_time</span>(<span class="ident">SOLUTION_TIME_LIMIT</span> <span class="op">*</span> <span class="number">1.25</span>);
         <span class="prelude-val">Ok</span>((<span class="ident">output</span>.<span class="ident">uuid</span>, <span class="ident">exec</span>))
     }
 
@@ -488,7 +502,7 @@
         <span class="ident">input</span>: <span class="ident">FileUuid</span>,
         <span class="ident">validation_handle</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="ident">output</span>, <span class="ident">sol</span>) <span class="op">=</span> <span class="ident">Solution</span>::<span class="ident">solve</span>(<span class="ident">eval</span>, <span class="ident">solution</span>, <span class="ident">input</span>, <span class="ident">validation_handle</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> (<span class="ident">output</span>, <span class="kw-2">mut</span> <span class="ident">sol</span>) <span class="op">=</span> <span class="ident">Solution</span>::<span class="ident">solve</span>(<span class="ident">eval</span>, <span class="ident">solution</span>, <span class="ident">input</span>, <span class="ident">validation_handle</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">config_mut</span>().<span class="ident">copy_exe</span> {
             <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">write_file_to</span>(
                 <span class="ident">output</span>,
@@ -504,6 +518,7 @@
             <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">TerrySolution</span> { <span class="ident">solution</span>, <span class="ident">status</span> },
             <span class="ident">path</span>
         )<span class="question-mark">?</span>;
+        <span class="ident">sol</span>.<span class="ident">capture_stderr</span>(<span class="ident">STDERR_SIZE_LIMIT</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">sol</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">output</span>)
     }
@@ -558,7 +573,7 @@
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SolutionOutcome</span>, <span class="ident">Error</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">check</span>(
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">check</span>(
             <span class="ident">eval</span>,
             <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Checking output of {}&quot;</span>, <span class="ident">solution</span>.<span class="ident">name</span>()),
             <span class="ident">input</span>,
@@ -573,6 +588,7 @@
             <span class="op">|</span><span class="ident">status</span>, <span class="ident">solution</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">TerryChecker</span> { <span class="ident">solution</span>, <span class="ident">status</span> },
             <span class="ident">path</span>
         )<span class="question-mark">?</span>;
+        <span class="ident">exec</span>.<span class="ident">capture_stderr</span>(<span class="ident">STDERR_SIZE_LIMIT</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">exec</span>);
         <span class="prelude-val">Ok</span>(())
     }
