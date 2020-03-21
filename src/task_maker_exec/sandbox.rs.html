@@ -525,6 +525,26 @@
 <span id="525">525</span>
 <span id="526">526</span>
 <span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">PermissionsExt</span>;
@@ -776,6 +796,24 @@
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>).<span class="ident">join</span>(<span class="ident">output</span>)
     }
 
+    <span class="doccomment">/// Directory to use inside the sandbox as the root for the evaluation.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Due to a limitation of `tabox`, under macos the sandbox is not able to mount the directories</span>
+    <span class="doccomment">/// well (the bind-mounts are not available), so `/box` cannot be emulated easily. To workaround</span>
+    <span class="doccomment">/// this limitation, only under macos the original path is kept. This leaks some information</span>
+    <span class="doccomment">/// about the host, but since the sandbox is pretty fake anyway this is not really a problem.</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">box_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">boxdir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>))]</span>
+        {
+            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/box&quot;</span>)
+        }
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
+        {
+            <span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>)
+        }
+    }
+
     <span class="doccomment">/// Build the configuration of the tabox sandbox.</span>
     <span class="kw">fn</span> <span class="ident">build_command</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
@@ -783,9 +821,10 @@
         <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SandboxConfiguration</span>,
         <span class="ident">fifo_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">config</span>.<span class="ident">working_directory</span>(<span class="string">&quot;/box&quot;</span>);
+        <span class="kw">let</span> <span class="ident">box_root</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">box_root</span>(<span class="ident">boxdir</span>);
+        <span class="ident">config</span>.<span class="ident">working_directory</span>(<span class="kw-2">&amp;</span><span class="ident">box_root</span>);
         <span class="comment">// the box directory must be writable otherwise the output files cannot be written</span>
-        <span class="ident">config</span>.<span class="ident">mount</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>), <span class="string">&quot;/box&quot;</span>, <span class="bool-val">true</span>);
+        <span class="ident">config</span>.<span class="ident">mount</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>), <span class="kw-2">&amp;</span><span class="ident">box_root</span>, <span class="bool-val">true</span>);
         <span class="ident">config</span>.<span class="ident">env</span>(<span class="string">&quot;PATH&quot;</span>, <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;PATH&quot;</span>).<span class="ident">unwrap_or_default</span>());
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">stdin</span>.<span class="ident">is_some</span>() {
             <span class="ident">config</span>.<span class="ident">stdin</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdin&quot;</span>));
@@ -836,7 +875,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">fifo_dir</span> {
             <span class="comment">// allow access knowing the path but prevent listing the dir content</span>
             <span class="ident">Sandbox</span>::<span class="ident">set_permissions</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="number">0o111</span>)<span class="question-mark">?</span>;
-            <span class="ident">config</span>.<span class="ident">mount</span>(<span class="ident">path</span>, <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/box&quot;</span>).<span class="ident">join</span>(<span class="ident">FIFO_SANDBOX_DIR</span>), <span class="bool-val">false</span>);
+            <span class="ident">config</span>.<span class="ident">mount</span>(<span class="ident">path</span>, <span class="ident">box_root</span>.<span class="ident">join</span>(<span class="ident">FIFO_SANDBOX_DIR</span>), <span class="bool-val">false</span>);
         }
         <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="ident">READABLE_DIRS</span> {
             <span class="kw">if</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">dir</span>).<span class="ident">is_dir</span>() {
@@ -860,7 +899,7 @@
                 }
             }
             <span class="ident">ExecutionCommand</span>::<span class="ident">Local</span>(<span class="ident">cmd</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">config</span>.<span class="ident">executable</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/box&quot;</span>).<span class="ident">join</span>(<span class="ident">cmd</span>));
+                <span class="ident">config</span>.<span class="ident">executable</span>(<span class="ident">box_root</span>.<span class="ident">join</span>(<span class="ident">cmd</span>));
             }
         };
         <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">execution</span>.<span class="ident">args</span>.<span class="ident">iter</span>() {
@@ -1008,6 +1047,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outfile</span>.<span class="ident">parent</span>().<span class="ident">unwrap</span>().<span class="ident">parent</span>().<span class="ident">unwrap</span>().<span class="ident">exists</span>()); <span class="comment">// the sandbox dir</span>
     }
 
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_command_args</span>() {
         <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
