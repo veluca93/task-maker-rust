@@ -576,13 +576,58 @@
 <span id="576">576</span>
 <span id="577">577</span>
 <span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
+<span id="605">605</span>
+<span id="606">606</span>
+<span id="607">607</span>
+<span id="608">608</span>
+<span id="609">609</span>
+<span id="610">610</span>
+<span id="611">611</span>
+<span id="612">612</span>
+<span id="613">613</span>
+<span id="614">614</span>
+<span id="615">615</span>
+<span id="616">616</span>
+<span id="617">617</span>
+<span id="618">618</span>
+<span id="619">619</span>
+<span id="620">620</span>
+<span id="621">621</span>
+<span id="622">622</span>
+<span id="623">623</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">Permissions</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">PermissionsExt</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::{<span class="ident">channel</span>, <span class="ident">Sender</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::{<span class="ident">channel</span>, <span class="ident">Receiver</span>, <span class="ident">Sender</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">JoinHandle</span>;
@@ -608,6 +653,8 @@
     <span class="ident">current_sandboxes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Sandbox</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The dependencies that are missing and required for the execution start.</span>
     <span class="ident">missing_deps</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileStoreKey</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Send to the sandbox_manager the list of files the server is missing.</span>
+    <span class="ident">server_asked_files</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Sender</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// The worker is the component that receives the work from the server and sends the results back.</span>
@@ -659,6 +706,7 @@
             <span class="ident">current_job</span>: <span class="prelude-val">None</span>,
             <span class="ident">current_sandboxes</span>: <span class="prelude-val">None</span>,
             <span class="ident">missing_deps</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+            <span class="ident">server_asked_files</span>: <span class="prelude-val">None</span>,
         }
     }
 }
@@ -735,13 +783,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_sandbox_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">start_job</span> {
             (<span class="macro-nonterminal">$</span><span class="self">self</span>:<span class="macro-nonterminal">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">current_sandbox_thread</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-                <span class="kw">let</span> (<span class="ident">sandboxes</span>, <span class="ident">thread</span>) <span class="op">=</span> <span class="ident">execute_job</span>(
+                <span class="kw">let</span> <span class="ident">thread</span> <span class="op">=</span> <span class="ident">execute_job</span>(
                     <span class="macro-nonterminal">$</span><span class="self">self</span>.<span class="macro-nonterminal">current_job</span>.<span class="ident">clone</span>(),
                     <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="self">self</span>.<span class="macro-nonterminal">sender</span>,
                     <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="self">self</span>.<span class="macro-nonterminal">sandbox_path</span>,
                     <span class="macro-nonterminal">$</span><span class="self">self</span>.<span class="macro-nonterminal">sandbox_runner</span>.<span class="ident">clone</span>(),
                 )<span class="question-mark">?</span>;
-                <span class="macro-nonterminal">$</span><span class="self">self</span>.<span class="macro-nonterminal">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">current_sandboxes</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">sandboxes</span>);
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">current_sandbox_thread</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">thread</span>);
             }};
         }
@@ -819,7 +866,6 @@
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">Exit</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Worker {} ({}) is asked to exit&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">uuid</span>);
-                    <span class="macro">wait_sandbox</span><span class="macro">!</span>(<span class="ident">current_sandbox_thread</span>);
                     <span class="kw">break</span>;
                 }
                 <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">KillJob</span>(<span class="ident">job</span>)) <span class="op">=</span><span class="op">&gt;</span> {
@@ -832,10 +878,18 @@
                                 <span class="kw">for</span> <span class="ident">sandbox</span> <span class="kw">in</span> <span class="ident">sandboxes</span> {
                                     <span class="ident">sandbox</span>.<span class="ident">kill</span>();
                                 }
-                                <span class="ident">drop</span>(<span class="ident">current_job</span>);
-                                <span class="macro">wait_sandbox</span><span class="macro">!</span>(<span class="ident">current_sandbox_thread</span>);
                             }
                         }
+                    }
+                }
+                <span class="prelude-val">Ok</span>(<span class="ident">WorkerServerMessage</span>::<span class="ident">AskFiles</span>(<span class="ident">files</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sender</span>) <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">server_asked_files</span>.<span class="ident">take</span>() {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">files</span>) {
+                            <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Cannot send the list of files from the server to the worker manager: {:?}&quot;</span>, <span class="ident">e</span>);
+                        }
+                    } <span class="kw">else</span> {
+                        <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Unexpected WorkerServerMessage::AskFiles&quot;</span>);
                     }
                 }
                 <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
@@ -856,6 +910,11 @@
                 }
             }
         }
+        {
+            <span class="comment">// make sure that the worker doesn&#39;t wait for the server&#39;s response</span>
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+            <span class="ident">current_job</span>.<span class="ident">server_asked_files</span>.<span class="ident">take</span>();
+        }
         <span class="macro">wait_sandbox</span><span class="macro">!</span>(<span class="ident">current_sandbox_thread</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -867,9 +926,9 @@
     <span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="ident">ChannelSender</span><span class="op">&lt;</span><span class="ident">WorkerClientMessage</span><span class="op">&gt;</span>,
     <span class="ident">sandbox_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
     <span class="ident">runner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SandboxRunner</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Sandbox</span><span class="op">&gt;</span>, <span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">job</span>, <span class="ident">sandboxes</span>, <span class="ident">fifo_dir</span>) <span class="op">=</span> {
-        <span class="kw">let</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> (<span class="ident">job</span>, <span class="ident">sandboxes</span>, <span class="ident">fifo_dir</span>, <span class="ident">server_asked_files</span>) <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">current_job</span>
             .<span class="ident">current_job</span>
             .<span class="ident">as_ref</span>()
@@ -901,9 +960,12 @@
             }
             <span class="ident">boxes</span>.<span class="ident">push</span>(<span class="ident">sandbox</span>);
         }
-        (<span class="ident">job</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">boxes</span>, <span class="ident">fifo_dir</span>)
+        <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">job</span>.<span class="number">0</span>.<span class="ident">clone</span>();
+        <span class="ident">current_job</span>.<span class="ident">current_sandboxes</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">boxes</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">channel</span>();
+        <span class="ident">current_job</span>.<span class="ident">server_asked_files</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">sender</span>);
+        (<span class="ident">job</span>, <span class="ident">boxes</span>, <span class="ident">fifo_dir</span>, <span class="ident">receiver</span>)
     };
-    <span class="kw">let</span> <span class="ident">thread_sandboxes</span> <span class="op">=</span> <span class="ident">sandboxes</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">join_handle</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
         .<span class="ident">name</span>(<span class="macro">format</span><span class="macro">!</span>(
@@ -915,12 +977,13 @@
                 <span class="ident">current_job</span>,
                 <span class="kw-2">*</span><span class="ident">job</span>,
                 <span class="ident">sender</span>,
-                <span class="ident">thread_sandboxes</span>,
+                <span class="ident">server_asked_files</span>,
+                <span class="ident">sandboxes</span>,
                 <span class="ident">runner</span>,
                 <span class="ident">fifo_dir</span>,
             )
         })<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>((<span class="ident">sandboxes</span>, <span class="ident">join_handle</span>))
+    <span class="prelude-val">Ok</span>(<span class="ident">join_handle</span>)
 }
 
 <span class="doccomment">/// The sandbox group manager spawns the threads of the sandbox of all the executions in the group.</span>
@@ -933,6 +996,7 @@
     <span class="ident">current_job</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">WorkerCurrentJob</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">job</span>: <span class="ident">WorkerJob</span>,
     <span class="ident">sender</span>: <span class="ident">ChannelSender</span><span class="op">&lt;</span><span class="ident">WorkerClientMessage</span><span class="op">&gt;</span>,
+    <span class="ident">server_asked_files_receiver</span>: <span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw-2">mut</span> <span class="ident">sandboxes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Sandbox</span><span class="op">&gt;</span>,
     <span class="ident">runner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SandboxRunner</span><span class="op">&gt;</span>,
     <span class="ident">fifo_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TempDir</span><span class="op">&gt;</span>,
@@ -1012,17 +1076,43 @@
             <span class="ident">handle</span>.<span class="ident">join</span>().<span class="ident">expect</span>(<span class="string">&quot;Sandbox thread failed&quot;</span>);
         }
     }
+    <span class="comment">// tell the server the results and the list of produced files</span>
     <span class="ident">sender</span>
         .<span class="ident">send</span>(<span class="ident">WorkerClientMessage</span>::<span class="ident">WorkerDone</span>(
             <span class="ident">results</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="prelude-ty">Option</span>::<span class="ident">unwrap</span>).<span class="ident">collect</span>(),
             <span class="ident">outputs</span>.<span class="ident">clone</span>(),
         ))
         .<span class="ident">unwrap</span>();
-    <span class="kw">for</span> (<span class="ident">uuid</span>, <span class="ident">key</span>) <span class="kw">in</span> <span class="ident">outputs</span>.<span class="ident">into_iter</span>() {
-        <span class="ident">sender</span>
-            .<span class="ident">send</span>(<span class="ident">WorkerClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>))
-            .<span class="ident">unwrap</span>();
-        <span class="ident">ChannelFileSender</span>::<span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="ident">output_paths</span>[<span class="kw-2">&amp;</span><span class="ident">uuid</span>], <span class="kw-2">&amp;</span><span class="ident">sender</span>).<span class="ident">unwrap</span>();
+    <span class="comment">// wait for the list of files to send</span>
+    <span class="kw">match</span> <span class="ident">server_asked_files_receiver</span>.<span class="ident">recv</span>() {
+        <span class="prelude-val">Ok</span>(<span class="ident">missing_files</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">for</span> <span class="ident">uuid</span> <span class="kw">in</span> <span class="ident">missing_files</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="ident">outputs</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">uuid</span>) {
+                    <span class="ident">sender</span>
+                        .<span class="ident">send</span>(<span class="ident">WorkerClientMessage</span>::<span class="ident">ProvideFile</span>(<span class="ident">uuid</span>, <span class="ident">key</span>.<span class="ident">clone</span>()))
+                        .<span class="ident">unwrap</span>();
+                    <span class="ident">ChannelFileSender</span>::<span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="ident">output_paths</span>[<span class="kw-2">&amp;</span><span class="ident">uuid</span>], <span class="kw-2">&amp;</span><span class="ident">sender</span>).<span class="ident">unwrap</span>();
+                } <span class="kw">else</span> {
+                    <span class="macro">error</span><span class="macro">!</span>(
+                        <span class="string">&quot;Server asked for file {}, which is not known to the worker&quot;</span>,
+                        <span class="ident">uuid</span>
+                    );
+                }
+            }
+        }
+        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="comment">// not receiving the list from the server means that the server is going down and does</span>
+            <span class="comment">// not bother of responding, letting the worker crash will crash the local executor.</span>
+            <span class="comment">// So just cleanup and exit without asking for more jobs.</span>
+            <span class="macro">warn</span><span class="macro">!</span>(
+                <span class="string">&quot;List of missing files not received from the server: {:?}&quot;</span>,
+                <span class="ident">e</span>
+            );
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+            <span class="ident">job</span>.<span class="ident">current_job</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="ident">job</span>.<span class="ident">current_sandboxes</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="kw">return</span>;
+        }
     }
     <span class="comment">// this job is completed, reset the worker and ask for more work</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
