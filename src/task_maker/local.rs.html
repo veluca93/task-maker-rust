@@ -281,7 +281,7 @@
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run_evaluation</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">opt</span>: <span class="ident">Opt</span>, <span class="kw-2">mut</span> <span class="ident">on_message</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Evaluation</span>, <span class="ident">Error</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">UI</span>, <span class="ident">UIMessage</span>) <span class="op">-</span><span class="op">&gt;</span> () <span class="op">+</span> <span class="ident">Send</span>,
+    <span class="ident">F</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">UI</span>, <span class="ident">UIMessage</span>) <span class="op">+</span> <span class="ident">Send</span>,
 {
     <span class="kw">if</span> <span class="ident">opt</span>.<span class="ident">exclusive</span> {
         <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;This option is not implemented yet&quot;</span>);

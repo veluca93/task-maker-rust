@@ -381,7 +381,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">add_dependency</span> <span class="op">=</span> <span class="op">|</span><span class="ident">file</span>: <span class="ident">FileUuid</span>, <span class="ident">group</span>: <span class="ident">ExecutionGroupUuid</span><span class="op">|</span> {
         <span class="ident">dependencies</span>
             .<span class="ident">entry</span>(<span class="ident">file</span>)
-            .<span class="ident">or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">vec</span><span class="macro">!</span>[])
+            .<span class="ident">or_insert_with</span>(<span class="ident">Vec</span>::<span class="ident">new</span>)
             .<span class="ident">push</span>(<span class="ident">group</span>);
     };
 
@@ -428,13 +428,13 @@
         }
         <span class="ident">num_dependencies</span>.<span class="ident">insert</span>(<span class="kw-2">*</span><span class="ident">group_uuid</span>, <span class="ident">count</span>);
         <span class="kw">if</span> <span class="ident">count</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">ready_groups</span>.<span class="ident">push_back</span>(<span class="ident">group_uuid</span>.<span class="ident">clone</span>());
+            <span class="ident">ready_groups</span>.<span class="ident">push_back</span>(<span class="kw-2">*</span><span class="ident">group_uuid</span>);
         }
     }
     <span class="comment">// add the provided files</span>
     <span class="kw">for</span> <span class="ident">uuid</span> <span class="kw">in</span> <span class="ident">dag</span>.<span class="ident">provided_files</span>.<span class="ident">keys</span>() {
-        <span class="ident">ready_files</span>.<span class="ident">push_back</span>(<span class="ident">uuid</span>.<span class="ident">clone</span>());
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">known_files</span>.<span class="ident">insert</span>(<span class="ident">uuid</span>.<span class="ident">clone</span>()) {
+        <span class="ident">ready_files</span>.<span class="ident">push_back</span>(<span class="kw-2">*</span><span class="ident">uuid</span>);
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">known_files</span>.<span class="ident">insert</span>(<span class="kw-2">*</span><span class="ident">uuid</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">DAGError</span>::<span class="ident">DuplicateFileUUID</span> { <span class="ident">uuid</span>: <span class="kw-2">*</span><span class="ident">uuid</span> });
         }
     }
@@ -455,7 +455,7 @@
                 );
                 <span class="kw-2">*</span><span class="ident">num_deps</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                 <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">num_deps</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                    <span class="ident">ready_groups</span>.<span class="ident">push_back</span>(<span class="ident">group_uuid</span>.<span class="ident">clone</span>());
+                    <span class="ident">ready_groups</span>.<span class="ident">push_back</span>(<span class="kw-2">*</span><span class="ident">group_uuid</span>);
                 }
             }
         }
