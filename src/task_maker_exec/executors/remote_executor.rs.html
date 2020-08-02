@@ -187,10 +187,13 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">SocketAddr</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::<span class="ident">channel</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
+<span class="kw">use</span> <span class="ident">ductile</span>::{<span class="ident">ChannelSender</span>, <span class="ident">ChannelServer</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
 
@@ -199,8 +202,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">executor</span>::{<span class="ident">Executor</span>, <span class="ident">ExecutorInMessage</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">scheduler</span>::<span class="ident">ClientInfo</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">derive_key_from_password</span>, <span class="ident">ChannelSender</span>, <span class="ident">ChannelServer</span>, <span class="ident">WorkerConn</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::<span class="ident">SocketAddr</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">derive_key_from_password</span>, <span class="ident">WorkerConn</span>};
 
 <span class="doccomment">/// Version of task-maker</span>
 <span class="kw">const</span> <span class="ident">VERSION</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);

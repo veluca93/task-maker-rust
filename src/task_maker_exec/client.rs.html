@@ -386,6 +386,7 @@
 <span id="386">386</span>
 <span id="387">387</span>
 <span id="388">388</span>
+<span id="389">389</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
@@ -397,6 +398,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">JoinHandle</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">SystemTime</span>};
 
+<span class="kw">use</span> <span class="ident">ductile</span>::{<span class="ident">ChannelReceiver</span>, <span class="ident">ChannelSender</span>};
 <span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionDAG</span>, <span class="ident">FileCallbacks</span>, <span class="ident">FileUuid</span>, <span class="ident">ProvidedFile</span>, <span class="ident">WriteToCallback</span>};
@@ -404,7 +406,6 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">executor</span>::{<span class="ident">ExecutionDAGWatchSet</span>, <span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">proto</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ChannelReceiver</span>, <span class="ident">ChannelSender</span>};
 
 <span class="doccomment">/// Interval between each Status message is sent asking for server status updates.</span>
 <span class="kw">const</span> <span class="ident">STATUS_POLL_INTERVAL_MS</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1000</span>;
@@ -427,12 +428,13 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use task_maker_dag::ExecutionDAG;</span>
     <span class="doccomment">/// use task_maker_store::FileStore;</span>
-    <span class="doccomment">/// use task_maker_exec::{executors::LocalExecutor, ExecutorClient, new_local_channel, ErrorSandboxRunner};</span>
+    <span class="doccomment">/// use task_maker_exec::{executors::LocalExecutor, ExecutorClient, ErrorSandboxRunner};</span>
     <span class="doccomment">/// use std::sync::mpsc::channel;</span>
     <span class="doccomment">/// use std::sync::{Arc, Mutex};</span>
     <span class="doccomment">/// use std::thread;</span>
     <span class="doccomment">/// use std::path::PathBuf;</span>
     <span class="doccomment">/// use task_maker_cache::Cache;</span>
+    <span class="doccomment">/// use ductile::new_local_channel;</span>
     <span class="doccomment">/// # use tempdir::TempDir;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// // make a new, empty, DAG</span>

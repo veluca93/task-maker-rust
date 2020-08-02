@@ -233,6 +233,19 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -311,9 +324,10 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 
+<span class="kw">use</span> <span class="ident">ductile</span>::<span class="ident">new_local_channel</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">scrypt</span>::<span class="ident">ScryptParams</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">channel</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">client</span>::<span class="ident">ExecutorClient</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">executor</span>::{<span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>, <span class="ident">WorkerCurrentJobStatus</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sandbox</span>::<span class="ident">RawSandboxResult</span>;
@@ -326,7 +340,6 @@
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="ident">FileStore</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">worker</span>::{<span class="ident">Worker</span>, <span class="ident">WorkerConn</span>};
 
-<span class="kw">mod</span> <span class="ident">channel</span>;
 <span class="kw">mod</span> <span class="ident">check_dag</span>;
 <span class="kw">mod</span> <span class="ident">client</span>;
 <span class="kw">mod</span> <span class="ident">executor</span>;
@@ -337,6 +350,19 @@
 <span class="kw">mod</span> <span class="ident">scheduler</span>;
 <span class="kw">mod</span> <span class="ident">worker</span>;
 <span class="kw">mod</span> <span class="ident">worker_manager</span>;
+
+<span class="doccomment">/// Derive the encryption key from a password string.</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_key_from_password</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">password</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="number">32</span>] {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">key</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">32</span>];
+    <span class="ident">scrypt</span>::<span class="ident">scrypt</span>(
+        <span class="ident">password</span>.<span class="ident">as_ref</span>().<span class="ident">as_bytes</span>(),
+        <span class="string">b&quot;task-maker&quot;</span>,
+        <span class="kw-2">&amp;</span><span class="ident">ScryptParams</span>::<span class="ident">new</span>(<span class="number">8</span>, <span class="number">8</span>, <span class="number">1</span>).<span class="ident">unwrap</span>(),
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">key</span>,
+    )
+    .<span class="ident">expect</span>(<span class="string">&quot;Failed to derive key from password&quot;</span>);
+    <span class="ident">key</span>
+}
 
 <span class="doccomment">/// Evaluate a DAG locally spawning a new [`LocalExecutor`](executors/struct.LocalExecutor.html)</span>
 <span class="doccomment">/// with the specified number of workers.</span>

@@ -227,12 +227,14 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::{<span class="ident">Receiver</span>, <span class="ident">Sender</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 
+<span class="kw">use</span> <span class="ident">ductile</span>::<span class="ident">ChannelSender</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionGroupUuid</span>, <span class="ident">WorkerUuid</span>};
@@ -243,7 +245,7 @@
     <span class="ident">ChannelFileIterator</span>, <span class="ident">ChannelFileSender</span>, <span class="ident">WorkerClientMessage</span>, <span class="ident">WorkerServerMessage</span>,
 };
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">scheduler</span>::<span class="ident">SchedulerInMessage</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ChannelSender</span>, <span class="ident">WorkerConn</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">WorkerConn</span>;
 
 <span class="doccomment">/// Message coming from the Scheduler or the Executor for the WorkerManager</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">large_enum_variant</span>)]</span>
