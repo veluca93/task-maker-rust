@@ -242,11 +242,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
-<span class="kw">use</span> <span class="ident">ductile</span>::<span class="ident">new_local_channel</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">bail</span>, <span class="ident">format_err</span>, <span class="ident">Error</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_cache</span>::<span class="ident">Cache</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">CacheMode</span>;
+<span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ductile</span>::<span class="ident">new_local_channel</span>;
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">executors</span>::{<span class="ident">LocalExecutor</span>, <span class="ident">RemoteEntityMessage</span>, <span class="ident">RemoteEntityMessageResponse</span>};
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">proto</span>::<span class="ident">ExecutorClientMessage</span>;
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::<span class="ident">ExecutorClient</span>;

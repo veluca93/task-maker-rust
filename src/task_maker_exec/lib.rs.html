@@ -246,6 +246,8 @@
 <span id="246">246</span>
 <span id="247">247</span>
 <span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! DAG execution dispatching the tasks to the workers.</span>
 <span class="doccomment">//!</span>
@@ -324,6 +326,8 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 
+<span class="doccomment">/// Re-export `ductile` since it&#39;s sensible to any version change</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ductile</span>;
 <span class="kw">use</span> <span class="ident">ductile</span>::<span class="ident">new_local_channel</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">scrypt</span>::<span class="ident">ScryptParams</span>;
