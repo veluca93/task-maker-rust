@@ -393,6 +393,7 @@
 <span id="393">393</span>
 <span id="394">394</span>
 <span id="395">395</span>
+<span id="396">396</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The UI functionality for the task formats.</span>
 
@@ -403,6 +404,7 @@
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">termcolor</span>::{<span class="ident">Color</span>, <span class="ident">ColorSpec</span>, <span class="ident">StandardStream</span>};
+<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json</span>::<span class="ident">JsonUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">print</span>::<span class="ident">PrintUI</span>;
@@ -471,7 +473,7 @@
 }
 
 <span class="doccomment">/// The status of an execution.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UIExecutionStatus</span> {
     <span class="doccomment">/// The `Execution` is known to the DAG and when all its dependencies are ready it will</span>
     <span class="doccomment">/// started.</span>

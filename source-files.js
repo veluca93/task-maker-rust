@@ -9,4 +9,5 @@ sourcesIndex["task_maker_lang"] = {"name":"","dirs":[{"name":"languages","files"
 sourcesIndex["task_maker_rust"] = {"name":"","files":["detect_format.rs","error.rs","lib.rs","local.rs","opt.rs","print_dag.rs","remote.rs","sandbox.rs","server.rs","worker.rs"]};
 sourcesIndex["task_maker_store"] = {"name":"","files":["index.rs","lib.rs","read_file_iterator.rs"]};
 sourcesIndex["task_maker_test"] = {"name":"","files":["fifo.rs","lib.rs","sandbox.rs","test_interface.rs"]};
+sourcesIndex["task_maker_typescriptify"] = {"name":"","files":["typescriptify.rs"]};
 createSourceSidebar();

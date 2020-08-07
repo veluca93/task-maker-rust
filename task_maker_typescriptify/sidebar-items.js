@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["fix_bug_1","Apply the fix from PR#1 fixing some invalid types."],["main",""]]});

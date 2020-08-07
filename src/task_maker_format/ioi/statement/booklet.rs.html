@@ -325,6 +325,7 @@
 <span id="325">325</span>
 <span id="326">326</span>
 <span id="327">327</span>
+<span id="328">328</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashSet</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
@@ -335,6 +336,7 @@
 <span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
 <span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>, <span class="ident">File</span>};
 
@@ -343,7 +345,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui</span>::<span class="ident">UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">Tag</span>, <span class="ident">UISender</span>, <span class="ident">DATA_DIR</span>};
 
 <span class="doccomment">/// Configuration of a `Booklet`, including the setting from the contest configuration.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BookletConfig</span> {
     <span class="doccomment">/// The language to use for this booklet, e.g. `&quot;english&quot;`.</span>
     <span class="kw">pub</span> <span class="ident">language</span>: <span class="ident">String</span>,
@@ -384,7 +386,7 @@
 
 <span class="doccomment">/// A `Booklet` is a pdf file containing the statements of some tasks. It is compiled from a series</span>
 <span class="doccomment">/// of `.tex` files defined by `Statement` objects. The compiled pdf file is then copied somewhere.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Booklet</span> {
     <span class="doccomment">/// Configuration of the booklet.</span>
     <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">BookletConfig</span>,

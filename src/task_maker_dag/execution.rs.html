@@ -876,16 +876,23 @@
 <span id="876">876</span>
 <span id="877">877</span>
 <span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+
 <span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">_core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
 <span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
 
 <span class="doccomment">/// The identifier of an execution, it&#39;s globally unique and it identifies an execution only during</span>
 <span class="doccomment">/// a single evaluation.</span>
@@ -894,6 +901,7 @@
 <span class="doccomment">/// The identifier of a worker, it&#39;s globally unique and identifies the worker during a single</span>
 <span class="doccomment">/// connection. It is used to associate the jobs to the workers which runs the executions. The</span>
 <span class="doccomment">/// underlying executor may provide more information about a worker using this id.</span>
+
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WorkerUuid</span> <span class="op">=</span> <span class="ident">Uuid</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) starts.</span>
@@ -1071,7 +1079,7 @@
 }
 
 <span class="doccomment">/// Status of a completed [`Execution`](struct.Execution.html).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExecutionStatus</span> {
     <span class="doccomment">/// The program exited with status 0 within the limits.</span>
     <span class="ident">Success</span>,
@@ -1093,7 +1101,7 @@
 
 <span class="doccomment">/// Resources used during the execution, note that on some platform these values may not be</span>
 <span class="doccomment">/// accurate.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">Default</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResourcesUsage</span> {
     <span class="doccomment">/// Number of seconds the process used in user space.</span>
     <span class="kw">pub</span> <span class="ident">cpu_time</span>: <span class="ident">f64</span>,
@@ -1106,7 +1114,7 @@
 }
 
 <span class="doccomment">/// The result of an [`Execution`](struct.Execution.html).</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">PartialEq</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionResult</span> {
     <span class="doccomment">/// Status of the completed execution.</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">ExecutionStatus</span>,

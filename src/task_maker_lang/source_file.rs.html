@@ -375,12 +375,14 @@
 <span id="375">375</span>
 <span id="376">376</span>
 <span id="377">377</span>
+<span id="378">378</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serialize</span>, <span class="ident">Serializer</span>};
+<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="kw-2">*</span>;
 
@@ -395,7 +397,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// After creating a `SourceFile` using `new` you can add start using it via the `execute` method.</span>
 <span class="doccomment">/// Note that it may add to the DAG an extra execution for compiling the source file.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">TypeScriptify</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SourceFile</span> {
     <span class="doccomment">/// Path to the source file.</span>
     <span class="kw">pub</span> <span class="ident">path</span>: <span class="ident">PathBuf</span>,
