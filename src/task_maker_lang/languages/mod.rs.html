@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `task-maker-lang/src/languages/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../task_maker_lang/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `task-maker-lang/src/languages/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../task_maker_lang/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -222,23 +223,23 @@
 <span class="doccomment">/// - `compilation_add_file`</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Language</span>: <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
     <span class="doccomment">/// Full name of the language. This must be unique between all the other languages.</span>
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 
     <span class="doccomment">/// List of valid extensions for this language. A file is considered in this language if its</span>
     <span class="doccomment">/// extension is inside this list.</span>
-    <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">extensions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Whether this language needs a compilation step. Returning `true` here triggers many changes</span>
     <span class="doccomment">/// in the behaviour of the execution. Of course the compilation step will be added, because of</span>
     <span class="doccomment">/// that there is the need to know how to compile the source file, forcing the implementation of</span>
     <span class="doccomment">/// some extra methods.</span>
-    <span class="kw">fn</span> <span class="ident">need_compilation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">need_compilation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>;
 
     <span class="doccomment">/// Command to use to compile the source file. The blanked implementation is intended for not</span>
     <span class="doccomment">/// compiled languages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionCommand</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
@@ -248,7 +249,7 @@
     <span class="doccomment">/// languages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
@@ -258,25 +259,25 @@
     <span class="doccomment">/// The new compilation arguments should be returned.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_add_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_add_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 
     <span class="doccomment">/// The dependencies to put inside the compilation sandbox. This does not include the source</span>
     <span class="doccomment">/// file.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span> {
         <span class="macro">vec</span><span class="macro">!</span>[]
     }
 
     <span class="doccomment">/// The name that the compiled file will have inside the compilation sandbox.</span>
-    <span class="kw">fn</span> <span class="ident">compiled_file_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+    <span class="kw">fn</span> <span class="ident">compiled_file_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
         <span class="string">&quot;compiled&quot;</span>.<span class="ident">into</span>()
     }
 
     <span class="doccomment">/// Command to use to run the program. It defaults to the executable name of the program.</span>
     <span class="doccomment">/// Languages that need to run a separate program (e.g. a system-wise interpreter) may change</span>
     <span class="doccomment">/// the return value of this method.</span>
-    <span class="kw">fn</span> <span class="ident">runtime_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
+    <span class="kw">fn</span> <span class="ident">runtime_command</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ExecutionCommand</span> {
         <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="self">self</span>.<span class="ident">executable_name</span>(<span class="ident">path</span>, <span class="ident">write_to</span>))
     }
 
@@ -286,7 +287,7 @@
         <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
         <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    ) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">args</span>
     }
 
@@ -294,12 +295,12 @@
     <span class="doccomment">/// time dependency and it&#39;s relative to the sandbox.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The new runtime arguments should be returned.</span>
-    <span class="kw">fn</span> <span class="ident">runtime_add_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">runtime_add_file</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">_file</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">args</span>
     }
 
     <span class="doccomment">/// The dependencies to put inside the execution sandbox. This does not include the executable.</span>
-    <span class="kw">fn</span> <span class="ident">runtime_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">runtime_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span> {
         <span class="macro">vec</span><span class="macro">!</span>[]
     }
 
@@ -310,7 +311,7 @@
     <span class="doccomment">/// The name of the executable inside the sandbox. If this binary will be written elsewhere in</span>
     <span class="doccomment">/// the system, use the same name. Otherwise fallback to the original file name, without</span>
     <span class="doccomment">/// extension.</span>
-    <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+    <span class="kw">fn</span> <span class="ident">executable_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">write_to</span>) <span class="op">=</span> <span class="ident">write_to</span> {
             <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">write_to</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>))
         } <span class="kw">else</span> {
@@ -327,9 +328,9 @@
 <span class="doccomment">/// - `path`: the root source file from which extract the dependencies.</span>
 <span class="doccomment">/// - `extract_imports`: a function called with the path of a source file, which returns a list of</span>
 <span class="doccomment">///   all the imported files (pair local_path, sandbox_path).</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_dependencies</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="kw-2">mut</span> <span class="ident">extract_imports</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_dependencies</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="kw-2">mut</span> <span class="ident">extract_imports</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Dependency</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">PathBuf</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">PathBuf</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
 {
     <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">parent</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid path&quot;</span>);
     <span class="kw">let</span> <span class="ident">filename</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid path&quot;</span>);
@@ -345,8 +346,8 @@
         <span class="kw">for</span> (<span class="ident">local_path</span>, <span class="ident">sandbox_path</span>) <span class="kw">in</span> <span class="ident">extract_imports</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>) {
             <span class="kw">let</span> <span class="ident">local_path</span> <span class="op">=</span> <span class="ident">base</span>.<span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="ident">local_path</span>);
             <span class="kw">if</span> <span class="ident">local_path</span>.<span class="ident">exists</span>()
-                <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">done</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">local_path</span>)
-                <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">result_files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox_path</span>)
+                <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">done</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">local_path</span>)
+                <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">result_files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox_path</span>)
             {
                 <span class="ident">result_files</span>.<span class="ident">insert</span>(<span class="ident">sandbox_path</span>.<span class="ident">clone</span>());
                 <span class="ident">pending</span>.<span class="ident">push_back</span>(<span class="ident">local_path</span>.<span class="ident">clone</span>());
