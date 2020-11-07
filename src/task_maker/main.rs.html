@@ -222,6 +222,16 @@
 <span id="221">221</span>
 <span id="222">222</span>
 <span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The new cmsMake!</span>
 <span class="doccomment">//!</span>
@@ -326,6 +336,16 @@
 <span class="doccomment">//! ```bash</span>
 <span class="doccomment">//! task-maker-rust --evaluate-on ip_of_the_server:27182</span>
 <span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ### Using docker</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! You can easily spawn a task-maker server and a set of workers in your local machine without having to install all the compilers.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```bash</span>
+<span class="doccomment">//! docker run --name task-maker --rm -it -p 27183:27183 -p 27182:27182 --privileged edomora97/task-maker-rust:latest</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Then you can use task-maker locally adding `--evaluate-on localhost`.</span>
 
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">borrowed_box</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>)]</span>
