@@ -225,10 +225,6 @@
 <span id="224">224</span>
 <span id="225">225</span>
 <span id="226">226</span>
-<span id="227">227</span>
-<span id="228">228</span>
-<span id="229">229</span>
-<span id="230">230</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Crate for managing the cache of the executions of a DAG.</span>
 <span class="doccomment">//!</span>
@@ -445,11 +441,7 @@
 
     <span class="doccomment">/// Checks whether a result is allowed in the cache.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_cacheable</span>(<span class="ident">result</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionResult</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">result</span>.<span class="ident">status</span> {
-            <span class="bool-val">false</span>
-        } <span class="kw">else</span> {
-            <span class="bool-val">true</span>
-        }
+        <span class="op">!</span><span class="macro">matches</span><span class="macro">!</span>(<span class="ident">result</span>.<span class="ident">status</span>, <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="kw">_</span>))
     }
 }
 
