@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `task-maker-store/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../task_maker_store/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-store/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../task_maker_store/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -749,6 +751,7 @@
 <span id="748">748</span>
 <span id="749">749</span>
 <span id="750">750</span>
+<span id="751">751</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! This crate manages the file store on disk, a folder with many files indexed by their hash.</span>
 <span class="doccomment">//!</span>
@@ -787,6 +790,7 @@
 <span class="doccomment">//! ```</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">upper_case_acronyms</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">log</span>;
@@ -840,9 +844,9 @@
     <span class="doccomment">/// Handle of the file with the data of the store. This handle keeps the lock alive.</span>
     <span class="ident">file</span>: <span class="ident">File</span>,
     <span class="doccomment">/// The files locked because there are some handles still alive.</span>
-    <span class="ident">locked_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">LockedFiles</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">locked_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">LockedFiles</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The index with the files known to the store. This is used when flushing the old files.</span>
-    <span class="ident">index</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStoreIndex</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">index</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">FileStoreIndex</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Maximum size of the file store.</span>
     <span class="ident">max_store_size</span>: <span class="ident">u64</span>,
     <span class="doccomment">/// Target size of the file store after the flush.</span>
@@ -867,7 +871,7 @@
     <span class="doccomment">/// The path to the file on disk.</span>
     <span class="ident">path</span>: <span class="ident">PathBuf</span>,
     <span class="doccomment">/// A reference to the locked files. Will be used to remove self from the ref counts.</span>
-    <span class="ident">locked_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">LockedFiles</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">locked_files</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">LockedFiles</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">FileStore</span> {
@@ -891,17 +895,17 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;&gt;</span>(
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">base_path</span>: <span class="ident">P</span>,
         <span class="ident">max_store_size</span>: <span class="ident">u64</span>,
         <span class="ident">min_store_size</span>: <span class="ident">u64</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStore</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStore</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">base_path</span> <span class="op">=</span> <span class="ident">base_path</span>.<span class="ident">into</span>();
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="kw-2">&amp;</span><span class="ident">base_path</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="ident">base_path</span>.<span class="ident">join</span>(<span class="ident">STORE_LOCK_FILE</span>);
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="ident">lock</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">file</span>.<span class="ident">try_lock_exclusive</span>() {
-            <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>() <span class="op">!=</span> <span class="ident">fs2</span>::<span class="ident">lock_contended_error</span>().<span class="ident">to_string</span>() {
+            <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">fs2</span>::<span class="ident">lock_contended_error</span>().<span class="ident">to_string</span>() {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>.<span class="ident">into</span>());
             }
             <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Store locked... waiting&quot;</span>);
@@ -950,9 +954,9 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">store</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>, <span class="ident">content</span>: <span class="ident">I</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStoreHandle</span>, <span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">store</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>, <span class="ident">content</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStoreHandle</span>, <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span>,
+        <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">key_to_path</span>(<span class="ident">key</span>);
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Storing {:?}&quot;</span>, <span class="ident">path</span>);
@@ -1017,7 +1021,7 @@
     <span class="doccomment">/// # Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileStoreHandle</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">FileStoreHandle</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">key_to_path</span>(<span class="ident">key</span>);
         <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">exists</span>() {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
@@ -1037,12 +1041,12 @@
     }
 
     <span class="doccomment">/// Path of the file to disk.</span>
-    <span class="kw">fn</span> <span class="ident">key_to_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
+    <span class="kw">fn</span> <span class="ident">key_to_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
         <span class="self">self</span>.<span class="ident">base_path</span>.<span class="ident">join</span>(<span class="ident">key</span>.<span class="ident">suffix</span>())
     }
 
     <span class="doccomment">/// Mark a file as readonly.</span>
-    <span class="kw">fn</span> <span class="ident">mark_readonly</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">mark_readonly</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">perms</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">metadata</span>(<span class="ident">path</span>)<span class="question-mark">?</span>.<span class="ident">permissions</span>();
         <span class="ident">perms</span>.<span class="ident">set_readonly</span>(<span class="bool-val">true</span>);
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">set_permissions</span>(<span class="ident">path</span>, <span class="ident">perms</span>)<span class="question-mark">?</span>;
@@ -1050,7 +1054,7 @@
     }
 
     <span class="doccomment">/// Remove a file from disk.</span>
-    <span class="kw">fn</span> <span class="ident">remove_file</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">remove_file</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">perms</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">metadata</span>(<span class="ident">path</span>)<span class="question-mark">?</span>.<span class="ident">permissions</span>();
         <span class="ident">perms</span>.<span class="ident">set_readonly</span>(<span class="bool-val">false</span>);
         <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">set_permissions</span>(<span class="ident">path</span>, <span class="ident">perms</span>)<span class="question-mark">?</span>;
@@ -1059,7 +1063,7 @@
     }
 
     <span class="doccomment">/// Check if the file is not corrupted.</span>
-    <span class="kw">fn</span> <span class="ident">check_integrity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">check_integrity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">key_to_path</span>(<span class="ident">key</span>);
         <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>);
         <span class="comment">// if the last modified time is the same of creation time assume it&#39;s</span>
@@ -1068,22 +1072,22 @@
             <span class="kw">let</span> <span class="ident">created</span> <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">created</span>();
             <span class="kw">let</span> <span class="ident">modified</span> <span class="op">=</span> <span class="ident">metadata</span>.<span class="ident">modified</span>();
             <span class="kw">match</span> (<span class="ident">created</span>, <span class="ident">modified</span>) {
-                (<span class="prelude-val">Ok</span>(<span class="ident">created</span>), <span class="prelude-val">Ok</span>(<span class="ident">modified</span>)) <span class="op">=&gt;</span> {
-                    <span class="kw">if</span> <span class="ident">created</span> <span class="op">==</span> <span class="ident">modified</span> {
+                (<span class="prelude-val">Ok</span>(<span class="ident">created</span>), <span class="prelude-val">Ok</span>(<span class="ident">modified</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">if</span> <span class="ident">created</span> <span class="op">=</span><span class="op">=</span> <span class="ident">modified</span> {
                         <span class="kw">return</span> <span class="bool-val">true</span>;
                     }
                 }
-                (<span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=&gt;</span> {}
+                (<span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
         <span class="kw">match</span> <span class="ident">FileStoreKey</span>::<span class="ident">from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">key2</span>) <span class="op">=&gt;</span> <span class="ident">key2</span>.<span class="ident">hash</span> <span class="op">==</span> <span class="ident">key</span>.<span class="ident">hash</span>,
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">key2</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key2</span>.<span class="ident">hash</span> <span class="op">=</span><span class="op">=</span> <span class="ident">key</span>.<span class="ident">hash</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Check if the file store needs flushing, and do so if needed.</span>
-    <span class="kw">fn</span> <span class="ident">maybe_flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FileStoreIndex</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">maybe_flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FileStoreIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">index</span>.<span class="ident">need_flush</span>(<span class="self">self</span>.<span class="ident">max_store_size</span>) {
             <span class="kw">let</span> <span class="ident">locked</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">locked_files</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
             <span class="ident">index</span>.<span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">locked</span>, <span class="self">self</span>.<span class="ident">min_store_size</span>)<span class="question-mark">?</span>;
@@ -1095,10 +1099,10 @@
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">FileStore</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">index</span>.<span class="ident">lock</span>() {
-            <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">index</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="kw-2">mut</span> <span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">locked</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">locked_files</span>.<span class="ident">lock</span>() {
-                    <span class="prelude-val">Ok</span>(<span class="ident">l</span>) <span class="op">=&gt;</span> <span class="ident">l</span>,
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">l</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">l</span>,
+                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Cannot lock locked_files due to poison&quot;</span>);
                         <span class="kw">return</span>;
                     }
@@ -1112,7 +1116,7 @@
                     <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Cannot store the index: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">to_string</span>());
                 }
             }
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Cannot store the index due to poisoned lock&quot;</span>);
             }
         }
@@ -1122,7 +1126,7 @@
 <span class="kw">impl</span> <span class="ident">FileStoreKey</span> {
     <span class="doccomment">/// Get the suffix of the path of this `FileStoreKey`. For example, if the key is</span>
     <span class="doccomment">/// `aabbccddeeff...` this method will return `aa/bb/aabbccddeeff...`</span>
-    <span class="kw">fn</span> <span class="ident">suffix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
+    <span class="kw">fn</span> <span class="ident">suffix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
         <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="self">self</span>.<span class="ident">hash</span>[<span class="number">0</span>]]);
         <span class="kw">let</span> <span class="ident">second</span> <span class="op">=</span> <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="self">self</span>.<span class="ident">hash</span>[<span class="number">1</span>]]);
         <span class="kw">let</span> <span class="ident">full</span> <span class="op">=</span> <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">hash</span>);
@@ -1130,7 +1134,7 @@
     }
 
     <span class="doccomment">/// Make a new `FileStoreKey` from a file on disk. The file must exist and be readable.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStoreKey</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FileStoreKey</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">Blake2b</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="ident">file_reader</span> <span class="op">=</span> <span class="ident">ReadFileIterator</span>::<span class="ident">new</span>(<span class="ident">path</span>.<span class="ident">as_ref</span>())<span class="question-mark">?</span>;
         <span class="ident">file_reader</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">buf</span><span class="op">|</span> <span class="ident">hasher</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)).<span class="ident">last</span>();
@@ -1140,7 +1144,7 @@
     }
 
     <span class="doccomment">/// Make a new `FileStoreKey` from an in-memory file.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_content</span>(<span class="ident">content</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">FileStoreKey</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_content</span>(<span class="ident">content</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FileStoreKey</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hasher</span> <span class="op">=</span> <span class="ident">Blake2b</span>::<span class="ident">new</span>();
         <span class="ident">hasher</span>.<span class="ident">input</span>(<span class="ident">content</span>);
         <span class="ident">FileStoreKey</span> {
@@ -1150,19 +1154,19 @@
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">FileStoreKey</span> {
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="ident">hex</span>::<span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">hash</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">FileStoreKey</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">to_string</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">FileStoreKey</span> {
-    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;&lt;</span><span class="ident">S</span> <span class="kw">as</span> <span class="ident">Serializer</span><span class="op">&gt;</span>::<span class="prelude-val">Ok</span>, <span class="op">&lt;</span><span class="ident">S</span> <span class="kw">as</span> <span class="ident">Serializer</span><span class="op">&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span> <span class="kw">as</span> <span class="ident">Serializer</span><span class="op">&gt;</span>::<span class="prelude-val">Ok</span>, <span class="op">&lt;</span><span class="ident">S</span> <span class="kw">as</span> <span class="ident">Serializer</span><span class="op">&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">Serializer</span>,
     {
@@ -1171,7 +1175,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FileStoreKey</span> {
-    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="ident">D</span> <span class="kw">as</span> <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="ident">D</span> <span class="kw">as</span> <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
@@ -1188,10 +1192,10 @@
 
 <span class="kw">impl</span> <span class="ident">FileStoreHandle</span> {
     <span class="doccomment">/// Make a new handle to a file on disk.</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">FileStore</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-&gt;</span> <span class="ident">FileStoreHandle</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">FileStore</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FileStoreHandle</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">store</span>.<span class="ident">key_to_path</span>(<span class="ident">key</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">locked_files</span> <span class="op">=</span> <span class="ident">store</span>.<span class="ident">locked_files</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw-2">*</span><span class="ident">locked_files</span>.<span class="ident">ref_counts</span>.<span class="ident">entry</span>(<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="ident">or_default</span>() <span class="op">+=</span> <span class="number">1</span>;
+        <span class="kw-2">*</span><span class="ident">locked_files</span>.<span class="ident">ref_counts</span>.<span class="ident">entry</span>(<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="ident">or_default</span>() <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="ident">FileStoreHandle</span> {
             <span class="ident">path</span>,
             <span class="ident">locked_files</span>: <span class="ident">store</span>.<span class="ident">locked_files</span>.<span class="ident">clone</span>(),
@@ -1200,26 +1204,26 @@
     }
 
     <span class="doccomment">/// The path to the file pointed by this handle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Path</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Path</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>
     }
 
     <span class="doccomment">/// The key of the file pointed by this handle.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">FileStoreKey</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">key</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">FileStoreHandle</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">key</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">key</span>
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">key</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">key</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">FileStoreHandle</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">locked_files</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">locked_files</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw-2">*</span><span class="ident">locked_files</span>.<span class="ident">ref_counts</span>.<span class="ident">entry</span>(<span class="self">self</span>.<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="ident">or_default</span>() <span class="op">+=</span> <span class="number">1</span>;
+        <span class="kw-2">*</span><span class="ident">locked_files</span>.<span class="ident">ref_counts</span>.<span class="ident">entry</span>(<span class="self">self</span>.<span class="ident">key</span>.<span class="ident">clone</span>()).<span class="ident">or_default</span>() <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
 
         <span class="ident">FileStoreHandle</span> {
             <span class="ident">path</span>: <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">clone</span>(),
@@ -1232,14 +1236,14 @@
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">FileStoreHandle</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">locked_files</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">locked_files</span>.<span class="ident">lock</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">guard</span>) <span class="op">=&gt;</span> <span class="ident">guard</span>,
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">return</span>, <span class="comment">// may happen if the thread panicked</span>
+            <span class="prelude-val">Ok</span>(<span class="ident">guard</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">guard</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>, <span class="comment">// may happen if the thread panicked</span>
         };
         <span class="kw-2">*</span><span class="ident">locked_files</span>
             .<span class="ident">ref_counts</span>
             .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">key</span>)
-            .<span class="ident">expect</span>(<span class="string">&quot;Ref counts are broken&quot;</span>) <span class="op">-=</span> <span class="number">1</span>;
-        <span class="kw">if</span> <span class="ident">locked_files</span>.<span class="ident">ref_counts</span>[<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">key</span>] <span class="op">==</span> <span class="number">0</span> {
+            .<span class="ident">expect</span>(<span class="string">&quot;Ref counts are broken&quot;</span>) <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="kw">if</span> <span class="ident">locked_files</span>.<span class="ident">ref_counts</span>[<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">key</span>] <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
             <span class="ident">locked_files</span>.<span class="ident">ref_counts</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">key</span>);
         }
     }
@@ -1247,7 +1251,7 @@
 
 <span class="kw">impl</span> <span class="ident">LockedFiles</span> {
     <span class="doccomment">/// Make a new, empty, `LockedFiles`.</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">LockedFiles</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LockedFiles</span> {
         <span class="ident">LockedFiles</span> {
             <span class="ident">ref_counts</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
         }
@@ -1264,11 +1268,11 @@
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_cwd</span>() <span class="op">-&gt;</span> <span class="ident">TempDir</span> {
+    <span class="kw">fn</span> <span class="ident">get_cwd</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TempDir</span> {
         <span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">fake_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">content</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">FileStoreKey</span> {
+    <span class="kw">fn</span> <span class="ident">fake_file</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">content</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FileStoreKey</span> {
         <span class="ident">File</span>::<span class="ident">create</span>(<span class="ident">path</span>.<span class="ident">as_ref</span>())
             .<span class="ident">unwrap</span>()
             .<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>.<span class="ident">as_bytes</span>())
@@ -1276,7 +1280,7 @@
         <span class="ident">FileStoreKey</span>::<span class="ident">from_file</span>(<span class="ident">path</span>.<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">add_file_to_store</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">content</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">FileStore</span>) <span class="op">-&gt;</span> <span class="ident">FileStoreHandle</span> {
+    <span class="kw">fn</span> <span class="ident">add_file_to_store</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">content</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">FileStore</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FileStoreHandle</span> {
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">fake_file</span>(<span class="ident">path</span>, <span class="ident">content</span>);
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">ReadFileIterator</span>::<span class="ident">new</span>(<span class="ident">path</span>).<span class="ident">unwrap</span>();
         <span class="ident">store</span>.<span class="ident">store</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="ident">iter</span>).<span class="ident">unwrap</span>()
@@ -1311,11 +1315,11 @@
         <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">get_cwd</span>();
         <span class="kw">let</span> <span class="ident">store_dir</span> <span class="op">=</span> <span class="ident">cwd</span>.<span class="ident">path</span>().<span class="ident">to_owned</span>();
         <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="ident">cwd</span>.<span class="ident">path</span>(), <span class="number">1000</span>, <span class="number">1000</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">thr</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
+        <span class="kw">let</span> <span class="ident">thr</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
             <span class="kw">let</span> <span class="ident">_store</span> <span class="op">=</span> <span class="ident">FileStore</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">store_dir</span>, <span class="number">1000</span>, <span class="number">1000</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">end</span> <span class="op">-</span> <span class="ident">start</span> <span class="op">&gt;=</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">300</span>));
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">end</span> <span class="op">-</span> <span class="ident">start</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">300</span>));
         });
         <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">500</span>));
         <span class="ident">drop</span>(<span class="ident">store</span>);
@@ -1427,7 +1431,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_check_integrity</span>() {
-        <span class="kw">if</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GITHUB_WORKFLOW&quot;</span>).<span class="ident">is_ok</span>() <span class="op">||</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CI&quot;</span>).<span class="ident">is_ok</span>() {
+        <span class="kw">if</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;GITHUB_WORKFLOW&quot;</span>).<span class="ident">is_ok</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CI&quot;</span>).<span class="ident">is_ok</span>() {
             <span class="comment">// skip this test CI because the runner does not support the last modified time, so the</span>
             <span class="comment">// fast integrity check skips the actual sanity check.</span>
             <span class="kw">return</span>;
@@ -1501,4 +1505,5 @@
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "task_maker_store";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="task_maker_store"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
