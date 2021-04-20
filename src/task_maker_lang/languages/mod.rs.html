@@ -184,6 +184,11 @@
 <span id="181">181</span>
 <span id="182">182</span>
 <span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::{<span class="ident">HashSet</span>, <span class="ident">VecDeque</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
@@ -251,7 +256,12 @@
     <span class="doccomment">/// languages.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Will panic if this language does not support compilation.</span>
-    <span class="kw">fn</span> <span class="ident">compilation_args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">compilation_args</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
+        <span class="ident">_write_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
+        <span class="ident">_link_static</span>: <span class="ident">bool</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Language {} cannot be compiled!&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 

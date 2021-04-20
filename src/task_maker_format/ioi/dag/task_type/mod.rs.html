@@ -73,6 +73,24 @@
 <span id="70">70</span>
 <span id="71">71</span>
 <span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
@@ -84,7 +102,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">communication</span>::<span class="ident">CommunicationTypeData</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">FileUuid</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">IOITask</span>, <span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::{<span class="ident">Checker</span>, <span class="ident">IOITask</span>, <span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>};
 
 <span class="kw">mod</span> <span class="ident">batch</span>;
@@ -144,6 +162,24 @@
                 <span class="ident">data</span>,
             ),
         }
+    }
+
+    <span class="doccomment">/// Add to the DAG more, executions based on the current task type.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// For example this will force the compilation of the checker in a batch task.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">prepare_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">TaskType</span>::<span class="ident">Batch</span>(<span class="ident">batch</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">batch</span>.<span class="ident">checker</span> {
+                <span class="ident">Checker</span>::<span class="ident">Custom</span>(<span class="ident">checker</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">checker</span>.<span class="ident">prepare</span>(<span class="ident">eval</span>)<span class="question-mark">?</span>;
+                }
+                <span class="ident">Checker</span>::<span class="ident">WhiteDiff</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            },
+            <span class="ident">TaskType</span>::<span class="ident">Communication</span>(<span class="ident">communication</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">communication</span>.<span class="ident">manager</span>.<span class="ident">prepare</span>(<span class="ident">eval</span>)<span class="question-mark">?</span>;
+            }
+        }
+        <span class="prelude-val">Ok</span>(())
     }
 }
 </pre></div>

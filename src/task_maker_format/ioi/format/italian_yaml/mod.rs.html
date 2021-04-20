@@ -631,6 +631,10 @@
 <span id="628">628</span>
 <span id="629">629</span>
 <span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `italian_yaml` format is defined by [`cms`](https://cms.readthedocs.io/en/v1.4/External%20contest%20formats.html#italian-import-format)</span>
 <span class="doccomment">//! and it&#39;s the most used format in the Italian Olympiads.</span>
@@ -1187,6 +1191,8 @@
     .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">mut</span> <span class="ident">c</span><span class="op">|</span> {
         <span class="comment">// always copy the custom checker</span>
         <span class="ident">c</span>.<span class="ident">copy_exe</span>();
+        <span class="comment">// Link the checker statically. This makes sure that it will work also outside this machine.</span>
+        <span class="ident">c</span>.<span class="ident">link_static</span>();
         <span class="ident">c</span>
     })
     .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>)
@@ -1205,16 +1211,18 @@
 
 <span class="doccomment">/// Parse the task components relative to the communication task type.</span>
 <span class="kw">fn</span> <span class="ident">parse_communication_task_data</span>(<span class="ident">task_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">yaml</span>: <span class="kw-2">&amp;</span><span class="ident">TaskYAML</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TaskType</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">find_source_file</span>(
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">manager</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
         <span class="ident">task_dir</span>,
         <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;check/manager.*&quot;</span>, <span class="string">&quot;cor/manager.*&quot;</span>],
         <span class="ident">task_dir</span>,
         <span class="prelude-val">None</span>,
         <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;manager&quot;</span>)),
-    )<span class="question-mark">?</span>);
+    )<span class="question-mark">?</span>;
+    <span class="comment">// Link the manager statically. This makes sure that it will work also outside this machine.</span>
+    <span class="ident">manager</span>.<span class="ident">link_static</span>();
 
     <span class="prelude-val">Some</span>(<span class="ident">TaskType</span>::<span class="ident">Communication</span>(<span class="ident">CommunicationTypeData</span> {
-        <span class="ident">manager</span>,
+        <span class="ident">manager</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">manager</span>),
         <span class="ident">num_processes</span>: <span class="ident">yaml</span>.<span class="ident">num_processes</span>.<span class="ident">unwrap_or</span>(<span class="number">1</span>),
     }))
 }
