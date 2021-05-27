@@ -168,11 +168,22 @@
 <span id="165">165</span>
 <span id="166">166</span>
 <span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">bail</span>, <span class="ident">format_err</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
 
@@ -264,13 +275,24 @@
                     <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">res</span>
                         .<span class="ident">stderr</span>
                         .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Checker stderr not captured&quot;</span>))<span class="question-mark">?</span>;
-                    <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">stdout</span>);
-                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">score</span>
-                        .<span class="ident">trim</span>()
-                        .<span class="ident">parse</span>()
-                        .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid score from checker: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">stderr</span>).<span class="ident">trim</span>().<span class="ident">to_string</span>();
                     <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">translate_checker_message</span>(<span class="ident">message</span>);
+                    <span class="kw">if</span> <span class="op">!</span><span class="ident">res</span>.<span class="ident">status</span>.<span class="ident">is_success</span>() {
+                        <span class="macro">bail</span><span class="macro">!</span>(
+                            <span class="string">&quot;Checker failed exiting with {:?}, stderr: {}&quot;</span>,
+                            <span class="ident">res</span>.<span class="ident">status</span>,
+                            <span class="ident">message</span>
+                        );
+                    }
+                    <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">stdout</span>);
+                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">score</span>.<span class="ident">trim</span>().<span class="ident">parse</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                        <span class="macro">format_err</span><span class="macro">!</span>(
+                            <span class="string">&quot;Invalid score {:?} from checker: {:?} (stderr: {})&quot;</span>,
+                            <span class="ident">score</span>,
+                            <span class="ident">e</span>,
+                            <span class="ident">message</span>
+                        )
+                    })<span class="question-mark">?</span>;
                     <span class="ident">callback</span>(<span class="ident">score</span>, <span class="ident">message</span>)
                 });
                 <span class="prelude-val">Ok</span>(<span class="ident">exec</span>)
