@@ -416,6 +416,11 @@
 <span id="413">413</span>
 <span id="414">414</span>
 <span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
@@ -470,7 +475,7 @@
         <span class="ident">testcases</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
     });
 
-    <span class="kw">let</span> <span class="ident">generator</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">generators</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
         <span class="ident">task_dir</span>,
         <span class="macro">vec</span><span class="macro">!</span>[
             <span class="string">&quot;gen/generator.*&quot;</span>,
@@ -481,9 +486,14 @@
         <span class="ident">task_dir</span>,
         <span class="prelude-val">None</span>,
         <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;generator&quot;</span>)),
-    )
-    .<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>)
-    .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;No generator found&quot;</span>))<span class="question-mark">?</span>;
+    );
+    <span class="kw">if</span> <span class="ident">generators</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">1</span> {
+        <span class="kw">let</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">generators</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">name</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+        <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;Multiple generators found: {:?}&quot;</span>, <span class="ident">paths</span>);
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">generators</span>.<span class="ident">is_empty</span>() {
+        <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;No generator found&quot;</span>);
+    }
+    <span class="kw">let</span> <span class="ident">generator</span> <span class="op">=</span> <span class="ident">generators</span>.<span class="ident">pop</span>().<span class="ident">map</span>(<span class="ident">Arc</span>::<span class="ident">new</span>).<span class="ident">unwrap</span>();
     <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Detected input generator: {:?}&quot;</span>, <span class="ident">generator</span>);
 
     <span class="kw">for</span> <span class="ident">line</span> <span class="kw">in</span> <span class="ident">file</span>.<span class="ident">into_inner</span>() {
