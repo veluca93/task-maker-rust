@@ -1111,7 +1111,7 @@
             .<span class="ident">unwrap_err</span>()
             .<span class="ident">to_string</span>();
 
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">err</span>.<span class="ident">contains</span>(<span class="string">&quot;Invalid score from checker&quot;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">err</span>.<span class="ident">contains</span>(<span class="string">&quot;Invalid score&quot;</span>), <span class="string">&quot;Wrong error: {}&quot;</span>, <span class="ident">err</span>);
     }
 }
 </pre></div>
