@@ -92,6 +92,7 @@ use task_maker_dag::ExecutionDAG;
 use task_maker_store::FileStore;
 pub use worker::{Worker, WorkerConn};
 
+pub mod api_proposal;
 mod check_dag;
 mod client;
 mod detect_exe;
