@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["main_reset","Handler of the `reset` tool. This tool will prompt the user with a warning message and read his confirmation before removing the storage directory."]]});

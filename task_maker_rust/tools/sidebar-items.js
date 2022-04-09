@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["booklet",""],["clear",""],["gen_autocompletion","Tool that generates the autocompletion scripts inside the target/autocompletion directory."],["opt",""],["reset",""],["sandbox",""],["server",""],["task_info",""],["typescriptify",""],["worker",""]]});

@@ -1,16 +1,18 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The new cmsMake!"><meta name="keywords" content="rust, rustlang, rust-lang, task_maker"><title>task_maker - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../task_maker/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Crate task_maker</p><div class="block version"><p>Version 0.4.4</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all task_maker's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li></ul></div><p class="location"></p><div id="sidebar-vars" data-name="task_maker" data-ty="mod" data-relpath="../"></div></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="">task_maker</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/task_maker/main.rs.html#1-233" title="goto source code">[src]</a></span></h1><div class="docblock"><p>The new cmsMake!</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The new cmsMake!"><meta name="keywords" content="rust, rustlang, rust-lang, task_maker"><title>task_maker - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../task_maker/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../task_maker/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate task_maker</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.5.1</li><li><a id="all-types" href="all.html">All Items</a></li></div></ul><section><div class="block"><ul><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="task_maker" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../task_maker/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">task_maker</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/task_maker/main.rs.html#1-190">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The new cmsMake!</p>
 <p><a href="https://asciinema.org/a/301849"><img src="https://asciinema.org/a/301849.svg" alt="asciicast" /></a></p>
-<h1 id="installation" class="section-header"><a href="#installation">Installation</a></h1>
+<h2 id="installation"><a href="#installation">Installation</a></h2>
 <p>For <strong>Ubuntu</strong> and <strong>Debian</strong> users you can find the <code>.deb</code> file in the <a href="https://github.com/edomora97/task-maker-rust/releases">Releases</a> page.
 Install the package using <code>sudo dpkg -i the_file.deb</code> and it’s dependencies (if you need to) with <code>sudo apt install -f</code>.
 There is a good chance that you have already all the dependencies already installed.</p>
 <p>For <strong>ArchLinux</strong> users you can find the packages in the AUR: <a href="https://aur.archlinux.org/packages/task-maker-rust"><code>task-maker-rust</code></a> (the stable release)
 and <a href="https://aur.archlinux.org/packages/task-maker-rust-git"><code>task-maker-rust-git</code></a> (the version based on <code>master</code>).</p>
-<p>For <strong>MacOS Catalina</strong> users you can find the pre-built bottle in the <a href="https://github.com/edomora97/task-maker-rust/releases">Releases</a> page.
-You can install it using <code>brew install task-maker-rust--*.catalina.bottle.tar.gz</code>.</p>
+<p>For <strong>MacOS</strong> users you can install the package using Homebrew: <code>brew install bortoz/bortoz/task-maker-rust</code>.</p>
 <p>For the other operating systems the recommended way to use task-maker-rust is the following:</p>
 <ul>
 <li>Install the latest stable rust version (and cargo). For example using <a href="https://rustup.rs/">rustup</a></li>
@@ -25,69 +27,76 @@ repository after the build. If you need a package for your operating system/dist
 please!</p>
 <p>The supported operating systems are Linux (with libseccomp support), OSX and Windows under WSL2.
 It should be possible to build task-maker using musl but it may be hard to link libseccomp!</p>
-<h1 id="usage" class="section-header"><a href="#usage">Usage</a></h1><h2 id="simple-local-usage" class="section-header"><a href="#simple-local-usage">Simple local usage</a></h2>
+<h2 id="usage"><a href="#usage">Usage</a></h2><details>
+<summary>Simple local usage</summary>
 <p>Run <code>task-maker-rust</code> in the task folder to compile and run everything.</p>
 <p>Specifying no option all the caches are active, the next executions will be very fast, actually doing only what’s needed.</p>
-<h2 id="disable-cache" class="section-header"><a href="#disable-cache">Disable cache</a></h2>
-<p>If you really want to repeat the execution of something provide the <code>--no-cache</code>
-option:</p>
-<pre><code class="language-bash">task-maker-rust --no-cache
-</code></pre>
+</details>
+<details>
+<summary>Disable cache</summary>
+<p>If you really want to repeat the execution of something provide the <code>--no-cache</code> option:</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust --no-cache</code></pre></div>
 <p>Without any options <code>--no-cache</code> won’t use any caches.</p>
-<p>If you want, for example, just redo the evaluations (maybe for retrying the timings), use <code>--no-cache=evaluation</code>.
-The available options for <code>--no-cache</code> can be found with <code>--help</code>.</p>
-<h2 id="test-only-a-subset-of-solutions" class="section-header"><a href="#test-only-a-subset-of-solutions">Test only a subset of solutions</a></h2>
-<p>Sometimes you only want to test only some solutions, speeding up the compilation and cleaning a bit the output:</p>
-<pre><code class="language-bash">task-maker-rust sol1.cpp sol2.py
-</code></pre>
-<p>Note that you may or may not specify the folder of the solution (sol/ or solution/).
-You can also specify only the prefix of the name of the solutions you want to check.</p>
-<h2 id="using-different-task-directory" class="section-header"><a href="#using-different-task-directory">Using different task directory</a></h2>
-<p>By default the task in the current directory is executed, if you want to change the task without <code>cd</code>-ing away:</p>
-<pre><code class="language-bash">task-maker-rust --task-dir ~/tasks/poldo
-</code></pre>
-<h2 id="extracting-executable-files" class="section-header"><a href="#extracting-executable-files">Extracting executable files</a></h2>
-<p>All the compiled files are kept in an internal folder but if you want to use them, for example to debug a solution, passing <code>--copy-exe</code> all the useful files are copied to the <code>bin/</code> folder inside the task directory.</p>
-<pre><code class="language-bash">task-maker-rust --copy-exe
-</code></pre>
-<h2 id="do-not-build-the-statement" class="section-header"><a href="#do-not-build-the-statement">Do not build the statement</a></h2>
+<p>If you want, for example, just redo the evaluations (maybe for retrying the timings), use
+<code>--no-cache=evaluation</code>. The available options for <code>--no-cache</code> can be found with <code>--help</code>.</p>
+</details>
+<details>
+<summary>Test only a subset of solutions</summary>
+<p>Sometimes you only want to test only some solutions, speeding up the compilation and cleaning a
+bit the output:</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust sol1.cpp sol2.py</code></pre></div>
+<p>Note that you may or may not specify the folder of the solution (sol/ or solution/). You can
+also specify only the prefix of the name of the solutions you want to check.</p>
+</details>
+<details>
+<summary>Using different task directory</summary>
+<p>By default the task in the current directory is executed, if you want to change the task without
+<code>cd</code>-ing away:</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust --task-dir ~/tasks/poldo</code></pre></div></details>
+<details>
+<summary>Extracting executable files</summary>
+<p>All the compiled files are kept in an internal folder but if you want to use them, for example
+to debug a solution, passing <code>--copy-exe</code> all the useful files are copied to the <code>bin/</code> folder
+inside the task directory.</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust --copy-exe</code></pre></div></details>
+<details>
+<summary>Statement</summary>
 <p>If you don’t want to build the statement files (and the booklet) just pass <code>--no-statement</code>.</p>
-<pre><code class="language-bash">task-maker-rust --no-statement
-</code></pre>
-<h2 id="clean-the-task-directory" class="section-header"><a href="#clean-the-task-directory">Clean the task directory</a></h2>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust --no-statement</code></pre></div>
+<p>If you want just to build the statement you can use:</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-tools booklet</code></pre></div>
+<p>This tool can also be used to build the contest’s booklet.</p>
+</details>
+<details>
+<summary> Clean the task directory</summary>
 <p>If you want to clean everything, for example after the contest, simply run:</p>
-<pre><code class="language-bash">task-maker-rust --clean
-</code></pre>
-<p>This will remove the files that can be regenerated from the task directory.
-Note that the internal cache is not pruned by this command.</p>
-<h2 id="remote-evaluation" class="section-header"><a href="#remote-evaluation">Remote evaluation</a></h2>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-tools clear</code></pre></div>
+<p>This will remove the files that can be regenerated from the task directory. Note that the
+internal cache is not pruned by this command.</p>
+</details>
+<details>
+<summary>Remote evaluation</summary>
 <p>On a server (a machine accessible from clients and workers) run</p>
-<pre><code class="language-bash">task-maker-rust --server
-</code></pre>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-tools server</code></pre></div>
 <p>This will start <code>task-maker</code> in server mode, listening for connections from clients and workers
 respectively on port 27182 and 27183.</p>
-<p>Then on the worker machines start a worker each with</p>
-<pre><code class="language-bash">task-maker-rust --worker ip_of_the_server:27183
-</code></pre>
-<p>This will start a worker on that machine (using all the cores unless specified), connecting to
-the server and executing the jobs the server assigns.</p>
+<p>Then on the worker machines start a worker with</p>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-tools worker server_addr num</code></pre></div>
+<p>This will start a worker on that machine (<strong>using a single core</strong>), connecting to the server
+and executing the jobs the server assigns. The <code>num</code> parameter can be used to distinguish
+between multiple workers in the same machine.</p>
 <p>For running a remote computation on your machine just add the <code>--evaluate-on</code> option, like:</p>
-<pre><code class="language-bash">task-maker-rust --evaluate-on ip_of_the_server:27182
-</code></pre>
-<h3 id="using-docker" class="section-header"><a href="#using-docker">Using docker</a></h3>
+<div class="example-wrap"><pre class="language-bash"><code>task-maker-rust --evaluate-on server_addr</code></pre></div></details>
+<h4 id="using-docker"><a href="#using-docker">Using docker</a></h4>
 <p>You can easily spawn a task-maker server and a set of workers in your local machine without having to install all the compilers.</p>
-<pre><code class="language-bash">docker run --name task-maker --rm -it -p 27183:27183 -p 27182:27182 --privileged edomora97/task-maker-rust:latest
-</code></pre>
+<div class="example-wrap"><pre class="language-bash"><code>docker run --rm -it \
+    --name task-maker \
+    -p 27183:27183 \
+    -p 27182:27182 \
+    --privileged \
+    edomora97/task-maker-rust:latest</code></pre></div>
 <p>Then you can use task-maker locally adding <code>--evaluate-on localhost</code>.</p>
-</div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
-<table><tr class="module-item"><td><a class="mod" href="detect_format/index.html" title="task_maker::detect_format mod">detect_format</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="error/index.html" title="task_maker::error mod">error</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="local/index.html" title="task_maker::local mod">local</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="opt/index.html" title="task_maker::opt mod">opt</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="print_dag/index.html" title="task_maker::print_dag mod">print_dag</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="remote/index.html" title="task_maker::remote mod">remote</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="sandbox/index.html" title="task_maker::sandbox mod">sandbox</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="server/index.html" title="task_maker::server mod">server</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="mod" href="worker/index.html" title="task_maker::worker mod">worker</a></td><td class="docblock-short"></td></tr></table><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
-<table><tr class="module-item"><td><a class="enum" href="enum.Evaluation.html" title="task_maker::Evaluation enum">Evaluation</a></td><td class="docblock-short"><p>The result of an evaluation.</p>
-</td></tr></table><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
-<table><tr class="module-item"><td><a class="fn" href="fn.dont_panic.html" title="task_maker::dont_panic fn">dont_panic</a></td><td class="docblock-short"><p>Handler of the <code>--dont-panic</code> flag. Passing the store directory this function will prompt the
-user with a warning message and read his confirmation before removing the storage directory.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.main.html" title="task_maker::main fn">main</a></td><td class="docblock-short"></td></tr><tr class="module-item"><td><a class="fn" href="fn.main_server.html" title="task_maker::main_server fn">main_server</a></td><td class="docblock-short"><p>Entry point for the server.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.main_worker.html" title="task_maker::main_worker fn">main_worker</a></td><td class="docblock-short"><p>Entry point for the worker.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.print_dag.html" title="task_maker::print_dag fn">print_dag</a></td><td class="docblock-short"><p>Print to <code>stdout</code> the nodes of this <code>ExecutionDAG</code> in DOT format.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.run_evaluation.html" title="task_maker::run_evaluation fn">run_evaluation</a></td><td class="docblock-short"><p>Run the local evaluation of some actions (either building a task or cleaning its directory).</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="task_maker" data-search-js="../search-index.js"></div>
-    <script src="../main.js"></script></body></html>
+<p><code>--privileged</code> is required to run the worker sandboxes.</p>
+</div></details><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.main.html" title="task_maker::main fn">main</a></div><div class="item-right docblock-short"></div></div></div></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="task_maker" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

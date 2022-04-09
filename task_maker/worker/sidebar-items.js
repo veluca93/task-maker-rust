@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["VERSION","Version of task-maker"]],"fn":[["main_worker","Entry point for the worker."]]});

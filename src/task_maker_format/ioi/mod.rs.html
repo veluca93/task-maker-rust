@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../task_maker_format/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../task_maker_format/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -412,8 +414,45 @@
 <span id="409">409</span>
 <span id="410">410</span>
 <span id="411">411</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! The IOI task format.</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+</pre><pre class="rust"><code><span class="doccomment">//! The IOI task format.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! In IOI-like tasks there is the concept of _subtask_ and of _testcase_: a testcase is a single</span>
 <span class="doccomment">//! instance of the evaluation of a solution on a given input file, producing a single output file</span>
@@ -430,27 +469,27 @@
 <span class="doccomment">//! a `Checker`, a program that computes the score of the testcase given the input file, the output</span>
 <span class="doccomment">//! file and the _correct_ output file (the one produced by the jury).</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">bail</span>, <span class="ident">format_err</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
+<span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
-<span class="kw">use</span> <span class="ident">curses_ui</span>::<span class="ident">CursesUI</span>;
+<span class="kw">use</span> <span class="ident">curses_ui::CursesUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">dag</span>::<span class="kw-2">*</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">format</span>::<span class="ident">italian_yaml</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">format::italian_yaml</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">statement</span>::<span class="kw-2">*</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">task_info</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">task_maker_lang</span>::<span class="ident">GraderMap</span>;
+<span class="kw">use</span> <span class="ident">task_maker_lang::GraderMap</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ui_state</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">format</span>::<span class="ident">italian_yaml</span>::<span class="ident">TM_ALLOW_DELETE_COOKIE</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">italian_yaml</span>::<span class="ident">is_gen_gen_deletable</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sanity_checks</span>::<span class="ident">SanityChecks</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::TM_ALLOW_DELETE_COOKIE</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::italian_yaml::is_gen_gen_deletable</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::sanity_checks::SanityChecks</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationConfig</span>, <span class="ident">EvaluationData</span>, <span class="ident">TaskFormat</span>, <span class="ident">TaskInfo</span>, <span class="ident">UISender</span>};
 
 <span class="kw">mod</span> <span class="ident">curses_ui</span>;
@@ -556,121 +595,148 @@
 <span class="kw">impl</span> <span class="ident">IOITask</span> {
     <span class="doccomment">/// Try to make a `Task` from the specified path. Will return `Err` if the format of the task</span>
     <span class="doccomment">/// is not IOI or if the task is corrupted and cannot be parsed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">eval_config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">IOITask</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">format</span>::<span class="ident">italian_yaml</span>::<span class="ident">parse_task</span>(<span class="ident">path</span>, <span class="ident">eval_config</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>, <span class="ident">eval_config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">IOITask</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">format::italian_yaml::parse_task</span>(<span class="ident">path</span>, <span class="ident">eval_config</span>)
+    }
+
+    <span class="doccomment">/// Create a &quot;fake&quot; `IOITask` that will not contain any data.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This can be used to setup executions that are not related to tasks (e.g. booklet</span>
+    <span class="doccomment">/// compilations).  </span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fake</span>() -&gt; <span class="ident">IOITask</span> {
+        <span class="ident">IOITask</span> {
+            <span class="ident">path</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">task_type</span>: <span class="ident">TaskType::None</span>,
+            <span class="ident">name</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">title</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">time_limit</span>: <span class="prelude-val">None</span>,
+            <span class="ident">memory_limit</span>: <span class="prelude-val">None</span>,
+            <span class="ident">infile</span>: <span class="prelude-val">None</span>,
+            <span class="ident">outfile</span>: <span class="prelude-val">None</span>,
+            <span class="ident">subtasks</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">input_validator</span>: <span class="ident">InputValidator::AssumeValid</span>,
+            <span class="ident">testcase_score_aggregator</span>: <span class="ident">TestcaseScoreAggregator::Min</span>,
+            <span class="ident">grader_map</span>: <span class="ident">Arc::new</span>(<span class="ident">GraderMap::new</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>(<span class="macro">vec!</span>[])),
+            <span class="ident">booklets</span>: <span class="macro">vec!</span>[],
+            <span class="ident">difficulty</span>: <span class="prelude-val">None</span>,
+            <span class="ident">syllabus_level</span>: <span class="prelude-val">None</span>,
+            <span class="ident">sanity_checks</span>: <span class="ident">Arc::new</span>(<span class="ident">Default::default</span>()),
+        }
     }
 
     <span class="doccomment">/// Check if in the provided path there could be a IOI-like task.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">as_ref</span>();
-        <span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;task.yaml&quot;</span>).<span class="ident">exists</span>()
-            <span class="op">&amp;&amp;</span> (<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;gen/GEN&quot;</span>).<span class="ident">exists</span>()
-                <span class="op">|</span><span class="op">|</span> <span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;gen/cases.gen&quot;</span>).<span class="ident">exists</span>()
-                <span class="op">|</span><span class="op">|</span> <span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;input&quot;</span>).<span class="ident">is_dir</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_valid</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="ident">bool</span> {
+        <span class="ident">path</span>.<span class="ident">as_ref</span>().<span class="ident">join</span>(<span class="string">&quot;task.yaml&quot;</span>).<span class="ident">exists</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">TaskFormat</span> <span class="kw">for</span> <span class="ident">IOITask</span> {
-    <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Path</span> {
+    <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Path</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">ui</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui_type</span>: <span class="kw-2">&amp;</span><span class="ident">UIType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">UI</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">ui</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui_type</span>: <span class="kw-2">&amp;</span><span class="ident">UIType</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">UI</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">ui_type</span> {
-            <span class="ident">UIType</span>::<span class="ident">Raw</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">RawUI</span>::<span class="ident">new</span>())),
-            <span class="ident">UIType</span>::<span class="ident">Print</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">PrintUI</span>::<span class="ident">new</span>())),
-            <span class="ident">UIType</span>::<span class="ident">Curses</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CursesUI</span>::<span class="ident">new</span>(<span class="ident">UIState</span>::<span class="ident">new</span>(<span class="self">self</span>))<span class="question-mark">?</span>)),
-            <span class="ident">UIType</span>::<span class="ident">Json</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">JsonUI</span>::<span class="ident">new</span>())),
-            <span class="ident">UIType</span>::<span class="ident">Silent</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">SilentUI</span>::<span class="ident">new</span>())),
+            <span class="ident">UIType::Raw</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">RawUI::new</span>())),
+            <span class="ident">UIType::Print</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">PrintUI</span>::<span class="op">&lt;</span><span class="ident">UIState</span><span class="op">&gt;</span><span class="ident">::new</span>())),
+            <span class="ident">UIType::Curses</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(
+                <span class="ident">CursesUI::new</span>(<span class="ident">UIState::new</span>(<span class="self">self</span>)).<span class="ident">context</span>(<span class="string">&quot;Cannot build curses UI&quot;</span>)<span class="question-mark">?</span>,
+            )),
+            <span class="ident">UIType::Json</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">JsonUI::new</span>())),
+            <span class="ident">UIType::Silent</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">SilentUI::new</span>())),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">build_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITask</span> {
-            <span class="ident">task</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">clone</span>()),
+    <span class="kw">fn</span> <span class="ident">build_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::IOITask</span> {
+            <span class="ident">task</span>: <span class="ident">Box::new</span>(<span class="self">self</span>.<span class="ident">clone</span>()),
         })<span class="question-mark">?</span>;
-        <span class="self">self</span>.<span class="ident">sanity_checks</span>.<span class="ident">pre_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">empty_score_manager</span> <span class="op">=</span> <span class="ident">ScoreManager</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+        <span class="self">self</span>.<span class="ident">sanity_checks</span>
+            .<span class="ident">pre_hook</span>(<span class="self">self</span>, <span class="ident">eval</span>)
+            .<span class="ident">context</span>(<span class="string">&quot;Sanity check pre-hooks failed&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">empty_score_manager</span> <span class="op">=</span> <span class="ident">ScoreManager::new</span>(<span class="self">self</span>);
         <span class="kw">let</span> <span class="ident">solutions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">config</span>
-            .<span class="ident">filter_solutions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;sol/*&quot;</span>], <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">grader_map</span>.<span class="ident">clone</span>()))
+            .<span class="ident">filter_solutions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>, <span class="macro">vec!</span>[<span class="string">&quot;sol/*&quot;</span>], <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">grader_map</span>.<span class="ident">clone</span>()))
             .<span class="ident">into_iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">source</span><span class="op">|</span> (<span class="ident">source</span>, <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">empty_score_manager</span>.<span class="ident">clone</span>()))))
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">source</span><span class="op">|</span> (<span class="ident">source</span>, <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">empty_score_manager</span>.<span class="ident">clone</span>()))))
             .<span class="ident">collect</span>();
 
-        <span class="self">self</span>.<span class="ident">task_type</span>.<span class="ident">prepare_dag</span>(<span class="ident">eval</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">task_type</span>
+            .<span class="ident">prepare_dag</span>(<span class="ident">eval</span>)
+            .<span class="ident">context</span>(<span class="string">&quot;Failed to prepare DAG&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="kw">for</span> <span class="ident">subtask</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">subtasks</span>.<span class="ident">values</span>() {
-            <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Executing the generation of subtask {}&quot;</span>, <span class="ident">subtask</span>.<span class="ident">id</span>);
+            <span class="macro">trace!</span>(<span class="string">&quot;Executing the generation of subtask {}&quot;</span>, <span class="ident">subtask</span>.<span class="ident">id</span>);
 
             <span class="kw">for</span> <span class="ident">testcase</span> <span class="kw">in</span> <span class="ident">subtask</span>.<span class="ident">testcases</span>.<span class="ident">values</span>() {
-                <span class="macro">trace</span><span class="macro">!</span>(
+                <span class="macro">trace!</span>(
                     <span class="string">&quot;Executing the generation of testcase {} of subtask {}&quot;</span>,
                     <span class="ident">testcase</span>.<span class="ident">id</span>,
                     <span class="ident">subtask</span>.<span class="ident">id</span>
                 );
 
-                <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span>
-                    <span class="ident">testcase</span>
-                        .<span class="ident">input_generator</span>
-                        .<span class="ident">generate_and_bind</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">val_handle</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">input_validator</span>.<span class="ident">validate_and_bind</span>(
-                    <span class="ident">eval</span>,
-                    <span class="ident">subtask</span>.<span class="ident">id</span>,
-                    <span class="ident">testcase</span>.<span class="ident">id</span>,
-                    <span class="ident">input</span>,
-                )<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">testcase</span>.<span class="ident">output_generator</span>.<span class="ident">generate_and_bind</span>(
-                    <span class="kw-2">&amp;</span><span class="self">self</span>,
-                    <span class="ident">eval</span>,
-                    <span class="ident">subtask</span>.<span class="ident">id</span>,
-                    <span class="ident">testcase</span>.<span class="ident">id</span>,
-                    <span class="ident">input</span>,
-                    <span class="ident">val_handle</span>,
-                )<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">testcase</span>
+                    .<span class="ident">input_generator</span>
+                    .<span class="ident">generate_and_bind</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>)
+                    .<span class="ident">context</span>(<span class="string">&quot;Failed to bind input generator&quot;</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">val_handle</span> <span class="op">=</span> <span class="ident">testcase</span>
+                    .<span class="ident">input_validator</span>
+                    .<span class="ident">validate_and_bind</span>(<span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>, <span class="ident">input</span>)
+                    .<span class="ident">context</span>(<span class="string">&quot;Failed to bind validator&quot;</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">testcase</span>
+                    .<span class="ident">output_generator</span>
+                    .<span class="ident">generate_and_bind</span>(<span class="self">self</span>, <span class="ident">eval</span>, <span class="ident">subtask</span>.<span class="ident">id</span>, <span class="ident">testcase</span>.<span class="ident">id</span>, <span class="ident">input</span>, <span class="ident">val_handle</span>)
+                    .<span class="ident">context</span>(<span class="string">&quot;Failed to bind output generator&quot;</span>)<span class="question-mark">?</span>;
 
                 <span class="kw">for</span> (<span class="ident">solution</span>, <span class="ident">score_manager</span>) <span class="kw">in</span> <span class="ident">solutions</span>.<span class="ident">iter</span>() {
-                    <span class="macro">trace</span><span class="macro">!</span>(
+                    <span class="macro">trace!</span>(
                         <span class="string">&quot;Evaluation of the solution {:?} against subtask {} / testcase {}&quot;</span>,
                         <span class="ident">solution</span>.<span class="ident">name</span>(),
                         <span class="ident">subtask</span>.<span class="ident">id</span>,
                         <span class="ident">testcase</span>.<span class="ident">id</span>
                     );
 
-                    <span class="self">self</span>.<span class="ident">task_type</span>.<span class="ident">evaluate</span>(
-                        <span class="kw-2">&amp;</span><span class="self">self</span>,
-                        <span class="ident">eval</span>,
-                        <span class="ident">subtask</span>.<span class="ident">id</span>,
-                        <span class="ident">testcase</span>.<span class="ident">id</span>,
-                        <span class="ident">solution</span>,
-                        <span class="ident">input</span>,
-                        <span class="ident">val_handle</span>,
-                        <span class="ident">output</span>,
-                        <span class="ident">score_manager</span>.<span class="ident">clone</span>(),
-                    )<span class="question-mark">?</span>;
+                    <span class="self">self</span>.<span class="ident">task_type</span>
+                        .<span class="ident">evaluate</span>(
+                            <span class="self">self</span>,
+                            <span class="ident">eval</span>,
+                            <span class="ident">subtask</span>.<span class="ident">id</span>,
+                            <span class="ident">testcase</span>.<span class="ident">id</span>,
+                            <span class="ident">solution</span>,
+                            <span class="ident">input</span>,
+                            <span class="ident">val_handle</span>,
+                            <span class="ident">output</span>,
+                            <span class="ident">score_manager</span>.<span class="ident">clone</span>(),
+                        )
+                        .<span class="ident">context</span>(<span class="string">&quot;Failed to bind evaluation&quot;</span>)<span class="question-mark">?</span>;
                 }
             }
         }
         <span class="kw">for</span> <span class="ident">booklet</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">booklets</span>.<span class="ident">iter</span>() {
-            <span class="ident">booklet</span>.<span class="ident">build</span>(<span class="ident">eval</span>)<span class="question-mark">?</span>;
+            <span class="ident">booklet</span>
+                .<span class="ident">build</span>(<span class="ident">eval</span>)
+                .<span class="ident">context</span>(<span class="string">&quot;Failed to bind booklet compilation&quot;</span>)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">sanity_check_post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UIMessageSender</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">sanity_checks</span>.<span class="ident">post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>)
+    <span class="kw">fn</span> <span class="ident">sanity_check_post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>: <span class="kw-2">&amp;mut</span> <span class="ident">UIMessageSender</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">sanity_checks</span>.<span class="ident">post_hook</span>(<span class="self">self</span>, <span class="ident">ui</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">clean</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">clean</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">dir</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;input&quot;</span>, <span class="string">&quot;output&quot;</span>] {
             <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">join</span>(<span class="ident">dir</span>);
             <span class="kw">if</span> <span class="op">!</span><span class="ident">dir</span>.<span class="ident">exists</span>() {
                 <span class="kw">continue</span>;
             }
-            <span class="kw">for</span> <span class="ident">file</span> <span class="kw">in</span> <span class="ident">glob</span>::<span class="ident">glob</span>(<span class="ident">dir</span>.<span class="ident">join</span>(<span class="string">&quot;*.txt&quot;</span>).<span class="ident">to_string_lossy</span>().<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>() {
+            <span class="kw">for</span> <span class="ident">file</span> <span class="kw">in</span> <span class="ident">glob::glob</span>(<span class="ident">dir</span>.<span class="ident">join</span>(<span class="string">&quot;*.txt&quot;</span>).<span class="ident">to_string_lossy</span>().<span class="ident">as_ref</span>())
+                .<span class="ident">context</span>(<span class="string">&quot;Invalid glob pattern&quot;</span>)<span class="question-mark">?</span>
+            {
                 <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">file</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">file</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">file</span>,
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Cannot process {:?}&quot;</span>, <span class="ident">file</span>);
+                    <span class="prelude-val">Ok</span>(<span class="ident">file</span>) =&gt; <span class="ident">file</span>,
+                    <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                        <span class="macro">warn!</span>(<span class="string">&quot;Glob error: {:?}&quot;</span>, <span class="ident">e</span>);
                         <span class="kw">continue</span>;
                     }
                 };
@@ -680,39 +746,46 @@
                     .<span class="ident">values</span>()
                     .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">testcases</span>.<span class="ident">values</span>())
                     .<span class="ident">any</span>(<span class="op">|</span><span class="ident">tc</span><span class="op">|</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">tc</span>.<span class="ident">input_generator</span>, <span class="kw-2">&amp;</span><span class="ident">tc</span>.<span class="ident">output_generator</span>) {
-                        (<span class="ident">InputGenerator</span>::<span class="ident">StaticFile</span>(<span class="ident">path</span>), <span class="kw">_</span>)
-                        <span class="op">|</span> (<span class="kw">_</span>, <span class="ident">OutputGenerator</span>::<span class="ident">StaticFile</span>(<span class="ident">path</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">path</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">file</span>,
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+                        (<span class="ident">InputGenerator::StaticFile</span>(<span class="ident">path</span>), <span class="kw">_</span>)
+                        <span class="op">|</span> (<span class="kw">_</span>, <span class="ident">OutputGenerator::StaticFile</span>(<span class="ident">path</span>)) =&gt; <span class="ident">path</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">file</span>,
+                        <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
                     })
                 {
                     <span class="kw">continue</span>;
                 }
-                <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Removing {:?}&quot;</span>, <span class="ident">file</span>);
-                <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">remove_file</span>(<span class="ident">file</span>)<span class="question-mark">?</span>;
+                <span class="macro">info!</span>(<span class="string">&quot;Removing {}&quot;</span>, <span class="ident">file</span>.<span class="ident">display</span>());
+                <span class="ident">std::fs::remove_file</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>)
+                    .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Failed to clean file {}&quot;</span>, <span class="ident">file</span>.<span class="ident">display</span>()))<span class="question-mark">?</span>;
             }
-            <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Removing {:?}&quot;</span>, <span class="ident">dir</span>);
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">remove_dir</span>(<span class="kw-2">&amp;</span><span class="ident">dir</span>) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Other</span> <span class="op">=</span> <span class="ident">e</span>.<span class="ident">kind</span>() {
-                    <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Directory {:?} not empty!&quot;</span>, <span class="ident">dir</span>);
+            <span class="macro">info!</span>(<span class="string">&quot;Removing {}&quot;</span>, <span class="ident">dir</span>.<span class="ident">display</span>());
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">std::fs::remove_dir</span>(<span class="kw-2">&amp;</span><span class="ident">dir</span>) {
+                <span class="comment">// FIXME: this should be `e.kind() == ErrorKind::DirectoryNotEmpty`, but it is not</span>
+                <span class="comment">//        stable yet.</span>
+                <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">to_string</span>().<span class="ident">contains</span>(<span class="string">&quot;Directory not empty&quot;</span>) {
+                    <span class="macro">warn!</span>(<span class="string">&quot;Directory {} not empty!&quot;</span>, <span class="ident">dir</span>.<span class="ident">display</span>());
                 } <span class="kw">else</span> {
-                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Cannot remove {:?}: {:?}&quot;</span>, <span class="ident">dir</span>, <span class="ident">e</span>);
+                    <span class="prelude-val">Err</span>(<span class="ident">e</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Cannot remove {}&quot;</span>, <span class="ident">dir</span>.<span class="ident">display</span>()))<span class="question-mark">?</span>;
                 }
             }
         }
         <span class="comment">// remove the bin/ folder</span>
         <span class="kw">let</span> <span class="ident">bin_path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>);
         <span class="kw">if</span> <span class="ident">bin_path</span>.<span class="ident">exists</span>() {
-            <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Removing {:?}&quot;</span>, <span class="ident">bin_path</span>);
-            <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">remove_dir_all</span>(<span class="ident">bin_path</span>)<span class="question-mark">?</span>;
+            <span class="macro">info!</span>(<span class="string">&quot;Removing {}&quot;</span>, <span class="ident">bin_path</span>.<span class="ident">display</span>());
+            <span class="ident">std::fs::remove_dir_all</span>(<span class="kw-2">&amp;</span><span class="ident">bin_path</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">format!</span>(<span class="string">&quot;Failed to remove bin/ directory at {}&quot;</span>, <span class="ident">bin_path</span>.<span class="ident">display</span>())
+            })<span class="question-mark">?</span>;
         }
         <span class="comment">// remove the compiled checkers</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TaskType</span>::<span class="ident">Batch</span>(<span class="ident">data</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">task_type</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Checker</span>::<span class="ident">Custom</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">checker</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TaskType::Batch</span>(<span class="ident">data</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">task_type</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Checker::Custom</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="ident">data</span>.<span class="ident">checker</span> {
                 <span class="kw">for</span> <span class="ident">checker</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;check/checker&quot;</span>, <span class="string">&quot;cor/correttore&quot;</span>] {
                     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">join</span>(<span class="ident">checker</span>);
                     <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() {
-                        <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Removing {:?}&quot;</span>, <span class="ident">path</span>);
-                        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">remove_file</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+                        <span class="macro">info!</span>(<span class="string">&quot;Removing {}&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>());
+                        <span class="ident">std::fs::remove_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                            <span class="macro">format!</span>(<span class="string">&quot;Failed to remove compiled checker at {}&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>())
+                        })<span class="question-mark">?</span>;
                     }
                 }
             }
@@ -722,10 +795,12 @@
         <span class="kw">let</span> <span class="ident">cases_gen_path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">join</span>(<span class="string">&quot;gen/cases.gen&quot;</span>);
         <span class="kw">if</span> <span class="ident">cases_gen_path</span>.<span class="ident">exists</span>() <span class="op">&amp;&amp;</span> <span class="ident">gen_gen_path</span>.<span class="ident">exists</span>() {
             <span class="kw">if</span> <span class="ident">is_gen_gen_deletable</span>(<span class="kw-2">&amp;</span><span class="ident">gen_gen_path</span>)<span class="question-mark">?</span> {
-                <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Removing {:?}&quot;</span>, <span class="ident">gen_gen_path</span>);
-                <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">remove_file</span>(<span class="ident">gen_gen_path</span>)<span class="question-mark">?</span>;
+                <span class="macro">info!</span>(<span class="string">&quot;Removing {}&quot;</span>, <span class="ident">gen_gen_path</span>.<span class="ident">display</span>());
+                <span class="ident">std::fs::remove_file</span>(<span class="kw-2">&amp;</span><span class="ident">gen_gen_path</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                    <span class="macro">format!</span>(<span class="string">&quot;Failed to remove gen/GEN at {}&quot;</span>, <span class="ident">gen_gen_path</span>.<span class="ident">display</span>())
+                })<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
-                <span class="macro">warn</span><span class="macro">!</span>(
+                <span class="macro">warn!</span>(
                     <span class="string">&quot;Won&#39;t remove gen/GEN since it doesn&#39;t contain {}&quot;</span>,
                     <span class="ident">TM_ALLOW_DELETE_COOKIE</span>
                 );
@@ -734,26 +809,28 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">task_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TaskInfo</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">TaskInfo</span>::<span class="ident">IOI</span>(<span class="ident">task_info</span>::<span class="ident">IOITaskInfo</span>::<span class="ident">new</span>(<span class="self">self</span>)<span class="question-mark">?</span>))
+    <span class="kw">fn</span> <span class="ident">task_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TaskInfo</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">TaskInfo::IOI</span>(
+            <span class="ident">task_info::IOITaskInfo::new</span>(<span class="self">self</span>).<span class="ident">context</span>(<span class="string">&quot;Cannot produce IOI task info&quot;</span>)<span class="question-mark">?</span>,
+        ))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">TestcaseScoreAggregator</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Err</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">s</span> {
-            <span class="string">&quot;min&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Min</span>),
-            <span class="string">&quot;sum&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator</span>::<span class="ident">Sum</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">bail</span><span class="macro">!</span>(<span class="string">&quot;Invalid testcase score aggregator: {}&quot;</span>, <span class="ident">s</span>),
+            <span class="string">&quot;min&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator::Min</span>),
+            <span class="string">&quot;sum&quot;</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident">TestcaseScoreAggregator::Sum</span>),
+            <span class="kw">_</span> =&gt; <span class="macro">bail!</span>(<span class="string">&quot;Invalid testcase score aggregator: {}&quot;</span>, <span class="ident">s</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ScoreManager</span> {
     <span class="doccomment">/// Make a new `ScoreManager` based on the subtasks and testcases of the specified task.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">IOITask</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ScoreManager</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">task</span>: <span class="kw-2">&amp;</span><span class="ident">IOITask</span>) -&gt; <span class="ident">ScoreManager</span> {
         <span class="ident">ScoreManager</span> {
             <span class="ident">subtask_scores</span>: <span class="ident">task</span>.<span class="ident">subtasks</span>.<span class="ident">keys</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">st</span>, <span class="prelude-val">None</span>)).<span class="ident">collect</span>(),
             <span class="ident">max_subtask_scores</span>: <span class="ident">task</span>
@@ -773,19 +850,19 @@
     <span class="doccomment">/// Store the score of the testcase and eventually compute the score of the subtask and of the</span>
     <span class="doccomment">/// task.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">score</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">subtask_id</span>: <span class="ident">SubtaskId</span>,
         <span class="ident">testcase_id</span>: <span class="ident">TestcaseId</span>,
         <span class="ident">score</span>: <span class="ident">f64</span>,
         <span class="ident">message</span>: <span class="ident">String</span>,
         <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">UIMessageSender</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">solution</span>: <span class="ident">PathBuf</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">testcase_scores</span>
             .<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Unknown subtask {}&quot;</span>, <span class="ident">subtask_id</span>))<span class="question-mark">?</span>
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Unknown subtask {}&quot;</span>, <span class="ident">subtask_id</span>))<span class="question-mark">?</span>
             .<span class="ident">insert</span>(<span class="ident">testcase_id</span>, <span class="prelude-val">Some</span>(<span class="ident">score</span>));
-        <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITestcaseScore</span> {
+        <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::IOITestcaseScore</span> {
             <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
             <span class="ident">testcase</span>: <span class="ident">testcase_id</span>,
             <span class="ident">solution</span>: <span class="ident">solution</span>.<span class="ident">clone</span>(),
@@ -794,7 +871,7 @@
         })<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">testcase_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>]
             .<span class="ident">values</span>()
-            .<span class="ident">all</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>)
+            .<span class="ident">all</span>(<span class="ident">Option::is_some</span>)
         {
             <span class="kw">let</span> <span class="ident">normalized_score</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">aggregator</span>.<span class="ident">aggregate</span>(
                 <span class="self">self</span>.<span class="ident">testcase_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>]
@@ -803,19 +880,19 @@
             );
             <span class="kw">let</span> <span class="ident">subtask_score</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">max_subtask_scores</span>[<span class="kw-2">&amp;</span><span class="ident">subtask_id</span>] <span class="op">*</span> <span class="ident">normalized_score</span>;
             <span class="self">self</span>.<span class="ident">subtask_scores</span>.<span class="ident">insert</span>(<span class="ident">subtask_id</span>, <span class="prelude-val">Some</span>(<span class="ident">subtask_score</span>));
-            <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOISubtaskScore</span> {
+            <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::IOISubtaskScore</span> {
                 <span class="ident">subtask</span>: <span class="ident">subtask_id</span>,
                 <span class="ident">solution</span>: <span class="ident">solution</span>.<span class="ident">clone</span>(),
                 <span class="ident">score</span>: <span class="ident">subtask_score</span>,
                 <span class="ident">normalized_score</span>,
             })<span class="question-mark">?</span>;
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">subtask_scores</span>.<span class="ident">values</span>().<span class="ident">all</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">subtask_scores</span>.<span class="ident">values</span>().<span class="ident">all</span>(<span class="ident">Option::is_some</span>) {
                 <span class="kw">let</span> <span class="ident">task_score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">subtask_scores</span>
                     .<span class="ident">values</span>()
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">score</span><span class="op">|</span> <span class="ident">score</span>.<span class="ident">unwrap</span>())
                     .<span class="ident">sum</span>();
-                <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">IOITaskScore</span> {
+                <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::IOITaskScore</span> {
                     <span class="ident">solution</span>,
                     <span class="ident">score</span>: <span class="ident">task_score</span>,
                 })<span class="question-mark">?</span>;
@@ -824,6 +901,6 @@
         <span class="prelude-val">Ok</span>(())
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="task_maker_format" data-search-js="../../../search-index.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="task_maker_format" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

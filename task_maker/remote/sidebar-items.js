@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["connect_to_remote_server","Parse the server url address and try to connect to that host."]]});

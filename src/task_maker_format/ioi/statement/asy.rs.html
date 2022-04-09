@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/statement/asy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>asy.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../task_maker_format/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/statement/asy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>asy.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../task_maker_format/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -246,23 +248,35 @@
 <span id="243">243</span>
 <span id="244">244</span>
 <span id="245">245</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
-<span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">regex::Regex</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>, <span class="ident">File</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui</span>::<span class="ident">UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">Tag</span>, <span class="ident">UISender</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui::UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">Tag</span>, <span class="ident">UISender</span>};
 
-<span class="macro">lazy_static</span><span class="macro">!</span> {
+<span class="macro">lazy_static!</span> {
     <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ASY_INCLUDE</span>: <span class="ident">Regex</span> <span class="op">=</span>
-        <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r#&quot;(?:include|import)\s*[&#39;&quot;]?([^&#39;&quot;\s]+)[&#39;&quot;]?(?:\s+as\s+.+)?;&quot;#</span>)
+        <span class="ident">Regex::new</span>(<span class="string">r#&quot;(?:include|import)\s*[&#39;&quot;]?([^&#39;&quot;\s]+)[&#39;&quot;]?(?:\s+as\s+.+)?;&quot;#</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Invalid regex&quot;</span>);
     <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ASY_GRAPHIC</span>: <span class="ident">Regex</span> <span class="op">=</span>
-        <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r#&quot;(?:graphic|input)\s*\(\s*[&#39;&quot;]([^&#39;&quot;]+)[&#39;&quot;]&quot;#</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid regex&quot;</span>);
+        <span class="ident">Regex::new</span>(<span class="string">r#&quot;(?:graphic|input)\s*\(\s*[&#39;&quot;]([^&#39;&quot;]+)[&#39;&quot;]&quot;#</span>).<span class="ident">expect</span>(<span class="string">&quot;Invalid regex&quot;</span>);
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AsyFile</span>;
@@ -271,36 +285,39 @@
     <span class="doccomment">/// Compile the asy file and return the handle to the compiled and cropped pdf file.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">compile</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(
         <span class="ident">source</span>: <span class="ident">P</span>,
-        <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>,
+        <span class="ident">eval</span>: <span class="kw-2">&amp;mut</span> <span class="ident">EvaluationData</span>,
         <span class="ident">booklet_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">File</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">File</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">source_path</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">booklet</span> <span class="op">=</span> <span class="ident">booklet_name</span>.<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">source_path</span>
             .<span class="ident">file_name</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid path of asy file: {:?}&quot;</span>, <span class="ident">source_path</span>))<span class="question-mark">?</span>
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Invalid path of asy file: {:?}&quot;</span>, <span class="ident">source_path</span>))<span class="question-mark">?</span>
             .<span class="ident">to_string_lossy</span>()
             .<span class="ident">to_string</span>();
-        <span class="kw">let</span> <span class="ident">source_file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Source of {}&quot;</span>, <span class="ident">name</span>));
+        <span class="kw">let</span> <span class="ident">source_file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="macro">format!</span>(<span class="string">&quot;Source of {}&quot;</span>, <span class="ident">name</span>));
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">comp</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
-            <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Compilation of {}&quot;</span>, <span class="ident">name</span>),
-            <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;asy&quot;</span>),
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">comp</span> <span class="op">=</span> <span class="ident">Execution::new</span>(
+            <span class="macro">format!</span>(<span class="string">&quot;Compilation of {}&quot;</span>, <span class="ident">name</span>),
+            <span class="ident">ExecutionCommand::system</span>(<span class="string">&quot;asy&quot;</span>),
         );
-        <span class="ident">comp</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;-f&quot;</span>, <span class="string">&quot;pdf&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="string">&quot;output.pdf&quot;</span>, <span class="string">&quot;source.asy&quot;</span>]);
+        <span class="ident">comp</span>.<span class="ident">args</span>(<span class="macro">vec!</span>[<span class="string">&quot;-f&quot;</span>, <span class="string">&quot;pdf&quot;</span>, <span class="string">&quot;-o&quot;</span>, <span class="string">&quot;output.pdf&quot;</span>, <span class="string">&quot;source.asy&quot;</span>]);
         <span class="ident">comp</span>.<span class="ident">limits_mut</span>()
             .<span class="ident">read_only</span>(<span class="bool-val">false</span>)
             .<span class="ident">wall_time</span>(<span class="number">10.0</span>) <span class="comment">// asy tends to deadlock on failure</span>
+            .<span class="ident">stack</span>(<span class="number">8192</span> <span class="op">*</span> <span class="number">1024</span>) <span class="comment">// due to a libgc bug, asy may crash with unlimited stack</span>
             .<span class="ident">nproc</span>(<span class="number">1000</span>)
             .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/etc&quot;</span>)
             .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>);
-        <span class="ident">comp</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Booklet</span>.<span class="ident">into</span>());
+        <span class="ident">comp</span>.<span class="ident">tag</span>(<span class="ident">Tag::Booklet</span>.<span class="ident">into</span>());
         <span class="ident">comp</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">source_file</span>, <span class="string">&quot;source.asy&quot;</span>, <span class="bool-val">false</span>);
-        <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">provide_file</span>(<span class="ident">source_file</span>, <span class="kw-2">&amp;</span><span class="ident">source_path</span>)<span class="question-mark">?</span>;
-        <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
+        <span class="ident">eval</span>.<span class="ident">dag</span>
+            .<span class="ident">provide_file</span>(<span class="ident">source_file</span>, <span class="kw-2">&amp;</span><span class="ident">source_path</span>)
+            .<span class="ident">context</span>(<span class="string">&quot;Failed to provide any source file&quot;</span>)<span class="question-mark">?</span>;
+        <span class="macro">bind_exec_callbacks!</span>(
             <span class="ident">eval</span>,
             <span class="ident">comp</span>.<span class="ident">uuid</span>,
-            <span class="op">|</span><span class="ident">status</span>, <span class="ident">booklet</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIBookletDependency</span> {
+            <span class="op">|</span><span class="ident">status</span>, <span class="ident">booklet</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage::IOIBookletDependency</span> {
                 <span class="ident">booklet</span>,
                 <span class="ident">name</span>,
                 <span class="ident">step</span>: <span class="number">0</span>,
@@ -310,25 +327,34 @@
             <span class="ident">booklet</span>,
             <span class="ident">name</span>
         )<span class="question-mark">?</span>;
-        <span class="kw">for</span> (<span class="ident">sandbox</span>, <span class="ident">local</span>) <span class="kw">in</span> <span class="ident">AsyFile</span>::<span class="ident">find_asy_deps</span>(
+        <span class="kw">let</span> <span class="ident">deps</span> <span class="op">=</span> <span class="ident">AsyFile::find_asy_deps</span>(
             <span class="kw-2">&amp;</span><span class="ident">source_path</span>,
-            <span class="kw-2">&amp;</span><span class="ident">source_path</span>.<span class="ident">parent</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid asy file&quot;</span>),
-        )<span class="question-mark">?</span> {
+            <span class="ident">source_path</span>.<span class="ident">parent</span>().<span class="ident">context</span>(<span class="string">&quot;Invalid asy file&quot;</span>)<span class="question-mark">?</span>,
+        )
+        .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+            <span class="macro">format!</span>(
+                <span class="string">&quot;Failed to find asy dependencies of {}&quot;</span>,
+                <span class="ident">source_path</span>.<span class="ident">display</span>()
+            )
+        })<span class="question-mark">?</span>;
+        <span class="kw">for</span> (<span class="ident">sandbox</span>, <span class="ident">local</span>) <span class="kw">in</span> <span class="ident">deps</span> {
             <span class="kw">if</span> <span class="ident">local</span>.<span class="ident">exists</span>() {
-                <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Dependency {:?} of {}&quot;</span>, <span class="ident">sandbox</span>, <span class="ident">name</span>));
+                <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="macro">format!</span>(<span class="string">&quot;Dependency {:?} of {}&quot;</span>, <span class="ident">sandbox</span>, <span class="ident">name</span>));
                 <span class="ident">comp</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>, <span class="ident">sandbox</span>, <span class="bool-val">false</span>);
-                <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">provide_file</span>(<span class="ident">file</span>, <span class="ident">local</span>)<span class="question-mark">?</span>;
+                <span class="ident">eval</span>.<span class="ident">dag</span>
+                    .<span class="ident">provide_file</span>(<span class="ident">file</span>, <span class="ident">local</span>)
+                    .<span class="ident">context</span>(<span class="string">&quot;Failed to provide asy dependency&quot;</span>)<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
-                <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">Warning</span> {
-                    <span class="ident">message</span>: <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Dependency {:?} of {:?} not found&quot;</span>, <span class="ident">local</span>, <span class="ident">name</span>),
+                <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::Warning</span> {
+                    <span class="ident">message</span>: <span class="macro">format!</span>(<span class="string">&quot;Dependency {:?} of {:?} not found&quot;</span>, <span class="ident">local</span>, <span class="ident">name</span>),
                 })<span class="question-mark">?</span>;
             }
         }
         <span class="kw">let</span> <span class="ident">compiled</span> <span class="op">=</span> <span class="ident">comp</span>.<span class="ident">output</span>(<span class="string">&quot;output.pdf&quot;</span>);
         <span class="kw">if</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">copy_logs</span> {
             <span class="kw">let</span> <span class="ident">log_dir</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;bin/logs/asy&quot;</span>);
-            <span class="kw">let</span> <span class="ident">stderr_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stderr.log&quot;</span>, <span class="ident">name</span>));
-            <span class="kw">let</span> <span class="ident">stdout_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stdout.log&quot;</span>, <span class="ident">name</span>));
+            <span class="kw">let</span> <span class="ident">stderr_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;{}.stderr.log&quot;</span>, <span class="ident">name</span>));
+            <span class="kw">let</span> <span class="ident">stdout_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;{}.stdout.log&quot;</span>, <span class="ident">name</span>));
             <span class="ident">eval</span>.<span class="ident">dag</span>
                 .<span class="ident">write_file_to_allow_fail</span>(<span class="ident">comp</span>.<span class="ident">stderr</span>(), <span class="ident">stderr_dest</span>, <span class="bool-val">false</span>);
             <span class="ident">eval</span>.<span class="ident">dag</span>
@@ -336,9 +362,9 @@
         }
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">add_execution</span>(<span class="ident">comp</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">crop</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
-            <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Crop of {}&quot;</span>, <span class="ident">name</span>),
-            <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;pdfcrop&quot;</span>),
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">crop</span> <span class="op">=</span> <span class="ident">Execution::new</span>(
+            <span class="macro">format!</span>(<span class="string">&quot;Crop of {}&quot;</span>, <span class="ident">name</span>),
+            <span class="ident">ExecutionCommand::system</span>(<span class="string">&quot;pdfcrop&quot;</span>),
         );
         <span class="ident">crop</span>.<span class="ident">limits_mut</span>()
             .<span class="ident">read_only</span>(<span class="bool-val">false</span>)
@@ -346,13 +372,13 @@
             .<span class="ident">nproc</span>(<span class="number">1000</span>)
             .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/etc&quot;</span>)
             .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>);
-        <span class="ident">crop</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Booklet</span>.<span class="ident">into</span>());
-        <span class="ident">crop</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;source.pdf&quot;</span>]);
+        <span class="ident">crop</span>.<span class="ident">tag</span>(<span class="ident">Tag::Booklet</span>.<span class="ident">into</span>());
+        <span class="ident">crop</span>.<span class="ident">args</span>(<span class="macro">vec!</span>[<span class="string">&quot;source.pdf&quot;</span>]);
         <span class="ident">crop</span>.<span class="ident">input</span>(<span class="ident">compiled</span>, <span class="string">&quot;source.pdf&quot;</span>, <span class="bool-val">false</span>);
-        <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
+        <span class="macro">bind_exec_callbacks!</span>(
             <span class="ident">eval</span>,
             <span class="ident">crop</span>.<span class="ident">uuid</span>,
-            <span class="op">|</span><span class="ident">status</span>, <span class="ident">booklet</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIBookletDependency</span> {
+            <span class="op">|</span><span class="ident">status</span>, <span class="ident">booklet</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage::IOIBookletDependency</span> {
                 <span class="ident">booklet</span>,
                 <span class="ident">name</span>,
                 <span class="ident">step</span>: <span class="number">1</span>,
@@ -370,29 +396,30 @@
 
     <span class="doccomment">/// Recursively search for the asy dependencies of the specified file, where the sandbox</span>
     <span class="doccomment">/// directory is at the specified prefix.</span>
-    <span class="kw">fn</span> <span class="ident">find_asy_deps</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">find_asy_deps</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">path</span>
             .<span class="ident">parent</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;File {:?} does not have a parent&quot;</span>, <span class="ident">path</span>))<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">read_to_string</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;File {:?} does not have a parent&quot;</span>, <span class="ident">path</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">content</span> <span class="op">=</span> <span class="ident">std::fs::read_to_string</span>(<span class="ident">path</span>)
+            .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Failed to read asy content from {}&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>()))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
         <span class="kw">for</span> <span class="ident">include</span> <span class="kw">in</span> <span class="ident">ASY_INCLUDE</span>.<span class="ident">captures_iter</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>) {
             <span class="kw">let</span> <span class="ident">include</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">include</span>[<span class="number">1</span>];
             <span class="comment">// the filename might already have the &quot;.asy&quot; extension</span>
             <span class="kw">let</span> <span class="ident">extensions</span> <span class="op">=</span> [<span class="string">&quot;&quot;</span>, <span class="string">&quot;.asy&quot;</span>];
             <span class="kw">for</span> <span class="ident">ext</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">extensions</span> {
                 <span class="kw">let</span> <span class="ident">local_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">join</span>(<span class="ident">include</span>.<span class="ident">to_owned</span>() <span class="op">+</span> <span class="ident">ext</span>);
-                <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;Checking probable asy dependency: {}&quot;</span>, <span class="ident">local_path</span>.<span class="ident">display</span>());
+                <span class="macro">trace!</span>(<span class="string">&quot;Checking probable asy dependency: {}&quot;</span>, <span class="ident">local_path</span>.<span class="ident">display</span>());
                 <span class="comment">// may happen for example with `import math;`</span>
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">local_path</span>.<span class="ident">exists</span>() {
                     <span class="kw">continue</span>;
                 }
                 <span class="kw">let</span> <span class="ident">sandbox_path</span> <span class="op">=</span> <span class="ident">local_path</span>.<span class="ident">strip_prefix</span>(<span class="ident">prefix</span>)<span class="question-mark">?</span>;
-                <span class="macro">debug</span><span class="macro">!</span>(
+                <span class="macro">debug!</span>(
                     <span class="string">&quot;Asy dependency detected: {:?} -&gt; {:?} = {:?}&quot;</span>,
                     <span class="ident">path</span>, <span class="ident">sandbox_path</span>, <span class="ident">local_path</span>
                 );
-                <span class="ident">result</span>.<span class="ident">extend</span>(<span class="ident">AsyFile</span>::<span class="ident">find_asy_deps</span>(<span class="kw-2">&amp;</span><span class="ident">local_path</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>.<span class="ident">into_iter</span>());
+                <span class="ident">result</span>.<span class="ident">extend</span>(<span class="ident">AsyFile::find_asy_deps</span>(<span class="kw-2">&amp;</span><span class="ident">local_path</span>, <span class="ident">prefix</span>)<span class="question-mark">?</span>.<span class="ident">into_iter</span>());
                 <span class="ident">result</span>.<span class="ident">insert</span>(<span class="ident">sandbox_path</span>.<span class="ident">into</span>(), <span class="ident">local_path</span>);
             }
         }
@@ -400,7 +427,7 @@
             <span class="kw">let</span> <span class="ident">graphic</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">graphic</span>[<span class="number">1</span>];
             <span class="kw">let</span> <span class="ident">local_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">join</span>(<span class="ident">graphic</span>);
             <span class="kw">let</span> <span class="ident">sandbox_path</span> <span class="op">=</span> <span class="ident">local_path</span>.<span class="ident">strip_prefix</span>(<span class="ident">prefix</span>)<span class="question-mark">?</span>;
-            <span class="macro">trace</span><span class="macro">!</span>(
+            <span class="macro">trace!</span>(
                 <span class="string">&quot;Asy graphic detected: {:?} -&gt; {:?} = {:?}&quot;</span>,
                 <span class="ident">path</span>,
                 <span class="ident">sandbox_path</span>,
@@ -414,28 +441,28 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>;
+    <span class="kw">use</span> <span class="ident">std::fs::write</span>;
 
-    <span class="kw">use</span> <span class="ident">spectral</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">spectral::prelude</span>::<span class="kw-2">*</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_find_asy_deps</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;file.asy&quot;</span>);
         <span class="kw">let</span> <span class="ident">foo_path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo.asy&quot;</span>);
         <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="string">&quot;import foo;&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="ident">foo_path</span>, <span class="string">&quot;import math;\ngraphic(&#39;img.png&#39;);&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">deps</span> <span class="op">=</span> <span class="ident">AsyFile</span>::<span class="ident">find_asy_deps</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">tmpdir</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
-        <span class="macro">assert_that</span><span class="macro">!</span>(<span class="ident">deps</span>).<span class="ident">has_length</span>(<span class="number">2</span>);
-        <span class="ident">assert_that</span>(<span class="kw-2">&amp;</span><span class="ident">deps</span>[<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;foo.asy&quot;</span>)]).<span class="ident">is_equal_to</span>(<span class="kw-2">&amp;</span><span class="ident">foo_path</span>);
-        <span class="ident">assert_that</span>(<span class="kw-2">&amp;</span><span class="ident">deps</span>[<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;img.png&quot;</span>)]).<span class="ident">is_equal_to</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;img.png&quot;</span>));
+        <span class="kw">let</span> <span class="ident">deps</span> <span class="op">=</span> <span class="ident">AsyFile::find_asy_deps</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="ident">tmpdir</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
+        <span class="macro">assert_that!</span>(<span class="ident">deps</span>).<span class="ident">has_length</span>(<span class="number">2</span>);
+        <span class="ident">assert_that</span>(<span class="kw-2">&amp;</span><span class="ident">deps</span>[<span class="ident">Path::new</span>(<span class="string">&quot;foo.asy&quot;</span>)]).<span class="ident">is_equal_to</span>(<span class="kw-2">&amp;</span><span class="ident">foo_path</span>);
+        <span class="ident">assert_that</span>(<span class="kw-2">&amp;</span><span class="ident">deps</span>[<span class="ident">Path::new</span>(<span class="string">&quot;img.png&quot;</span>)]).<span class="ident">is_equal_to</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;img.png&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_asy_include_regex</span>() {
-        <span class="kw">let</span> <span class="ident">tests</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[
+        <span class="kw">let</span> <span class="ident">tests</span> <span class="op">=</span> <span class="macro">vec!</span>[
             (<span class="string">r#&quot;import &quot;file.asy&quot; as foo;&quot;#</span>, <span class="string">&quot;file.asy&quot;</span>),
             (<span class="string">r#&quot;import &#39;file.asy&#39; as foo;&quot;#</span>, <span class="string">&quot;file.asy&quot;</span>),
             (<span class="string">r#&quot;import file.asy as foo;&quot;#</span>, <span class="string">&quot;file.asy&quot;</span>),
@@ -457,17 +484,17 @@
             <span class="kw">let</span> <span class="ident">cap</span> <span class="op">=</span> <span class="ident">ASY_INCLUDE</span>.<span class="ident">captures</span>(<span class="ident">line</span>);
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cap</span>) <span class="op">=</span> <span class="ident">cap</span> {
                 <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>] <span class="op">!</span><span class="op">=</span> <span class="ident">path</span> {
-                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but was &#39;{}&#39;&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]);
+                    <span class="macro">panic!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but was &#39;{}&#39;&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]);
                 }
             } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but nothing&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>);
+                <span class="macro">panic!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but nothing&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>);
             }
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_asy_graphics_regex</span>() {
-        <span class="kw">let</span> <span class="ident">tests</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[
+        <span class="kw">let</span> <span class="ident">tests</span> <span class="op">=</span> <span class="macro">vec!</span>[
             (<span class="string">r#&quot;foo = graphic(&quot;file.png&quot;);&quot;#</span>, <span class="string">&quot;file.png&quot;</span>),
             (<span class="string">r#&quot;foo = graphic (   &quot;file.png&quot; );&quot;#</span>, <span class="string">&quot;file.png&quot;</span>),
             (<span class="string">r#&quot;foo = graphic(&#39;file.png&#39;);&quot;#</span>, <span class="string">&quot;file.png&quot;</span>),
@@ -484,14 +511,14 @@
             <span class="kw">let</span> <span class="ident">cap</span> <span class="op">=</span> <span class="ident">ASY_GRAPHIC</span>.<span class="ident">captures</span>(<span class="ident">line</span>);
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cap</span>) <span class="op">=</span> <span class="ident">cap</span> {
                 <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>] <span class="op">!</span><span class="op">=</span> <span class="ident">path</span> {
-                    <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but was &#39;{}&#39;&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]);
+                    <span class="macro">panic!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but was &#39;{}&#39;&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]);
                 }
             } <span class="kw">else</span> {
-                <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but nothing&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>);
+                <span class="macro">panic!</span>(<span class="string">&quot;Expecting &#39;{}&#39; in &#39;{}&#39; but nothing&quot;</span>, <span class="ident">path</span>, <span class="ident">line</span>);
             }
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="task_maker_format" data-search-js="../../../../search-index.js"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="task_maker_format" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../task_maker_format/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../task_maker_format/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -401,9 +403,7 @@
 <span id="398">398</span>
 <span id="399">399</span>
 <span id="400">400</span>
-<span id="401">401</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
+</pre><pre class="rust"><code><span class="doccomment">//! Task parsing and execution using computation DAGs.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This crate allows you to parse the tasks on disk and evaluate the solutions inside of them by</span>
 <span class="doccomment">//! adding the executions inside an [`ExecutionDAG`](task_maker_dag/struct.ExecutionDAG.html).</span>
@@ -412,7 +412,7 @@
 <span class="doccomment">//! execution.</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">upper_case_acronyms</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::upper_case_acronyms</span>)]</span>
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">approx</span>;
@@ -425,25 +425,27 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">pest_derive</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashSet</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
+<span class="kw">use</span> <span class="ident">std::collections::HashSet</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
+<span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
+<span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sanity_checks</span>::<span class="ident">get_sanity_check_names</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">source_file</span>::<span class="ident">SourceFile</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">detect_format::find_task</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sanity_checks::get_sanity_check_names</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">source_file::SourceFile</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tag</span>::{<span class="ident">Tag</span>, <span class="ident">VALID_TAGS</span>};
-<span class="kw">use</span> <span class="ident">task_maker_dag</span>::<span class="ident">ExecutionDAG</span>;
+<span class="kw">use</span> <span class="ident">task_maker_dag::ExecutionDAG</span>;
 <span class="kw">use</span> <span class="ident">task_maker_lang</span>::{<span class="ident">GraderMap</span>, <span class="ident">LanguageManager</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">task_info</span>::<span class="ident">IOITaskInfo</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">terry</span>::<span class="ident">Seed</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UI</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::task_info::IOITaskInfo</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::terry::Seed</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UI</span>;
 
+<span class="kw">mod</span> <span class="ident">detect_format</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ioi</span>;
 <span class="kw">mod</span> <span class="ident">sanity_checks</span>;
 <span class="kw">mod</span> <span class="ident">source_file</span>;
@@ -451,14 +453,14 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">terry</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ui</span>;
 
-<span class="macro">lazy_static</span><span class="macro">!</span> {
+<span class="macro">lazy_static!</span> {
     <span class="doccomment">/// Directory where the data files are stored. It is taken from the `TM_DATA_DIR` environment</span>
     <span class="doccomment">/// variable if present, otherwise it will be defaulted to the path of the source tree.</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">DATA_DIR</span>: <span class="ident">PathBuf</span> <span class="op">=</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span> <span class="macro">option_env</span><span class="macro">!</span>(<span class="string">&quot;TM_DATA_DIR&quot;</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span> <span class="macro">option_env!</span>(<span class="string">&quot;TM_DATA_DIR&quot;</span>) {
             <span class="ident">dir</span>.<span class="ident">into</span>()
         } <span class="kw">else</span> {
-            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="macro">env</span><span class="macro">!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+            <span class="ident">PathBuf::from</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
                 .<span class="ident">parent</span>()
                 .<span class="ident">expect</span>(<span class="string">&quot;Invalid CARGO_MANIFEST_DIR&quot;</span>)
                 .<span class="ident">join</span>(<span class="string">&quot;data&quot;</span>)
@@ -470,23 +472,23 @@
 <span class="doccomment">/// execution abilities.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TaskFormat</span> {
     <span class="doccomment">/// Get the root directory of the task.</span>
-    <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Path</span>;
+    <span class="kw">fn</span> <span class="ident">path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">Path</span>;
 
     <span class="doccomment">/// Get an appropriate `UI` for this task.</span>
-    <span class="kw">fn</span> <span class="ident">ui</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui_type</span>: <span class="kw-2">&amp;</span><span class="ident">ui</span>::<span class="ident">UIType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">UI</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">ui</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui_type</span>: <span class="kw-2">&amp;</span><span class="ident">ui::UIType</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">UI</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Add the executions required for evaluating this task to the execution DAG.</span>
-    <span class="kw">fn</span> <span class="ident">build_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">build_dag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;mut</span> <span class="ident">EvaluationData</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Hook called after the execution completed, useful for sending messages to the UI about the</span>
     <span class="doccomment">/// results of the sanity checks with data available only after the evaluation.</span>
-    <span class="kw">fn</span> <span class="ident">sanity_check_post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ui</span>::<span class="ident">UIMessageSender</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">sanity_check_post_hook</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ui</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ui::UIMessageSender</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Clean the task folder removing the files that can be generated automatically.</span>
-    <span class="kw">fn</span> <span class="ident">clean</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">clean</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Get task information</span>
-    <span class="kw">fn</span> <span class="ident">task_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TaskInfo</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">task_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TaskInfo</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Information about a parsed task, returned with the `--task-info` option.</span>
@@ -495,7 +497,7 @@
     <span class="doccomment">/// The task is IOI-like.</span>
     <span class="ident">IOI</span>(<span class="ident">IOITaskInfo</span>),
     <span class="doccomment">/// The task is Terry-like.</span>
-    <span class="ident">Terry</span>(<span class="ident">terry</span>::<span class="ident">task_info</span>::<span class="ident">TerryTaskInfo</span>),
+    <span class="ident">Terry</span>(<span class="ident">terry::task_info::TerryTaskInfo</span>),
 }
 
 <span class="doccomment">/// Configuration of the evaluation of a task.</span>
@@ -526,18 +528,18 @@
     <span class="doccomment">/// The DAG with the evaluation data.</span>
     <span class="kw">pub</span> <span class="ident">dag</span>: <span class="ident">ExecutionDAG</span>,
     <span class="doccomment">/// The sender of the UI.</span>
-    <span class="kw">pub</span> <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">ui</span>::<span class="ident">UIMessageSender</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">ui::UIMessageSender</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">EvaluationData</span> {
     <span class="doccomment">/// Crate a new `EvaluationData` returning the data and the receiving part of the UI channel.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">task_root</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">EvaluationData</span>, <span class="ident">ui</span>::<span class="ident">UIChannelReceiver</span>) {
-        <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">ui</span>::<span class="ident">UIMessageSender</span>::<span class="ident">new</span>();
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">task_root</span>: <span class="ident">P</span>) -&gt; (<span class="ident">EvaluationData</span>, <span class="ident">ui::UIChannelReceiver</span>) {
+        <span class="kw">let</span> (<span class="ident">sender</span>, <span class="ident">receiver</span>) <span class="op">=</span> <span class="ident">ui::UIMessageSender::new</span>();
         (
             <span class="ident">EvaluationData</span> {
                 <span class="ident">task_root</span>: <span class="ident">task_root</span>.<span class="ident">into</span>(),
-                <span class="ident">dag</span>: <span class="ident">ExecutionDAG</span>::<span class="ident">new</span>(),
-                <span class="ident">sender</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">sender</span>)),
+                <span class="ident">dag</span>: <span class="ident">ExecutionDAG::new</span>(),
+                <span class="ident">sender</span>: <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">sender</span>)),
             },
             <span class="ident">receiver</span>,
         )
@@ -547,13 +549,13 @@
 <span class="doccomment">/// What can send [`UIMessage`](ui/enum.UIMessage.html)s.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UISender</span> {
     <span class="doccomment">/// Send that `UIMessage` to the UI.</span>
-    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="ident">ui</span>::<span class="ident">UIMessage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="ident">ui::UIMessage</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>;
 }
 
 <span class="doccomment">/// Implement `.send(message)` for `Mutex&lt;UIMessageSender&gt;` in order to do</span>
 <span class="doccomment">/// `EvaluationData.sender.send(message)`. This will lock the mutex and send the message to the UI.</span>
-<span class="kw">impl</span> <span class="ident">UISender</span> <span class="kw">for</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">ui</span>::<span class="ident">UIMessageSender</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="ident">ui</span>::<span class="ident">UIMessage</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">UISender</span> <span class="kw">for</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">ui::UIMessageSender</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">message</span>: <span class="ident">ui::UIMessage</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">send</span>(<span class="ident">message</span>)
     }
 }
@@ -561,13 +563,13 @@
 <span class="kw">impl</span> <span class="ident">EvaluationConfig</span> {
     <span class="doccomment">/// Returns the solution filters as a vector of strings with the file names of provided</span>
     <span class="doccomment">/// patterns.</span>
-    <span class="kw">fn</span> <span class="ident">solution_filters</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">solution_filters</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">solution_filter</span>
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">filter</span><span class="op">|</span> {
                 <span class="comment">// unfortunate lossy cast to String because currently OsString doesn&#39;t</span>
                 <span class="comment">// support .starts_with</span>
-                <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">filter</span>)
+                <span class="ident">PathBuf::from</span>(<span class="ident">filter</span>)
                     .<span class="ident">file_name</span>()
                     .<span class="ident">expect</span>(<span class="string">&quot;Invalid filter provided&quot;</span>)
                     .<span class="ident">to_string_lossy</span>()
@@ -578,7 +580,7 @@
 
     <span class="doccomment">/// Returns the fixed solutions in the config or, if none is specified, all the ones matching</span>
     <span class="doccomment">/// the provided pattern in the provided base directory.</span>
-    <span class="kw">fn</span> <span class="ident">solution_paths</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">solution_paths</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">solution_paths</span>.<span class="ident">is_empty</span>() {
             <span class="ident">list_files</span>(<span class="ident">base_dir</span>, <span class="ident">patterns</span>)
         } <span class="kw">else</span> {
@@ -597,13 +599,13 @@
         <span class="ident">base_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
         <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
         <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">solutions_paths</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">solution_paths</span>(<span class="ident">base_dir</span>, <span class="ident">patterns</span>);
         <span class="kw">let</span> <span class="ident">filter</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">solution_filters</span>();
         <span class="kw">let</span> <span class="ident">graders</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">grader_map</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">grader_map</span> {
             <span class="ident">grader_map</span>.<span class="ident">all_paths</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">to_path_buf</span>()).<span class="ident">collect</span>()
         } <span class="kw">else</span> {
-            <span class="ident">HashSet</span>::<span class="ident">new</span>()
+            <span class="ident">HashSet::new</span>()
         };
         <span class="ident">solutions_paths</span>
             .<span class="ident">into_iter</span>()
@@ -617,27 +619,24 @@
                 <span class="ident">filter</span>
                     .<span class="ident">iter</span>()
                     .<span class="ident">any</span>(<span class="op">|</span><span class="ident">filter</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">starts_with</span>(<span class="ident">filter</span>.<span class="ident">as_str</span>()))
-            })
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
+            }).<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">base_dir</span>
                     .<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>)
                     .<span class="ident">join</span>(<span class="string">&quot;sol&quot;</span>)
                     .<span class="ident">join</span>(<span class="ident">p</span>.<span class="ident">file_name</span>().<span class="ident">unwrap</span>());
-                <span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="ident">p</span>, <span class="ident">base_dir</span>, <span class="ident">grader_map</span>.<span class="ident">clone</span>(), <span class="prelude-val">Some</span>(<span class="ident">write_to</span>))
+                <span class="ident">SourceFile::new</span>(<span class="ident">p</span>, <span class="ident">base_dir</span>, <span class="ident">grader_map</span>.<span class="ident">clone</span>(), <span class="prelude-val">Some</span>(<span class="ident">write_to</span>))
             })
-            .<span class="ident">filter</span>(<span class="prelude-ty">Option</span>::<span class="ident">is_some</span>) <span class="comment">// ignore the unknown languages</span>
-            .<span class="ident">map</span>(<span class="prelude-ty">Option</span>::<span class="ident">unwrap</span>)
             .<span class="ident">collect</span>()
     }
 }
 
 <span class="doccomment">/// List all the files inside `cwd` that matches a list of glob patterns. The results are in the</span>
 <span class="doccomment">/// same order of the patterns.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">list_files</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">cwd</span>: <span class="ident">P</span>, <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">list_files</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">cwd</span>: <span class="ident">P</span>, <span class="ident">patterns</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
     <span class="kw">for</span> <span class="ident">pattern</span> <span class="kw">in</span> <span class="ident">patterns</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> <span class="ident">pattern</span> <span class="op">=</span> <span class="ident">cwd</span>.<span class="ident">as_ref</span>().<span class="ident">join</span>(<span class="ident">pattern</span>.<span class="ident">as_ref</span>());
-        <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">glob</span>::<span class="ident">glob</span>(<span class="kw-2">&amp;</span><span class="ident">pattern</span>.<span class="ident">to_string_lossy</span>())
+        <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">glob::glob</span>(<span class="kw-2">&amp;</span><span class="ident">pattern</span>.<span class="ident">to_string_lossy</span>())
             .<span class="ident">expect</span>(<span class="string">&quot;Invalid pattern for list_files&quot;</span>)
             .<span class="ident">flatten</span>()
         {
@@ -660,15 +659,15 @@
     <span class="ident">base_path</span>: <span class="ident">P3</span>,
     <span class="ident">grader_map</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">GraderMap</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">write_bin_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">P2</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SourceFile</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">let</span> <span class="ident">base_path</span> <span class="op">=</span> <span class="ident">base_path</span>.<span class="ident">into</span>();
     <span class="kw">let</span> <span class="ident">write_bin_to</span> <span class="op">=</span> <span class="ident">write_bin_to</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">into</span>());
     <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">list_files</span>(<span class="ident">cwd</span>, <span class="ident">patterns</span>) {
-        <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() <span class="op">&amp;&amp;</span> <span class="ident">LanguageManager</span>::<span class="ident">detect_language</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">is_some</span>() {
+        <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() <span class="op">&amp;&amp;</span> <span class="ident">LanguageManager::detect_language</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">is_some</span>() {
             <span class="comment">// SourceFile::new may fail if the language is unknown</span>
             <span class="ident">result</span>.<span class="ident">push</span>(
-                <span class="ident">SourceFile</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="ident">base_path</span>, <span class="ident">grader_map</span>.<span class="ident">clone</span>(), <span class="ident">write_bin_to</span>.<span class="ident">clone</span>())
+                <span class="ident">SourceFile::new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="ident">base_path</span>, <span class="ident">grader_map</span>.<span class="ident">clone</span>(), <span class="ident">write_bin_to</span>.<span class="ident">clone</span>())
                     .<span class="ident">unwrap</span>(),
             );
         }
@@ -694,16 +693,16 @@
 <span class="doccomment">///   - the followings are clones of the `extra` parameter</span>
 <span class="doccomment">/// - `extra` is a series of identifiers of `Clone`able variables.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">bind_exec_callbacks</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">enum</span>:<span class="macro-nonterminal">expr</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+<span class="macro">macro_rules!</span> <span class="ident">bind_exec_callbacks</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="kw">enum</span>:<span class="macro-nonterminal">expr</span> $(,<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>:<span class="ident">ident</span>)<span class="kw-2">*</span>) =&gt; {
         {
-            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">redundant_closure_call</span>)]</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::redundant_closure_call</span>)]</span>
             {
-                <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">UISender</span>;
-                <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIExecutionStatus</span>;
+                <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::UISender</span>;
+                <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UIExecutionStatus</span>;
                 {
                     $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
-                    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Pending</span>;
+                    <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus::Pending</span>;
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>
                         .<span class="ident">sender</span>
                         .<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))<span class="question-mark">?</span>;
@@ -712,7 +711,7 @@
                     $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
                     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">worker</span><span class="op">|</span> {
-                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Started</span> { <span class="ident">worker</span> };
+                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus::Started</span> { <span class="ident">worker</span> };
                         <span class="ident">sender</span>.<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
                     });
                 }
@@ -720,7 +719,7 @@
                     $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
                     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">result</span><span class="op">|</span> {
-                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Done</span> { <span class="ident">result</span> };
+                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus::Done</span> { <span class="ident">result</span> };
                         <span class="ident">sender</span>.<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
                     });
                 }
@@ -728,12 +727,12 @@
                     $(<span class="kw">let</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>.<span class="ident">clone</span>();)<span class="op">*</span>
                     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_skip</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">exec_uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus</span>::<span class="ident">Skipped</span>;
+                        <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">UIExecutionStatus::Skipped</span>;
                         <span class="ident">sender</span>.<span class="ident">send</span>((<span class="macro-nonterminal">$</span><span class="kw">enum</span>)(<span class="macro-nonterminal">status</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">extra</span>,)<span class="kw-2">*</span>))
                     });
                 }
             }
-            <span class="prelude-ty">Result</span>::<span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>::<span class="prelude-val">Ok</span>(())
+            <span class="prelude-ty">Result</span>::<span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="ident">::Ok</span>(())
         }
     };
 }
@@ -744,66 +743,66 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_list_files</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz&quot;</span>)).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.aaa&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;uuu.bbb&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz/uuu.bbb&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">files</span> <span class="op">=</span> <span class="ident">list_files</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;**/*.py&quot;</span>, <span class="string">&quot;foo/baz/*.bbb&quot;</span>]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">files</span>.<span class="ident">len</span>(), <span class="number">4</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.py&quot;</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>)));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz/uuu.bbb&quot;</span>)));
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.aaa&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;uuu.bbb&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz/uuu.bbb&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">files</span> <span class="op">=</span> <span class="ident">list_files</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec!</span>[<span class="string">&quot;**/*.py&quot;</span>, <span class="string">&quot;foo/baz/*.bbb&quot;</span>]);
+        <span class="macro">assert_eq!</span>(<span class="ident">files</span>.<span class="ident">len</span>(), <span class="number">4</span>);
+        <span class="macro">assert!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>)));
+        <span class="macro">assert!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/yyy.py&quot;</span>)));
+        <span class="macro">assert!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>)));
+        <span class="macro">assert!</span>(<span class="ident">files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/baz/uuu.bbb&quot;</span>)));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_find_source_file</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
             <span class="ident">tmpdir</span>.<span class="ident">path</span>(),
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
             <span class="string">&quot;&quot;</span>,
             <span class="prelude-val">None</span>,
             <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">len</span>(), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">source</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">source</span>.<span class="ident">pop</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">path</span>, <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">source</span>.<span class="ident">path</span>, <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar/zzz.py&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_find_source_file_multiple</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo&quot;</span>)).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/*.py&quot;</span>], <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">len</span>(), <span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/zzz.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="macro">vec!</span>[<span class="string">&quot;foo/*.py&quot;</span>], <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">source</span>.<span class="ident">len</span>(), <span class="number">2</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_find_source_file_not_found</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::create_dir_all</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/bar&quot;</span>)).<span class="ident">unwrap</span>();
+        <span class="ident">std::fs::write</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;foo/xxx.py&quot;</span>), <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
             <span class="ident">tmpdir</span>.<span class="ident">path</span>(),
-            <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
+            <span class="macro">vec!</span>[<span class="string">&quot;foo/bar/*.py&quot;</span>],
             <span class="string">&quot;&quot;</span>,
             <span class="prelude-val">None</span>,
             <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
         );
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">source</span>.<span class="ident">is_empty</span>());
+        <span class="macro">assert!</span>(<span class="ident">source</span>.<span class="ident">is_empty</span>());
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="task_maker_format" data-search-js="../../search-index.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="task_maker_format" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

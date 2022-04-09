@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-dag/src/execution.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>execution.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../task_maker_dag/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-dag/src/execution.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>execution.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../task_maker_dag/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../task_maker_dag/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../task_maker_dag/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -877,19 +879,41 @@
 <span id="874">874</span>
 <span id="875">875</span>
 <span id="876">876</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
-<span class="kw">use</span> <span class="ident">boxfnonce</span>::<span class="ident">BoxFnOnce</span>;
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">_core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>;
+<span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">use</span> <span class="ident">boxfnonce::BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
-<span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
+<span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
+<span class="kw">use</span> <span class="ident">uuid::Uuid</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">file</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExecutionDAGConfig</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::file</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ExecutionDAGConfig</span>;
 
 <span class="doccomment">/// The identifier of an execution, it&#39;s globally unique and it identifies an execution only during</span>
 <span class="doccomment">/// a single evaluation.</span>
@@ -912,6 +936,13 @@
 
 <span class="doccomment">/// Type of the priority value of an `Execution`.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Priority</span> <span class="op">=</span> <span class="ident">i64</span>;
+
+<span class="doccomment">/// Type of the priority value of a DAG.</span>
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">DagPriority</span> <span class="op">=</span> <span class="ident">Priority</span>;
+
+<span class="doccomment">/// DAG-priority of executions that should run very soon, independently of their DAG, for example</span>
+<span class="doccomment">/// executions that became available after a previous execution finished, or retries.</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HIGH_PRIORITY</span>: <span class="ident">DagPriority</span> <span class="op">=</span> <span class="number">1_000_000_000_000</span>;
 
 <span class="doccomment">/// A tag on an `Execution`. Can be used to classify the executions into groups and refer to them,</span>
 <span class="doccomment">/// for example for splitting the cache scopes.</span>
@@ -953,6 +984,7 @@
 }
 
 <span class="doccomment">/// The callbacks to be called when an event of an execution occurs.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionCallbacks</span> {
     <span class="doccomment">/// The callbacks called when the execution starts.</span>
     <span class="kw">pub</span> <span class="ident">on_start</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">OnStartCallback</span><span class="op">&gt;</span>,
@@ -1027,6 +1059,8 @@
 
     <span class="doccomment">/// Environment variables to set.</span>
     <span class="kw">pub</span> <span class="ident">env</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Environment variables to copy from the sandbox host.</span>
+    <span class="kw">pub</span> <span class="ident">copy_env</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// Limits on the execution.</span>
     <span class="kw">pub</span> <span class="ident">limits</span>: <span class="ident">ExecutionLimits</span>,
@@ -1065,12 +1099,14 @@
     <span class="kw">pub</span> <span class="ident">fsize</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// RLIMIT_MEMLOCK</span>
     <span class="kw">pub</span> <span class="ident">memlock</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Limit on the stack size for the process. 0 means unlimited.</span>
+    <span class="doccomment">/// Limit on the stack size for the process in KiB.</span>
     <span class="kw">pub</span> <span class="ident">stack</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Whether the process in the sandbox is not allowed to create new files inside the sandbox.</span>
     <span class="kw">pub</span> <span class="ident">read_only</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Whether the process in the sandbox can use `/dev/null` and `/tmp`.</span>
     <span class="kw">pub</span> <span class="ident">mount_tmpfs</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Whether the process in the sandbox can use `/proc`.</span>
+    <span class="kw">pub</span> <span class="ident">mount_proc</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Extra directory that can be read inside the sandbox.</span>
     <span class="kw">pub</span> <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 }
@@ -1130,7 +1166,7 @@
 <span class="kw">impl</span> <span class="ident">ExecutionLimits</span> {
     <span class="doccomment">/// Make an empty limits where all the limits are disabled. You may want to</span>
     <span class="doccomment">/// use `default()` instead of this</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unrestricted</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionLimits</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unrestricted</span>() -&gt; <span class="ident">ExecutionLimits</span> {
         <span class="ident">ExecutionLimits</span> {
             <span class="ident">cpu_time</span>: <span class="prelude-val">None</span>,
             <span class="ident">sys_time</span>: <span class="prelude-val">None</span>,
@@ -1143,88 +1179,95 @@
             <span class="ident">stack</span>: <span class="prelude-val">None</span>,
             <span class="ident">read_only</span>: <span class="bool-val">false</span>,
             <span class="ident">mount_tmpfs</span>: <span class="bool-val">true</span>,
-            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">mount_proc</span>: <span class="bool-val">true</span>,
+            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
     <span class="doccomment">/// Set the cpu time limit in seconds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpu_time</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cpu_time</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">cpu_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the sys time limit in seconds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_time</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sys_time</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">sys_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the wall time limit in seconds.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wall_time</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wall_time</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">f64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">wall_time</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the memory limit in KiB.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">memory</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the maximum number of processes/threads.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nproc</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nproc</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">nproc</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the maximum number of opened file descriptors.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nofile</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nofile</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u32</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">nofile</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the maximum size of the files (in bytes) the process can write/create.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fsize</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">fsize</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the memlock limit.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memlock</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memlock</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">memlock</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the stack limit.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">u64</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stack</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set whether the process in the sandbox is not allowed to create new files inside the</span>
     <span class="doccomment">/// sandbox.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_only</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">read_only</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_only</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">read_only</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">read_only</span> <span class="op">=</span> <span class="ident">read_only</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set whether the process in the sandbox can use `/dev/null` and `/tmp`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mount_tmpfs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mount_tmpfs</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mount_tmpfs</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mount_tmpfs</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">mount_tmpfs</span> <span class="op">=</span> <span class="ident">mount_tmpfs</span>;
         <span class="self">self</span>
     }
 
+    <span class="doccomment">/// Set whether the process in the sandbox can use `/proc`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mount_proc</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">mount_proc</span>: <span class="ident">bool</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">mount_proc</span> <span class="op">=</span> <span class="ident">mount_proc</span>;
+        <span class="self">self</span>
+    }
+
     <span class="doccomment">/// Add a directory to the list of additional readable directories in the sandbox.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_extra_readable_dir</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dir</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_extra_readable_dir</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">dir</span>: <span class="ident">P</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">extra_readable_dirs</span>.<span class="ident">push</span>(<span class="ident">dir</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">default</span>::<span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ExecutionLimits</span> {
+<span class="kw">impl</span> <span class="ident">std::default::Default</span> <span class="kw">for</span> <span class="ident">ExecutionLimits</span> {
     <span class="doccomment">/// Default sane values for the execution limits, the limits listed here</span>
     <span class="doccomment">/// should be safe enough for most of the executions.</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident">ExecutionLimits</span> {
             <span class="ident">cpu_time</span>: <span class="prelude-val">None</span>,
             <span class="ident">sys_time</span>: <span class="prelude-val">None</span>,
@@ -1234,35 +1277,36 @@
             <span class="ident">nofile</span>: <span class="prelude-val">None</span>,
             <span class="ident">fsize</span>: <span class="prelude-val">Some</span>(<span class="number">1024u64</span>.<span class="ident">pow</span>(<span class="number">3</span>)),
             <span class="ident">memlock</span>: <span class="prelude-val">None</span>,
-            <span class="ident">stack</span>: <span class="prelude-val">Some</span>(<span class="number">0</span>),
+            <span class="ident">stack</span>: <span class="prelude-val">None</span>,
             <span class="ident">read_only</span>: <span class="bool-val">true</span>,
             <span class="ident">mount_tmpfs</span>: <span class="bool-val">false</span>,
-            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">mount_proc</span>: <span class="bool-val">false</span>,
+            <span class="ident">extra_readable_dirs</span>: <span class="ident">Vec::new</span>(),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ExecutionStatus</span> {
     <span class="doccomment">/// Returns true only if it is `ExecutionStatus::Success`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_success</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="macro">matches</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_success</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident">ExecutionStatus::Success</span>)
     }
 
     <span class="doccomment">/// Returns true only if it is `ExecutionStatus::InternalError(_)`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_internal_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="macro">matches</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">ExecutionStatus</span>::<span class="ident">InternalError</span>(<span class="kw">_</span>))
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_internal_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
+        <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident">ExecutionStatus::InternalError</span>(<span class="kw">_</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ExecutionCommand</span> {
     <span class="doccomment">/// Make a new `ExecutionCommand::System`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
-        <span class="ident">ExecutionCommand</span>::<span class="ident">System</span>(<span class="ident">path</span>.<span class="ident">into</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="ident">ExecutionCommand</span> {
+        <span class="ident">ExecutionCommand::System</span>(<span class="ident">path</span>.<span class="ident">into</span>())
     }
 
     <span class="doccomment">/// Make a new `ExecutionCommand::Local`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionCommand</span> {
-        <span class="ident">ExecutionCommand</span>::<span class="ident">Local</span>(<span class="ident">path</span>.<span class="ident">into</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="ident">ExecutionCommand</span> {
+        <span class="ident">ExecutionCommand::Local</span>(<span class="ident">path</span>.<span class="ident">into</span>())
     }
 }
 
@@ -1274,30 +1318,31 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// let exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">description</span>: <span class="ident">S</span>, <span class="ident">command</span>: <span class="ident">ExecutionCommand</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Execution</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">description</span>: <span class="ident">S</span>, <span class="ident">command</span>: <span class="ident">ExecutionCommand</span>) -&gt; <span class="ident">Execution</span> {
         <span class="ident">Execution</span> {
-            <span class="ident">uuid</span>: <span class="ident">Uuid</span>::<span class="ident">new_v4</span>(),
+            <span class="ident">uuid</span>: <span class="ident">Uuid::new_v4</span>(),
 
             <span class="ident">description</span>: <span class="ident">description</span>.<span class="ident">into</span>(),
             <span class="ident">command</span>,
-            <span class="ident">args</span>: <span class="macro">vec</span><span class="macro">!</span>[],
+            <span class="ident">args</span>: <span class="macro">vec!</span>[],
 
             <span class="ident">stdin</span>: <span class="prelude-val">None</span>,
             <span class="ident">stdout</span>: <span class="prelude-val">None</span>,
             <span class="ident">stderr</span>: <span class="prelude-val">None</span>,
             <span class="ident">capture_stdout</span>: <span class="prelude-val">None</span>,
             <span class="ident">capture_stderr</span>: <span class="prelude-val">None</span>,
-            <span class="ident">inputs</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">outputs</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+            <span class="ident">inputs</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">outputs</span>: <span class="ident">HashMap::new</span>(),
 
-            <span class="ident">env</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+            <span class="ident">env</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">copy_env</span>: <span class="ident">Vec::new</span>(),
 
-            <span class="ident">limits</span>: <span class="ident">ExecutionLimits</span>::<span class="ident">default</span>(),
+            <span class="ident">limits</span>: <span class="ident">ExecutionLimits::default</span>(),
 
-            <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>::<span class="ident">new</span>(),
+            <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig::new</span>(),
 
             <span class="ident">tag</span>: <span class="prelude-val">None</span>,
-            <span class="ident">priority</span>: <span class="ident">Priority</span>::<span class="ident">default</span>(),
+            <span class="ident">priority</span>: <span class="ident">Priority::default</span>(),
         }
     }
 
@@ -1312,8 +1357,8 @@
     <span class="doccomment">/// exec.stdin(file);</span>
     <span class="doccomment">/// assert_eq!(exec.dependencies(), vec![uuid]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">deps</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">deps</span> <span class="op">=</span> <span class="macro">vec!</span>[];
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdin</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">stdin</span> {
             <span class="ident">deps</span>.<span class="ident">push</span>(<span class="ident">stdin</span>);
         }
@@ -1334,8 +1379,8 @@
     <span class="doccomment">/// let uuid = file.uuid;</span>
     <span class="doccomment">/// assert_eq!(exec.outputs(), vec![uuid]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outputs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">outs</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">outputs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">outs</span> <span class="op">=</span> <span class="macro">vec!</span>[];
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdout</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">stdout</span> {
             <span class="ident">outs</span>.<span class="ident">push</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>);
         }
@@ -1357,7 +1402,7 @@
     <span class="doccomment">/// let mut exec = Execution::new(&quot;test execution&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
     <span class="doccomment">/// exec.args(vec![&quot;test&quot;, &quot;args&quot;]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">args</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">args</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">I</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">into</span>()).<span class="ident">collect</span>();
         <span class="self">self</span>
     }
@@ -1374,7 +1419,7 @@
     <span class="doccomment">/// exec.stdin(file);</span>
     <span class="doccomment">/// assert_eq!(exec.stdin, Some(uuid));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stdin</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">stdin</span>: <span class="ident">F</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">stdin</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
@@ -1390,12 +1435,12 @@
     <span class="doccomment">/// let file = exec.stdout();</span>
     <span class="doccomment">/// assert_eq!(exec.stdout, Some(file));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">File</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">File</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">stdout</span>.<span class="ident">is_none</span>() {
-            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Stdout of &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>));
+            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Stdout of &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>));
             <span class="self">self</span>.<span class="ident">stdout</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">file</span>);
         }
-        <span class="self">self</span>.<span class="ident">stdout</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>()
+        <span class="self">self</span>.<span class="ident">stdout</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// Handle to the standard error of the execution. This should be called at least once before</span>
@@ -1409,12 +1454,12 @@
     <span class="doccomment">/// let file = exec.stderr();</span>
     <span class="doccomment">/// assert_eq!(exec.stderr, Some(file));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">File</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="ident">File</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">stderr</span>.<span class="ident">is_none</span>() {
-            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Stderr of &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>));
+            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Stderr of &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>));
             <span class="self">self</span>.<span class="ident">stderr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">file</span>);
         }
-        <span class="self">self</span>.<span class="ident">stderr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>()
+        <span class="self">self</span>.<span class="ident">stderr</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>()
     }
 
     <span class="doccomment">/// Tell the executor to include the first `count` bytes of the standard output in the result.</span>
@@ -1426,7 +1471,7 @@
     <span class="doccomment">/// exec.capture_stdout(1234);</span>
     <span class="doccomment">/// assert_eq!(exec.capture_stdout, Some(1234));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stdout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stdout</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stdout</span>(); <span class="comment">// make sure stdout is captured</span>
         <span class="self">self</span>.<span class="ident">capture_stdout</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">count</span>);
         <span class="self">self</span>
@@ -1441,7 +1486,7 @@
     <span class="doccomment">/// exec.capture_stderr(1234);</span>
     <span class="doccomment">/// assert_eq!(exec.capture_stderr, Some(1234));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stderr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">capture_stderr</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">stderr</span>(); <span class="comment">// make sure stderr is captured</span>
         <span class="self">self</span>.<span class="ident">capture_stderr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">count</span>);
         <span class="self">self</span>
@@ -1461,11 +1506,11 @@
     <span class="doccomment">/// assert_eq!(exec.inputs[&amp;PathBuf::from(&quot;test/file.txt&quot;)].file, uuid);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span>, <span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">file</span>: <span class="ident">F</span>,
         <span class="ident">path</span>: <span class="ident">P</span>,
         <span class="ident">executable</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    ) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">inputs</span>.<span class="ident">insert</span>(
             <span class="ident">path</span>.<span class="ident">into</span>(),
             <span class="ident">ExecutionInput</span> {
@@ -1488,8 +1533,8 @@
     <span class="doccomment">/// let file = exec.output(&quot;foo/bar.txt&quot;);</span>
     <span class="doccomment">/// assert_eq!(exec.outputs[&amp;PathBuf::from(&quot;foo/bar.txt&quot;)], file);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">File</span> {
-        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Output of &#39;{}&#39; at {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>, <span class="ident">path</span>));
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">std::fmt::Debug</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="ident">File</span> {
+        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Output of &#39;{}&#39; at {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">description</span>, <span class="ident">path</span>));
         <span class="self">self</span>.<span class="ident">outputs</span>.<span class="ident">entry</span>(<span class="ident">path</span>.<span class="ident">into</span>()).<span class="ident">or_insert</span>(<span class="ident">file</span>).<span class="ident">clone</span>()
     }
 
@@ -1502,8 +1547,22 @@
     <span class="doccomment">/// exec.env(&quot;foo&quot;, &quot;bar&quot;);</span>
     <span class="doccomment">/// assert_eq!(exec.env[&quot;foo&quot;], &quot;bar&quot;);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">env</span><span class="op">&lt;</span><span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">S1</span>, <span class="ident">value</span>: <span class="ident">S2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">env</span><span class="op">&lt;</span><span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">S1</span>, <span class="ident">value</span>: <span class="ident">S2</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">env</span>.<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">into</span>(), <span class="ident">value</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Add an environment variable to the execution copying the value from the sandbox host.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand};</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;random exec&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.copy_env(&quot;PATH&quot;);</span>
+    <span class="doccomment">/// assert_eq!(&amp;exec.copy_env[0], &quot;PATH&quot;);</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_env</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">S</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">copy_env</span>.<span class="ident">push</span>(<span class="ident">key</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 
@@ -1520,23 +1579,23 @@
     <span class="doccomment">/// assert_eq!(exec.limits.memory, Some(1024));</span>
     <span class="doccomment">/// assert_eq!(exec.limits.nproc, Some(10));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">limits_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ExecutionLimits</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">limits</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">limits_mut</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">ExecutionLimits</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">limits</span>
     }
 
     <span class="doccomment">/// A reference to the configuration of the underlying DAG.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ExecutionDAGConfig</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">config</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">ExecutionDAGConfig</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>
     }
 
     <span class="doccomment">/// Set the tag of this `Execution`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tag</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">ExecutionTag</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tag</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">tag</span>: <span class="ident">ExecutionTag</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">tag</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">tag</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Set the priority of this `Execution`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">priority</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">priority</span>: <span class="ident">Priority</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">priority</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">priority</span>: <span class="ident">Priority</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">priority</span> <span class="op">=</span> <span class="ident">priority</span>;
         <span class="self">self</span>
     }
@@ -1548,41 +1607,41 @@
         <span class="ident">exit_status</span>: <span class="ident">u32</span>,
         <span class="ident">signal</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">u32</span>, <span class="ident">String</span>)<span class="op">&gt;</span>,
         <span class="ident">resources</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionResourcesUsage</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExecutionStatus</span> {
+    ) -&gt; <span class="ident">ExecutionStatus</span> {
         <span class="comment">// it&#39;s important to check those before the signals because exceeding those</span>
         <span class="comment">// limits may trigger a SIGKILL from the sandbox</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cpu_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">cpu_time</span> {
             <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">cpu_time</span> <span class="op">&gt;</span> <span class="ident">cpu_time_limit</span> {
-                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">TimeLimitExceeded</span>;
+                <span class="kw">return</span> <span class="ident">ExecutionStatus::TimeLimitExceeded</span>;
             }
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sys_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">sys_time</span> {
             <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">sys_time</span> <span class="op">&gt;</span> <span class="ident">sys_time_limit</span> {
-                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">SysTimeLimitExceeded</span>;
+                <span class="kw">return</span> <span class="ident">ExecutionStatus::SysTimeLimitExceeded</span>;
             }
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">wall_time_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">wall_time</span> {
             <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">wall_time</span> <span class="op">&gt;</span> <span class="ident">wall_time_limit</span> {
-                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">WallTimeLimitExceeded</span>;
+                <span class="kw">return</span> <span class="ident">ExecutionStatus::WallTimeLimitExceeded</span>;
             }
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">memory_limit</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">limits</span>.<span class="ident">memory</span> {
             <span class="kw">if</span> <span class="ident">resources</span>.<span class="ident">memory</span> <span class="op">&gt;</span> <span class="ident">memory_limit</span> {
-                <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">MemoryLimitExceeded</span>;
+                <span class="kw">return</span> <span class="ident">ExecutionStatus::MemoryLimitExceeded</span>;
             }
         }
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">signal</span>, <span class="ident">name</span>)) <span class="op">=</span> <span class="ident">signal</span> {
-            <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="ident">signal</span>, <span class="ident">name</span>);
+            <span class="kw">return</span> <span class="ident">ExecutionStatus::Signal</span>(<span class="ident">signal</span>, <span class="ident">name</span>);
         }
         <span class="kw">if</span> <span class="ident">exit_status</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="ident">exit_status</span>);
+            <span class="kw">return</span> <span class="ident">ExecutionStatus::ReturnCode</span>(<span class="ident">exit_status</span>);
         }
-        <span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>
+        <span class="ident">ExecutionStatus::Success</span>
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExecutionCallbacks</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">ExecutionCallbacks</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">std::fmt::Error</span><span class="op">&gt;</span> {
         <span class="ident">formatter</span>
             .<span class="ident">debug_struct</span>(<span class="string">&quot;ExecutionCallbacks&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;on_start&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">on_start</span>.<span class="ident">len</span>())
@@ -1593,18 +1652,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">default</span>::<span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ExecutionCallbacks</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">ExecutionCallbacks</span> {
-            <span class="ident">on_start</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">on_done</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">on_skip</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-        }
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExecutionResult</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">ExecutionResult</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">std::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;ExecutionResult&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;status&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">status</span>)
             .<span class="ident">field</span>(<span class="string">&quot;was_killed&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">was_killed</span>)
@@ -1615,21 +1664,21 @@
                 <span class="kw-2">&amp;</span><span class="self">self</span>
                     .<span class="ident">stdout</span>
                     .<span class="ident">as_ref</span>()
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String::from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
             )
             .<span class="ident">field</span>(
                 <span class="string">&quot;stderr&quot;</span>,
                 <span class="kw-2">&amp;</span><span class="self">self</span>
                     .<span class="ident">stderr</span>
                     .<span class="ident">as_ref</span>()
-                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
+                    .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">String::from_utf8_lossy</span>(<span class="ident">s</span>).<span class="ident">to_string</span>()),
             )
             .<span class="ident">finish</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExecutionTag</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">ExecutionTag</span> { <span class="ident">name</span>: <span class="ident">name</span>.<span class="ident">into</span>() }
     }
 }
@@ -1640,7 +1689,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_success</span>() {
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
             <span class="prelude-val">None</span>,
@@ -1651,12 +1700,12 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">Success</span>, <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::Success</span>, <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_cpu_time</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">exec</span>.<span class="ident">limits_mut</span>().<span class="ident">cpu_time</span>(<span class="number">1.0</span>);
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
@@ -1668,12 +1717,12 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">TimeLimitExceeded</span>, <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::TimeLimitExceeded</span>, <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_sys_time</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">exec</span>.<span class="ident">limits_mut</span>().<span class="ident">sys_time</span>(<span class="number">1.0</span>);
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
@@ -1685,12 +1734,12 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">SysTimeLimitExceeded</span>, <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::SysTimeLimitExceeded</span>, <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_wall_time</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">exec</span>.<span class="ident">limits_mut</span>().<span class="ident">wall_time</span>(<span class="number">1.0</span>);
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
@@ -1702,12 +1751,12 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">WallTimeLimitExceeded</span>, <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::WallTimeLimitExceeded</span>, <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_memory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">exec</span>.<span class="ident">limits_mut</span>().<span class="ident">memory</span>(<span class="number">1234</span>);
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
@@ -1719,12 +1768,12 @@
                 <span class="ident">memory</span>: <span class="number">1235</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">MemoryLimitExceeded</span>, <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::MemoryLimitExceeded</span>, <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_signal</span>() {
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">0</span>,
             <span class="prelude-val">Some</span>((<span class="number">11</span>, <span class="string">&quot;Killed&quot;</span>.<span class="ident">into</span>())),
@@ -1735,12 +1784,12 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">Signal</span>(<span class="number">11</span>, <span class="string">&quot;Killed&quot;</span>.<span class="ident">into</span>()), <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::Signal</span>(<span class="number">11</span>, <span class="string">&quot;Killed&quot;</span>.<span class="ident">into</span>()), <span class="ident">status</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_status_return_code</span>() {
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand</span>::<span class="ident">local</span>(<span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">status</span>(
             <span class="number">1</span>,
             <span class="prelude-val">None</span>,
@@ -1751,9 +1800,9 @@
                 <span class="ident">memory</span>: <span class="number">0</span>,
             },
         );
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ExecutionStatus</span>::<span class="ident">ReturnCode</span>(<span class="number">1</span>), <span class="ident">status</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">ExecutionStatus::ReturnCode</span>(<span class="number">1</span>), <span class="ident">status</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="task_maker_dag" data-search-js="../../search-index.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="task_maker_dag" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

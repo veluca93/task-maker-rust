@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/statement/booklet.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>booklet.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../task_maker_format/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/statement/booklet.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>booklet.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../task_maker_format/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -329,23 +331,48 @@
 <span id="326">326</span>
 <span id="327">327</span>
 <span id="328">328</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashSet</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashSet</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">Mutex</span>};
 
-<span class="kw">use</span> <span class="ident">askama</span>::<span class="ident">Template</span>;
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">format_err</span>, <span class="ident">Error</span>};
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">regex</span>::<span class="ident">Regex</span>;
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">askama::Template</span>;
+<span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
+<span class="kw">use</span> <span class="ident">regex::Regex</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">typescript_definitions</span>::<span class="ident">TypeScriptify</span>;
+<span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>, <span class="ident">File</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">statement</span>::<span class="ident">statement</span>::<span class="ident">Statement</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::<span class="ident">UIMessageSender</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui</span>::<span class="ident">UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">Tag</span>, <span class="ident">UISender</span>, <span class="ident">DATA_DIR</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::statement::statement::Statement</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UIMessageSender</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">ui::UIMessage</span>, <span class="ident">EvaluationData</span>, <span class="ident">Tag</span>, <span class="ident">UISender</span>, <span class="ident">DATA_DIR</span>};
 
 <span class="doccomment">/// Configuration of a `Booklet`, including the setting from the contest configuration.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Default</span>, <span class="ident">TypeScriptify</span>)]</span>
@@ -401,48 +428,51 @@
 
 <span class="doccomment">/// Part of the schema of `contest.yaml`, used for extracting the configuration of the booklet.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">ContestYAML</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContestYAML</span> {
     <span class="doccomment">/// The description of the contest.</span>
-    <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The location of the contest.</span>
-    <span class="ident">location</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">location</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The date of the contest.</span>
-    <span class="ident">date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The logo of the contest.</span>
-    <span class="ident">logo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">logo</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `Some(&quot;True&quot;)` if the time and memory limits should be put in the booklet.</span>
-    <span class="ident">show_summary</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">show_summary</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The list of the tasks in the contest (in the correct order).</span>
+    <span class="kw">pub</span> <span class="ident">tasks</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Booklet</span> {
     <span class="doccomment">/// Make a new `Booklet` using the specified configuration.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">config</span>: <span class="ident">BookletConfig</span>, <span class="ident">dest</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">config</span>: <span class="ident">BookletConfig</span>, <span class="ident">dest</span>: <span class="ident">P</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">Booklet</span> {
             <span class="ident">config</span>,
             <span class="ident">dest</span>: <span class="ident">dest</span>.<span class="ident">into</span>(),
-            <span class="ident">statements</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">statements</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
     <span class="doccomment">/// Add a `Statement` to this booklet.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_statement</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">statement</span>: <span class="ident">Statement</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_statement</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">statement</span>: <span class="ident">Statement</span>) {
         <span class="self">self</span>.<span class="ident">statements</span>.<span class="ident">push</span>(<span class="ident">statement</span>);
     }
 
     <span class="doccomment">/// Build the booklet, eventually coping the final PDF to the specified destination.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">EvaluationData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">eval</span>: <span class="kw-2">&amp;mut</span> <span class="ident">EvaluationData</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">booklet_name</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">dest</span>
             .<span class="ident">file_name</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Invalid destination file {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">dest</span>))<span class="question-mark">?</span>
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Invalid destination file {}&quot;</span>, <span class="self">self</span>.<span class="ident">dest</span>.<span class="ident">display</span>()))<span class="question-mark">?</span>
             .<span class="ident">to_string_lossy</span>()
             .<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task_names</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">statements</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">s</span>.<span class="ident">config</span>().<span class="ident">name</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(
             <span class="string">&quot;Compilation of the booklet&quot;</span>,
-            <span class="ident">ExecutionCommand</span>::<span class="ident">system</span>(<span class="string">&quot;latexmk&quot;</span>),
+            <span class="ident">ExecutionCommand::system</span>(<span class="string">&quot;latexmk&quot;</span>),
         );
-        <span class="ident">exec</span>.<span class="ident">args</span>(<span class="macro">vec</span><span class="macro">!</span>[
+        <span class="ident">exec</span>.<span class="ident">args</span>(<span class="macro">vec!</span>[
+            <span class="string">&quot;-shell-escape&quot;</span>,
             <span class="string">&quot;-f&quot;</span>,
             <span class="string">&quot;-interaction=nonstopmode&quot;</span>,
             <span class="string">&quot;-pdf&quot;</span>,
@@ -453,22 +483,25 @@
             .<span class="ident">nproc</span>(<span class="number">1000</span>)
             .<span class="ident">add_extra_readable_dir</span>(<span class="string">&quot;/etc&quot;</span>)
             .<span class="ident">mount_tmpfs</span>(<span class="bool-val">true</span>);
-        <span class="ident">exec</span>.<span class="ident">tag</span>(<span class="ident">Tag</span>::<span class="ident">Booklet</span>.<span class="ident">into</span>());
-        <span class="ident">exec</span>.<span class="ident">env</span>(<span class="string">&quot;TEXINPUTS&quot;</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;.:{}:&quot;</span>, <span class="ident">task_names</span>.<span class="ident">join</span>(<span class="string">&quot;:&quot;</span>)));
+        <span class="ident">exec</span>.<span class="ident">tag</span>(<span class="ident">Tag::Booklet</span>.<span class="ident">into</span>());
+        <span class="ident">exec</span>.<span class="ident">env</span>(<span class="string">&quot;TEXINPUTS&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;.:{}:&quot;</span>, <span class="ident">task_names</span>.<span class="ident">join</span>(<span class="string">&quot;:&quot;</span>)));
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">exec</span>.<span class="ident">output</span>(<span class="string">&quot;booklet.pdf&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="string">&quot;Source of the booklet&quot;</span>);
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;Source of the booklet&quot;</span>);
         <span class="kw">let</span> <span class="ident">tex</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">make_tex</span>();
         <span class="ident">exec</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">source</span>, <span class="string">&quot;booklet.tex&quot;</span>, <span class="bool-val">false</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">provide_content</span>(<span class="ident">source</span>, <span class="ident">tex</span>.<span class="ident">into_bytes</span>());
 
         <span class="kw">for</span> <span class="ident">statement</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">statements</span>.<span class="ident">iter</span>() {
             <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">statement</span>.<span class="ident">config</span>().<span class="ident">name</span>;
-            <span class="kw">let</span> <span class="ident">tex</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Source of statement of {}&quot;</span>, <span class="ident">name</span>));
-            <span class="ident">exec</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">tex</span>, <span class="ident">Path</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>).<span class="ident">join</span>(<span class="string">&quot;statement.tex&quot;</span>), <span class="bool-val">false</span>);
+            <span class="kw">let</span> <span class="ident">tex</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="macro">format!</span>(<span class="string">&quot;Source of statement of {}&quot;</span>, <span class="ident">name</span>));
+            <span class="ident">exec</span>.<span class="ident">input</span>(<span class="kw-2">&amp;</span><span class="ident">tex</span>, <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>).<span class="ident">join</span>(<span class="string">&quot;statement.tex&quot;</span>), <span class="bool-val">false</span>);
             <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">provide_content</span>(<span class="ident">tex</span>, <span class="ident">statement</span>.<span class="ident">tex</span>().<span class="ident">into_bytes</span>());
-            <span class="kw">let</span> <span class="ident">base_dir</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>);
-            <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">file</span>) <span class="kw">in</span> <span class="ident">statement</span>.<span class="ident">build_deps</span>(<span class="ident">eval</span>, <span class="kw-2">&amp;</span><span class="ident">booklet_name</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> <span class="ident">base_dir</span> <span class="op">=</span> <span class="ident">PathBuf::from</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>);
+            <span class="kw">let</span> <span class="ident">deps</span> <span class="op">=</span> <span class="ident">statement</span>
+                .<span class="ident">build_deps</span>(<span class="ident">eval</span>, <span class="kw-2">&amp;</span><span class="ident">booklet_name</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>)
+                .<span class="ident">context</span>(<span class="string">&quot;Failed to build booklet dependencies&quot;</span>)<span class="question-mark">?</span>;
+            <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">file</span>) <span class="kw">in</span> <span class="ident">deps</span> {
                 <span class="ident">exec</span>.<span class="ident">input</span>(<span class="ident">file</span>, <span class="ident">base_dir</span>.<span class="ident">join</span>(<span class="ident">path</span>), <span class="bool-val">false</span>);
             }
         }
@@ -476,29 +509,31 @@
         <span class="comment">// copy all the files from the data/statements directory</span>
         <span class="kw">let</span> <span class="ident">data_dir</span> <span class="op">=</span> <span class="ident">DATA_DIR</span>.<span class="ident">join</span>(<span class="string">&quot;statements&quot;</span>);
         <span class="kw">let</span> <span class="ident">glob_pattern</span> <span class="op">=</span> <span class="ident">data_dir</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>() <span class="op">+</span> <span class="string">&quot;/**/*&quot;</span>;
-        <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">glob</span>::<span class="ident">glob</span>(<span class="kw-2">&amp;</span><span class="ident">glob_pattern</span>)<span class="question-mark">?</span> {
-            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span><span class="question-mark">?</span>;
+        <span class="kw">for</span> <span class="ident">path</span> <span class="kw">in</span> <span class="ident">glob::glob</span>(<span class="kw-2">&amp;</span><span class="ident">glob_pattern</span>).<span class="ident">context</span>(<span class="string">&quot;Invalid glob pattern&quot;</span>)<span class="question-mark">?</span> {
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">context</span>(<span class="string">&quot;Failed to iterate with glob&quot;</span>)<span class="question-mark">?</span>;
             <span class="kw">if</span> <span class="op">!</span><span class="ident">path</span>.<span class="ident">is_file</span>() {
                 <span class="kw">continue</span>;
             }
-            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(
+            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="macro">format!</span>(
                 <span class="string">&quot;Booklet template file {:?}&quot;</span>,
-                <span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">expect</span>(<span class="string">&quot;Invalid template file&quot;</span>)
+                <span class="ident">path</span>.<span class="ident">file_name</span>().<span class="ident">context</span>(<span class="string">&quot;Invalid template file&quot;</span>)<span class="question-mark">?</span>
             ));
-            <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">provide_file</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">path</span>)<span class="question-mark">?</span>;
+            <span class="ident">eval</span>.<span class="ident">dag</span>
+                .<span class="ident">provide_file</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">path</span>)
+                .<span class="ident">context</span>(<span class="string">&quot;Failed to provide statement file&quot;</span>)<span class="question-mark">?</span>;
             <span class="ident">exec</span>.<span class="ident">input</span>(<span class="ident">file</span>, <span class="ident">path</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="ident">data_dir</span>)<span class="question-mark">?</span>, <span class="bool-val">false</span>);
         }
 
-        <span class="macro">bind_exec_callbacks</span><span class="macro">!</span>(
+        <span class="macro">bind_exec_callbacks!</span>(
             <span class="ident">eval</span>,
             <span class="ident">exec</span>.<span class="ident">uuid</span>,
-            <span class="op">|</span><span class="ident">status</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage</span>::<span class="ident">IOIBooklet</span> { <span class="ident">name</span>, <span class="ident">status</span> },
+            <span class="op">|</span><span class="ident">status</span>, <span class="ident">name</span><span class="op">|</span> <span class="ident">UIMessage::IOIBooklet</span> { <span class="ident">name</span>, <span class="ident">status</span> },
             <span class="ident">booklet_name</span>
         )<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">copy_logs</span> {
             <span class="kw">let</span> <span class="ident">log_dir</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;bin/logs/booklets&quot;</span>);
-            <span class="kw">let</span> <span class="ident">stderr_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stderr.log&quot;</span>, <span class="ident">booklet_name</span>));
-            <span class="kw">let</span> <span class="ident">stdout_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.stdout.log&quot;</span>, <span class="ident">booklet_name</span>));
+            <span class="kw">let</span> <span class="ident">stderr_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;{}.stderr.log&quot;</span>, <span class="ident">booklet_name</span>));
+            <span class="kw">let</span> <span class="ident">stdout_dest</span> <span class="op">=</span> <span class="ident">log_dir</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;{}.stdout.log&quot;</span>, <span class="ident">booklet_name</span>));
             <span class="ident">eval</span>.<span class="ident">dag</span>
                 .<span class="ident">write_file_to_allow_fail</span>(<span class="ident">exec</span>.<span class="ident">stderr</span>(), <span class="ident">stderr_dest</span>, <span class="bool-val">false</span>);
             <span class="ident">eval</span>.<span class="ident">dag</span>
@@ -508,7 +543,7 @@
         <span class="ident">exec</span>.<span class="ident">capture_stdout</span>(<span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">content</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">res</span>.<span class="ident">stdout</span> {
-                <span class="ident">Booklet</span>::<span class="ident">emit_warnings</span>(<span class="kw-2">&amp;</span><span class="ident">content</span>, <span class="ident">sender</span>)<span class="question-mark">?</span>;
+                <span class="ident">Booklet::emit_warnings</span>(<span class="ident">content</span>, <span class="ident">sender</span>)<span class="question-mark">?</span>;
             }
             <span class="prelude-val">Ok</span>(())
         });
@@ -521,31 +556,31 @@
 
     <span class="doccomment">/// Build the main booklet.tex source file by combining the info from all the statements and</span>
     <span class="doccomment">/// expanding the template.</span>
-    <span class="kw">fn</span> <span class="ident">make_tex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">packages</span> <span class="op">=</span> <span class="ident">HashSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tasks</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">fn</span> <span class="ident">make_tex</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">String</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">packages</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tasks</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">for</span> <span class="ident">statement</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">statements</span>.<span class="ident">iter</span>() {
             <span class="kw">for</span> <span class="ident">package</span> <span class="kw">in</span> <span class="ident">statement</span>.<span class="ident">packages</span>() {
                 <span class="ident">packages</span>.<span class="ident">insert</span>(<span class="ident">package</span>);
             }
-            <span class="ident">tasks</span>.<span class="ident">push</span>(<span class="macro">format</span><span class="macro">!</span>(
+            <span class="ident">tasks</span>.<span class="ident">push</span>(<span class="macro">format!</span>(
                 <span class="string">r&quot;\input{{{}/statement.tex}}&quot;</span>,
                 <span class="ident">statement</span>.<span class="ident">config</span>().<span class="ident">name</span>
             ));
         }
         <span class="ident">BookletTemplate</span> {
             <span class="ident">language</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">language</span>.<span class="ident">clone</span>(),
-            <span class="ident">show_solutions</span>: <span class="ident">Booklet</span>::<span class="ident">bool_to_tpl_string</span>(
+            <span class="ident">show_solutions</span>: <span class="ident">Booklet::bool_to_tpl_string</span>(
                 <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">show_solutions</span>,
                 <span class="string">&quot;showsolutions&quot;</span>,
             ),
-            <span class="ident">show_summary</span>: <span class="ident">Booklet</span>::<span class="ident">bool_to_tpl_string</span>(<span class="self">self</span>.<span class="ident">config</span>.<span class="ident">show_summary</span>, <span class="string">&quot;showsummary&quot;</span>),
+            <span class="ident">show_summary</span>: <span class="ident">Booklet::bool_to_tpl_string</span>(<span class="self">self</span>.<span class="ident">config</span>.<span class="ident">show_summary</span>, <span class="string">&quot;showsummary&quot;</span>),
             <span class="ident">font_enc</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">font_enc</span>.<span class="ident">clone</span>(),
             <span class="ident">input_enc</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">input_enc</span>.<span class="ident">clone</span>(),
-            <span class="ident">description</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">description</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">String</span>::<span class="ident">new</span>),
-            <span class="ident">location</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">location</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">String</span>::<span class="ident">new</span>),
-            <span class="ident">date</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">date</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">String</span>::<span class="ident">new</span>),
-            <span class="ident">logo</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">logo</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_else</span>(<span class="ident">String</span>::<span class="ident">new</span>),
+            <span class="ident">description</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">description</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
+            <span class="ident">location</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">location</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
+            <span class="ident">date</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">date</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
+            <span class="ident">logo</span>: <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">logo</span>.<span class="ident">clone</span>().<span class="ident">unwrap_or_default</span>(),
             <span class="ident">packages</span>: <span class="ident">packages</span>.<span class="ident">iter</span>().<span class="ident">sorted</span>().<span class="ident">join</span>(<span class="string">&quot;\n&quot;</span>),
             <span class="ident">tasks</span>: <span class="ident">tasks</span>.<span class="ident">join</span>(<span class="string">&quot;\n&quot;</span>),
         }
@@ -553,24 +588,24 @@
     }
 
     <span class="doccomment">/// Return a string which is `if_true` if `b` is true, otherwise an empty string.</span>
-    <span class="kw">fn</span> <span class="ident">bool_to_tpl_string</span>(<span class="ident">b</span>: <span class="ident">bool</span>, <span class="ident">if_true</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">bool_to_tpl_string</span>(<span class="ident">b</span>: <span class="ident">bool</span>, <span class="ident">if_true</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">if</span> <span class="ident">b</span> { <span class="ident">if_true</span> } <span class="kw">else</span> { <span class="string">&quot;&quot;</span> }.<span class="ident">to_string</span>()
     }
 
     <span class="doccomment">/// Given the content of the log from latexmk, extract the errors and emit them as warnings.</span>
-    <span class="kw">fn</span> <span class="ident">emit_warnings</span>(<span class="ident">content</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">UIMessageSender</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="macro">lazy_static</span><span class="macro">!</span> {
+    <span class="kw">fn</span> <span class="ident">emit_warnings</span>(<span class="ident">content</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">sender</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">UIMessageSender</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="macro">lazy_static!</span> {
             <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FIND_ERRORS</span>: <span class="ident">Regex</span> <span class="op">=</span>
-                <span class="ident">Regex</span>::<span class="ident">new</span>(<span class="string">r&quot;(?ms)^!(?: LaTeX Error:)? ([^\n]+).*?(^l\.\d+)&quot;</span>)
+                <span class="ident">Regex::new</span>(<span class="string">r&quot;(?ms)^!(?: LaTeX Error:)? ([^\n]+).*?(^l\.\d+)&quot;</span>)
                     .<span class="ident">expect</span>(<span class="string">&quot;Invalid regex&quot;</span>);
         }
         <span class="comment">// latexmk sometimes emit the same warning more than once</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">errors</span> <span class="op">=</span> <span class="ident">HashSet</span>::<span class="ident">new</span>();
-        <span class="kw">for</span> <span class="ident">cap</span> <span class="kw">in</span> <span class="ident">FIND_ERRORS</span>.<span class="ident">captures_iter</span>(<span class="kw-2">&amp;</span><span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">content</span>)) {
-            <span class="ident">errors</span>.<span class="ident">insert</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Latex error at line {}: {}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">2</span>][<span class="number">2</span>..], <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">errors</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
+        <span class="kw">for</span> <span class="ident">cap</span> <span class="kw">in</span> <span class="ident">FIND_ERRORS</span>.<span class="ident">captures_iter</span>(<span class="kw-2">&amp;</span><span class="ident">String::from_utf8_lossy</span>(<span class="ident">content</span>)) {
+            <span class="ident">errors</span>.<span class="ident">insert</span>(<span class="macro">format!</span>(<span class="string">&quot;Latex error at line {}: {}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">2</span>][<span class="number">2</span>..], <span class="kw-2">&amp;</span><span class="ident">cap</span>[<span class="number">1</span>]));
         }
         <span class="kw">for</span> <span class="ident">message</span> <span class="kw">in</span> <span class="ident">errors</span> {
-            <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage</span>::<span class="ident">Warning</span> { <span class="ident">message</span> })<span class="question-mark">?</span>;
+            <span class="ident">sender</span>.<span class="ident">send</span>(<span class="ident">UIMessage::Warning</span> { <span class="ident">message</span> })<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -582,15 +617,13 @@
         <span class="ident">language</span>: <span class="ident">S</span>,
         <span class="ident">contest_dir</span>: <span class="ident">P</span>,
         <span class="ident">booklet_solutions</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">BookletConfig</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">contest_yaml_path</span> <span class="op">=</span> <span class="ident">contest_dir</span>.<span class="ident">into</span>().<span class="ident">join</span>(<span class="string">&quot;contest.yaml&quot;</span>);
-        <span class="kw">if</span> <span class="ident">contest_yaml_path</span>.<span class="ident">exists</span>() {
-            <span class="kw">let</span> <span class="ident">contest_yaml</span>: <span class="ident">ContestYAML</span> <span class="op">=</span>
-                <span class="ident">serde_yaml</span>::<span class="ident">from_reader</span>(<span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">contest_yaml_path</span>)<span class="question-mark">?</span>)<span class="question-mark">?</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">BookletConfig</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">contest_yaml</span>) <span class="op">=</span> <span class="ident"><span class="self">Self</span>::contest_yaml</span>(<span class="ident">contest_dir</span>) {
+            <span class="kw">let</span> <span class="ident">contest_yaml</span> <span class="op">=</span> <span class="ident">contest_yaml</span><span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">BookletConfig</span> {
                 <span class="ident">language</span>: <span class="ident">language</span>.<span class="ident">into</span>(),
                 <span class="ident">show_solutions</span>: <span class="ident">booklet_solutions</span>,
-                <span class="ident">show_summary</span>: <span class="ident">contest_yaml</span>.<span class="ident">show_summary</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="string">&quot;True&quot;</span>.<span class="ident">to_string</span>()),
+                <span class="ident">show_summary</span>: <span class="ident">contest_yaml</span>.<span class="ident">show_summary</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="string">&quot;True&quot;</span>.<span class="ident">to_string</span>()),
                 <span class="ident">font_enc</span>: <span class="string">&quot;T1&quot;</span>.<span class="ident">into</span>(),
                 <span class="ident">input_enc</span>: <span class="string">&quot;utf8&quot;</span>.<span class="ident">into</span>(),
                 <span class="ident">description</span>: <span class="ident">contest_yaml</span>.<span class="ident">description</span>,
@@ -612,52 +645,72 @@
             })
         }
     }
+
+    <span class="doccomment">/// Find and parse the contest.yaml in the provided contest root.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contest_yaml</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">contest_dir</span>: <span class="ident">P</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ContestYAML</span>, <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">contest_yaml_path</span> <span class="op">=</span> <span class="ident">contest_dir</span>.<span class="ident">into</span>().<span class="ident">join</span>(<span class="string">&quot;contest.yaml&quot;</span>);
+        <span class="kw">let</span> <span class="ident">parse_yaml</span> <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">std::fs::File::open</span>(<span class="kw-2">&amp;</span><span class="ident">contest_yaml_path</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">format!</span>(
+                    <span class="string">&quot;Failed to open contest.yaml at {}&quot;</span>,
+                    <span class="ident">contest_yaml_path</span>.<span class="ident">display</span>()
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">contest_yaml</span>: <span class="ident">ContestYAML</span> <span class="op">=</span>
+                <span class="ident">serde_yaml::from_reader</span>(<span class="ident">file</span>).<span class="ident">context</span>(<span class="string">&quot;Failed to deserialize contest.yaml&quot;</span>)<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">contest_yaml</span>)
+        };
+
+        <span class="kw">if</span> <span class="ident">contest_yaml_path</span>.<span class="ident">exists</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">parse_yaml</span>())
+        } <span class="kw">else</span> {
+            <span class="prelude-val">None</span>
+        }
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ioi</span>::<span class="ident">StatementConfig</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::StatementConfig</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_outputs_with_logs</span>(<span class="ident">task_root</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">copy_logs</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">eval</span>, <span class="ident">_recv</span>) <span class="op">=</span> <span class="ident">EvaluationData</span>::<span class="ident">new</span>(<span class="ident">task_root</span>);
+    <span class="kw">fn</span> <span class="ident">get_outputs_with_logs</span>(<span class="ident">task_root</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">copy_logs</span>: <span class="ident">bool</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">eval</span>, <span class="ident">_recv</span>) <span class="op">=</span> <span class="ident">EvaluationData::new</span>(<span class="ident">task_root</span>);
         <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">config</span>.<span class="ident">copy_logs</span> <span class="op">=</span> <span class="ident">copy_logs</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">booklet</span> <span class="op">=</span> <span class="ident">Booklet</span>::<span class="ident">new</span>(<span class="ident">BookletConfig</span>::<span class="ident">default</span>(), <span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;dest.pdf&quot;</span>));
-        <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">write</span>(<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;text.tex&quot;</span>), <span class="string">&quot;loltex&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">booklet</span> <span class="op">=</span> <span class="ident">Booklet::new</span>(<span class="ident">BookletConfig::default</span>(), <span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;dest.pdf&quot;</span>));
+        <span class="ident">std::fs::write</span>(<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;text.tex&quot;</span>), <span class="string">&quot;loltex&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">statement</span> <span class="op">=</span>
-            <span class="ident">Statement</span>::<span class="ident">new</span>(<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;text.tex&quot;</span>), <span class="ident">StatementConfig</span>::<span class="ident">default</span>()).<span class="ident">unwrap</span>();
+            <span class="ident">Statement::new</span>(<span class="ident">task_root</span>.<span class="ident">join</span>(<span class="string">&quot;text.tex&quot;</span>), <span class="ident">StatementConfig::default</span>()).<span class="ident">unwrap</span>();
         <span class="ident">booklet</span>.<span class="ident">add_statement</span>(<span class="ident">statement</span>);
-        <span class="ident">booklet</span>.<span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">eval</span>).<span class="ident">unwrap</span>();
+        <span class="ident">booklet</span>.<span class="ident">build</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>).<span class="ident">unwrap</span>();
         <span class="ident">eval</span>.<span class="ident">dag</span>
             .<span class="ident">file_callbacks</span>
-            .<span class="ident">values</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">write_to</span>.<span class="ident">as_ref</span>())
-            .<span class="ident">flatten</span>()
+            .<span class="ident">values</span>().<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">write_to</span>.<span class="ident">as_ref</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> <span class="ident">f</span>.<span class="ident">dest</span>.<span class="ident">clone</span>())
             .<span class="ident">collect</span>()
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_logs_emitted_with_copy_logs</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-tests&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-tests&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">outputs</span> <span class="op">=</span> <span class="ident">get_outputs_with_logs</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="bool-val">true</span>);
         <span class="kw">let</span> <span class="ident">stderr_path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;bin/logs/booklets/dest.pdf.stderr.log&quot;</span>);
         <span class="kw">let</span> <span class="ident">stdout_path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;bin/logs/booklets/dest.pdf.stdout.log&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stderr_path</span>));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stdout_path</span>));
+        <span class="macro">assert!</span>(<span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stderr_path</span>));
+        <span class="macro">assert!</span>(<span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stdout_path</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_logs_not_emitted_by_default</span>() {
-        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir</span>::<span class="ident">TempDir</span>::<span class="ident">new</span>(<span class="string">&quot;tm-tests&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tmpdir</span> <span class="op">=</span> <span class="ident">tempdir::TempDir::new</span>(<span class="string">&quot;tm-tests&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">outputs</span> <span class="op">=</span> <span class="ident">get_outputs_with_logs</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>(), <span class="bool-val">false</span>);
         <span class="kw">let</span> <span class="ident">stderr_path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;bin/logs/booklets/dest.pdf.stderr.log&quot;</span>);
         <span class="kw">let</span> <span class="ident">stdout_path</span> <span class="op">=</span> <span class="ident">tmpdir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;bin/logs/booklets/dest.pdf.stdout.log&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stderr_path</span>));
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stdout_path</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stderr_path</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">outputs</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">stdout_path</span>));
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="task_maker_format" data-search-js="../../../../search-index.js"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="task_maker_format" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

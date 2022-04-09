@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Remote","Options for spawning a client or a server."]],"fn":[["no_cache_long_help","Returns the long-help for the –no-cache option."],["skip_sanity_checks_long_help","Returns the long-help for the “skip sanity checks” option."]],"struct":[["Opt",""],["ServerOptions",""],["WorkerOptions",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Remote","Options for spawning a client or a server."]],"struct":[["Opt",""],["ServerOptions",""],["WorkerOptions",""]]});
+initSidebarItems({"struct":[["ExecutionOpt",""],["FindTaskOpt",""],["LoggerOpt",""],["Opt",""],["StorageOpt",""]]});

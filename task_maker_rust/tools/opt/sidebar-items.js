@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Tool",""]],"struct":[["BookletOpt",""],["ClearOpt",""],["GenAutocompletionOpt",""],["Opt",""],["ResetOpt",""],["SandboxOpt",""],["ServerOpt",""],["TaskInfoOpt",""],["WorkerOpt",""]]});

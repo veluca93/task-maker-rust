@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ui/curses.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>curses.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../task_maker_format/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ui/curses.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>curses.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
+    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../../../task_maker_format/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
+        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../task_maker_format/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -400,32 +402,31 @@
 <span id="397">397</span>
 <span id="398">398</span>
 <span id="399">399</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">RwLock</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">JoinHandle</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
+</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::io</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">RwLock</span>};
+<span class="kw">use</span> <span class="ident">std::thread::JoinHandle</span>;
+<span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 
-<span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">itertools</span>::<span class="ident">Itertools</span>;
-<span class="kw">use</span> <span class="ident">nix</span>::<span class="ident">sys</span>::<span class="ident">signal</span>::{<span class="self">self</span>, <span class="ident">Signal</span>};
-<span class="kw">use</span> <span class="ident">nix</span>::<span class="ident">unistd</span>::<span class="ident">Pid</span>;
-<span class="kw">use</span> <span class="ident">termion</span>::<span class="ident">event</span>::{<span class="ident">Event</span>, <span class="ident">Key</span>};
-<span class="kw">use</span> <span class="ident">termion</span>::<span class="ident">input</span>::{<span class="ident">MouseTerminal</span>, <span class="ident">TermRead</span>};
-<span class="kw">use</span> <span class="ident">termion</span>::<span class="ident">raw</span>::{<span class="ident">IntoRawMode</span>, <span class="ident">RawTerminal</span>};
-<span class="kw">use</span> <span class="ident">termion</span>::<span class="ident">screen</span>::<span class="ident">AlternateScreen</span>;
-<span class="kw">use</span> <span class="ident">tui</span>::<span class="ident">backend</span>::<span class="ident">TermionBackend</span>;
-<span class="kw">use</span> <span class="ident">tui</span>::<span class="ident">layout</span>::<span class="ident">Rect</span>;
-<span class="kw">use</span> <span class="ident">tui</span>::<span class="ident">style</span>::{<span class="ident">Color</span>, <span class="ident">Modifier</span>, <span class="ident">Style</span>};
-<span class="kw">use</span> <span class="ident">tui</span>::<span class="ident">widgets</span>::{<span class="ident">Block</span>, <span class="ident">Borders</span>, <span class="ident">Paragraph</span>, <span class="ident">Text</span>, <span class="ident">Widget</span>};
+<span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
+<span class="kw">use</span> <span class="ident">nix::sys::signal</span>::{<span class="self">self</span>, <span class="ident">Signal</span>};
+<span class="kw">use</span> <span class="ident">nix::unistd::Pid</span>;
+<span class="kw">use</span> <span class="ident">termion::event</span>::{<span class="ident">Event</span>, <span class="ident">Key</span>};
+<span class="kw">use</span> <span class="ident">termion::input</span>::{<span class="ident">MouseTerminal</span>, <span class="ident">TermRead</span>};
+<span class="kw">use</span> <span class="ident">termion::raw</span>::{<span class="ident">IntoRawMode</span>, <span class="ident">RawTerminal</span>};
+<span class="kw">use</span> <span class="ident">termion::screen::AlternateScreen</span>;
+<span class="kw">use</span> <span class="ident">tui::backend::TermionBackend</span>;
+<span class="kw">use</span> <span class="ident">tui::layout::Rect</span>;
+<span class="kw">use</span> <span class="ident">tui::style</span>::{<span class="ident">Color</span>, <span class="ident">Modifier</span>, <span class="ident">Style</span>};
+<span class="kw">use</span> <span class="ident">tui::widgets</span>::{<span class="ident">Block</span>, <span class="ident">Borders</span>, <span class="ident">Paragraph</span>, <span class="ident">Text</span>, <span class="ident">Widget</span>};
 <span class="kw">use</span> <span class="ident">tui</span>::{<span class="ident">Frame</span>, <span class="ident">Terminal</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_exec</span>::{<span class="ident">ExecutorStatus</span>, <span class="ident">ExecutorWorkerStatus</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ui</span>::{<span class="ident">CompilationStatus</span>, <span class="ident">FinishUI</span>, <span class="ident">UIMessage</span>, <span class="ident">UIStateT</span>, <span class="ident">UI</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui</span>::{<span class="ident">CompilationStatus</span>, <span class="ident">FinishUI</span>, <span class="ident">UIMessage</span>, <span class="ident">UIStateT</span>, <span class="ident">UI</span>};
 
 <span class="doccomment">/// The framerate of the UI.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">FPS</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">30</span>;
@@ -434,7 +435,7 @@
 
 <span class="doccomment">/// The type of the terminal with its backend.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">FrameType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Frame</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TermionBackend</span><span class="op">&lt;</span><span class="ident">AlternateScreen</span><span class="op">&lt;</span><span class="ident">MouseTerminal</span><span class="op">&lt;</span><span class="ident">RawTerminal</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Stdout</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="ident">Frame</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">TermionBackend</span><span class="op">&lt;</span><span class="ident">AlternateScreen</span><span class="op">&lt;</span><span class="ident">MouseTerminal</span><span class="op">&lt;</span><span class="ident">RawTerminal</span><span class="op">&lt;</span><span class="ident">io::Stdout</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// A generic animated UI for tasks, dynamically refreshing using curses as a backend.</span>
 <span class="doccomment">///</span>
@@ -472,15 +473,15 @@
     <span class="ident">Finish</span>: <span class="ident">FinishUI</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
     <span class="doccomment">/// Make a new generic `CursesUI`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">state</span>: <span class="ident">State</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CursesUI</span><span class="op">&lt;</span><span class="ident">State</span>, <span class="ident">Drawer</span>, <span class="ident">Finish</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">RwLock</span>::<span class="ident">new</span>(<span class="ident">state</span>));
-        <span class="kw">let</span> <span class="ident">stop</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">AtomicBool</span>::<span class="ident">new</span>(<span class="bool-val">false</span>));
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">state</span>: <span class="ident">State</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CursesUI</span><span class="op">&lt;</span><span class="ident">State</span>, <span class="ident">Drawer</span>, <span class="ident">Finish</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">RwLock::new</span>(<span class="ident">state</span>));
+        <span class="kw">let</span> <span class="ident">stop</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ui</span> <span class="op">=</span> <span class="ident">CursesUI</span> {
             <span class="ident">ui_thread</span>: <span class="prelude-val">None</span>,
             <span class="ident">state</span>: <span class="ident">state</span>.<span class="ident">clone</span>(),
             <span class="ident">stop</span>: <span class="ident">stop</span>.<span class="ident">clone</span>(),
-            <span class="ident">drawer</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
-            <span class="ident">finish_ui</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">drawer</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">finish_ui</span>: <span class="ident">Default::default</span>(),
         };
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">ui</span>.<span class="ident">start</span>(<span class="ident">state</span>, <span class="ident">stop</span>)<span class="question-mark">?</span>;
         <span class="ident">ui</span>.<span class="ident">ui_thread</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">handle</span>);
@@ -489,45 +490,45 @@
 
     <span class="doccomment">/// Start the drawing thread of the UI, returning the `JoinHandle` of it.</span>
     <span class="kw">fn</span> <span class="ident">start</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>,
         <span class="ident">state</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">stop</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">AtomicBool</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">stdout</span>().<span class="ident">into_raw_mode</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">MouseTerminal</span>::<span class="ident">from</span>(<span class="ident">stdout</span>);
-        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">AlternateScreen</span>::<span class="ident">from</span>(<span class="ident">stdout</span>);
-        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">TermionBackend</span>::<span class="ident">new</span>(<span class="ident">stdout</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">terminal</span> <span class="op">=</span> <span class="ident">Terminal</span>::<span class="ident">new</span>(<span class="ident">backend</span>)<span class="question-mark">?</span>;
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">io::stdout</span>().<span class="ident">into_raw_mode</span>()<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">MouseTerminal::from</span>(<span class="ident">stdout</span>);
+        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">AlternateScreen::from</span>(<span class="ident">stdout</span>);
+        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">TermionBackend::new</span>(<span class="ident">stdout</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">terminal</span> <span class="op">=</span> <span class="ident">Terminal::new</span>(<span class="ident">backend</span>)<span class="question-mark">?</span>;
         <span class="ident">terminal</span>.<span class="ident">hide_cursor</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">Builder</span>::<span class="ident">new</span>()
+        <span class="prelude-val">Ok</span>(<span class="ident">std::thread::Builder::new</span>()
             .<span class="ident">name</span>(<span class="string">&quot;CursesUI thread&quot;</span>.<span class="ident">to_owned</span>())
             .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">loading</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="string">&#39;◐&#39;</span>, <span class="string">&#39;◓&#39;</span>, <span class="string">&#39;◑&#39;</span>, <span class="string">&#39;◒&#39;</span>];
+                <span class="kw">let</span> <span class="ident">loading</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="string">&#39;◐&#39;</span>, <span class="string">&#39;◓&#39;</span>, <span class="string">&#39;◑&#39;</span>, <span class="string">&#39;◒&#39;</span>];
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">loading_index</span> <span class="op">=</span> <span class="number">0</span>;
-                <span class="kw">let</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">termion</span>::<span class="ident">async_stdin</span>();
+                <span class="kw">let</span> <span class="ident">stdin</span> <span class="op">=</span> <span class="ident">termion::async_stdin</span>();
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">events</span> <span class="op">=</span> <span class="ident">stdin</span>.<span class="ident">events</span>();
-                <span class="kw">while</span> <span class="op">!</span><span class="ident">stop</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>) {
+                <span class="kw">while</span> <span class="op">!</span><span class="ident">stop</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>) {
                     <span class="comment">// FIXME: handling the ^C this way inhibits the real ^C handler. Doing so the workers may</span>
                     <span class="comment">//        not be killed properly (locally and remotely).</span>
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">event</span>)) <span class="op">=</span> <span class="ident">events</span>.<span class="ident">next</span>() {
                         <span class="kw">match</span> <span class="ident">event</span> {
-                            <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;c&#39;</span>)) <span class="op">|</span> <span class="ident">Event</span>::<span class="ident">Key</span>(<span class="ident">Key</span>::<span class="ident">Ctrl</span>(<span class="string">&#39;\\&#39;</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">Event::Key</span>(<span class="ident">Key::Ctrl</span>(<span class="string">&#39;c&#39;</span>)) <span class="op">|</span> <span class="ident">Event::Key</span>(<span class="ident">Key::Ctrl</span>(<span class="string">&#39;\\&#39;</span>)) =&gt; {
                                 <span class="ident">drop</span>(<span class="ident">terminal</span>);
                                 <span class="ident">send_ctrl_c</span>();
                                 <span class="kw">return</span>;
                             }
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                            <span class="kw">_</span> =&gt; {}
                         }
                     }
                     <span class="kw">let</span> <span class="ident">loading</span> <span class="op">=</span> <span class="ident">loading</span>[<span class="ident">loading_index</span> <span class="op">%</span> <span class="ident">loading</span>.<span class="ident">len</span>()];
                     <span class="ident">terminal</span>
                         .<span class="ident">draw</span>(<span class="op">|</span><span class="ident">f</span><span class="op">|</span> {
                             <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>);
-                            <span class="ident">Drawer</span>::<span class="ident">draw</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>, <span class="ident">f</span>, <span class="ident">loading</span>, <span class="ident">loading_index</span>);
+                            <span class="ident">Drawer::draw</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>, <span class="ident">f</span>, <span class="ident">loading</span>, <span class="ident">loading_index</span>);
                         })
                         .<span class="ident">expect</span>(<span class="string">&quot;Failed to draw to the screen&quot;</span>);
                     <span class="comment">// reduce the framerate to at most `FPS`</span>
-                    <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>::<span class="ident">from_micros</span>(<span class="number">1_000_000</span> <span class="op">/</span> <span class="ident">FPS</span>));
+                    <span class="ident">std::thread::sleep</span>(<span class="ident">std::time::Duration::from_micros</span>(<span class="number">1_000_000</span> <span class="op">/</span> <span class="ident">FPS</span>));
                     <span class="ident">loading_index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                 }
             })<span class="question-mark">?</span>)
@@ -540,15 +541,15 @@
     <span class="ident">Drawer</span>: <span class="ident">CursesDrawer</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">Finish</span>: <span class="ident">FinishUI</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">fn</span> <span class="ident">on_message</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>) {
+    <span class="kw">fn</span> <span class="ident">on_message</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>) {
         <span class="self">self</span>.<span class="ident">state</span>
             .<span class="ident">write</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;UI state lock is poisoned&quot;</span>)
             .<span class="ident">apply</span>(<span class="ident">message</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::Relaxed</span>);
         <span class="self">self</span>.<span class="ident">ui_thread</span>
             .<span class="ident">take</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;UI finished more than once&quot;</span>)
@@ -556,7 +557,7 @@
             .<span class="ident">expect</span>(<span class="string">&quot;UI thread failed&quot;</span>);
         <span class="comment">// at this point the terminal should be restored</span>
         <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;State lock is poisoned&quot;</span>);
-        <span class="ident">Finish</span>::<span class="ident">print</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
+        <span class="ident">Finish::print</span>(<span class="kw-2">&amp;</span><span class="ident">state</span>);
     }
 }
 
@@ -566,9 +567,9 @@
     <span class="ident">Drawer</span>: <span class="ident">CursesDrawer</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">Finish</span>: <span class="ident">FinishUI</span><span class="op">&lt;</span><span class="ident">State</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
         <span class="comment">// tell the ui to stop and wait for it, the terminal will be released.</span>
-        <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
+        <span class="self">self</span>.<span class="ident">stop</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::Relaxed</span>);
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">is_some</span>() {
             <span class="comment">// try not to panic during unwind</span>
             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ui_thread</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">join</span>();
@@ -577,16 +578,16 @@
 }
 
 <span class="doccomment">/// Get the rect of the inner rect of a block with the borders.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">inner_block</span>(<span class="ident">rect</span>: <span class="ident">Rect</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rect</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">inner_block</span>(<span class="ident">rect</span>: <span class="ident">Rect</span>) -&gt; <span class="ident">Rect</span> {
     <span class="kw">if</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">&lt;</span> <span class="number">2</span> <span class="op">|</span><span class="op">|</span> <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">&lt;</span> <span class="number">2</span> {
-        <span class="kw">return</span> <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);
+        <span class="kw">return</span> <span class="ident">Rect::new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);
     }
-    <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">-</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">-</span> <span class="number">2</span>)
+    <span class="ident">Rect::new</span>(<span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">y</span> <span class="op">+</span> <span class="number">1</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">-</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">-</span> <span class="number">2</span>)
 }
 
 <span class="doccomment">/// Draw the compilation block.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">draw_compilations</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span><span class="op">&gt;</span>(
-    <span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>,
+    <span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>,
     <span class="ident">rect</span>: <span class="ident">Rect</span>,
     <span class="ident">compilations</span>: <span class="ident">I</span>,
     <span class="ident">loading</span>: <span class="ident">char</span>,
@@ -604,8 +605,8 @@
         .<span class="ident">iter</span>()
         .<span class="ident">sorted_by_key</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="ident">k</span>)
         .<span class="ident">flat_map</span>(<span class="op">|</span>(<span class="ident">file</span>, <span class="ident">status</span>)<span class="op">|</span> {
-            <span class="macro">vec</span><span class="macro">!</span>[
-                <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(
+            <span class="macro">vec!</span>[
+                <span class="ident">Text::raw</span>(<span class="macro">format!</span>(
                     <span class="string">&quot;{:&lt;max_len$}&quot;</span>,
                     <span class="ident">file</span>.<span class="ident">file_name</span>()
                         .<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)
@@ -613,42 +614,42 @@
                     <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">max_len</span>
                 )),
                 <span class="ident">compilation_status_text</span>(<span class="ident">status</span>, <span class="ident">loading</span>),
-                <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;\n&quot;</span>),
+                <span class="ident">Text::raw</span>(<span class="string">&quot;\n&quot;</span>),
             ]
         })
         .<span class="ident">collect</span>();
-    <span class="ident">Paragraph</span>::<span class="ident">new</span>(<span class="ident">text</span>.<span class="ident">iter</span>()).<span class="ident">wrap</span>(<span class="bool-val">false</span>).<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
+    <span class="ident">Paragraph::new</span>(<span class="ident">text</span>.<span class="ident">iter</span>()).<span class="ident">wrap</span>(<span class="bool-val">false</span>).<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
 }
 
 <span class="doccomment">/// Get the `Text` relative to the compilation status of a file.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">compilation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">CompilationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">compilation_status_text</span>(<span class="ident">status</span>: <span class="kw-2">&amp;</span><span class="ident">CompilationStatus</span>, <span class="ident">loading</span>: <span class="ident">char</span>) -&gt; <span class="ident">Text</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">status</span> {
-        <span class="ident">CompilationStatus</span>::<span class="ident">Pending</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;... &quot;</span>),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Running</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}   &quot;</span>, <span class="ident">loading</span>)),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Done</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">CompilationStatus::Pending</span> =&gt; <span class="ident">Text::raw</span>(<span class="string">&quot;... &quot;</span>),
+        <span class="ident">CompilationStatus::Running</span> =&gt; <span class="ident">Text::raw</span>(<span class="macro">format!</span>(<span class="string">&quot;{}   &quot;</span>, <span class="ident">loading</span>)),
+        <span class="ident">CompilationStatus::Done</span> { .. } =&gt; <span class="ident">Text::styled</span>(
             <span class="string">&quot;OK  &quot;</span>,
-            <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
+            <span class="ident">Style::default</span>().<span class="ident">fg</span>(<span class="ident">Color::Green</span>).<span class="ident">modifier</span>(<span class="ident">Modifier::BOLD</span>),
         ),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Failed</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(
+        <span class="ident">CompilationStatus::Failed</span> { .. } =&gt; <span class="ident">Text::styled</span>(
             <span class="string">&quot;FAIL&quot;</span>,
-            <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>),
+            <span class="ident">Style::default</span>().<span class="ident">fg</span>(<span class="ident">Color::Red</span>).<span class="ident">modifier</span>(<span class="ident">Modifier::BOLD</span>),
         ),
-        <span class="ident">CompilationStatus</span>::<span class="ident">Skipped</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot;skip&quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Yellow</span>)),
+        <span class="ident">CompilationStatus::Skipped</span> =&gt; <span class="ident">Text::styled</span>(<span class="string">&quot;skip&quot;</span>, <span class="ident">Style::default</span>().<span class="ident">fg</span>(<span class="ident">Color::Yellow</span>)),
     }
 }
 
 <span class="doccomment">/// Render a block with the specified title.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">render_block</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>, <span class="ident">title</span>: <span class="ident">S</span>) {
-    <span class="ident">Block</span>::<span class="ident">default</span>()
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">render_block</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>, <span class="ident">rect</span>: <span class="ident">Rect</span>, <span class="ident">title</span>: <span class="ident">S</span>) {
+    <span class="ident">Block::default</span>()
         .<span class="ident">title</span>(<span class="ident">title</span>.<span class="ident">as_ref</span>())
-        .<span class="ident">title_style</span>(<span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">Color</span>::<span class="ident">Blue</span>).<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>))
-        .<span class="ident">borders</span>(<span class="ident">Borders</span>::<span class="ident">ALL</span>)
+        .<span class="ident">title_style</span>(<span class="ident">Style::default</span>().<span class="ident">fg</span>(<span class="ident">Color::Blue</span>).<span class="ident">modifier</span>(<span class="ident">Modifier::BOLD</span>))
+        .<span class="ident">borders</span>(<span class="ident">Borders::ALL</span>)
         .<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
 }
 
 <span class="doccomment">/// Draw the server status block.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">render_server_status</span>(
-    <span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>,
+    <span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>,
     <span class="ident">rect</span>: <span class="ident">Rect</span>,
     <span class="ident">status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">loading</span>: <span class="ident">char</span>,
@@ -658,7 +659,7 @@
     <span class="ident">render_block</span>(<span class="ident">frame</span>, <span class="ident">rect</span>, <span class="ident">title</span>);
     <span class="ident">draw_server_status_summary</span>(
         <span class="ident">frame</span>,
-        <span class="ident">Rect</span>::<span class="ident">new</span>(
+        <span class="ident">Rect::new</span>(
             <span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">title</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u16</span> <span class="op">+</span> <span class="number">2</span>,
             <span class="ident">rect</span>.<span class="ident">y</span>,
             <span class="ident">rect</span>.<span class="ident">width</span>.<span class="ident">saturating_sub</span>(<span class="ident">title</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u16</span> <span class="op">+</span> <span class="number">2</span>),
@@ -677,7 +678,7 @@
 
 <span class="doccomment">/// Draw the summary of the server status on the border of the block.</span>
 <span class="kw">fn</span> <span class="ident">draw_server_status_summary</span>(
-    <span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>,
+    <span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>,
     <span class="ident">rect</span>: <span class="ident">Rect</span>,
     <span class="ident">status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) {
@@ -686,12 +687,12 @@
     } <span class="kw">else</span> {
         <span class="kw">return</span>;
     };
-    <span class="ident">Paragraph</span>::<span class="ident">new</span>(
+    <span class="ident">Paragraph::new</span>(
         [
-            <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot; Ready &quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>)),
-            <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} ─&quot;</span>, <span class="ident">status</span>.<span class="ident">ready_execs</span>)),
-            <span class="ident">Text</span>::<span class="ident">styled</span>(<span class="string">&quot; Waiting &quot;</span>, <span class="ident">Style</span>::<span class="ident">default</span>().<span class="ident">modifier</span>(<span class="ident">Modifier</span>::<span class="ident">BOLD</span>)),
-            <span class="ident">Text</span>::<span class="ident">raw</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} &quot;</span>, <span class="ident">status</span>.<span class="ident">waiting_execs</span>)),
+            <span class="ident">Text::styled</span>(<span class="string">&quot; Ready &quot;</span>, <span class="ident">Style::default</span>().<span class="ident">modifier</span>(<span class="ident">Modifier::BOLD</span>)),
+            <span class="ident">Text::raw</span>(<span class="macro">format!</span>(<span class="string">&quot;{} ─&quot;</span>, <span class="ident">status</span>.<span class="ident">ready_execs</span>)),
+            <span class="ident">Text::styled</span>(<span class="string">&quot; Waiting &quot;</span>, <span class="ident">Style::default</span>().<span class="ident">modifier</span>(<span class="ident">Modifier::BOLD</span>)),
+            <span class="ident">Text::raw</span>(<span class="macro">format!</span>(<span class="string">&quot;{} &quot;</span>, <span class="ident">status</span>.<span class="ident">waiting_execs</span>)),
         ]
         .<span class="ident">iter</span>(),
     )
@@ -702,7 +703,7 @@
 <span class="doccomment">/// Draw the content of the server status box, splitting the workers in 2 groups if they don&#39;t fit,</span>
 <span class="doccomment">/// and rotating them if they still don&#39;t fit.</span>
 <span class="kw">fn</span> <span class="ident">draw_server_status</span>(
-    <span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>,
+    <span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>,
     <span class="ident">rect</span>: <span class="ident">Rect</span>,
     <span class="ident">status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">loading</span>: <span class="ident">char</span>,
@@ -714,9 +715,9 @@
         <span class="kw">return</span>;
     };
     <span class="kw">let</span> <span class="ident">rects</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">status</span>.<span class="ident">connected_workers</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u16</span> <span class="op">&gt;</span> <span class="ident">rect</span>.<span class="ident">height</span> {
-        <span class="macro">vec</span><span class="macro">!</span>[
-            <span class="ident">Rect</span>::<span class="ident">new</span>(<span class="ident">rect</span>.<span class="ident">x</span>, <span class="ident">rect</span>.<span class="ident">y</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span>),
-            <span class="ident">Rect</span>::<span class="ident">new</span>(
+        <span class="macro">vec!</span>[
+            <span class="ident">Rect::new</span>(<span class="ident">rect</span>.<span class="ident">x</span>, <span class="ident">rect</span>.<span class="ident">y</span>, <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>, <span class="ident">rect</span>.<span class="ident">height</span>),
+            <span class="ident">Rect::new</span>(
                 <span class="ident">rect</span>.<span class="ident">x</span> <span class="op">+</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>,
                 <span class="ident">rect</span>.<span class="ident">y</span>,
                 <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">-</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="op">/</span> <span class="number">2</span>,
@@ -724,7 +725,7 @@
             ),
         ]
     } <span class="kw">else</span> {
-        <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">rect</span>]
+        <span class="macro">vec!</span>[<span class="ident">rect</span>]
     };
     <span class="kw">let</span> <span class="ident">workers</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">status</span>
         .<span class="ident">connected_workers</span>
@@ -736,7 +737,7 @@
         <span class="ident">rotation_index</span> <span class="op">=</span> <span class="number">0</span>;
     }
     <span class="comment">// avoid drawing if the screen is too small</span>
-    <span class="kw">if</span> <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+    <span class="kw">if</span> <span class="ident">rect</span>.<span class="ident">height</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="kw">return</span>;
     }
     <span class="kw">let</span> <span class="ident">num_workers</span> <span class="op">=</span> <span class="ident">workers</span>.<span class="ident">len</span>();
@@ -753,7 +754,7 @@
 
 <span class="doccomment">/// Draw a chunk of workers in the specified rectangle.</span>
 <span class="kw">fn</span> <span class="ident">draw_workers_chunk</span>(
-    <span class="ident">frame</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FrameType</span>,
+    <span class="ident">frame</span>: <span class="kw-2">&amp;mut</span> <span class="ident">FrameType</span>,
     <span class="ident">rect</span>: <span class="ident">Rect</span>,
     <span class="ident">workers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">ExecutorWorkerStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span>],
     <span class="ident">loading</span>: <span class="ident">char</span>,
@@ -766,14 +767,14 @@
     <span class="kw">let</span> <span class="ident">text</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Text</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">workers</span>
         .<span class="ident">iter</span>()
         .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">worker</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">worker_name</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;- {:&lt;max_len$} &quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">max_len</span>);
+            <span class="kw">let</span> <span class="ident">worker_name</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;- {:&lt;max_len$} &quot;</span>, <span class="ident">worker</span>.<span class="ident">name</span>, <span class="ident">max_len</span> <span class="op">=</span> <span class="ident">max_len</span>);
             <span class="kw">let</span> <span class="ident">worker_name_len</span> <span class="op">=</span> <span class="ident">worker_name</span>.<span class="ident">len</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texts</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="ident">worker_name</span>)];
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">texts</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Text::raw</span>(<span class="ident">worker_name</span>)];
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">job</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">worker</span>.<span class="ident">current_job</span> {
                 <span class="kw">let</span> <span class="ident">duration</span> <span class="op">=</span>
                     (<span class="ident">job</span>.<span class="ident">duration</span>.<span class="ident">elapsed</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">as_millis</span>()).<span class="ident">unwrap_or</span>(<span class="number">0</span>) <span class="kw">as</span> <span class="ident">f64</span>) <span class="op">/</span> <span class="number">1000.0</span>;
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} {} ({:.2}s)&quot;</span>, <span class="ident">loading</span>, <span class="ident">job</span>.<span class="ident">job</span>, <span class="ident">duration</span>);
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">line</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} {} ({:.2}s)&quot;</span>, <span class="ident">loading</span>, <span class="ident">job</span>.<span class="ident">job</span>, <span class="ident">duration</span>);
                 <span class="kw">if</span> <span class="ident">worker_name_len</span> <span class="op">+</span> <span class="ident">line</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">usize</span> {
                     <span class="kw">let</span> <span class="ident">extra_len</span> <span class="op">=</span> <span class="ident">worker_name_len</span> <span class="op">+</span> <span class="ident">line</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">rect</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">usize</span>;
                     <span class="comment">// there is not enough space for the job name, even with the ellipsis</span>
@@ -781,25 +782,25 @@
                         <span class="ident">line</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="ident">line</span>[<span class="number">0</span>..<span class="ident">rect</span>.<span class="ident">width</span> <span class="kw">as</span> <span class="ident">usize</span>]).<span class="ident">into</span>();
                     } <span class="kw">else</span> {
                         <span class="kw">let</span> <span class="ident">job_name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">job</span>.<span class="ident">job</span>[<span class="number">0</span>..<span class="ident">job</span>.<span class="ident">job</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">extra_len</span> <span class="op">-</span> <span class="number">3</span>];
-                        <span class="ident">line</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} {}... ({:.2}s)&quot;</span>, <span class="ident">loading</span>, <span class="ident">job_name</span>, <span class="ident">duration</span>);
+                        <span class="ident">line</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} {}... ({:.2}s)&quot;</span>, <span class="ident">loading</span>, <span class="ident">job_name</span>, <span class="ident">duration</span>);
                     }
                 }
-                <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="ident">line</span>));
+                <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text::raw</span>(<span class="ident">line</span>));
             }
-            <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text</span>::<span class="ident">raw</span>(<span class="string">&quot;\n&quot;</span>));
+            <span class="ident">texts</span>.<span class="ident">push</span>(<span class="ident">Text::raw</span>(<span class="string">&quot;\n&quot;</span>));
             <span class="ident">texts</span>
         })
         .<span class="ident">collect</span>();
-    <span class="ident">Paragraph</span>::<span class="ident">new</span>(<span class="ident">text</span>.<span class="ident">iter</span>()).<span class="ident">wrap</span>(<span class="bool-val">false</span>).<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
+    <span class="ident">Paragraph::new</span>(<span class="ident">text</span>.<span class="ident">iter</span>()).<span class="ident">wrap</span>(<span class="bool-val">false</span>).<span class="ident">render</span>(<span class="ident">frame</span>, <span class="ident">rect</span>);
 }
 
 <span class="doccomment">/// Send to the current process `SIGINT`, letting it exit gracefully.</span>
 <span class="kw">fn</span> <span class="ident">send_ctrl_c</span>() {
-    <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">id</span>();
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">signal</span>::<span class="ident">kill</span>(<span class="ident">Pid</span>::<span class="ident">from_raw</span>(<span class="ident">pid</span> <span class="kw">as</span> <span class="ident">i32</span>), <span class="ident">Signal</span>::<span class="ident">SIGINT</span>) {
-        <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;Failed to send SIGINT to {}: {}&quot;</span>, <span class="ident">pid</span>, <span class="ident">e</span>);
+    <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">std::process::id</span>();
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">signal::kill</span>(<span class="ident">Pid::from_raw</span>(<span class="ident">pid</span> <span class="kw">as</span> <span class="ident">i32</span>), <span class="ident">Signal::SIGINT</span>) {
+        <span class="macro">error!</span>(<span class="string">&quot;Failed to send SIGINT to {}: {}&quot;</span>, <span class="ident">pid</span>, <span class="ident">e</span>);
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="task_maker_format" data-search-js="../../../search-index.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="task_maker_format" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>
