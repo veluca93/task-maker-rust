@@ -104,7 +104,7 @@
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">batch::BatchTypeData</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">communication::CommunicationTypeData</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">communication</span>::{<span class="ident">CommunicationTypeData</span>, <span class="ident">UserIo</span>};
 <span class="kw">use</span> <span class="ident">task_maker_dag::FileUuid</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{<span class="ident">Checker</span>, <span class="ident">IOITask</span>, <span class="ident">ScoreManager</span>, <span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};

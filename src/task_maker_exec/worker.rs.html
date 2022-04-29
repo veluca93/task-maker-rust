@@ -664,6 +664,25 @@
 <span id="659">659</span>
 <span id="660">660</span>
 <span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
+<span id="664">664</span>
+<span id="665">665</span>
+<span id="666">666</span>
+<span id="667">667</span>
+<span id="668">668</span>
+<span id="669">669</span>
+<span id="670">670</span>
+<span id="671">671</span>
+<span id="672">672</span>
+<span id="673">673</span>
+<span id="674">674</span>
+<span id="675">675</span>
+<span id="676">676</span>
+<span id="677">677</span>
+<span id="678">678</span>
+<span id="679">679</span>
+<span id="680">680</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::fs::Permissions</span>;
 <span class="kw">use</span> <span class="ident">std::io::Read</span>;
@@ -720,7 +739,7 @@
     <span class="doccomment">/// The function that spawns an actual sandbox.</span>
     <span class="ident">sandbox_runner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SandboxRunner</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The join handle of the currently running sandbox, if any.</span>
-    <span class="ident">current_sandbox_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">current_sandbox_thread</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// An handle of the connection to the worker.</span>
@@ -834,7 +853,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">join_handle</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_sandbox_thread</span>.<span class="ident">take</span>() {
             <span class="ident">join_handle</span>
                 .<span class="ident">join</span>()
-                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Sandbox thread panicked: {:?}&quot;</span>, <span class="ident">e</span>))<span class="question-mark">?</span>
+                .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Sandbox thread panicked: {:?}&quot;</span>, <span class="ident">e</span>))
                 .<span class="ident">context</span>(<span class="string">&quot;Sandbox thread failed&quot;</span>)<span class="question-mark">?</span>;
         }
         <span class="prelude-val">Ok</span>(())
@@ -976,7 +995,7 @@
     <span class="ident">sender</span>: <span class="kw-2">&amp;</span><span class="ident">ChannelSender</span><span class="op">&lt;</span><span class="ident">WorkerClientMessage</span><span class="op">&gt;</span>,
     <span class="ident">sandbox_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
     <span class="ident">runner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">SandboxRunner</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">job</span>, <span class="ident">sandboxes</span>, <span class="ident">fifo_dir</span>, <span class="ident">server_asked_files</span>) <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_job</span> <span class="op">=</span> <span class="ident">current_job</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">current_job</span>
@@ -1023,11 +1042,9 @@
         (<span class="ident">job</span>, <span class="ident">boxes</span>, <span class="ident">fifo_dir</span>, <span class="ident">receiver</span>)
     };
     <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">sender</span>.<span class="ident">clone</span>();
+    <span class="kw">let</span> <span class="ident">description</span> <span class="op">=</span> <span class="ident">job</span>.<span class="ident">group</span>.<span class="ident">description</span>.<span class="ident">clone</span>();
     <span class="kw">let</span> <span class="ident">join_handle</span> <span class="op">=</span> <span class="ident">std::thread::Builder::new</span>()
-        .<span class="ident">name</span>(<span class="macro">format!</span>(
-            <span class="string">&quot;Sandbox group manager for {}&quot;</span>,
-            <span class="ident">job</span>.<span class="ident">group</span>.<span class="ident">description</span>
-        ))
+        .<span class="ident">name</span>(<span class="macro">format!</span>(<span class="string">&quot;Sandbox group manager for {}&quot;</span>, <span class="ident">description</span>))
         .<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
             <span class="ident">sandbox_group_manager</span>(
                 <span class="ident">current_job</span>,
@@ -1038,6 +1055,9 @@
                 <span class="ident">runner</span>,
                 <span class="ident">fifo_dir</span>,
             )
+            .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Sandbox group for {} failed&quot;</span>, <span class="ident">description</span>))
+            <span class="comment">// FIXME: find a better way to propagate the error to the server</span>
+            .<span class="ident">unwrap</span>();
         })<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">join_handle</span>)
 }
@@ -1073,10 +1093,14 @@
             },
         };
         <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">job</span>.<span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>];
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">compute_execution_result</span>(<span class="ident">exec</span>, <span class="ident">result</span>, <span class="kw-2">&amp;</span><span class="ident">sandbox</span>)
-            .<span class="ident">context</span>(<span class="string">&quot;Cannot compute execution result&quot;</span>)<span class="question-mark">?</span>;
-        <span class="ident">get_result_outputs</span>(<span class="ident">exec</span>, <span class="kw-2">&amp;</span><span class="ident">sandbox</span>, <span class="kw-2">&amp;mut</span> <span class="ident">outputs</span>, <span class="kw-2">&amp;mut</span> <span class="ident">output_paths</span>)
-            .<span class="ident">context</span>(<span class="string">&quot;Cannot get result outputs&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">compute_execution_result</span>(<span class="ident">exec</span>, <span class="ident">result</span>, <span class="kw-2">&amp;</span><span class="ident">sandbox</span>);
+        <span class="ident">get_result_outputs</span>(
+            <span class="ident">exec</span>,
+            <span class="kw-2">&amp;</span><span class="ident">sandbox</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">outputs</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">output_paths</span>,
+            <span class="kw-2">&amp;mut</span> <span class="ident">result</span>.<span class="ident">status</span>,
+        );
 
         <span class="ident">results</span>[<span class="number">0</span>] <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>);
     <span class="comment">// this is the complex case: more than an execution (therefore more than a sandbox)</span>
@@ -1108,8 +1132,7 @@
                     <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">job</span>.<span class="ident">group</span>.<span class="ident">executions</span>[<span class="ident">index</span>];
                     <span class="kw">let</span> <span class="ident">sandbox</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">sandboxes</span>[<span class="ident">index</span>];
 
-                    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">compute_execution_result</span>(<span class="ident">exec</span>, <span class="ident">result</span>, <span class="ident">sandbox</span>)
-                        .<span class="ident">context</span>(<span class="string">&quot;Cannot compute execution result&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">compute_execution_result</span>(<span class="ident">exec</span>, <span class="ident">result</span>, <span class="ident">sandbox</span>);
                     <span class="comment">// if the process didn&#39;t exit successfully, kill the remaining sandboxes</span>
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">result</span>.<span class="ident">status</span>.<span class="ident">is_success</span>() {
                         <span class="kw">for</span> (<span class="ident">i</span>, (<span class="ident">res</span>, <span class="ident">sandbox</span>)) <span class="kw">in</span> <span class="ident">results</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">sandboxes</span>.<span class="ident">iter</span>()).<span class="ident">enumerate</span>()
@@ -1121,8 +1144,13 @@
                         }
                     }
 
-                    <span class="ident">get_result_outputs</span>(<span class="ident">exec</span>, <span class="ident">sandbox</span>, <span class="kw-2">&amp;mut</span> <span class="ident">outputs</span>, <span class="kw-2">&amp;mut</span> <span class="ident">output_paths</span>)
-                        .<span class="ident">context</span>(<span class="string">&quot;Cannot get result outputs&quot;</span>)<span class="question-mark">?</span>;
+                    <span class="ident">get_result_outputs</span>(
+                        <span class="ident">exec</span>,
+                        <span class="ident">sandbox</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="ident">outputs</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="ident">output_paths</span>,
+                        <span class="kw-2">&amp;mut</span> <span class="ident">result</span>.<span class="ident">status</span>,
+                    );
 
                     <span class="ident">results</span>[<span class="ident">index</span>] <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">result</span>);
                     <span class="ident">missing</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
@@ -1217,29 +1245,44 @@
     <span class="ident">execution</span>: <span class="kw-2">&amp;</span><span class="ident">Execution</span>,
     <span class="ident">result</span>: <span class="ident">SandboxResult</span>,
     <span class="ident">sandbox</span>: <span class="kw-2">&amp;</span><span class="ident">Sandbox</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ExecutionResult</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">ExecutionResult</span> {
     <span class="kw">match</span> <span class="ident">result</span> {
         <span class="ident">SandboxResult::Success</span> {
             <span class="ident">exit_status</span>,
             <span class="ident">signal</span>,
             <span class="ident">resources</span>,
             <span class="ident">was_killed</span>,
-        } =&gt; <span class="prelude-val">Ok</span>(<span class="ident">ExecutionResult</span> {
-            <span class="ident">status</span>: <span class="ident">execution</span>.<span class="ident">status</span>(<span class="ident">exit_status</span>, <span class="ident">signal</span>, <span class="kw-2">&amp;</span><span class="ident">resources</span>),
-            <span class="ident">resources</span>,
-            <span class="ident">stdout</span>: <span class="ident">capture_stream</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox</span>.<span class="ident">stdout_path</span>(), <span class="ident">execution</span>.<span class="ident">capture_stdout</span>)<span class="question-mark">?</span>,
-            <span class="ident">was_killed</span>,
-            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
-            <span class="ident">stderr</span>: <span class="ident">capture_stream</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox</span>.<span class="ident">stderr_path</span>(), <span class="ident">execution</span>.<span class="ident">capture_stderr</span>)<span class="question-mark">?</span>,
-        }),
-        <span class="ident">SandboxResult::Failed</span> { <span class="ident">error</span> } =&gt; <span class="prelude-val">Ok</span>(<span class="ident">ExecutionResult</span> {
+        } =&gt; {
+            <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">capture_stream</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox</span>.<span class="ident">stdout_path</span>(), <span class="ident">execution</span>.<span class="ident">capture_stdout</span>);
+            <span class="kw">let</span> <span class="ident">stderr</span> <span class="op">=</span> <span class="ident">capture_stream</span>(<span class="kw-2">&amp;</span><span class="ident">sandbox</span>.<span class="ident">stderr_path</span>(), <span class="ident">execution</span>.<span class="ident">capture_stderr</span>);
+            <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">stdout</span>, <span class="kw-2">&amp;</span><span class="ident">stderr</span>) {
+                (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="prelude-val">Ok</span>(<span class="kw">_</span>)) =&gt; <span class="ident">execution</span>.<span class="ident">status</span>(<span class="ident">exit_status</span>, <span class="ident">signal</span>, <span class="kw-2">&amp;</span><span class="ident">resources</span>),
+                (<span class="prelude-val">Err</span>(<span class="ident">err</span>), <span class="kw">_</span>) =&gt; <span class="ident">ExecutionStatus::internal_error</span>(<span class="macro">format!</span>(
+                    <span class="string">&quot;Failed to read stdout file: {:?}&quot;</span>,
+                    <span class="ident">err</span>
+                )),
+                (<span class="kw">_</span>, <span class="prelude-val">Err</span>(<span class="ident">err</span>)) =&gt; <span class="ident">ExecutionStatus::internal_error</span>(<span class="macro">format!</span>(
+                    <span class="string">&quot;Failed to read stderr file: {:?}&quot;</span>,
+                    <span class="ident">err</span>
+                )),
+            };
+            <span class="ident">ExecutionResult</span> {
+                <span class="ident">status</span>,
+                <span class="ident">resources</span>,
+                <span class="ident">stdout</span>: <span class="ident">stdout</span>.<span class="ident">ok</span>().<span class="ident">unwrap_or_default</span>(),
+                <span class="ident">was_killed</span>,
+                <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
+                <span class="ident">stderr</span>: <span class="ident">stderr</span>.<span class="ident">ok</span>().<span class="ident">unwrap_or_default</span>(),
+            }
+        }
+        <span class="ident">SandboxResult::Failed</span> { <span class="ident">error</span> } =&gt; <span class="ident">ExecutionResult</span> {
             <span class="ident">status</span>: <span class="ident">ExecutionStatus::InternalError</span>(<span class="ident">error</span>),
             <span class="ident">resources</span>: <span class="ident">ExecutionResourcesUsage::default</span>(),
             <span class="ident">stdout</span>: <span class="prelude-val">None</span>,
             <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
             <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
             <span class="ident">stderr</span>: <span class="prelude-val">None</span>,
-        }),
+        },
     }
 }
 
@@ -1249,45 +1292,40 @@
     <span class="ident">sandbox</span>: <span class="kw-2">&amp;</span><span class="ident">Sandbox</span>,
     <span class="ident">outputs</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileStoreKey</span><span class="op">&gt;</span>,
     <span class="ident">output_paths</span>: <span class="kw-2">&amp;mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="ident">status</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ExecutionStatus</span>,
+) {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">add_file</span> <span class="op">=</span> <span class="op">|</span><span class="ident">file</span>: <span class="ident">FileUuid</span>, <span class="ident">path</span>: <span class="ident">PathBuf</span><span class="op">|</span> {
+        <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() {
+            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">FileStoreKey::from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>);
+            <span class="kw">match</span> <span class="ident">key</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">key</span>) =&gt; {
+                    <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">file</span>, <span class="ident">key</span>);
+                    <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">file</span>, <span class="ident">path</span>);
+                }
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                    <span class="kw-2">*</span><span class="ident">status</span> <span class="op">=</span> <span class="ident">ExecutionStatus::internal_error</span>(<span class="macro">format!</span>(
+                        <span class="string">&quot;Failed to get store key for {} at {}: {:?}&quot;</span>,
+                        <span class="ident">file</span>,
+                        <span class="ident">path</span>.<span class="ident">display</span>(),
+                        <span class="ident">e</span>
+                    ));
+                }
+            }
+        } <span class="kw">else</span> {
+            <span class="ident">outputs</span>.<span class="ident">insert</span>(<span class="ident">file</span>, <span class="ident">FileStoreKey::from_content</span>(<span class="kw-2">&amp;</span>[]));
+            <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">file</span>, <span class="string">&quot;/dev/null&quot;</span>.<span class="ident">into</span>());
+        }
+    };
+
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdout</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">stdout</span> {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">sandbox</span>.<span class="ident">stdout_path</span>();
-        <span class="ident">outputs</span>.<span class="ident">insert</span>(
-            <span class="ident">stdout</span>.<span class="ident">uuid</span>,
-            <span class="ident">FileStoreKey::from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">context</span>(<span class="string">&quot;Failed to get store key for stdout&quot;</span>)<span class="question-mark">?</span>,
-        );
-        <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>, <span class="ident">path</span>);
+        <span class="ident">add_file</span>(<span class="ident">stdout</span>.<span class="ident">uuid</span>, <span class="ident">sandbox</span>.<span class="ident">stdout_path</span>());
     }
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stderr</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">stderr</span> {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">sandbox</span>.<span class="ident">stderr_path</span>();
-        <span class="ident">outputs</span>.<span class="ident">insert</span>(
-            <span class="ident">stderr</span>.<span class="ident">uuid</span>,
-            <span class="ident">FileStoreKey::from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">context</span>(<span class="string">&quot;Failed to get store key for stderr&quot;</span>)<span class="question-mark">?</span>,
-        );
-        <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">stderr</span>.<span class="ident">uuid</span>, <span class="ident">path</span>);
+        <span class="ident">add_file</span>(<span class="ident">stderr</span>.<span class="ident">uuid</span>, <span class="ident">sandbox</span>.<span class="ident">stderr_path</span>());
     }
     <span class="kw">for</span> (<span class="ident">path</span>, <span class="ident">file</span>) <span class="kw">in</span> <span class="ident">exec</span>.<span class="ident">outputs</span>.<span class="ident">iter</span>() {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">sandbox</span>.<span class="ident">output_path</span>(<span class="ident">path</span>);
-        <span class="comment">// the sandbox process may want to remove a file, consider missing files as empty</span>
-        <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() {
-            <span class="ident">outputs</span>.<span class="ident">insert</span>(
-                <span class="ident">file</span>.<span class="ident">uuid</span>,
-                <span class="ident">FileStoreKey::from_file</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
-                    <span class="macro">format!</span>(<span class="string">&quot;Failed to get store key for output file {}&quot;</span>, <span class="ident">path</span>.<span class="ident">display</span>())
-                })<span class="question-mark">?</span>,
-            );
-            <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">file</span>.<span class="ident">uuid</span>, <span class="ident">path</span>.<span class="ident">clone</span>());
-        } <span class="kw">else</span> {
-            <span class="comment">// FIXME: /dev/null may not be used</span>
-            <span class="ident">outputs</span>.<span class="ident">insert</span>(
-                <span class="ident">file</span>.<span class="ident">uuid</span>,
-                <span class="ident">FileStoreKey::from_file</span>(<span class="string">&quot;/dev/null&quot;</span>)
-                    .<span class="ident">context</span>(<span class="string">&quot;Failed to get store key of /dev/null&quot;</span>)<span class="question-mark">?</span>,
-            );
-            <span class="ident">output_paths</span>.<span class="ident">insert</span>(<span class="ident">file</span>.<span class="ident">uuid</span>, <span class="string">&quot;/dev/null&quot;</span>.<span class="ident">into</span>());
-        }
+        <span class="ident">add_file</span>(<span class="ident">file</span>.<span class="ident">uuid</span>, <span class="ident">sandbox</span>.<span class="ident">output_path</span>(<span class="ident">path</span>));
     }
-    <span class="prelude-val">Ok</span>(())
 }
 
 <span class="doccomment">/// If `count` is `None` do not read anything, otherwise read at most that number of bytes from the</span>

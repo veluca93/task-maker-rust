@@ -192,11 +192,92 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ExecutionOpt</span>, <span class="ident">FindTaskOpt</span>, <span class="ident">LoggerOpt</span>, <span class="ident">StorageOpt</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ExecutionOpt</span>, <span class="ident">FilterOpt</span>, <span class="ident">FindTaskOpt</span>, <span class="ident">LoggerOpt</span>, <span class="ident">StorageOpt</span>, <span class="ident">UIOpt</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">structopt</span>(
@@ -232,8 +313,12 @@
     <span class="ident">Sandbox</span>(<span class="ident">SandboxOpt</span>),
     <span class="doccomment">/// Obtain the information about a task.</span>
     <span class="ident">TaskInfo</span>(<span class="ident">TaskInfoOpt</span>),
-    <span class="doccomment">/// Compile just the booklet for a task or a context.</span>
+    <span class="doccomment">/// Compile just the booklet for a task or a contest.</span>
     <span class="ident">Booklet</span>(<span class="ident">BookletOpt</span>),
+    <span class="doccomment">/// Fuzz the checker of a task.</span>
+    <span class="ident">FuzzChecker</span>(<span class="ident">FuzzCheckerOpt</span>),
+    <span class="doccomment">/// Add the @check comments to the solutions.</span>
+    <span class="ident">AddSolutionChecks</span>(<span class="ident">AddSolutionChecksOpt</span>),
     <span class="doccomment">/// Run the sandbox instead of the normal task-maker.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This option is left as undocumented as it&#39;s not part of the public API.</span>
@@ -369,17 +454,94 @@
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;max-depth&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_depth</span>: <span class="ident">u32</span>,
 
-    <span class="doccomment">/// Which UI to use, available UIs are: print, raw, curses, json.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that the JSON api is not stable yet.</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;ui&quot;</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;curses&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">ui</span>: <span class="ident">task_maker_format::ui::UIType</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">ui</span>: <span class="ident">UIOpt</span>,
 
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
     <span class="kw">pub</span> <span class="ident">execution</span>: <span class="ident">ExecutionOpt</span>,
 
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
     <span class="kw">pub</span> <span class="ident">storage</span>: <span class="ident">StorageOpt</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FuzzCheckerOpt</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">find_task</span>: <span class="ident">FindTaskOpt</span>,
+
+    <span class="doccomment">/// Where to store fuzzing data.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The path is relative to the task directory.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;fuzz&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">fuzz_dir</span>: <span class="ident">PathBuf</span>,
+
+    <span class="doccomment">/// Additional sanitizers to use.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Comma separated list of sanitizers to use.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;address,undefined&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">sanitizers</span>: <span class="ident">String</span>,
+
+    <span class="doccomment">/// List of additional arguments to pass to the compiler.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If nothing is listed here, -O2 and -g are passed.</span>
+    <span class="kw">pub</span> <span class="ident">extra_args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Number of fuzzing process to spawn.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Defaults to the number of cores.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">short</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">jobs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
+
+    <span class="doccomment">/// Maximum number of seconds the checker can run.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the checker takes longer than this, the fuzzer fails and the corresponding file is</span>
+    <span class="doccomment">/// emitted.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">checker_timeout</span>: <span class="ident">usize</span>,
+
+    <span class="doccomment">/// Maximum fuzzing time in seconds.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Halt after fuzzing for this amount of time. Zero should not be used.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;60&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">max_time</span>: <span class="ident">usize</span>,
+
+    <span class="doccomment">/// Don&#39;t print the fuzzer output to the console, but redirect it to a file.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">quiet</span>: <span class="ident">bool</span>,
+
+    <span class="doccomment">/// Don&#39;t run the evaluation for building the output files.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">no_build</span>: <span class="ident">bool</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">execution</span>: <span class="ident">ExecutionOpt</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">storage</span>: <span class="ident">StorageOpt</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">StructOpt</span>, <span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AddSolutionChecksOpt</span> {
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">find_task</span>: <span class="ident">FindTaskOpt</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">ui</span>: <span class="ident">UIOpt</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">storage</span>: <span class="ident">StorageOpt</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">FilterOpt</span>,
+
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">flatten</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">execution</span>: <span class="ident">ExecutionOpt</span>,
+
+    <span class="doccomment">/// Write the @check directly to the solution files.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Warning: while this is generally safe, make sure to have a way of reverting the changes.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>, <span class="ident">short</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">in_place</span>: <span class="ident">bool</span>,
 }
 </code></pre></div>
 </section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="task_maker_rust" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>

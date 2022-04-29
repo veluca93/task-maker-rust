@@ -183,18 +183,33 @@
 <span id="178">178</span>
 <span id="179">179</span>
 <span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">Execution</span>, <span class="ident">ExecutionCommand</span>, <span class="ident">ExecutionStatus</span>, <span class="ident">FileUuid</span>, <span class="ident">Priority</span>};
+<span class="kw">use</span> <span class="ident">task_maker_diagnostics::Diagnostic</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::bind_exec_callbacks</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>, <span class="ident">EVALUATION_PRIORITY</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>, <span class="ident">EVALUATION_PRIORITY</span>, <span class="ident">STDERR_CONTENT_LENGTH</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UIMessage</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">bind_exec_callbacks</span>, <span class="ident">UISender</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">Tag</span>};
 
 <span class="doccomment">/// Which tool to use to compute the score on a testcase given the input file, the _correct_ output</span>
@@ -264,7 +279,7 @@
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">source_file</span>
                     .<span class="ident">execute</span>(
                         <span class="ident">eval</span>,
-                        <span class="ident">description</span>,
+                        <span class="kw-2">&amp;</span><span class="ident">description</span>,
                         <span class="macro">vec!</span>[<span class="string">&quot;input&quot;</span>, <span class="string">&quot;correct_output&quot;</span>, <span class="string">&quot;test_output&quot;</span>],
                     )
                     .<span class="ident">context</span>(<span class="string">&quot;Failed to execute checker source file&quot;</span>)<span class="question-mark">?</span>;
@@ -273,8 +288,9 @@
                     .<span class="ident">input</span>(<span class="ident">test_output</span>, <span class="string">&quot;test_output&quot;</span>, <span class="bool-val">false</span>)
                     .<span class="ident">tag</span>(<span class="ident">Tag::Checking</span>.<span class="ident">into</span>())
                     .<span class="ident">capture_stdout</span>(<span class="number">128</span>)
-                    .<span class="ident">capture_stderr</span>(<span class="number">1024</span>)
+                    .<span class="ident">capture_stderr</span>(<span class="ident">STDERR_CONTENT_LENGTH</span>)
                     .<span class="ident">priority</span>(<span class="ident">EVALUATION_PRIORITY</span> <span class="op">-</span> <span class="ident">testcase_id</span> <span class="kw">as</span> <span class="ident">Priority</span>);
+                <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">sender</span>.<span class="ident">clone</span>();
                 <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">res</span>
                         .<span class="ident">stdout</span>
@@ -285,19 +301,31 @@
                     <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">stderr</span>).<span class="ident">trim</span>().<span class="ident">to_string</span>();
                     <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::translate_checker_message</span>(<span class="ident">message</span>);
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">res</span>.<span class="ident">status</span>.<span class="ident">is_success</span>() {
-                        <span class="macro">bail!</span>(
-                            <span class="string">&quot;Checker failed exiting with {:?}, stderr: {}&quot;</span>,
-                            <span class="ident">res</span>.<span class="ident">status</span>,
-                            <span class="ident">message</span>
-                        );
+                        <span class="kw">let</span> <span class="ident">diagnostic</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>(<span class="macro">format!</span>(
+                            <span class="string">&quot;Checker failed while computing a score for testcase {}&quot;</span>,
+                            <span class="ident">testcase_id</span>
+                        ))
+                        .<span class="ident">with_note</span>(<span class="ident">description</span>)
+                        .<span class="ident">with_help</span>(<span class="macro">format!</span>(<span class="string">&quot;The checker crashed with: {:?}&quot;</span>, <span class="ident">res</span>.<span class="ident">status</span>))
+                        .<span class="ident">with_help_attachment</span>(<span class="ident">stderr</span>);
+                        <span class="ident">sender</span>.<span class="ident">add_diagnostic</span>(<span class="ident">diagnostic</span>)<span class="question-mark">?</span>;
+                        <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
                     }
                     <span class="kw">let</span> <span class="ident">score</span> <span class="op">=</span> <span class="ident">String::from_utf8_lossy</span>(<span class="kw-2">&amp;</span><span class="ident">stdout</span>);
-                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="ident">score</span>.<span class="ident">trim</span>().<span class="ident">parse</span>().<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">format!</span>(
-                            <span class="string">&quot;Invalid score {:?} from checker (stderr: {})&quot;</span>,
-                            <span class="ident">score</span>, <span class="ident">message</span>
-                        )
-                    })<span class="question-mark">?</span>;
+                    <span class="kw">let</span> <span class="ident">score</span>: <span class="ident">f64</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">score</span>.<span class="ident">trim</span>().<span class="ident">parse</span>() {
+                        <span class="prelude-val">Ok</span>(<span class="ident">score</span>) =&gt; <span class="ident">score</span>,
+                        <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; {
+                            <span class="kw">let</span> <span class="ident">diagnostic</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>(<span class="macro">format!</span>(
+                                <span class="string">&quot;Checker returned an invalid score ({:?}) for testcase {}&quot;</span>,
+                                <span class="ident">score</span>, <span class="ident">testcase_id</span>
+                            ))
+                            .<span class="ident">with_note</span>(<span class="ident">description</span>)
+                            .<span class="ident">with_help</span>(<span class="macro">format!</span>(<span class="string">&quot;The parse error is: {:?}&quot;</span>, <span class="ident">e</span>))
+                            .<span class="ident">with_help_attachment</span>(<span class="ident">stdout</span>);
+                            <span class="ident">sender</span>.<span class="ident">add_diagnostic</span>(<span class="ident">diagnostic</span>)<span class="question-mark">?</span>;
+                            <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
+                        }
+                    };
                     <span class="ident">callback</span>(<span class="ident">score</span>, <span class="ident">message</span>)
                 });
                 <span class="prelude-val">Ok</span>(<span class="ident">exec</span>)
@@ -354,7 +382,7 @@
 
     <span class="doccomment">/// The checker may return a message to be translated. This function maps the message</span>
     <span class="doccomment">/// placeholders to actual messages.</span>
-    <span class="kw">fn</span> <span class="ident">translate_checker_message</span>(<span class="ident">message</span>: <span class="ident">String</span>) -&gt; <span class="ident">String</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">translate_checker_message</span>(<span class="ident">message</span>: <span class="ident">String</span>) -&gt; <span class="ident">String</span> {
         <span class="kw">match</span> <span class="ident">message</span>.<span class="ident">as_str</span>() {
             <span class="string">&quot;translate:success&quot;</span> =&gt; <span class="string">&quot;Output is correct&quot;</span>.<span class="ident">into</span>(),
             <span class="string">&quot;translate:partial&quot;</span> =&gt; <span class="string">&quot;Output is partially correct&quot;</span>.<span class="ident">into</span>(),

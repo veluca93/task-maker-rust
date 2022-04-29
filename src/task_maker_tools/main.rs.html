@@ -35,11 +35,17 @@
 <span id="30">30</span>
 <span id="31">31</span>
 <span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_rust::error::NiceError</span>;
+<span class="kw">use</span> <span class="ident">task_maker_rust::tools::add_solution_checks::main_add_solution_checks</span>;
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::booklet::main_booklet</span>;
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::clear::main_clear</span>;
+<span class="kw">use</span> <span class="ident">task_maker_rust::tools::fuzz_checker::main_fuzz_checker</span>;
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::gen_autocompletion::main_get_autocompletion</span>;
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::opt</span>::{<span class="ident">Opt</span>, <span class="ident">Tool</span>};
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::reset::main_reset</span>;
@@ -50,10 +56,10 @@
 <span class="kw">use</span> <span class="ident">task_maker_rust::tools::worker::main_worker</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="ident">Opt::from_args</span>();
-    <span class="ident">opt</span>.<span class="ident">logger</span>.<span class="ident">enable_log</span>();
+    <span class="kw">let</span> <span class="ident">base_opt</span> <span class="op">=</span> <span class="ident">Opt::from_args</span>();
+    <span class="ident">base_opt</span>.<span class="ident">logger</span>.<span class="ident">enable_log</span>();
 
-    <span class="kw">match</span> <span class="ident">opt</span>.<span class="ident">tool</span> {
+    <span class="kw">match</span> <span class="ident">base_opt</span>.<span class="ident">tool</span> {
         <span class="ident">Tool::Clear</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_clear</span>(<span class="ident">opt</span>),
         <span class="ident">Tool::GenAutocompletion</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_get_autocompletion</span>(<span class="ident">opt</span>),
         <span class="ident">Tool::Server</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_server</span>(<span class="ident">opt</span>),
@@ -62,7 +68,9 @@
         <span class="ident">Tool::Reset</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_reset</span>(<span class="ident">opt</span>),
         <span class="ident">Tool::Sandbox</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_sandbox</span>(<span class="ident">opt</span>),
         <span class="ident">Tool::TaskInfo</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_task_info</span>(<span class="ident">opt</span>),
-        <span class="ident">Tool::Booklet</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_booklet</span>(<span class="ident">opt</span>),
+        <span class="ident">Tool::Booklet</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_booklet</span>(<span class="ident">opt</span>, <span class="ident">base_opt</span>.<span class="ident">logger</span>),
+        <span class="ident">Tool::FuzzChecker</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_fuzz_checker</span>(<span class="ident">opt</span>),
+        <span class="ident">Tool::AddSolutionChecks</span>(<span class="ident">opt</span>) =&gt; <span class="ident">main_add_solution_checks</span>(<span class="ident">opt</span>, <span class="ident">base_opt</span>.<span class="ident">logger</span>),
         <span class="ident">Tool::InternalSandbox</span> =&gt; <span class="kw">return</span> <span class="ident">task_maker_rust::main_sandbox</span>(),
     }
     .<span class="ident">nice_unwrap</span>()

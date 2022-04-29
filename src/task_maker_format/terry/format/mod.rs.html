@@ -91,7 +91,7 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::terry::dag</span>::{<span class="ident">Checker</span>, <span class="ident">InputGenerator</span>, <span class="ident">InputValidator</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::terry::sanity_checks::get_sanity_checks</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::terry::TerryTask</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">find_source_file</span>, <span class="ident">EvaluationConfig</span>, <span class="ident">SourceFile</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">find_source_file</span>, <span class="ident">EvaluationConfig</span>, <span class="ident">SourceFile</span>, <span class="ident">WriteBinTo</span>};
 
 <span class="macro">lazy_static!</span> {
     <span class="doccomment">/// The extension suffix for the current platform.</span>
@@ -148,7 +148,7 @@
         <span class="macro">vec!</span>[<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;managers/{}.*&quot;</span>, <span class="ident">manager</span>)],
         <span class="ident">task_dir</span>,
         <span class="prelude-val">None</span>,
-        <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="macro">format!</span>(<span class="string">&quot;managers/{}.{}&quot;</span>, <span class="ident">manager</span>, <span class="kw-2">*</span><span class="ident">EXE_EXTENSION</span>))),
+        <span class="ident">WriteBinTo::path</span>(<span class="macro">format!</span>(<span class="string">&quot;managers/{}.{}&quot;</span>, <span class="ident">manager</span>, <span class="kw-2">*</span><span class="ident">EXE_EXTENSION</span>)),
     );
     <span class="kw">if</span> <span class="ident">managers</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">1</span> {
         <span class="kw">let</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">managers</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">name</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();

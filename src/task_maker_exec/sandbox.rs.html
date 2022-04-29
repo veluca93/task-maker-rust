@@ -628,6 +628,44 @@
 <span id="623">623</span>
 <span id="624">624</span>
 <span id="625">625</span>
+<span id="626">626</span>
+<span id="627">627</span>
+<span id="628">628</span>
+<span id="629">629</span>
+<span id="630">630</span>
+<span id="631">631</span>
+<span id="632">632</span>
+<span id="633">633</span>
+<span id="634">634</span>
+<span id="635">635</span>
+<span id="636">636</span>
+<span id="637">637</span>
+<span id="638">638</span>
+<span id="639">639</span>
+<span id="640">640</span>
+<span id="641">641</span>
+<span id="642">642</span>
+<span id="643">643</span>
+<span id="644">644</span>
+<span id="645">645</span>
+<span id="646">646</span>
+<span id="647">647</span>
+<span id="648">648</span>
+<span id="649">649</span>
+<span id="650">650</span>
+<span id="651">651</span>
+<span id="652">652</span>
+<span id="653">653</span>
+<span id="654">654</span>
+<span id="655">655</span>
+<span id="656">656</span>
+<span id="657">657</span>
+<span id="658">658</span>
+<span id="659">659</span>
+<span id="660">660</span>
+<span id="661">661</span>
+<span id="662">662</span>
+<span id="663">663</span>
 </pre><pre class="rust"><code><span class="doccomment">//! This mod contains the sandbox-related code. It interfaces with tabox creating the sandbox setup</span>
 <span class="doccomment">//! (directories and configuration) for an execution.</span>
 
@@ -885,19 +923,51 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Path of the file where the standard output is written to.</span>
+    <span class="doccomment">/// Path of the file where the standard output is written to (in the host).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PathBuf</span> {
-        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>)
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">sandbox_root</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">path</span>();
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">execution</span>.<span class="ident">stdout_redirect_path</span> {
+            <span class="ident">sandbox_root</span>.<span class="ident">join</span>(<span class="ident">path</span>)
+        } <span class="kw">else</span> {
+            <span class="ident">sandbox_root</span>.<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>)
+        }
     }
 
-    <span class="doccomment">/// Path of the file where the standard error is written to.</span>
+    <span class="doccomment">/// Path of the file where the standard error is written to (in the host).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">PathBuf</span> {
-        <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>)
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">sandbox_root</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">path</span>();
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">execution</span>.<span class="ident">stderr_redirect_path</span> {
+            <span class="ident">sandbox_root</span>.<span class="ident">join</span>(<span class="ident">path</span>)
+        } <span class="kw">else</span> {
+            <span class="ident">sandbox_root</span>.<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>)
+        }
     }
 
-    <span class="doccomment">/// Path of the file where that output file is written to.</span>
+    <span class="doccomment">/// Path of the file where that output file is written to (in the host).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">PathBuf</span> {
         <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>().<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>).<span class="ident">join</span>(<span class="ident">output</span>)
+    }
+
+    <span class="doccomment">/// Find the path in the host corresponding to the path in the sandbox provided.</span>
+    <span class="kw">fn</span> <span class="ident">sandbox_to_host_path</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">path_in_sandbox</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
+        <span class="ident">boxdir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
+        <span class="ident">fifo_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
+    ) -&gt; <span class="ident">PathBuf</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">fifo_dir</span>) <span class="op">=</span> <span class="ident">fifo_dir</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">path_in_sandbox</span>.<span class="ident">strip_prefix</span>(<span class="ident">FIFO_SANDBOX_DIR</span>) {
+                <span class="kw">return</span> <span class="ident">fifo_dir</span>.<span class="ident">join</span>(<span class="ident">path</span>);
+            }
+        }
+        <span class="kw">match</span> <span class="ident">path_in_sandbox</span>.<span class="ident">strip_prefix</span>(<span class="string">&quot;/&quot;</span>) {
+            <span class="comment">// Absolute path -&gt; go the box root</span>
+            <span class="prelude-val">Ok</span>(<span class="ident">path</span>) =&gt; <span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="ident">path</span>),
+            <span class="comment">// Relative path -&gt; go to the /box directory</span>
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="self">self</span>.<span class="ident">box_root</span>(<span class="ident">boxdir</span>).<span class="ident">join</span>(<span class="ident">path_in_sandbox</span>),
+        }
     }
 
     <span class="doccomment">/// Directory to use inside the sandbox as the root for the evaluation.</span>
@@ -931,17 +1001,23 @@
         <span class="comment">// the box directory must be writable otherwise the output files cannot be written</span>
         <span class="ident">config</span>.<span class="ident">mount</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;box&quot;</span>), <span class="kw-2">&amp;</span><span class="ident">box_root</span>, <span class="bool-val">true</span>);
         <span class="ident">config</span>.<span class="ident">env</span>(<span class="string">&quot;PATH&quot;</span>, <span class="ident">std::env::var</span>(<span class="string">&quot;PATH&quot;</span>).<span class="ident">unwrap_or_default</span>());
-        <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stdin</span>.<span class="ident">is_some</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">execution</span>.<span class="ident">stdin_redirect_path</span> {
+            <span class="ident">config</span>.<span class="ident">stdin</span>(<span class="self">self</span>.<span class="ident">sandbox_to_host_path</span>(<span class="ident">path</span>, <span class="ident">boxdir</span>, <span class="ident">fifo_dir</span>.<span class="ident">as_deref</span>()));
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stdin</span>.<span class="ident">is_some</span>() {
             <span class="ident">config</span>.<span class="ident">stdin</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdin&quot;</span>));
         } <span class="kw">else</span> {
             <span class="ident">config</span>.<span class="ident">stdin</span>(<span class="string">&quot;/dev/null&quot;</span>);
         }
-        <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stdout</span>.<span class="ident">is_some</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">execution</span>.<span class="ident">stdout_redirect_path</span> {
+            <span class="ident">config</span>.<span class="ident">stdout</span>(<span class="self">self</span>.<span class="ident">sandbox_to_host_path</span>(<span class="ident">path</span>, <span class="ident">boxdir</span>, <span class="ident">fifo_dir</span>.<span class="ident">as_deref</span>()));
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stdout</span>.<span class="ident">is_some</span>() {
             <span class="ident">config</span>.<span class="ident">stdout</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stdout&quot;</span>));
         } <span class="kw">else</span> {
             <span class="ident">config</span>.<span class="ident">stdout</span>(<span class="string">&quot;/dev/null&quot;</span>);
         }
-        <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stderr</span>.<span class="ident">is_some</span>() {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">execution</span>.<span class="ident">stderr_redirect_path</span> {
+            <span class="ident">config</span>.<span class="ident">stderr</span>(<span class="self">self</span>.<span class="ident">sandbox_to_host_path</span>(<span class="ident">path</span>, <span class="ident">boxdir</span>, <span class="ident">fifo_dir</span>.<span class="ident">as_deref</span>()));
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">execution</span>.<span class="ident">stderr</span>.<span class="ident">is_some</span>() {
             <span class="ident">config</span>.<span class="ident">stderr</span>(<span class="ident">boxdir</span>.<span class="ident">join</span>(<span class="string">&quot;stderr&quot;</span>));
         } <span class="kw">else</span> {
             <span class="ident">config</span>.<span class="ident">stderr</span>(<span class="string">&quot;/dev/null&quot;</span>);

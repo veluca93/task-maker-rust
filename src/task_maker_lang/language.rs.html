@@ -271,6 +271,17 @@
 <span id="266">266</span>
 <span id="267">267</span>
 <span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
@@ -300,6 +311,13 @@
     <span class="doccomment">/// that there is the need to know how to compile the source file, forcing the implementation of</span>
     <span class="doccomment">/// some extra methods.</span>
     <span class="kw">fn</span> <span class="ident">need_compilation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+
+    <span class="doccomment">/// The prefix to put at the start of a line to mark the whole line as a comment.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The return value should include a space character only if required by the language.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the language does not support inline comments, return `None`.</span>
+    <span class="kw">fn</span> <span class="ident">inline_comment_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Return the `CompiledLanguageBuilder` for compiling a source file with this language.</span>
     <span class="doccomment">///</span>
@@ -439,11 +457,15 @@
         <span class="ident">compiler</span>: <span class="ident">ExecutionCommand</span>,
     ) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">source_path</span> <span class="op">=</span> <span class="ident">source_path</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">source_name</span> <span class="op">=</span> <span class="ident">source_path</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source_name</span> <span class="op">=</span> <span class="ident">source_path</span>
             .<span class="ident">file_name</span>()
             .<span class="ident">expect</span>(<span class="string">&quot;Invalid file name&quot;</span>)
             .<span class="ident">to_string_lossy</span>()
             .<span class="ident">to_string</span>();
+        <span class="comment">// names starting with - can be interpreted as command line options</span>
+        <span class="kw">if</span> <span class="ident">source_name</span>.<span class="ident">starts_with</span>(<span class="string">&#39;-&#39;</span>) {
+            <span class="ident">source_name</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;./{}&quot;</span>, <span class="ident">source_name</span>);
+        }
         <span class="self">Self</span> {
             <span class="ident">language</span>,
             <span class="ident">settings</span>,

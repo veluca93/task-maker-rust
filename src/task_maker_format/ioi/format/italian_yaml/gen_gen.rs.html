@@ -425,6 +425,132 @@
 <span id="420">420</span>
 <span id="421">421</span>
 <span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::path::Path</span>;
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
@@ -432,12 +558,15 @@
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">pest::Parser</span>;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::find_source_file</span>;
+<span class="kw">use</span> <span class="ident">task_maker_diagnostics::CodeSpan</span>;
+
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::TaskInputEntry</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::italian_yaml::cleanup_subtask_name</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{
     <span class="ident">InputGenerator</span>, <span class="ident">InputValidator</span>, <span class="ident">OutputGenerator</span>, <span class="ident">SubtaskId</span>, <span class="ident">SubtaskInfo</span>, <span class="ident">TestcaseId</span>,
     <span class="ident">TestcaseInfo</span>,
 };
+<span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">find_source_file</span>, <span class="ident">WriteBinTo</span>};
 
 <span class="doccomment">/// This module exists because of a `pest`&#39;s bug: &lt;https://github.com/pest-parser/pest/issues/326&gt;</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
@@ -475,9 +604,11 @@
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">default_subtask</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">SubtaskInfo</span> {
         <span class="ident">id</span>: <span class="number">0</span>,
+        <span class="ident">name</span>: <span class="prelude-val">None</span>,
         <span class="ident">description</span>: <span class="prelude-val">None</span>,
         <span class="ident">max_score</span>: <span class="number">100.0</span>,
         <span class="ident">testcases</span>: <span class="ident">HashMap::new</span>(),
+        <span class="ident">span</span>: <span class="prelude-val">None</span>,
     });
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">generators</span> <span class="op">=</span> <span class="ident">find_source_file</span>(
@@ -490,7 +621,7 @@
         ],
         <span class="ident">task_dir</span>,
         <span class="prelude-val">None</span>,
-        <span class="prelude-val">Some</span>(<span class="ident">task_dir</span>.<span class="ident">join</span>(<span class="string">&quot;bin&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;generator&quot;</span>)),
+        <span class="ident">WriteBinTo::path</span>(<span class="string">&quot;bin/generator&quot;</span>),
     );
     <span class="kw">if</span> <span class="ident">generators</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="number">1</span> {
         <span class="kw">let</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">generators</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">name</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -504,6 +635,7 @@
     <span class="kw">for</span> <span class="ident">line</span> <span class="kw">in</span> <span class="ident">file</span>.<span class="ident">into_inner</span>() {
         <span class="kw">match</span> <span class="ident">line</span>.<span class="ident">as_rule</span>() {
             <span class="ident">parser::Rule::line</span> =&gt; {
+                <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">line</span>.<span class="ident">as_span</span>();
                 <span class="kw">let</span> <span class="ident">line</span> <span class="op">=</span> <span class="ident">line</span>
                     .<span class="ident">into_inner</span>()
                     .<span class="ident">next</span>()
@@ -516,13 +648,43 @@
                             .<span class="ident">next</span>()
                             .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Corrupted parser&quot;</span>))<span class="question-mark">?</span>
                             .<span class="ident">as_str</span>();
+                        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">strip_prefix</span>(<span class="ident">task_dir</span>).<span class="ident">unwrap_or</span>(<span class="ident">path</span>);
                         <span class="ident">entries</span>.<span class="ident">push</span>(<span class="ident">TaskInputEntry::Subtask</span>(<span class="ident">SubtaskInfo</span> {
                             <span class="ident">id</span>: <span class="ident">subtask_id</span>,
+                            <span class="ident">name</span>: <span class="prelude-val">None</span>,
                             <span class="ident">description</span>: <span class="prelude-val">None</span>,
                             <span class="ident">max_score</span>: <span class="ident">score</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>().<span class="ident">context</span>(<span class="string">&quot;Invalid subtask score&quot;</span>)<span class="question-mark">?</span>,
                             <span class="ident">testcases</span>: <span class="ident">HashMap::new</span>(),
+                            <span class="ident">span</span>: <span class="ident">CodeSpan::from_str</span>(
+                                <span class="ident">path</span>,
+                                <span class="kw-2">&amp;</span><span class="ident">content</span>,
+                                <span class="ident">span</span>.<span class="ident">start</span>(),
+                                <span class="ident">span</span>.<span class="ident">end</span>() <span class="op">-</span> <span class="ident">span</span>.<span class="ident">start</span>(),
+                            )
+                            .<span class="ident">ok</span>(),
                         }));
                         <span class="ident">subtask_id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+                    }
+                    <span class="ident">parser::Rule::subtask_name</span> =&gt; {
+                        <span class="kw">let</span> <span class="ident">last_entry</span> <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">last_mut</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+                            <span class="macro">anyhow!</span>(<span class="string">&quot;A #STNAME: rule must immediately follow a #ST: in gen/GEN&quot;</span>)
+                        })<span class="question-mark">?</span>;
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TaskInputEntry::Subtask</span>(<span class="ident">subtask</span>) <span class="op">=</span> <span class="ident">last_entry</span> {
+                            <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">line</span>
+                                .<span class="ident">into_inner</span>()
+                                .<span class="ident">next</span>()
+                                .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">anyhow!</span>(<span class="string">&quot;Corrupted parser&quot;</span>))<span class="question-mark">?</span>
+                                .<span class="ident">as_str</span>();
+                            <span class="kw">if</span> <span class="ident">subtask</span>.<span class="ident">name</span>.<span class="ident">is_some</span>() {
+                                <span class="macro">bail!</span>(<span class="string">&quot;Cannot assign the name of a subtask twice&quot;</span>);
+                            }
+                            <span class="ident">subtask</span>.<span class="ident">name</span> <span class="op">=</span> <span class="prelude-val">Some</span>(
+                                <span class="ident">cleanup_subtask_name</span>(<span class="ident">name</span>)
+                                    .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Invalid subtask name: {}&quot;</span>, <span class="ident">name</span>))<span class="question-mark">?</span>,
+                            );
+                        } <span class="kw">else</span> {
+                            <span class="macro">bail!</span>(<span class="string">&quot;#STNAME: must immediately follow a #ST: in gen/GEN&quot;</span>);
+                        }
                     }
                     <span class="ident">parser::Rule::copy</span> =&gt; {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">default</span>) <span class="op">=</span> <span class="ident">default_subtask</span>.<span class="ident">take</span>() {
@@ -575,16 +737,20 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="ident">std::fs</span>;
+    <span class="kw">use</span> <span class="ident">std::path::Path</span>;
+    <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+
+    <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+    <span class="kw">use</span> <span class="ident">pretty_assertions::assert_eq</span>;
+    <span class="kw">use</span> <span class="ident">tempdir::TempDir</span>;
+
+    <span class="kw">use</span> <span class="ident">TaskInputEntry</span>::<span class="kw-2">*</span>;
+
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::gen_gen::parse_gen_gen</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::TaskInputEntry</span>;
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{<span class="ident">InputGenerator</span>, <span class="ident">InputValidator</span>, <span class="ident">OutputGenerator</span>, <span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SourceFile</span>;
-    <span class="kw">use</span> <span class="ident">pretty_assertions::assert_eq</span>;
-    <span class="kw">use</span> <span class="ident">std::fs</span>;
-    <span class="kw">use</span> <span class="ident">std::path::Path</span>;
-    <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
-    <span class="kw">use</span> <span class="ident">tempdir::TempDir</span>;
-    <span class="kw">use</span> <span class="ident">TaskInputEntry</span>::<span class="kw-2">*</span>;
 
     <span class="kw">fn</span> <span class="ident">make_task</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">gen_gen</span>: <span class="ident">S</span>) -&gt; <span class="ident">TempDir</span> {
         <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">TempDir::new</span>(<span class="string">&quot;tm-test&quot;</span>).<span class="ident">unwrap</span>();
@@ -614,19 +780,23 @@
         <span class="ident">OutputGenerator::Custom</span>(<span class="ident">Arc::new</span>(<span class="ident">source</span>), <span class="macro">vec!</span>[])
     }
 
-    <span class="kw">fn</span> <span class="ident">get_entries</span>(<span class="ident">dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_entries</span>(<span class="ident">dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">parse_gen_gen</span>(
             <span class="ident">dir</span>.<span class="ident">join</span>(<span class="string">&quot;gen&quot;</span>).<span class="ident">join</span>(<span class="string">&quot;GEN&quot;</span>),
             <span class="ident">get_validator</span>,
             <span class="ident">get_output_generator</span>,
         )
-        .<span class="ident">unwrap</span>()
+    }
+
+    <span class="doccomment">/// Build a task and return the parsed gen/GEN.</span>
+    <span class="kw">fn</span> <span class="ident">get_parsed_gen_gen</span>(<span class="ident">gen_gen</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="ident">gen_gen</span>);
+        <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_single_line</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;1234\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;1234\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -642,8 +812,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_single_line_without_ending_lf</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;1234&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;1234&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -659,8 +828,8 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_single_line_with_comments</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;# this is a comment\n1234\n# this is a comment too\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span>
+            <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;# this is a comment\n1234\n# this is a comment too\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -676,8 +845,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_comment_empty</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;#\n1234\n#\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#\n1234\n#\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -693,8 +861,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_comment_empty_no_ending_lf</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;#\n1234\n#&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#\n1234\n#&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -710,8 +877,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_line_with_comment</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;1234 # normal comment\n5678 #risky comment&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;1234 # normal comment\n5678 #risky comment&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase2</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -732,8 +898,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_multiple_lines</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;1234\n5678\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;1234\n5678\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase2</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -755,7 +920,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_copy</span>() {
         <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;#COPY: random/file\n5678\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase2</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -779,7 +944,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_subtasks</span>() {
         <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;#ST: 123\n#COPY: random/file\n5678\n#ST: 321\n1234\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase2</span>), <span class="ident">Subtask</span>(<span class="ident">subtask2</span>), <span class="ident">Testcase</span>(<span class="ident">testcase3</span>)] <span class="op">=</span>
             <span class="ident">entries</span>.<span class="ident">as_slice</span>()
         {
@@ -809,9 +974,45 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtasks_with_names</span>() {
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span>
+            <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST: 123\n#STNAME: name\n5678\n#ST: 321\n#STNAME:wow\n1234\n&quot;</span>)
+                .<span class="ident">unwrap</span>();
+        <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask1</span>), <span class="ident">Testcase</span>(<span class="kw">_</span>), <span class="ident">Subtask</span>(<span class="ident">subtask2</span>), <span class="ident">Testcase</span>(<span class="kw">_</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>()
+        {
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">id</span>, <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">123</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">name</span>.<span class="ident">as_deref</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;name&quot;</span>));
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">id</span>, <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">321</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">name</span>.<span class="ident">as_deref</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;wow&quot;</span>));
+        } <span class="kw">else</span> {
+            <span class="macro">panic!</span>(<span class="string">&quot;Wrong entries returned: {:?}&quot;</span>, <span class="ident">entries</span>);
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtasks_with_names_with_comments</span>() {
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(
+            <span class="string">&quot;#ST: 123\n#STNAME: name # comment\n5678\n#ST: 321\n#STNAME: wow#comment\n1234\n&quot;</span>,
+        )
+        .<span class="ident">unwrap</span>();
+        <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask1</span>), <span class="ident">Testcase</span>(<span class="kw">_</span>), <span class="ident">Subtask</span>(<span class="ident">subtask2</span>), <span class="ident">Testcase</span>(<span class="kw">_</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>()
+        {
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">id</span>, <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">123</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask1</span>.<span class="ident">name</span>.<span class="ident">as_deref</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;name&quot;</span>));
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">id</span>, <span class="number">1</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">321</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">subtask2</span>.<span class="ident">name</span>.<span class="ident">as_deref</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;wow&quot;</span>));
+        } <span class="kw">else</span> {
+            <span class="macro">panic!</span>(<span class="string">&quot;Wrong entries returned: {:?}&quot;</span>, <span class="ident">entries</span>);
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_empty_lines</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;\n\n1234\n\n\n5678\n\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;\n\n1234\n\n\n5678\n\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase1</span>), <span class="ident">Testcase</span>(<span class="ident">testcase2</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -832,8 +1033,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parser_spaces_before_and_after</span>() {
-        <span class="kw">let</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">make_task</span>(<span class="string">&quot;  \t 1234\t  \t\n&quot;</span>);
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_entries</span>(<span class="ident">task</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;  \t 1234\t  \t\n&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Subtask</span>(<span class="ident">subtask</span>), <span class="ident">Testcase</span>(<span class="ident">testcase</span>)] <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">as_slice</span>() {
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">id</span>, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">subtask</span>.<span class="ident">max_score</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="number">100</span>);
@@ -845,6 +1045,58 @@
         } <span class="kw">else</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;Wrong entries returned: {:?}&quot;</span>, <span class="ident">entries</span>);
         }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_empty</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME:&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_with_spaces</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: two names&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: two\tnames&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: two\u{200B}names&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: two\u{FEFF}names&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: two\u{180E}names&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: a b&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_illegal_characters</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: n*pe&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_start_with_dash</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: -nope&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_double</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: one\n#STNAME: two&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_err</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_parser_subtask_name_utf_and_symbols</span>() {
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: n²logn&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: N&lt;=2&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: N=5_&amp;&amp;_M=2&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">get_parsed_gen_gen</span>(<span class="string">&quot;#ST:1\n#STNAME: tree-line&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
     }
 }
 </code></pre></div>

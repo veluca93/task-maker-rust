@@ -106,11 +106,9 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
-<span id="104">104</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
-<span class="kw">use</span> <span class="ident">boxfnonce::BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 <span class="kw">use</span> <span class="ident">uuid::Uuid</span>;
@@ -120,7 +118,7 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FileUuid</span> <span class="op">=</span> <span class="ident">Uuid</span>;
 
 <span class="doccomment">/// Type of the callback called when a file is returned to the client.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">GetContentCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">GetContentCallback</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Where to write the file to with some other information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>

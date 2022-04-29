@@ -58,6 +58,10 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_dag::ExecutionLimits</span>;
@@ -86,6 +90,10 @@
 
     <span class="kw">fn</span> <span class="ident">need_compilation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="bool-val">false</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">inline_comment_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="string">&quot;#&quot;</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">custom_limits</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">limits</span>: <span class="kw-2">&amp;mut</span> <span class="ident">ExecutionLimits</span>) {

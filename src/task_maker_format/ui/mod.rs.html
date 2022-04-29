@@ -405,6 +405,49 @@
 <span id="400">400</span>
 <span id="401">401</span>
 <span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
 </pre><pre class="rust"><code><span class="doccomment">//! The UI functionality for the task formats.</span>
 
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
@@ -412,8 +455,10 @@
 <span class="kw">use</span> <span class="ident">std::sync::mpsc</span>::{<span class="ident">channel</span>, <span class="ident">Receiver</span>, <span class="ident">Sender</span>};
 
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">termcolor</span>::{<span class="ident">Color</span>, <span class="ident">ColorSpec</span>, <span class="ident">StandardStream</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">termcolor::WriteColor</span>;
+<span class="kw">use</span> <span class="ident">termcolor</span>::{<span class="ident">Color</span>, <span class="ident">ColorChoice</span>, <span class="ident">ColorSpec</span>, <span class="ident">StandardStream</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">json::JsonUI</span>;
@@ -421,6 +466,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">raw::RawUI</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">silent::SilentUI</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag</span>::{<span class="ident">ExecutionResourcesUsage</span>, <span class="ident">ExecutionResult</span>, <span class="ident">ExecutionStatus</span>, <span class="ident">WorkerUuid</span>};
+<span class="kw">use</span> <span class="ident">task_maker_diagnostics::DiagnosticContext</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">ui_message::UIMessage</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">cwrite</span>, <span class="ident">cwriteln</span>};
@@ -438,20 +484,40 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">UIChannelReceiver</span> <span class="op">=</span> <span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">UIMessage</span><span class="op">&gt;</span>;
 
 <span class="macro">lazy_static!</span> {
+    <span class="doccomment">/// Whether the terminal supports ANSI 256 colors.</span>
+    <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">HAS_256</span>: <span class="ident">bool</span> <span class="op">=</span> {
+        <span class="kw">if</span> <span class="ident">std::env::var</span>(<span class="string">&quot;TM_ANSI256&quot;</span>).<span class="ident">as_deref</span>() <span class="op">==</span> <span class="prelude-val">Ok</span>(<span class="string">&quot;true&quot;</span>) {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">support</span>) <span class="op">=</span> <span class="ident">supports_color::on</span>(<span class="ident">supports_color::Stream::Stdout</span>) {
+                <span class="ident">support</span>.<span class="ident">has_256</span>
+            } <span class="kw">else</span> {
+                <span class="bool-val">false</span>
+            }
+        } <span class="kw">else</span> {
+            <span class="bool-val">false</span>
+        }
+    };
     <span class="doccomment">/// The RED color to use with `cwrite!` and `cwriteln!`</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">RED</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
         <span class="ident">color</span>
-            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color::Red</span>))
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">196</span>) } <span class="kw">else</span> { <span class="ident">Color::Red</span> }))
             .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
             .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The RED color to use with `cwrite!` and `cwriteln!`, without bold.</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">SOFT_RED</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">196</span>) } <span class="kw">else</span> { <span class="ident">Color::Red</span> }))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>);
         <span class="ident">color</span>
     };
     <span class="doccomment">/// The GREEN color to use with `cwrite!` and `cwriteln!`</span>
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">GREEN</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
         <span class="ident">color</span>
-            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color::Green</span>))
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">118</span>) } <span class="kw">else</span> { <span class="ident">Color::Green</span> }))
             .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
             .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
         <span class="ident">color</span>
@@ -460,7 +526,16 @@
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">YELLOW</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
         <span class="ident">color</span>
-            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color::Yellow</span>))
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">226</span>) } <span class="kw">else</span> { <span class="ident">Color::Yellow</span> }))
+            .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
+            .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
+        <span class="ident">color</span>
+    };
+    <span class="doccomment">/// The ORANGE color to use with `cwrite!` and `cwriteln!`.</span>
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ORANGE</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
+        <span class="ident">color</span>
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">214</span>) } <span class="kw">else</span> { <span class="ident">Color::Rgb</span>(<span class="number">255</span>, <span class="number">165</span>, <span class="number">0</span>) }))
             .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
             .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
         <span class="ident">color</span>
@@ -469,7 +544,7 @@
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">BLUE</span>: <span class="ident">ColorSpec</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">color</span> <span class="op">=</span> <span class="ident">ColorSpec::new</span>();
         <span class="ident">color</span>
-            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="ident">Color::Blue</span>))
+            .<span class="ident">set_fg</span>(<span class="prelude-val">Some</span>(<span class="kw">if</span> <span class="kw-2">*</span><span class="ident">HAS_256</span> { <span class="ident">Color::Ansi256</span>(<span class="number">33</span>) } <span class="kw">else</span> { <span class="ident">Color::Blue</span> }))
             .<span class="ident">set_intense</span>(<span class="bool-val">true</span>)
             .<span class="ident">set_bold</span>(<span class="bool-val">true</span>);
         <span class="ident">color</span>
@@ -569,9 +644,6 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The `T` at the end is to disambiguate from `UIState` due to a strange behaviour of the compiler.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UIStateT</span> {
-    <span class="doccomment">/// Construct an instance of this `UIStateT` form a message with the task information.</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">UIMessage</span>) -&gt; <span class="self">Self</span>;
-
     <span class="doccomment">/// Apply a `UIMessage` to this state.</span>
     <span class="kw">fn</span> <span class="ident">apply</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">message</span>: <span class="ident">UIMessage</span>);
 
@@ -680,12 +752,12 @@
             .<span class="ident">unwrap_or</span>(<span class="number">0</span>)
     }
 
-    <span class="doccomment">/// Print the warnings.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_messages</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">warnings</span>: <span class="kw-2">&amp;</span>[<span class="ident">String</span>]) {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">warnings</span>.<span class="ident">is_empty</span>() {
-            <span class="macro">cwriteln!</span>(<span class="self">self</span>, <span class="ident">YELLOW</span>, <span class="string">&quot;Warnings:&quot;</span>);
-            <span class="kw">for</span> <span class="ident">warning</span> <span class="kw">in</span> <span class="ident">warnings</span>.<span class="ident">iter</span>() {
-                <span class="macro">println!</span>(<span class="string">&quot; - {}&quot;</span>, <span class="ident">warning</span>);
+    <span class="doccomment">/// Print the diagnostics.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_diagnostic_messages</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">diagnostics</span>: <span class="kw-2">&amp;</span><span class="ident">DiagnosticContext</span>) {
+        <span class="kw">let</span> <span class="ident">diagnostics</span> <span class="op">=</span> <span class="ident">diagnostics</span>.<span class="ident">diagnostics</span>();
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">diagnostics</span>.<span class="ident">is_empty</span>() {
+            <span class="kw">for</span> <span class="ident">diagnostic</span> <span class="kw">in</span> <span class="ident">diagnostics</span>.<span class="ident">iter</span>().<span class="ident">sorted_by_key</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">level</span>()) {
+                <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">diagnostic</span>);
             }
         }
     }
@@ -748,6 +820,21 @@
     }
 }
 
+<span class="doccomment">/// A simple printer that outputs to stdout. This can be used with `cwrite!` and `cwriteln!`.</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StdoutPrinter</span> {
+    <span class="doccomment">/// The actual stream.</span>
+    <span class="kw">pub</span> <span class="ident">stream</span>: <span class="ident">StandardStream</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">StdoutPrinter</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">stream</span>: <span class="ident">StandardStream::stdout</span>(<span class="ident">ColorChoice::Auto</span>),
+        }
+    }
+}
+
 <span class="doccomment">/// Write to `$self.stream`, in the color specified as second parameter. The arguments that follow</span>
 <span class="doccomment">/// will be passed to `write!`.</span>
 <span class="doccomment">///</span>
@@ -755,23 +842,23 @@
 <span class="doccomment">/// #[macro_use]</span>
 <span class="doccomment">/// extern crate task_maker_format;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// use termcolor::{StandardStream, ColorSpec, ColorChoice};</span>
+<span class="doccomment">/// use termcolor::{ColorSpec, ColorChoice};</span>
+<span class="doccomment">/// use task_maker_format::ui::StdoutPrinter;</span>
 <span class="doccomment">/// use task_maker_format::cwrite;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # fn main() {</span>
-<span class="doccomment">/// struct Printer { stream: StandardStream }</span>
 <span class="doccomment">/// let mut color = ColorSpec::new();</span>
 <span class="doccomment">/// color.set_bold(true);</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let mut printer = Printer { stream: StandardStream::stdout(ColorChoice::Auto) };</span>
+<span class="doccomment">/// let mut printer = StdoutPrinter::default();</span>
 <span class="doccomment">/// cwrite!(printer, color, &quot;The output is {}&quot;, 42);</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cwrite</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {{
-        <span class="kw">use</span> <span class="ident">termcolor::WriteColor</span>;
         <span class="kw">use</span> <span class="ident">std::io::Write</span>;
+        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ui::WriteColor</span>;
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>.<span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>).<span class="ident">unwrap</span>();
         <span class="macro">write!</span>(<span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>).<span class="ident">unwrap</span>();
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>.<span class="ident">reset</span>().<span class="ident">unwrap</span>();
@@ -784,24 +871,23 @@
 <span class="doccomment">/// ```</span>
 <span class="doccomment">/// #[macro_use]</span>
 <span class="doccomment">/// extern crate task_maker_format;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// use termcolor::{StandardStream, ColorSpec, ColorChoice};</span>
-<span class="doccomment">/// use task_maker_format::cwriteln;</span>
+<span class="doccomment">/// use termcolor::{ColorSpec, ColorChoice};</span>
+<span class="doccomment">/// use task_maker_format::ui::StdoutPrinter;</span>
+<span class="doccomment">/// use task_maker_format::cwrite;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # fn main() {</span>
-<span class="doccomment">/// struct Printer { stream: StandardStream }</span>
 <span class="doccomment">/// let mut color = ColorSpec::new();</span>
 <span class="doccomment">/// color.set_bold(true);</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let mut printer = Printer { stream: StandardStream::stdout(ColorChoice::Auto) };</span>
+<span class="doccomment">/// let mut printer = StdoutPrinter::default();</span>
 <span class="doccomment">/// cwriteln!(printer, color, &quot;The output is {}&quot;, 42);</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cwriteln</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {{
-        <span class="kw">use</span> <span class="ident">termcolor::WriteColor</span>;
         <span class="kw">use</span> <span class="ident">std::io::Write</span>;
+        <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">crate::ui::WriteColor</span>;
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>.<span class="ident">set_color</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">color</span>).<span class="ident">unwrap</span>();
         <span class="macro">writeln!</span>(<span class="kw-2">&amp;mut</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>).<span class="ident">unwrap</span>();
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">self</span>.<span class="ident">stream</span>.<span class="ident">reset</span>().<span class="ident">unwrap</span>();

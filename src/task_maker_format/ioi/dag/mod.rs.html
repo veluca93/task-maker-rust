@@ -559,6 +559,10 @@
 <span id="554">554</span>
 <span id="555">555</span>
 <span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
@@ -567,7 +571,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">input_validator</span>::{<span class="ident">InputValidator</span>, <span class="ident">TM_VALIDATION_FILE_NAME</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">output_generator::OutputGenerator</span>;
 <span class="kw">use</span> <span class="ident">task_maker_dag::Priority</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">task_type</span>::{<span class="ident">BatchTypeData</span>, <span class="ident">CommunicationTypeData</span>, <span class="ident">TaskType</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">task_type</span>::{<span class="ident">BatchTypeData</span>, <span class="ident">CommunicationTypeData</span>, <span class="ident">TaskType</span>, <span class="ident">UserIo</span>};
 
 <span class="kw">mod</span> <span class="ident">checker</span>;
 <span class="kw">mod</span> <span class="ident">input_generator</span>;
@@ -647,6 +651,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
     <span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
     <span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">Ordering</span>};
     <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
@@ -655,6 +660,7 @@
     <span class="kw">use</span> <span class="ident">task_maker_lang::GraderMap</span>;
 
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::IOITask</span>;
+    <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UIMessage</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">EvaluationData</span>, <span class="ident">SourceFile</span>, <span class="ident">Tag</span>};
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
@@ -722,7 +728,7 @@
         <span class="macro">assert!</span>(<span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">provided_files</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>));
         <span class="macro">assert!</span>(<span class="ident">eval</span>
             .<span class="ident">dag</span>
-            .<span class="ident">file_callbacks</span>
+            .<span class="ident">file_callbacks</span>()
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>)
             .<span class="ident">unwrap</span>()
             .<span class="ident">write_to</span>
@@ -758,7 +764,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>].<span class="ident">stdout</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">uuid</span>, <span class="ident">out</span>);
         <span class="macro">assert!</span>(<span class="ident">eval</span>
             .<span class="ident">dag</span>
-            .<span class="ident">file_callbacks</span>
+            .<span class="ident">file_callbacks</span>()
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>)
             .<span class="ident">unwrap</span>()
             .<span class="ident">write_to</span>
@@ -818,7 +824,7 @@
         <span class="macro">assert!</span>(<span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">provided_files</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>));
         <span class="macro">assert!</span>(<span class="ident">eval</span>
             .<span class="ident">dag</span>
-            .<span class="ident">file_callbacks</span>
+            .<span class="ident">file_callbacks</span>()
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>)
             .<span class="ident">unwrap</span>()
             .<span class="ident">write_to</span>
@@ -864,7 +870,7 @@
         <span class="macro">assert!</span>(<span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>].<span class="ident">dependencies</span>().<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>.<span class="ident">uuid</span>));
         <span class="macro">assert!</span>(<span class="ident">eval</span>
             .<span class="ident">dag</span>
-            .<span class="ident">file_callbacks</span>
+            .<span class="ident">file_callbacks</span>()
             .<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>)
             .<span class="ident">unwrap</span>()
             .<span class="ident">write_to</span>
@@ -915,9 +921,9 @@
         <span class="ident">checker</span>
             .<span class="ident">check_and_bind</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, <span class="ident">input</span>, <span class="ident">output</span>, <span class="ident">test</span>, <span class="ident">cb</span>)
             .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">callbacks</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>;
+        <span class="kw">let</span> <span class="ident">callbacks</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>().<span class="ident">drain</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>;
         <span class="ident">callbacks</span>.<span class="ident">on_done</span>.<span class="ident">into_iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">cb</span><span class="op">|</span> {
-            <span class="ident">cb</span>.<span class="ident">call</span>(<span class="ident">ExecutionResult</span> {
+            <span class="ident">cb</span>(<span class="ident">ExecutionResult</span> {
                 <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
                 <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
                 <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
@@ -953,9 +959,9 @@
         <span class="ident">checker</span>
             .<span class="ident">check_and_bind</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, <span class="ident">input</span>, <span class="ident">output</span>, <span class="ident">test</span>, <span class="ident">cb</span>)
             .<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">callbacks</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>.<span class="ident">into_iter</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>;
+        <span class="kw">let</span> <span class="ident">callbacks</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>().<span class="ident">drain</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>().<span class="number">1</span>;
         <span class="ident">callbacks</span>.<span class="ident">on_done</span>.<span class="ident">into_iter</span>().<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">cb</span><span class="op">|</span> {
-            <span class="ident">cb</span>.<span class="ident">call</span>(<span class="ident">ExecutionResult</span> {
+            <span class="ident">cb</span>(<span class="ident">ExecutionResult</span> {
                 <span class="ident">status</span>: <span class="ident">ExecutionStatus::ReturnCode</span>(<span class="number">1</span>),
                 <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
                 <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
@@ -1021,20 +1027,17 @@
             .<span class="ident">check_and_bind</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, <span class="ident">input</span>, <span class="ident">output</span>, <span class="ident">test</span>, <span class="ident">cb</span>)
             .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">group</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">values</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>];
-        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>).<span class="ident">unwrap</span>();
-        <span class="ident">on_done</span>
-            .<span class="ident">on_done</span>
-            .<span class="ident">remove</span>(<span class="number">0</span>)
-            .<span class="ident">call</span>(<span class="ident">ExecutionResult</span> {
-                <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
-                <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
-                <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
-                <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
-                <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;1.0\n\n&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ok!\n\n&quot;</span>.<span class="ident">into</span>()),
-            })
-            .<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>].<span class="ident">uuid</span>;
+        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>().<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>).<span class="ident">unwrap</span>();
+        <span class="ident">on_done</span>.<span class="ident">on_done</span>.<span class="ident">remove</span>(<span class="number">0</span>)(<span class="ident">ExecutionResult</span> {
+            <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
+            <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
+            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
+            <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;1.0\n\n&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ok!\n\n&quot;</span>.<span class="ident">into</span>()),
+        })
+        .<span class="ident">unwrap</span>();
 
         <span class="macro">assert!</span>(<span class="ident">cb_called</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>));
     }
@@ -1062,20 +1065,17 @@
             .<span class="ident">check_and_bind</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, <span class="ident">input</span>, <span class="ident">output</span>, <span class="ident">test</span>, <span class="ident">cb</span>)
             .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">group</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">values</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>];
-        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>).<span class="ident">unwrap</span>();
-        <span class="ident">on_done</span>
-            .<span class="ident">on_done</span>
-            .<span class="ident">remove</span>(<span class="number">0</span>)
-            .<span class="ident">call</span>(<span class="ident">ExecutionResult</span> {
-                <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
-                <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
-                <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
-                <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
-                <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;0.0\n\n&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.<span class="ident">into</span>()),
-            })
-            .<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>].<span class="ident">uuid</span>;
+        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>().<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>).<span class="ident">unwrap</span>();
+        <span class="ident">on_done</span>.<span class="ident">on_done</span>.<span class="ident">remove</span>(<span class="number">0</span>)(<span class="ident">ExecutionResult</span> {
+            <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
+            <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
+            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
+            <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;0.0\n\n&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.<span class="ident">into</span>()),
+        })
+        .<span class="ident">unwrap</span>();
 
         <span class="macro">assert!</span>(<span class="ident">cb_called</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>));
     }
@@ -1087,7 +1087,7 @@
         <span class="ident">std::fs::write</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="string">&quot;x&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">SourceFile::new</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">checker</span> <span class="op">=</span> <span class="ident">Checker::Custom</span>(<span class="ident">Arc::new</span>(<span class="ident">source</span>));
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">eval</span>, <span class="ident">_recv</span>) <span class="op">=</span> <span class="ident">EvaluationData::new</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>());
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">eval</span>, <span class="ident">recv</span>) <span class="op">=</span> <span class="ident">EvaluationData::new</span>(<span class="ident">tmpdir</span>.<span class="ident">path</span>());
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;input&quot;</span>).<span class="ident">uuid</span>;
         <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;output&quot;</span>).<span class="ident">uuid</span>;
         <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;test&quot;</span>).<span class="ident">uuid</span>;
@@ -1096,23 +1096,31 @@
             .<span class="ident">check_and_bind</span>(<span class="kw-2">&amp;mut</span> <span class="ident">eval</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, <span class="ident">input</span>, <span class="ident">output</span>, <span class="ident">test</span>, <span class="ident">cb</span>)
             .<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">group</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">data</span>.<span class="ident">execution_groups</span>.<span class="ident">values</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>];
-        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">on_done</span>
-            .<span class="ident">on_done</span>
-            .<span class="ident">remove</span>(<span class="number">0</span>)
-            .<span class="ident">call</span>(<span class="ident">ExecutionResult</span> {
-                <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
-                <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
-                <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
-                <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
-                <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;:&lt;\n\n&quot;</span>.<span class="ident">into</span>()),
-                <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.<span class="ident">into</span>()),
-            })
-            .<span class="ident">unwrap_err</span>()
-            .<span class="ident">to_string</span>();
+        <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">group</span>.<span class="ident">executions</span>[<span class="number">0</span>].<span class="ident">uuid</span>;
+        <span class="kw">let</span> <span class="ident">on_done</span> <span class="op">=</span> <span class="ident">eval</span>.<span class="ident">dag</span>.<span class="ident">execution_callbacks</span>().<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>).<span class="ident">unwrap</span>();
+        <span class="ident">on_done</span>.<span class="ident">on_done</span>.<span class="ident">remove</span>(<span class="number">0</span>)(<span class="ident">ExecutionResult</span> {
+            <span class="ident">status</span>: <span class="ident">ExecutionStatus::Success</span>,
+            <span class="ident">was_killed</span>: <span class="bool-val">false</span>,
+            <span class="ident">was_cached</span>: <span class="bool-val">false</span>,
+            <span class="ident">resources</span>: <span class="ident">Default::default</span>(),
+            <span class="ident">stdout</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;:&lt;\n\n&quot;</span>.<span class="ident">into</span>()),
+            <span class="ident">stderr</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.<span class="ident">into</span>()),
+        })
+        .<span class="ident">unwrap</span>();
+        <span class="ident">drop</span>(<span class="ident">eval</span>);
 
-        <span class="macro">assert!</span>(<span class="ident">err</span>.<span class="ident">contains</span>(<span class="string">&quot;Invalid score&quot;</span>), <span class="string">&quot;Wrong error: {}&quot;</span>, <span class="ident">err</span>);
+        <span class="kw">let</span> <span class="ident">diagnostics</span> <span class="op">=</span> <span class="ident">recv</span>
+            .<span class="ident">into_iter</span>()
+            .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">m</span> {
+                <span class="ident">UIMessage::Diagnostic</span> { <span class="ident">diagnostic</span> } =&gt; <span class="prelude-val">Some</span>(<span class="ident">diagnostic</span>),
+                <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
+            })
+            .<span class="ident">collect_vec</span>();
+        <span class="kw">let</span> <span class="ident">diagnostics</span> <span class="op">=</span> <span class="ident">diagnostics</span>
+            .<span class="ident">iter</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">message</span>())
+            .<span class="ident">any</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">contains</span>(<span class="string">&quot;Checker returned an invalid score&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">diagnostics</span>);
     }
 }
 </code></pre></div>

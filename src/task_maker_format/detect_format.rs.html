@@ -82,18 +82,18 @@
     <span class="ident">base</span>: <span class="ident">P</span>,
     <span class="ident">max_depth</span>: <span class="ident">u32</span>,
     <span class="ident">eval_config</span>: <span class="kw-2">&amp;</span><span class="ident">EvaluationConfig</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">TaskFormat</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TaskFormat</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">base</span> <span class="op">=</span> <span class="ident">base</span>.<span class="ident">into</span>();
     <span class="kw">if</span> <span class="op">!</span><span class="ident">base</span>.<span class="ident">is_absolute</span>() {
         <span class="ident">base</span> <span class="op">=</span> <span class="ident">getcwd</span>().<span class="ident">join</span>(<span class="ident">base</span>);
     }
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fails</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">max_depth</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">TaskFormat</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         <span class="comment">// try to parse a IOI task</span>
         <span class="kw">if</span> <span class="ident">ioi::IOITask::is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">base</span>) {
             <span class="kw">match</span> <span class="ident">ioi::IOITask::new</span>(<span class="kw-2">&amp;</span><span class="ident">base</span>, <span class="ident">eval_config</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">ioi_task</span>) =&gt; <span class="ident">task</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">ioi_task</span>)),
+                <span class="prelude-val">Ok</span>(<span class="ident">ioi_task</span>) =&gt; <span class="ident">task</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ioi_task</span>.<span class="ident">into</span>()),
                 <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="ident">fails</span>.<span class="ident">push</span>((<span class="string">&quot;IOI&quot;</span>, <span class="ident">base</span>.<span class="ident">clone</span>(), <span class="ident">err</span>)),
             }
         }
@@ -104,7 +104,7 @@
                     <span class="kw">if</span> <span class="ident">task</span>.<span class="ident">is_some</span>() {
                         <span class="macro">bail!</span>(<span class="string">&quot;Ambiguous task directory, can be either IOI and terry&quot;</span>)
                     }
-                    <span class="ident">task</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">terry_task</span>))
+                    <span class="ident">task</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">terry_task</span>.<span class="ident">into</span>())
                 }
                 <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="ident">fails</span>.<span class="ident">push</span>((<span class="string">&quot;Terry&quot;</span>, <span class="ident">base</span>.<span class="ident">clone</span>(), <span class="ident">err</span>)),
             }

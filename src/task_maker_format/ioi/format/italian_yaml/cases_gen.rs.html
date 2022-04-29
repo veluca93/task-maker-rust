@@ -1637,6 +1637,22 @@
 <span id="1632">1632</span>
 <span id="1633">1633</span>
 <span id="1634">1634</span>
+<span id="1635">1635</span>
+<span id="1636">1636</span>
+<span id="1637">1637</span>
+<span id="1638">1638</span>
+<span id="1639">1639</span>
+<span id="1640">1640</span>
+<span id="1641">1641</span>
+<span id="1642">1642</span>
+<span id="1643">1643</span>
+<span id="1644">1644</span>
+<span id="1645">1645</span>
+<span id="1646">1646</span>
+<span id="1647">1647</span>
+<span id="1648">1648</span>
+<span id="1649">1649</span>
+<span id="1650">1650</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
 <span class="kw">use</span> <span class="ident">std::fmt::Formatter</span>;
@@ -1645,9 +1661,10 @@
 <span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
 <span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">pest::Parser</span>;
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">anyhow</span>, <span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
+<span class="kw">use</span> <span class="ident">task_maker_diagnostics::CodeSpan</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::TaskInputEntry</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{
@@ -1734,6 +1751,10 @@
     <span class="doccomment">/// The function to call for getting the `OutputGenerator` for a given testcase.</span>
     <span class="attribute">#[<span class="ident">derivative</span>(<span class="ident">Debug</span> <span class="op">=</span> <span class="string">&quot;ignore&quot;</span>)]</span>
     <span class="ident">get_output_gen</span>: <span class="ident">O</span>,
+    <span class="doccomment">/// The path to the cases.gen file.</span>
+    <span class="ident">file_path</span>: <span class="ident">PathBuf</span>,
+    <span class="doccomment">/// The content of the cases.gen file.</span>
+    <span class="ident">file_content</span>: <span class="ident">String</span>,
     <span class="doccomment">/// The resulting `TaskInputEntry` that will be produced after the parsing of the `cases.gen`</span>
     <span class="doccomment">/// file.</span>
     <span class="ident">result</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TaskInputEntry</span><span class="op">&gt;</span>,
@@ -1787,6 +1808,8 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cases</span> <span class="op">=</span> <span class="ident">CasesGen</span> {
             <span class="ident">task_dir</span>: <span class="ident">task_dir</span>.<span class="ident">into</span>(),
             <span class="ident">get_output_gen</span>: <span class="ident">output_gen</span>,
+            <span class="ident">file_path</span>: <span class="ident">path</span>.<span class="ident">into</span>(),
+            <span class="ident">file_content</span>: <span class="ident">content</span>.<span class="ident">clone</span>(),
             <span class="ident">result</span>: <span class="macro">vec!</span>[],
             <span class="ident">constraints</span>: <span class="macro">vec!</span>[],
             <span class="ident">subtask_constraints</span>: <span class="macro">vec!</span>[],
@@ -2137,6 +2160,7 @@
 
     <span class="doccomment">/// Parse a `:SUBTASK` command.</span>
     <span class="kw">fn</span> <span class="ident">parse_subtask</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">line</span>: <span class="ident">Pair</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">line</span>.<span class="ident">as_span</span>();
         <span class="kw">let</span> <span class="ident">line</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">line</span>.<span class="ident">into_inner</span>().<span class="ident">collect</span>();
         <span class="self">self</span>.<span class="ident">current_generator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">default_generator</span>.<span class="ident">clone</span>();
         <span class="self">self</span>.<span class="ident">current_validator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">default_validator</span>.<span class="ident">clone</span>();
@@ -2154,11 +2178,20 @@
             <span class="prelude-val">None</span>
         };
         <span class="self">self</span>.<span class="ident">subtask_description</span> <span class="op">=</span> <span class="ident">description</span>.<span class="ident">clone</span>();
+        <span class="comment">// FIXME: the cases.gen format does not yet support giving the subtasks a name.</span>
         <span class="self">self</span>.<span class="ident">result</span>.<span class="ident">push</span>(<span class="ident">TaskInputEntry::Subtask</span>(<span class="ident">SubtaskInfo</span> {
             <span class="ident">id</span>: <span class="self">self</span>.<span class="ident">subtask_id</span>,
+            <span class="ident">name</span>: <span class="prelude-val">None</span>,
             <span class="ident">description</span>,
             <span class="ident">max_score</span>: <span class="ident">score</span>,
             <span class="ident">testcases</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">span</span>: <span class="ident">CodeSpan::from_str</span>(
+                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">file_path</span>,
+                <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">file_content</span>,
+                <span class="ident">span</span>.<span class="ident">start</span>(),
+                <span class="ident">span</span>.<span class="ident">end</span>() <span class="op">-</span> <span class="ident">span</span>.<span class="ident">start</span>(),
+            )
+            .<span class="ident">ok</span>(),
         }));
         <span class="self">self</span>.<span class="ident">subtask_id</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="prelude-val">Ok</span>(())
@@ -2383,10 +2416,9 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
+    <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
     <span class="kw">use</span> <span class="ident">spectral</span>::{<span class="ident">assert_that</span>, <span class="ident">AssertionFailure</span>, <span class="ident">Spec</span>};
     <span class="kw">use</span> <span class="ident">tempdir::TempDir</span>;
-
-    <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
 
     <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi::format::italian_yaml::cases_gen</span>::{
         <span class="ident">CasesGen</span>, <span class="ident">ConstraintOperand</span>, <span class="ident">ConstraintOperator</span>,

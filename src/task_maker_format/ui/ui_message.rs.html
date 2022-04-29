@@ -212,15 +212,25 @@
 <span id="207">207</span>
 <span id="208">208</span>
 <span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 <span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">task_maker_diagnostics::Diagnostic</span>;
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 
 <span class="kw">use</span> <span class="ident">task_maker_exec::ExecutorStatus</span>;
 
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ioi</span>::{<span class="ident">SubtaskId</span>, <span class="ident">TestcaseId</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::solution::SolutionInfo</span>;
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::terry</span>::{<span class="ident">Seed</span>, <span class="ident">SolutionOutcome</span>};
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ui::UIExecutionStatus</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ioi</span>, <span class="ident">terry</span>};
@@ -235,6 +245,12 @@
     <span class="ident">ServerStatus</span> {
         <span class="doccomment">/// The status of the executor.</span>
         <span class="ident">status</span>: <span class="ident">ExecutorStatus</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span>,
+    },
+
+    <span class="doccomment">/// The list of solutions that will be evaluated.</span>
+    <span class="ident">Solutions</span> {
+        <span class="doccomment">/// The information of the solutions to evaluate.</span>
+        <span class="ident">solutions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SolutionInfo</span><span class="op">&gt;</span>,
     },
 
     <span class="doccomment">/// An update on the compilation status.</span>
@@ -415,10 +431,10 @@
         <span class="ident">outcome</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SolutionOutcome</span>, <span class="ident">String</span><span class="op">&gt;</span>,
     },
 
-    <span class="doccomment">/// A warning has been emitted.</span>
-    <span class="ident">Warning</span> {
-        <span class="doccomment">/// The message of the warning.</span>
-        <span class="ident">message</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// A diagnostic message has been emitted.</span>
+    <span class="ident">Diagnostic</span> {
+        <span class="doccomment">/// The diagnostic message.</span>
+        <span class="ident">diagnostic</span>: <span class="ident">Diagnostic</span>,
     },
 }
 </code></pre></div>

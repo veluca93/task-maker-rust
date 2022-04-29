@@ -903,11 +903,76 @@
 <span id="898">898</span>
 <span id="899">899</span>
 <span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
-<span class="kw">use</span> <span class="ident">boxfnonce::BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">typescript_definitions::TypeScriptify</span>;
 <span class="kw">use</span> <span class="ident">uuid::Uuid</span>;
@@ -926,13 +991,13 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">WorkerUuid</span> <span class="op">=</span> <span class="ident">Uuid</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) starts.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnStartCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">WorkerUuid</span>,), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnStartCallback</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>(<span class="ident">WorkerUuid</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) ends.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnDoneCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (<span class="ident">ExecutionResult</span>,), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnDoneCallback</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>(<span class="ident">ExecutionResult</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Type of the callback called when an [`Execution`](struct.Execution.html) is skipped.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnSkipCallback</span> <span class="op">=</span> <span class="ident">BoxFnOnce</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, (), <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">OnSkipCallback</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Type of the priority value of an `Execution`.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Priority</span> <span class="op">=</span> <span class="ident">i64</span>;
@@ -1056,6 +1121,18 @@
     <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">ExecutionInput</span><span class="op">&gt;</span>,
     <span class="doccomment">/// List of the output files that should be capture from the sandbox.</span>
     <span class="kw">pub</span> <span class="ident">outputs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">File</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// When set, the standard input is redirected from this file. The path is relative to the</span>
+    <span class="doccomment">/// sandbox root.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This is incompatible with `stdin`. Dependencies can still be achieved by providing the file</span>
+    <span class="doccomment">/// as an &quot;input&quot;.</span>
+    <span class="kw">pub</span> <span class="ident">stdin_redirect_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// When set, the standard output is redirected to this file. The path is relative to the</span>
+    <span class="doccomment">/// sandbox root.</span>
+    <span class="kw">pub</span> <span class="ident">stdout_redirect_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// When set, the standard error is redirected to this file. The path is relative to the</span>
+    <span class="doccomment">/// sandbox root.</span>
+    <span class="kw">pub</span> <span class="ident">stderr_redirect_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// Environment variables to set.</span>
     <span class="kw">pub</span> <span class="ident">env</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">String</span><span class="op">&gt;</span>,
@@ -1296,6 +1373,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_internal_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident">ExecutionStatus::InternalError</span>(<span class="kw">_</span>))
     }
+
+    <span class="doccomment">/// Build a new `ExecutionStatus` as an `InternalError`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">internal_error</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">error</span>: <span class="ident">S</span>) -&gt; <span class="self">Self</span> {
+        <span class="ident"><span class="self">Self</span>::InternalError</span>(<span class="ident">error</span>.<span class="ident">into</span>())
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">ExecutionCommand</span> {
@@ -1333,6 +1415,9 @@
             <span class="ident">capture_stderr</span>: <span class="prelude-val">None</span>,
             <span class="ident">inputs</span>: <span class="ident">HashMap::new</span>(),
             <span class="ident">outputs</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">stdin_redirect_path</span>: <span class="prelude-val">None</span>,
+            <span class="ident">stdout_redirect_path</span>: <span class="prelude-val">None</span>,
+            <span class="ident">stderr_redirect_path</span>: <span class="prelude-val">None</span>,
 
             <span class="ident">env</span>: <span class="ident">HashMap::new</span>(),
             <span class="ident">copy_env</span>: <span class="ident">Vec::new</span>(),
@@ -1420,7 +1505,24 @@
     <span class="doccomment">/// assert_eq!(exec.stdin, Some(uuid));</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">stdin</span>: <span class="ident">F</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">stdin_redirect_path</span>.<span class="ident">is_none</span>());
         <span class="self">self</span>.<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">stdin</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Set the stdin redirection path.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
+    <span class="doccomment">/// use std::path::PathBuf;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.stdin_redirect_path(&quot;/dev/urandom&quot;);</span>
+    <span class="doccomment">/// assert_eq!(exec.stdin_redirect_path.unwrap(), PathBuf::from(&quot;/dev/urandom&quot;));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin_redirect_path</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">stdin</span>.<span class="ident">is_none</span>());
+        <span class="self">self</span>.<span class="ident">stdin_redirect_path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>.<span class="ident">into</span>());
         <span class="self">self</span>
     }
 
@@ -1443,6 +1545,21 @@
         <span class="self">self</span>.<span class="ident">stdout</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>()
     }
 
+    <span class="doccomment">/// Set the stdout redirection path.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
+    <span class="doccomment">/// use std::path::PathBuf;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.stdout_redirect_path(&quot;output.txt&quot;);</span>
+    <span class="doccomment">/// assert_eq!(exec.stdout_redirect_path.unwrap(), PathBuf::from(&quot;output.txt&quot;));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout_redirect_path</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stdout_redirect_path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
+    }
+
     <span class="doccomment">/// Handle to the standard error of the execution. This should be called at least once before</span>
     <span class="doccomment">/// the evaluation starts in order to track the file. Calling this method more than once will</span>
     <span class="doccomment">/// return the same value.</span>
@@ -1460,6 +1577,21 @@
             <span class="self">self</span>.<span class="ident">stderr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">file</span>);
         }
         <span class="self">self</span>.<span class="ident">stderr</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>()
+    }
+
+    <span class="doccomment">/// Set the stderr redirection path.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// use task_maker_dag::{Execution, ExecutionCommand, File};</span>
+    <span class="doccomment">/// use std::path::PathBuf;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut exec = Execution::new(&quot;generator of prime numbers&quot;, ExecutionCommand::local(&quot;foo&quot;));</span>
+    <span class="doccomment">/// exec.stderr_redirect_path(&quot;error.txt&quot;);</span>
+    <span class="doccomment">/// assert_eq!(exec.stderr_redirect_path.unwrap(), PathBuf::from(&quot;error.txt&quot;));</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr_redirect_path</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">stderr_redirect_path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>.<span class="ident">into</span>());
+        <span class="self">self</span>
     }
 
     <span class="doccomment">/// Tell the executor to include the first `count` bytes of the standard output in the result.</span>

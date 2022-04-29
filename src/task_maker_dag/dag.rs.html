@@ -526,11 +526,91 @@
 <span id="521">521</span>
 <span id="522">522</span>
 <span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+<span id="584">584</span>
+<span id="585">585</span>
+<span id="586">586</span>
+<span id="587">587</span>
+<span id="588">588</span>
+<span id="589">589</span>
+<span id="590">590</span>
+<span id="591">591</span>
+<span id="592">592</span>
+<span id="593">593</span>
+<span id="594">594</span>
+<span id="595">595</span>
+<span id="596">596</span>
+<span id="597">597</span>
+<span id="598">598</span>
+<span id="599">599</span>
+<span id="600">600</span>
+<span id="601">601</span>
+<span id="602">602</span>
+<span id="603">603</span>
+<span id="604">604</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
 <span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">bail</span>, <span class="ident">Context</span>, <span class="ident">Error</span>};
-<span class="kw">use</span> <span class="ident">boxfnonce::BoxFnOnce</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
 <span class="kw">use</span> <span class="ident">task_maker_store</span>::<span class="kw-2">*</span>;
@@ -607,19 +687,29 @@
     <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig</span>,
 }
 
-<span class="doccomment">/// A computation DAG, this is not serializable because it contains the callbacks of the client.</span>
+<span class="doccomment">/// The set of callbacks of a DAG.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionDAG</span> {
-    <span class="doccomment">/// Serializable part of the DAG with all the executions and files.</span>
-    <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">ExecutionDAGData</span>,
-    <span class="doccomment">/// Actual callbacks of the executions.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionDAGCallbacks</span> {
+    <span class="doccomment">/// The callbacks of the executions.</span>
     <span class="kw">pub</span> <span class="ident">execution_callbacks</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ExecutionUuid</span>, <span class="ident">ExecutionCallbacks</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Actual callbacks of the files.</span>
+    <span class="doccomment">/// The callbacks of the files.</span>
     <span class="kw">pub</span> <span class="ident">file_callbacks</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileCallbacks</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Set of the handles of the files that should be sent to the client as soon as possible. The</span>
     <span class="doccomment">/// others will be sent at the end of the evaluation. Note that sending big files during the</span>
     <span class="doccomment">/// evaluation can cause performance degradations.</span>
     <span class="kw">pub</span> <span class="ident">urgent_files</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span>,
+}
+
+<span class="doccomment">/// A computation DAG, this is not serializable because it contains the callbacks of the client.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionDAG</span> {
+    <span class="doccomment">/// Serializable part of the DAG with all the executions and files.</span>
+    <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">ExecutionDAGData</span>,
+    <span class="doccomment">/// The list of callbacks for the items of the DAG.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Upon cloning this DAG, the callbacks won&#39;t be available anymore. This is an Option to check</span>
+    <span class="doccomment">/// that the callbacks are never accessed on the clones.</span>
+    <span class="kw">pub</span> <span class="ident">callbacks</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ExecutionDAGCallbacks</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">ExecutionDAG</span> {
@@ -631,9 +721,11 @@
                 <span class="ident">execution_groups</span>: <span class="ident">HashMap::new</span>(),
                 <span class="ident">config</span>: <span class="ident">ExecutionDAGConfig::new</span>(),
             },
-            <span class="ident">execution_callbacks</span>: <span class="ident">HashMap::new</span>(),
-            <span class="ident">file_callbacks</span>: <span class="ident">HashMap::new</span>(),
-            <span class="ident">urgent_files</span>: <span class="ident">HashSet::new</span>(),
+            <span class="ident">callbacks</span>: <span class="prelude-val">Some</span>(<span class="ident">ExecutionDAGCallbacks</span> {
+                <span class="ident">execution_callbacks</span>: <span class="ident">HashMap::new</span>(),
+                <span class="ident">file_callbacks</span>: <span class="ident">HashMap::new</span>(),
+                <span class="ident">urgent_files</span>: <span class="ident">HashSet::new</span>(),
+            }),
         }
     }
 
@@ -727,7 +819,7 @@
     <span class="kw">where</span>
         <span class="ident">F</span>: (<span class="ident">FnOnce</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="self">self</span>.<span class="ident">file_callback</span>(<span class="ident">file</span>.<span class="ident">into</span>()).<span class="ident">get_content</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">limit</span>, <span class="ident">BoxFnOnce::from</span>(<span class="ident">callback</span>)));
+        <span class="self">self</span>.<span class="ident">file_callback</span>(<span class="ident">file</span>.<span class="ident">into</span>()).<span class="ident">get_content</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">limit</span>, <span class="ident">Box::new</span>(<span class="ident">callback</span>)));
     }
 
     <span class="doccomment">/// Add a callback that will be called when the execution starts.</span>
@@ -737,7 +829,7 @@
     {
         <span class="self">self</span>.<span class="ident">execution_callback</span>(<span class="ident">execution</span>)
             .<span class="ident">on_start</span>
-            .<span class="ident">push</span>(<span class="ident">BoxFnOnce::from</span>(<span class="ident">callback</span>));
+            .<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>));
     }
 
     <span class="doccomment">/// Add a callback that will be called when the execution ends.</span>
@@ -747,7 +839,7 @@
     {
         <span class="self">self</span>.<span class="ident">execution_callback</span>(<span class="ident">execution</span>)
             .<span class="ident">on_done</span>
-            .<span class="ident">push</span>(<span class="ident">BoxFnOnce::from</span>(<span class="ident">callback</span>));
+            .<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>));
     }
 
     <span class="doccomment">/// Add a callback that will be called when the execution is skipped.</span>
@@ -757,7 +849,7 @@
     {
         <span class="self">self</span>.<span class="ident">execution_callback</span>(<span class="ident">execution</span>)
             .<span class="ident">on_skip</span>
-            .<span class="ident">push</span>(<span class="ident">BoxFnOnce::from</span>(<span class="ident">callback</span>));
+            .<span class="ident">push</span>(<span class="ident">Box::new</span>(<span class="ident">callback</span>));
     }
 
     <span class="doccomment">/// Get a mutable reference to the config of this DAG.</span>
@@ -767,17 +859,57 @@
 
     <span class="doccomment">/// Makes sure that a callback item exists for that file and returns a &amp;mut to it.</span>
     <span class="kw">fn</span> <span class="ident">file_callback</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">file</span>: <span class="ident">F</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">FileCallbacks</span> {
-        <span class="self">self</span>.<span class="ident">file_callbacks</span>.<span class="ident">entry</span>(<span class="ident">file</span>.<span class="ident">into</span>()).<span class="ident">or_default</span>()
+        <span class="self">self</span>.<span class="ident">callbacks</span>
+            .<span class="ident">as_mut</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;Cannot change callbacks after cloning&quot;</span>)
+            .<span class="ident">file_callbacks</span>
+            .<span class="ident">entry</span>(<span class="ident">file</span>.<span class="ident">into</span>())
+            .<span class="ident">or_default</span>()
+    }
+
+    <span class="doccomment">/// Get the list of registered file callbacks.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_callbacks</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">FileUuid</span>, <span class="ident">FileCallbacks</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>
     }
 
     <span class="doccomment">/// Makes sure that a callback item exists for that execution and returns a &amp;mut to it.</span>
     <span class="kw">fn</span> <span class="ident">execution_callback</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">execution</span>: <span class="kw-2">&amp;</span><span class="ident">ExecutionUuid</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">ExecutionCallbacks</span> {
-        <span class="self">self</span>.<span class="ident">execution_callbacks</span>.<span class="ident">entry</span>(<span class="kw-2">*</span><span class="ident">execution</span>).<span class="ident">or_default</span>()
+        <span class="self">self</span>.<span class="ident">callbacks</span>
+            .<span class="ident">as_mut</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;Cannot change callbacks after cloning&quot;</span>)
+            .<span class="ident">execution_callbacks</span>
+            .<span class="ident">entry</span>(<span class="kw-2">*</span><span class="ident">execution</span>)
+            .<span class="ident">or_default</span>()
+    }
+
+    <span class="doccomment">/// Get the list of registered execution callbacks.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execution_callbacks</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">ExecutionUuid</span>, <span class="ident">ExecutionCallbacks</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">execution_callbacks</span>
     }
 
     <span class="doccomment">/// Mark a file as urgent. The server will try to send it as soon as possible.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">urgent_file</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>, <span class="ident">file</span>: <span class="ident">F</span>) {
-        <span class="self">self</span>.<span class="ident">urgent_files</span>.<span class="ident">insert</span>(<span class="ident">file</span>.<span class="ident">into</span>());
+        <span class="self">self</span>.<span class="ident">callbacks</span>
+            .<span class="ident">as_mut</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;Cannot change callbacks after cloning&quot;</span>)
+            .<span class="ident">urgent_files</span>
+            .<span class="ident">insert</span>(<span class="ident">file</span>.<span class="ident">into</span>());
+    }
+
+    <span class="doccomment">/// Get the list of urgent files.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">urgent_files</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">FileUuid</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;mut</span> <span class="self">self</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">urgent_files</span>
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">ExecutionDAG</span> {
+    <span class="doccomment">/// Clone this `ExecutionDAG`. The callbacks are not cloned, and trying to access them will</span>
+    <span class="doccomment">/// result in a panic.</span>
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">data</span>: <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">clone</span>(),
+            <span class="ident">callbacks</span>: <span class="prelude-val">None</span>,
+        }
     }
 }
 
@@ -945,7 +1077,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>);
         <span class="ident">dag</span>.<span class="ident">write_file_to</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="string">&quot;foo&quot;</span>, <span class="bool-val">false</span>);
-        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>].<span class="ident">write_to</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>]
+            .<span class="ident">write_to</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">Path::new</span>(<span class="string">&quot;foo&quot;</span>), <span class="ident">write_to</span>.<span class="ident">dest</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">write_to</span>.<span class="ident">allow_failure</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">write_to</span>.<span class="ident">executable</span>);
@@ -956,7 +1091,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>);
         <span class="ident">dag</span>.<span class="ident">write_file_to</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="string">&quot;foo&quot;</span>, <span class="bool-val">true</span>);
-        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>].<span class="ident">write_to</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>]
+            .<span class="ident">write_to</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">Path::new</span>(<span class="string">&quot;foo&quot;</span>), <span class="ident">write_to</span>.<span class="ident">dest</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">write_to</span>.<span class="ident">allow_failure</span>);
         <span class="macro">assert!</span>(<span class="ident">write_to</span>.<span class="ident">executable</span>);
@@ -967,7 +1105,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>);
         <span class="ident">dag</span>.<span class="ident">write_file_to_allow_fail</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="string">&quot;foo&quot;</span>, <span class="bool-val">false</span>);
-        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>].<span class="ident">write_to</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>]
+            .<span class="ident">write_to</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">Path::new</span>(<span class="string">&quot;foo&quot;</span>), <span class="ident">write_to</span>.<span class="ident">dest</span>);
         <span class="macro">assert!</span>(<span class="ident">write_to</span>.<span class="ident">allow_failure</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">write_to</span>.<span class="ident">executable</span>);
@@ -978,7 +1119,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>);
         <span class="ident">dag</span>.<span class="ident">write_file_to_allow_fail</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="string">&quot;foo&quot;</span>, <span class="bool-val">true</span>);
-        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>].<span class="ident">write_to</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">write_to</span> <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>]
+            .<span class="ident">write_to</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">Path::new</span>(<span class="string">&quot;foo&quot;</span>), <span class="ident">write_to</span>.<span class="ident">dest</span>);
         <span class="macro">assert!</span>(<span class="ident">write_to</span>.<span class="ident">allow_failure</span>);
         <span class="macro">assert!</span>(<span class="ident">write_to</span>.<span class="ident">executable</span>);
@@ -989,7 +1133,10 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>);
         <span class="ident">dag</span>.<span class="ident">get_file_content</span>(<span class="ident">file</span>.<span class="ident">clone</span>(), <span class="number">1234</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
-        <span class="kw">let</span> (<span class="ident">limit</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>].<span class="ident">get_content</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> (<span class="ident">limit</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>().<span class="ident">file_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>]
+            .<span class="ident">get_content</span>
+            .<span class="ident">as_ref</span>()
+            .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="number">1234</span>, <span class="ident">limit</span>);
     }
 
@@ -998,7 +1145,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;exec&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">on_execution_start</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">dag</span>.<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>].<span class="ident">on_start</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(
+            <span class="number">1</span>,
+            <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">unwrap</span>().<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>]
+                .<span class="ident">on_start</span>
+                .<span class="ident">len</span>()
+        );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1006,7 +1158,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;exec&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">on_execution_done</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">dag</span>.<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>].<span class="ident">on_done</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(
+            <span class="number">1</span>,
+            <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">unwrap</span>().<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>]
+                .<span class="ident">on_done</span>
+                .<span class="ident">len</span>()
+        );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1014,7 +1171,12 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">exec</span> <span class="op">=</span> <span class="ident">Execution::new</span>(<span class="string">&quot;exec&quot;</span>, <span class="ident">ExecutionCommand::local</span>(<span class="string">&quot;foo&quot;</span>));
         <span class="ident">dag</span>.<span class="ident">on_execution_skip</span>(<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>, <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
-        <span class="macro">assert_eq!</span>(<span class="number">1</span>, <span class="ident">dag</span>.<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>].<span class="ident">on_skip</span>.<span class="ident">len</span>());
+        <span class="macro">assert_eq!</span>(
+            <span class="number">1</span>,
+            <span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">unwrap</span>().<span class="ident">execution_callbacks</span>[<span class="kw-2">&amp;</span><span class="ident">exec</span>.<span class="ident">uuid</span>]
+                .<span class="ident">on_skip</span>
+                .<span class="ident">len</span>()
+        );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1029,7 +1191,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dag</span> <span class="op">=</span> <span class="ident">ExecutionDAG::new</span>();
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::new</span>(<span class="string">&quot;file&quot;</span>.<span class="ident">to_string</span>());
         <span class="ident">dag</span>.<span class="ident">urgent_file</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>);
-        <span class="macro">assert!</span>(<span class="ident">dag</span>.<span class="ident">urgent_files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>));
+        <span class="macro">assert!</span>(<span class="ident">dag</span>.<span class="ident">callbacks</span>.<span class="ident">unwrap</span>().<span class="ident">urgent_files</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">file</span>.<span class="ident">uuid</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
