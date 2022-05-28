@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Tool",""]],"struct":[["AddSolutionChecksOpt",""],["BookletOpt",""],["ClearOpt",""],["FuzzCheckerOpt",""],["GenAutocompletionOpt",""],["Opt",""],["ResetOpt",""],["SandboxOpt",""],["ServerOpt",""],["TaskInfoOpt",""],["WorkerOpt",""]]});
+initSidebarItems({"enum":[["Tool",""]],"struct":[["Opt",""]]});

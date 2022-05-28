@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main_task_info",""]]});
+initSidebarItems({"fn":[["main_task_info",""]],"struct":[["TaskInfoOpt",""]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main_booklet",""]]});
+initSidebarItems({"fn":[["main_booklet",""]],"struct":[["BookletOpt",""]]});

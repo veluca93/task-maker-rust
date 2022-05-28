@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main_sandbox",""]]});
+initSidebarItems({"fn":[["main_sandbox",""]],"struct":[["SandboxOpt",""]]});

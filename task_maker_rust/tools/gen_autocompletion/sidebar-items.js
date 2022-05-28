@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main_get_autocompletion",""]]});
+initSidebarItems({"fn":[["main_get_autocompletion",""]],"struct":[["GenAutocompletionOpt",""]]});

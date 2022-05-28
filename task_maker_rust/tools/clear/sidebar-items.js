@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["main_clear",""]]});
+initSidebarItems({"fn":[["main_clear",""]],"struct":[["ClearOpt",""]]});
