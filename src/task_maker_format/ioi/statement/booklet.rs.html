@@ -587,7 +587,7 @@
                 <span class="ident">packages</span>.<span class="ident">insert</span>(<span class="ident">package</span>);
             }
             <span class="ident">tasks</span>.<span class="ident">push</span>(<span class="macro">format!</span>(
-                <span class="string">r&quot;\subimport{{{}}}{{statement.tex}}&quot;</span>,
+                <span class="string">r&quot;\subimport{{./{}/}}{{statement.tex}}&quot;</span>,
                 <span class="ident">statement</span>.<span class="ident">config</span>().<span class="ident">name</span>
             ));
         }
