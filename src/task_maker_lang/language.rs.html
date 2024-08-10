@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-lang/src/language.rs`."><title>language.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="task_maker_lang" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../task_maker_lang/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-lang/src/language.rs`."><title>language.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="task_maker_lang" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -294,11 +294,11 @@
 /// - `compilation_builder`
 </span><span class="kw">pub trait </span>Language: std::fmt::Debug + Send + Sync {
     <span class="doccomment">/// Full name of the language. This must be unique between all the other languages.
-    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str;
+    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str;
 
     <span class="doccomment">/// List of valid extensions for this language. A file is considered in this language if its
     /// extension is inside this list.
-    </span><span class="kw">fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;;
+    </span><span class="kw">fn </span>extensions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;;
 
     <span class="doccomment">/// Whether this language needs a compilation step. Returning `true` here triggers many changes
     /// in the behaviour of the execution. Of course the compilation step will be added, because of
@@ -311,7 +311,7 @@
     /// The return value should include a space character only if required by the language.
     ///
     /// If the language does not support inline comments, return `None`.
-    </span><span class="kw">fn </span>inline_comment_prefix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;;
+    </span><span class="kw">fn </span>inline_comment_prefix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt;;
 
     <span class="doccomment">/// Return the `CompiledLanguageBuilder` for compiling a source file with this language.
     ///
@@ -320,7 +320,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         _source: <span class="kw-2">&amp;</span>Path,
         _settings: CompilationSettings,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>CompiledLanguageBuilder + <span class="lifetime">&#39;_</span>&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>CompiledLanguageBuilder + <span class="lifetime">'_</span>&gt;&gt; {
         <span class="prelude-val">None
     </span>}
 
@@ -342,7 +342,7 @@
     }
 
     <span class="doccomment">/// Add a file to the runtime command if the language requires that. That file can be any run
-    /// time dependency and it&#39;s relative to the sandbox.
+    /// time dependency and it's relative to the sandbox.
     ///
     /// The new runtime arguments should be returned.
     </span><span class="kw">fn </span>runtime_add_file(<span class="kw-2">&amp;</span><span class="self">self</span>, args: Vec&lt;String&gt;, _file: <span class="kw-2">&amp;</span>Path) -&gt; Vec&lt;String&gt; {
@@ -363,9 +363,9 @@
     /// extension.
     </span><span class="kw">fn </span>executable_name(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path, write_to: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Path&gt;) -&gt; PathBuf {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(write_to) = write_to {
-            PathBuf::from(write_to.file_name().expect(<span class="string">&quot;Invalid file name&quot;</span>))
+            PathBuf::from(write_to.file_name().expect(<span class="string">"Invalid file name"</span>))
         } <span class="kw">else </span>{
-            PathBuf::from(path.file_stem().expect(<span class="string">&quot;Invalid file name&quot;</span>))
+            PathBuf::from(path.file_stem().expect(<span class="string">"Invalid file name"</span>))
         }
     }
 }
@@ -381,7 +381,7 @@
     </span><span class="kw">pub </span>list_static: bool,
 }
 
-<span class="doccomment">/// This trait describes the API of a &quot;compiled language builder&quot;, a component that builds the DAG
+<span class="doccomment">/// This trait describes the API of a "compiled language builder", a component that builds the DAG
 /// execution for the compilation.
 </span><span class="kw">pub trait </span>CompiledLanguageBuilder {
     <span class="doccomment">/// If a grader map is present, provide it with this method.
@@ -411,11 +411,11 @@
 /// - The `grader` will be set by `use_grader`, so your changes may be overwritten.
 /// - After the first call to `finalize()` this struct cannot be used (see note on the definition
 ///   of `finalize` in the trait).
-</span><span class="kw">pub struct </span>SimpleCompiledLanguageBuilder&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;c</span>&gt; {
+</span><span class="kw">pub struct </span>SimpleCompiledLanguageBuilder&lt;<span class="lifetime">'l</span>, <span class="lifetime">'c</span>&gt; {
     <span class="doccomment">/// A reference to the language that produced this builder.
     ///
     /// This is used to select which grader to use.
-    </span><span class="kw">pub </span>language: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l </span><span class="kw">dyn </span>Language,
+    </span><span class="kw">pub </span>language: <span class="kw-2">&amp;</span><span class="lifetime">'l </span><span class="kw">dyn </span>Language,
     <span class="doccomment">/// The settings for this compilation.
     </span><span class="kw">pub </span>settings: CompilationSettings,
     <span class="doccomment">/// The local path to the source file to compile.
@@ -440,13 +440,13 @@
     </span><span class="kw">pub </span>grader_only: bool,
     <span class="doccomment">/// The callback to call with the built `Execution` for additional customizations.
     </span><span class="attr">#[allow(clippy::type_complexity)]
-    </span><span class="kw">pub </span>callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnOnce(<span class="kw-2">&amp;mut </span>Execution) + <span class="lifetime">&#39;c</span>&gt;&gt;,
+    </span><span class="kw">pub </span>callback: <span class="prelude-ty">Option</span>&lt;Box&lt;<span class="kw">dyn </span>FnOnce(<span class="kw-2">&amp;mut </span>Execution) + <span class="lifetime">'c</span>&gt;&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;c</span>&gt; SimpleCompiledLanguageBuilder&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;c</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'l</span>, <span class="lifetime">'c</span>&gt; SimpleCompiledLanguageBuilder&lt;<span class="lifetime">'l</span>, <span class="lifetime">'c</span>&gt; {
     <span class="doccomment">/// Build a new `SimpleCompiledLanguageBuilder` for a source file in the given language.
     </span><span class="kw">pub fn </span>new&lt;P: Into&lt;PathBuf&gt;&gt;(
-        language: <span class="kw-2">&amp;</span><span class="lifetime">&#39;l </span><span class="kw">dyn </span>Language,
+        language: <span class="kw-2">&amp;</span><span class="lifetime">'l </span><span class="kw">dyn </span>Language,
         source_path: P,
         settings: CompilationSettings,
         compiler: ExecutionCommand,
@@ -454,19 +454,19 @@
         <span class="kw">let </span>source_path = source_path.into();
         <span class="kw">let </span><span class="kw-2">mut </span>source_name = source_path
             .file_name()
-            .expect(<span class="string">&quot;Invalid file name&quot;</span>)
+            .expect(<span class="string">"Invalid file name"</span>)
             .to_string_lossy()
             .to_string();
         <span class="comment">// names starting with - can be interpreted as command line options
-        </span><span class="kw">if </span>source_name.starts_with(<span class="string">&#39;-&#39;</span>) {
-            source_name = <span class="macro">format!</span>(<span class="string">&quot;./{}&quot;</span>, source_name);
+        </span><span class="kw">if </span>source_name.starts_with(<span class="string">'-'</span>) {
+            source_name = <span class="macro">format!</span>(<span class="string">"./{}"</span>, source_name);
         }
         <span class="self">Self </span>{
             language,
             settings,
             source_path,
             source_name,
-            binary_name: <span class="string">&quot;__compiled&quot;</span>.into(),
+            binary_name: <span class="string">"__compiled"</span>.into(),
             compiler,
             args: Default::default(),
             grader: <span class="prelude-val">None</span>,
@@ -494,12 +494,12 @@
     }
 
     <span class="doccomment">/// Set the callback to call with the built execution.
-    </span><span class="kw">pub fn </span>callback&lt;F: FnOnce(<span class="kw-2">&amp;mut </span>Execution) + <span class="lifetime">&#39;c</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F) {
+    </span><span class="kw">pub fn </span>callback&lt;F: FnOnce(<span class="kw-2">&amp;mut </span>Execution) + <span class="lifetime">'c</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, callback: F) {
         <span class="self">self</span>.callback = <span class="prelude-val">Some</span>(Box::new(callback));
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;c</span>&gt; CompiledLanguageBuilder <span class="kw">for </span>SimpleCompiledLanguageBuilder&lt;<span class="lifetime">&#39;l</span>, <span class="lifetime">&#39;c</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'l</span>, <span class="lifetime">'c</span>&gt; CompiledLanguageBuilder <span class="kw">for </span>SimpleCompiledLanguageBuilder&lt;<span class="lifetime">'l</span>, <span class="lifetime">'c</span>&gt; {
     <span class="kw">fn </span>use_grader(<span class="kw-2">&amp;mut </span><span class="self">self</span>, grader_map: <span class="kw-2">&amp;</span>GraderMap) {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(grader) = grader_map.get_compilation_deps(<span class="self">self</span>.language) {
             <span class="self">self</span>.grader = <span class="prelude-val">Some</span>(grader);
@@ -508,21 +508,21 @@
 
     <span class="kw">fn </span>finalize(<span class="kw-2">&amp;mut </span><span class="self">self</span>, dag: <span class="kw-2">&amp;mut </span>ExecutionDAG) -&gt; <span class="prelude-ty">Result</span>&lt;(Execution, File), Error&gt; {
         <span class="kw">let </span>name = <span class="self">self</span>.source_path.file_name().unwrap().to_string_lossy();
-        <span class="kw">let </span><span class="kw-2">mut </span>comp = Execution::new(<span class="macro">format!</span>(<span class="string">&quot;Compilation of {}&quot;</span>, name), <span class="self">self</span>.compiler.clone());
-        comp.args = <span class="self">self</span>.args.clone();
+        <span class="kw">let </span><span class="kw-2">mut </span>comp = Execution::new(<span class="macro">format!</span>(<span class="string">"Compilation of {}"</span>, name), <span class="self">self</span>.compiler.clone());
+        comp.args.clone_from(<span class="kw-2">&amp;</span><span class="self">self</span>.args);
 
         <span class="comment">// compilation dependencies
         </span><span class="kw">for </span>dep <span class="kw">in </span><span class="self">self</span>.dependencies.drain(..) {
             comp.input(<span class="kw-2">&amp;</span>dep.file, <span class="kw-2">&amp;</span>dep.sandbox_path, dep.executable);
             dag.provide_file(dep.file, <span class="kw-2">&amp;</span>dep.local_path)
-                .context(<span class="string">&quot;Failed to provide compilation dependency&quot;</span>)<span class="question-mark">?</span>;
+                .context(<span class="string">"Failed to provide compilation dependency"</span>)<span class="question-mark">?</span>;
         }
 
         <span class="comment">// main source file
-        </span><span class="kw">let </span>source = File::new(<span class="macro">format!</span>(<span class="string">&quot;Source file of {:?}&quot;</span>, <span class="self">self</span>.source_path));
+        </span><span class="kw">let </span>source = File::new(<span class="macro">format!</span>(<span class="string">"Source file of {:?}"</span>, <span class="self">self</span>.source_path));
         comp.input(<span class="kw-2">&amp;</span>source, <span class="kw-2">&amp;</span><span class="self">self</span>.source_name, <span class="bool-val">false</span>);
         dag.provide_file(source, <span class="kw-2">&amp;</span><span class="self">self</span>.source_path)
-            .context(<span class="string">&quot;Failed to provide source file&quot;</span>)<span class="question-mark">?</span>;
+            .context(<span class="string">"Failed to provide source file"</span>)<span class="question-mark">?</span>;
 
         <span class="comment">// grader and sources in args
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(grader) = <span class="self">self</span>.grader.take() {
@@ -530,7 +530,7 @@
                 .push(grader.sandbox_path.to_string_lossy().to_string());
             comp.input(<span class="kw-2">&amp;</span>grader.file, <span class="kw-2">&amp;</span>grader.sandbox_path, grader.executable);
             dag.provide_file(grader.file, <span class="kw-2">&amp;</span>grader.local_path)
-                .context(<span class="string">&quot;Failed to provide grader dependency&quot;</span>)<span class="question-mark">?</span>;
+                .context(<span class="string">"Failed to provide grader dependency"</span>)<span class="question-mark">?</span>;
 
             <span class="kw">if </span>!<span class="self">self</span>.grader_only {
                 comp.args.push(<span class="self">self</span>.source_name.clone());

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/dag/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="task_maker_format" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../task_maker_format/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/dag/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="task_maker_format" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -584,8 +584,12 @@
 <a href="#584" id="584">584</a>
 <a href="#585" id="585">585</a>
 <a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::{Deserialize, Serialize};
-<span class="kw">use </span>typescript_definitions::TypeScriptify;
 
 <span class="kw">pub use </span>checker::Checker;
 <span class="kw">pub use </span>input_generator::InputGenerator;
@@ -604,20 +608,25 @@
 </span><span class="kw">pub const </span>GENERATION_PRIORITY: Priority = <span class="number">1_000_000</span>;
 <span class="doccomment">/// Base priority for the evaluation executions.
 </span><span class="kw">pub const </span>EVALUATION_PRIORITY: Priority = <span class="number">1_000</span>;
+<span class="doccomment">/// Base priority for booklets compilation.
+</span><span class="kw">pub const </span>BOOKLET_PRIORITY: Priority = <span class="number">10_000</span>;
 
 <span class="doccomment">/// Maximum number of bytes of the captured standard error.
 </span><span class="kw">pub const </span>STDERR_CONTENT_LENGTH: usize = <span class="number">10 </span>* <span class="number">1024</span>;
 
 <span class="doccomment">/// The aggregator of testcase scores for computing the subtask score.
-</span><span class="attr">#[derive(Debug, Clone, Serialize, Deserialize, TypeScriptify)]
+</span><span class="attr">#[derive(Debug, Copy, Clone, Serialize, Deserialize)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 </span><span class="kw">pub enum </span>TestcaseScoreAggregator {
     <span class="doccomment">/// Take the minimum of all the testcases, formally:
     ///
     /// `st_score = st_max_score * min(*testcase_scores)`
+    </span><span class="attr">#[serde(alias = <span class="string">"GroupMin"</span>)]
     </span>Min,
     <span class="doccomment">/// Sum the score of all the testcases, formally:
     ///
     /// `st_score = st_max_score * sum(*testcase_scores) / len(*testcase_scores)`
+    </span><span class="attr">#[serde(alias = <span class="string">"Sum"</span>)]
     </span>Sum,
 }
 
@@ -630,7 +639,7 @@
 /// - `input: File`
 /// - `validation_handle: Option&lt;File&gt;`
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span>bind_exec_io {
+</span><span class="macro">macro_rules!</span> bind_exec_io {
     (<span class="macro-nonterminal">$exec</span>:expr, <span class="macro-nonterminal">$task</span>:expr, <span class="macro-nonterminal">$input</span>:expr, <span class="macro-nonterminal">$validation_handle</span>:expr) =&gt; {{
         <span class="kw">match </span><span class="kw-2">&amp;</span><span class="macro-nonterminal">$task</span>.infile {
             <span class="prelude-val">None </span>=&gt; <span class="macro-nonterminal">$exec</span>.stdin(<span class="macro-nonterminal">$input</span>),
@@ -639,7 +648,7 @@
         <span class="kw">match </span><span class="macro-nonterminal">$validation_handle </span>{
             <span class="prelude-val">None </span>=&gt; {}
             <span class="prelude-val">Some</span>(file) =&gt; {
-                <span class="macro-nonterminal">$exec</span>.input(file, <span class="string">&quot;wait_for_validation&quot;</span>, <span class="bool-val">false</span>);
+                <span class="macro-nonterminal">$exec</span>.input(file, <span class="string">"wait_for_validation"</span>, <span class="bool-val">false</span>);
             }
         };
         <span class="kw">match </span><span class="kw-2">&amp;</span><span class="macro-nonterminal">$task</span>.outfile {
@@ -693,13 +702,14 @@
                 output_generator: <span class="prelude-val">None</span>,
                 checker: Checker::WhiteDiff,
             }),
-            name: <span class="string">&quot;&quot;</span>.to_string(),
-            title: <span class="string">&quot;&quot;</span>.to_string(),
+            name: <span class="string">""</span>.to_string(),
+            title: <span class="string">""</span>.to_string(),
             time_limit: <span class="prelude-val">None</span>,
             memory_limit: <span class="prelude-val">None</span>,
             infile: <span class="prelude-val">None</span>,
             outfile: <span class="prelude-val">None</span>,
             subtasks: Default::default(),
+            testcases: Default::default(),
             input_validator_generator: Default::default(),
             testcase_score_aggregator: TestcaseScoreAggregator::Min,
             score_precision: <span class="number">0</span>,
@@ -742,8 +752,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_generator_static() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;input.txt&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"input.txt"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
         <span class="kw">let </span>generator = InputGenerator::StaticFile(path);
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, <span class="kw">_</span>) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = generator.generate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>).unwrap();
@@ -760,22 +770,22 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_generator_static_not_found() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;input.txt&quot;</span>);
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"input.txt"</span>);
         <span class="kw">let </span>generator = InputGenerator::StaticFile(path.clone());
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, <span class="kw">_</span>) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>gen = generator.generate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>);
         <span class="macro">assert!</span>(gen.is_err());
         <span class="kw">let </span>err = gen.unwrap_err().to_string();
-        <span class="macro">assert!</span>(err.contains(<span class="string">&quot;COPY&quot;</span>));
+        <span class="macro">assert!</span>(err.contains(<span class="string">"COPY"</span>));
         <span class="macro">assert!</span>(err.contains(path.to_string_lossy().as_ref()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_generator_custom() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;gen.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"gen.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>generator = InputGenerator::Custom(Arc::new(source), <span class="macro">vec!</span>[]);
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = generator.generate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>).unwrap();
@@ -796,8 +806,8 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_validator_assume_valid() {
         <span class="kw">let </span>validator = InputValidator::AssumeValid;
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
-        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">&quot;&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
+        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">""</span>);
         <span class="kw">let </span>out = validator
             .validate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="prelude-val">None</span>, <span class="number">0</span>, file.uuid)
             .unwrap();
@@ -809,11 +819,11 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_validator_custom() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;val.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"val.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>validator = InputValidator::Custom(Arc::new(source), <span class="macro">vec!</span>[]);
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = validator
             .validate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="prelude-val">None</span>, <span class="number">0</span>, file.uuid)
@@ -826,21 +836,21 @@
             group.executions[<span class="number">0</span>].stdout.as_ref().unwrap().uuid,
             out.unwrap()
         );
-        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">&quot;TM_SUBTASK&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">&quot;TM_TESTCASE&quot;</span>], <span class="string">&quot;0&quot;</span>);
+        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">"TM_SUBTASK"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">"TM_TESTCASE"</span>], <span class="string">"0"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_input_validator_custom_with_name() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;val.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"val.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>validator = InputValidator::Custom(Arc::new(source), <span class="macro">vec!</span>[]);
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = validator
-            .validate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;name&quot;</span>), <span class="number">0</span>, file.uuid)
+            .validate_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="prelude-val">Some</span>(<span class="string">"name"</span>), <span class="number">0</span>, file.uuid)
             .unwrap();
         <span class="macro">assert_eq!</span>(eval.dag.data.provided_files.len(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(eval.dag.data.execution_groups.len(), <span class="number">1</span>);
@@ -850,18 +860,18 @@
             group.executions[<span class="number">0</span>].stdout.as_ref().unwrap().uuid,
             out.unwrap()
         );
-        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">&quot;TM_SUBTASK&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">&quot;TM_SUBTASK_NAME&quot;</span>], <span class="string">&quot;name&quot;</span>);
-        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">&quot;TM_TESTCASE&quot;</span>], <span class="string">&quot;0&quot;</span>);
+        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">"TM_SUBTASK"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">"TM_SUBTASK_NAME"</span>], <span class="string">"name"</span>);
+        <span class="macro">assert_eq!</span>(group.executions[<span class="number">0</span>].env[<span class="string">"TM_TESTCASE"</span>], <span class="string">"0"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_output_generator_static() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;output.txt&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"output.txt"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
         <span class="kw">let </span>generator = OutputGenerator::StaticFile(path);
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
         <span class="kw">let </span>task = make_task(tmpdir.path());
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, <span class="kw">_</span>) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = generator
@@ -881,27 +891,27 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_output_generator_static_not_found() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;output.txt&quot;</span>);
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"output.txt"</span>);
         <span class="kw">let </span>generator = OutputGenerator::StaticFile(path.clone());
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
         <span class="kw">let </span>task = make_task(tmpdir.path());
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, <span class="kw">_</span>) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>gen = generator.generate_and_bind(<span class="kw-2">&amp;</span>task, <span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, file.uuid, <span class="prelude-val">None</span>);
         <span class="macro">assert!</span>(gen.is_err());
         <span class="kw">let </span>err = gen.unwrap_err().to_string();
-        <span class="macro">assert!</span>(err.contains(<span class="string">&quot;Static output file not found&quot;</span>));
+        <span class="macro">assert!</span>(err.contains(<span class="string">"Static output file not found"</span>));
         <span class="macro">assert!</span>(err.contains(path.to_string_lossy().as_ref()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_output_generator_custom() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;sol.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"sol.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>generator = OutputGenerator::Custom(Arc::new(source), <span class="macro">vec!</span>[]);
-        <span class="kw">let </span>file = File::new(<span class="string">&quot;input&quot;</span>);
-        <span class="kw">let </span>val = File::new(<span class="string">&quot;validation&quot;</span>);
+        <span class="kw">let </span>file = File::new(<span class="string">"input"</span>);
+        <span class="kw">let </span>val = File::new(<span class="string">"validation"</span>);
         <span class="kw">let </span>task = make_task(tmpdir.path());
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
         <span class="kw">let </span>out = generator
@@ -927,13 +937,13 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_whitediff() {
         <span class="kw">let </span>checker = Checker::WhiteDiff;
-        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">&quot;&quot;</span>);
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">""</span>);
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, |<span class="kw">_</span>, <span class="kw">_</span>| {
-                <span class="macro">panic!</span>(<span class="string">&quot;the callback should not be called here&quot;</span>)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, |<span class="kw">_</span>, <span class="kw">_</span>| {
+                <span class="macro">panic!</span>(<span class="string">"the callback should not be called here"</span>)
             })
             .unwrap();
         <span class="macro">assert_eq!</span>(eval.dag.data.provided_files.len(), <span class="number">0</span>);
@@ -942,10 +952,10 @@
         <span class="macro">assert_eq!</span>(group.tag().as_ref().unwrap(), <span class="kw-2">&amp;</span>Tag::Checking.into());
         <span class="macro">assert!</span>(group.executions[<span class="number">0</span>]
             .args
-            .contains(<span class="kw-2">&amp;</span><span class="string">&quot;--ignore-blank-lines&quot;</span>.into()));
+            .contains(<span class="kw-2">&amp;</span><span class="string">"--ignore-blank-lines"</span>.into()));
         <span class="macro">assert!</span>(group.executions[<span class="number">0</span>]
             .args
-            .contains(<span class="kw-2">&amp;</span><span class="string">&quot;--ignore-space-change&quot;</span>.into()));
+            .contains(<span class="kw-2">&amp;</span><span class="string">"--ignore-space-change"</span>.into()));
         <span class="macro">assert!</span>(group.executions[<span class="number">0</span>].dependencies().contains(<span class="kw-2">&amp;</span>output));
         <span class="macro">assert!</span>(group.executions[<span class="number">0</span>].dependencies().contains(<span class="kw-2">&amp;</span>test));
     }
@@ -953,20 +963,20 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_whitediff_correct() {
         <span class="kw">let </span>checker = Checker::WhiteDiff;
-        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">&quot;&quot;</span>);
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">""</span>);
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         <span class="kw">let </span>cb_called = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>cb_called2 = cb_called.clone();
         <span class="kw">let </span>cb = <span class="kw">move </span>|score, mex| {
             <span class="macro">assert_abs_diff_eq!</span>(score, <span class="number">1.0</span>);
-            <span class="macro">assert_eq!</span>(mex, <span class="string">&quot;Output is correct&quot;</span>);
+            <span class="macro">assert_eq!</span>(mex, <span class="string">"Output is correct"</span>);
             cb_called2.store(<span class="bool-val">true</span>, Ordering::Relaxed);
             <span class="prelude-val">Ok</span>(())
         };
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, cb)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, cb)
             .unwrap();
         <span class="kw">let </span>callbacks = eval.dag.execution_callbacks().drain().next().unwrap().<span class="number">1</span>;
         callbacks.on_done.into_iter().for_each(|cb| {
@@ -991,20 +1001,20 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_whitediff_incorrect() {
         <span class="kw">let </span>checker = Checker::WhiteDiff;
-        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">&quot;&quot;</span>);
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(<span class="string">""</span>);
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         <span class="kw">let </span>cb_called = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>cb_called2 = cb_called.clone();
         <span class="kw">let </span>cb = <span class="kw">move </span>|score, mex| {
             <span class="macro">assert_abs_diff_eq!</span>(score, <span class="number">0.0</span>);
-            <span class="macro">assert_eq!</span>(mex, <span class="string">&quot;Output is incorrect&quot;</span>);
+            <span class="macro">assert_eq!</span>(mex, <span class="string">"Output is incorrect"</span>);
             cb_called2.store(<span class="bool-val">true</span>, Ordering::Relaxed);
             <span class="prelude-val">Ok</span>(())
         };
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, cb)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, cb)
             .unwrap();
         <span class="kw">let </span>callbacks = eval.dag.execution_callbacks().drain().next().unwrap().<span class="number">1</span>;
         callbacks.on_done.into_iter().for_each(|cb| {
@@ -1029,17 +1039,17 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_custom() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;check.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"check.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>checker = Checker::Custom(Arc::new(source));
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, |<span class="kw">_</span>, <span class="kw">_</span>| {
-                <span class="macro">panic!</span>(<span class="string">&quot;the callback should not be called here&quot;</span>)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, |<span class="kw">_</span>, <span class="kw">_</span>| {
+                <span class="macro">panic!</span>(<span class="string">"the callback should not be called here"</span>)
             })
             .unwrap();
         <span class="macro">assert_eq!</span>(eval.dag.data.provided_files.len(), <span class="number">1</span>);
@@ -1054,24 +1064,24 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_custom_correct() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;check.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"check.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>checker = Checker::Custom(Arc::new(source));
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         <span class="kw">let </span>cb_called = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>cb_called2 = cb_called.clone();
         <span class="kw">let </span>cb = <span class="kw">move </span>|score, mex| {
             <span class="macro">assert_abs_diff_eq!</span>(score, <span class="number">1.0</span>);
-            <span class="macro">assert_eq!</span>(mex, <span class="string">&quot;Ok!&quot;</span>);
+            <span class="macro">assert_eq!</span>(mex, <span class="string">"Ok!"</span>);
             cb_called2.store(<span class="bool-val">true</span>, Ordering::Relaxed);
             <span class="prelude-val">Ok</span>(())
         };
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, cb)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, cb)
             .unwrap();
         <span class="kw">let </span>group = eval.dag.data.execution_groups.values().next().unwrap();
         <span class="kw">let </span>exec = group.executions[<span class="number">0</span>].uuid;
@@ -1081,8 +1091,8 @@
             was_killed: <span class="bool-val">false</span>,
             was_cached: <span class="bool-val">false</span>,
             resources: Default::default(),
-            stdout: <span class="prelude-val">Some</span>(<span class="string">&quot;1.0\n\n&quot;</span>.into()),
-            stderr: <span class="prelude-val">Some</span>(<span class="string">&quot;Ok!\n\n&quot;</span>.into()),
+            stdout: <span class="prelude-val">Some</span>(<span class="string">"1.0\n\n"</span>.into()),
+            stderr: <span class="prelude-val">Some</span>(<span class="string">"Ok!\n\n"</span>.into()),
         })
         .unwrap();
 
@@ -1092,24 +1102,24 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_custom_incorrect() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;check.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"check.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>checker = Checker::Custom(Arc::new(source));
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, _recv) = EvaluationData::new(tmpdir.path());
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
         <span class="kw">let </span>cb_called = Arc::new(AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>cb_called2 = cb_called.clone();
         <span class="kw">let </span>cb = <span class="kw">move </span>|score, mex| {
             <span class="macro">assert_abs_diff_eq!</span>(score, <span class="number">0.0</span>);
-            <span class="macro">assert_eq!</span>(mex, <span class="string">&quot;Ko!&quot;</span>);
+            <span class="macro">assert_eq!</span>(mex, <span class="string">"Ko!"</span>);
             cb_called2.store(<span class="bool-val">true</span>, Ordering::Relaxed);
             <span class="prelude-val">Ok</span>(())
         };
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, cb)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, cb)
             .unwrap();
         <span class="kw">let </span>group = eval.dag.data.execution_groups.values().next().unwrap();
         <span class="kw">let </span>exec = group.executions[<span class="number">0</span>].uuid;
@@ -1119,8 +1129,8 @@
             was_killed: <span class="bool-val">false</span>,
             was_cached: <span class="bool-val">false</span>,
             resources: Default::default(),
-            stdout: <span class="prelude-val">Some</span>(<span class="string">&quot;0.0\n\n&quot;</span>.into()),
-            stderr: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.into()),
+            stdout: <span class="prelude-val">Some</span>(<span class="string">"0.0\n\n"</span>.into()),
+            stderr: <span class="prelude-val">Some</span>(<span class="string">"Ko!\n\n"</span>.into()),
         })
         .unwrap();
 
@@ -1130,17 +1140,17 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checker_custom_invalid_score() {
         <span class="kw">let </span>tmpdir = tempfile::TempDir::new().unwrap();
-        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">&quot;check.py&quot;</span>);
-        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">&quot;x&quot;</span>).unwrap();
-        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
+        <span class="kw">let </span>path = tmpdir.path().join(<span class="string">"check.py"</span>);
+        std::fs::write(<span class="kw-2">&amp;</span>path, <span class="string">"x"</span>).unwrap();
+        <span class="kw">let </span>source = SourceFile::new(<span class="kw-2">&amp;</span>path, <span class="string">""</span>, <span class="string">""</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>::&lt;PathBuf&gt;).unwrap();
         <span class="kw">let </span>checker = Checker::Custom(Arc::new(source));
         <span class="kw">let </span>(<span class="kw-2">mut </span>eval, recv) = EvaluationData::new(tmpdir.path());
-        <span class="kw">let </span>input = File::new(<span class="string">&quot;input&quot;</span>).uuid;
-        <span class="kw">let </span>output = File::new(<span class="string">&quot;output&quot;</span>).uuid;
-        <span class="kw">let </span>test = File::new(<span class="string">&quot;test&quot;</span>).uuid;
-        <span class="kw">let </span>cb = <span class="kw">move </span>|<span class="kw">_</span>, <span class="kw">_</span>| <span class="macro">panic!</span>(<span class="string">&quot;the callback should not be called here&quot;</span>);
+        <span class="kw">let </span>input = File::new(<span class="string">"input"</span>).uuid;
+        <span class="kw">let </span>output = File::new(<span class="string">"output"</span>).uuid;
+        <span class="kw">let </span>test = File::new(<span class="string">"test"</span>).uuid;
+        <span class="kw">let </span>cb = <span class="kw">move </span>|<span class="kw">_</span>, <span class="kw">_</span>| <span class="macro">panic!</span>(<span class="string">"the callback should not be called here"</span>);
         checker
-            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">&quot;sol&quot;</span>, input, output, test, cb)
+            .check_and_bind(<span class="kw-2">&amp;mut </span>eval, <span class="number">0</span>, <span class="number">0</span>, <span class="string">"sol"</span>, input, output, test, cb)
             .unwrap();
         <span class="kw">let </span>group = eval.dag.data.execution_groups.values().next().unwrap();
         <span class="kw">let </span>exec = group.executions[<span class="number">0</span>].uuid;
@@ -1150,8 +1160,8 @@
             was_killed: <span class="bool-val">false</span>,
             was_cached: <span class="bool-val">false</span>,
             resources: Default::default(),
-            stdout: <span class="prelude-val">Some</span>(<span class="string">&quot;:&lt;\n\n&quot;</span>.into()),
-            stderr: <span class="prelude-val">Some</span>(<span class="string">&quot;Ko!\n\n&quot;</span>.into()),
+            stdout: <span class="prelude-val">Some</span>(<span class="string">":&lt;\n\n"</span>.into()),
+            stderr: <span class="prelude-val">Some</span>(<span class="string">"Ko!\n\n"</span>.into()),
         })
         .unwrap();
         drop(eval);
@@ -1166,7 +1176,7 @@
         <span class="kw">let </span>diagnostics = diagnostics
             .iter()
             .map(|d| d.message())
-            .any(|m| m.contains(<span class="string">&quot;Checker returned an invalid score&quot;</span>));
+            .any(|m| m.contains(<span class="string">"Checker returned an invalid score"</span>));
         <span class="macro">assert!</span>(diagnostics);
     }
 }

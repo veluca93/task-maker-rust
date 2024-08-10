@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/format/italian_yaml/cases_gen.rs`."><title>cases_gen.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-ba5701c5741a7b69.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="task_maker_format" data-themes="" data-resource-suffix="" data-rustdoc-version="1.70.0 (90c541806 2023-05-31)" data-search-js="search-e077946657036a58.js" data-settings-js="settings-298e1ea74db45b39.js" data-settings-css="settings-7bfb4c59cc6bc502.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../../../static.files/source-script-905937fbbdc8e9ea.js"></script><script defer src="../../../../../source-files.js"></script><script defer src="../../../../../static.files/main-f61008743c98d196.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../task_maker_format/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `task-maker-format/src/ioi/format/italian_yaml/cases_gen.rs`."><title>cases_gen.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="task_maker_format" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.1 (3f5fd8dd4 2024-08-06)" data-channel="1.80.1" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1620,40 +1620,9 @@
 <a href="#1620" id="1620">1620</a>
 <a href="#1621" id="1621">1621</a>
 <a href="#1622" id="1622">1622</a>
-<a href="#1623" id="1623">1623</a>
-<a href="#1624" id="1624">1624</a>
-<a href="#1625" id="1625">1625</a>
-<a href="#1626" id="1626">1626</a>
-<a href="#1627" id="1627">1627</a>
-<a href="#1628" id="1628">1628</a>
-<a href="#1629" id="1629">1629</a>
-<a href="#1630" id="1630">1630</a>
-<a href="#1631" id="1631">1631</a>
-<a href="#1632" id="1632">1632</a>
-<a href="#1633" id="1633">1633</a>
-<a href="#1634" id="1634">1634</a>
-<a href="#1635" id="1635">1635</a>
-<a href="#1636" id="1636">1636</a>
-<a href="#1637" id="1637">1637</a>
-<a href="#1638" id="1638">1638</a>
-<a href="#1639" id="1639">1639</a>
-<a href="#1640" id="1640">1640</a>
-<a href="#1641" id="1641">1641</a>
-<a href="#1642" id="1642">1642</a>
-<a href="#1643" id="1643">1643</a>
-<a href="#1644" id="1644">1644</a>
-<a href="#1645" id="1645">1645</a>
-<a href="#1646" id="1646">1646</a>
-<a href="#1647" id="1647">1647</a>
-<a href="#1648" id="1648">1648</a>
-<a href="#1649" id="1649">1649</a>
-<a href="#1650" id="1650">1650</a>
-<a href="#1651" id="1651">1651</a>
-<a href="#1652" id="1652">1652</a>
-<a href="#1653" id="1653">1653</a>
-<a href="#1654" id="1654">1654</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::fmt::Debug;
+<span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::fmt::Write;
 <span class="kw">use </span>std::io::Read;
@@ -1661,7 +1630,7 @@
 <span class="kw">use </span>std::str::FromStr;
 <span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span>anyhow::{anyhow, bail, Context, Error};
+<span class="kw">use </span>anyhow::{anyhow, bail, ensure, Context, Error};
 <span class="kw">use </span>pest::Parser;
 
 <span class="kw">use </span>task_maker_diagnostics::CodeSpan;
@@ -1674,19 +1643,19 @@
 <span class="kw">use </span><span class="kw">crate</span>::SourceFile;
 
 <span class="doccomment">/// String placed in the auto-generated gen/GEN marking it as safely deletable.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>TM_ALLOW_DELETE_COOKIE: <span class="kw-2">&amp;</span>str = <span class="string">&quot;tm-allow-delete&quot;</span>;
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const </span>TM_ALLOW_DELETE_COOKIE: <span class="kw-2">&amp;</span>str = <span class="string">"tm-allow-delete"</span>;
 
-<span class="doccomment">/// This module exists because of a `pest`&#39;s bug: &lt;https://github.com/pest-parser/pest/issues/326&gt;
+<span class="doccomment">/// This module exists because of a `pest`'s bug: &lt;https://github.com/pest-parser/pest/issues/326&gt;
 </span><span class="attr">#[allow(missing_docs)]
 </span><span class="kw">mod </span>parser {
     <span class="doccomment">/// The gen/cases.gen file parser.
     </span><span class="attr">#[derive(Parser)]
-    #[grammar = <span class="string">&quot;ioi/format/italian_yaml/cases.gen.pest&quot;</span>]
+    #[grammar = <span class="string">"ioi/format/italian_yaml/cases.gen.pest"</span>]
     </span><span class="kw">pub struct </span>CasesGenParser;
 }
 
 <span class="doccomment">/// Helper type for lightening the types.
-</span><span class="kw">type </span>Pair&lt;<span class="lifetime">&#39;a</span>&gt; = pest::iterators::Pair&lt;<span class="lifetime">&#39;a</span>, parser::Rule&gt;;
+</span><span class="kw">type </span>Pair&lt;<span class="lifetime">'a</span>&gt; = pest::iterators::Pair&lt;<span class="lifetime">'a</span>, parser::Rule&gt;;
 
 <span class="doccomment">/// A manager is either a generator or a validator, since they have the same internal structure they
 /// are abstracted as a `Manager`.
@@ -1749,7 +1718,7 @@
     <span class="doccomment">/// The base directory of the task.
     </span>task_dir: PathBuf,
     <span class="doccomment">/// The function to call for getting the `OutputGenerator` for a given testcase.
-    </span><span class="attr">#[derivative(Debug = <span class="string">&quot;ignore&quot;</span>)]
+    </span><span class="attr">#[derivative(Debug = <span class="string">"ignore"</span>)]
     </span>get_output_gen: O,
     <span class="doccomment">/// The path to the cases.gen file.
     </span>file_path: PathBuf,
@@ -1766,20 +1735,20 @@
     </span>generators: HashMap&lt;String, Manager&gt;,
     <span class="doccomment">/// The list of all the validators found, indexed by validator name.
     </span>validators: HashMap&lt;String, Manager&gt;,
-    <span class="doccomment">/// The name of the default generator of the task. It&#39;s the generator with name `default`, if
+    <span class="doccomment">/// The name of the default generator of the task. It's the generator with name `default`, if
     /// present. Each subtask will use this generator, unless specified.
     </span>default_generator: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// The name of the default validator of the task. It&#39;s the validator with name `default`, if
+    <span class="doccomment">/// The name of the default validator of the task. It's the validator with name `default`, if
     /// present. Each subtask will use this validator, unless specified.
     </span>default_validator: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// The current generator for this subtask, it&#39;s the task&#39;s default, unless specified.
+    <span class="doccomment">/// The current generator for this subtask, it's the task's default, unless specified.
     </span>current_generator: <span class="prelude-ty">Option</span>&lt;String&gt;,
-    <span class="doccomment">/// The current validator for this subtask, it&#39;s the task&#39;s default, unless specified.
-    </span>current_validator: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// The identifier of the next subtask to process.
     </span>subtask_id: SubtaskId,
-    <span class="doccomment">/// The description of the last subtask added, if any.
-    </span>subtask_description: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// The name of the last subtask added, if any.
+    </span>subtask_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
+    <span class="doccomment">/// The mapping from subtask name to subtask id.
+    </span>st_name_to_id: HashMap&lt;String, SubtaskId&gt;,
     <span class="doccomment">/// The identifier of the next testcase to process.
     </span>testcase_id: TestcaseId,
 }
@@ -1796,14 +1765,14 @@
         <span class="kw">let </span>path = path.as_ref();
         <span class="kw">let </span>task_dir = path
             .parent()
-            .context(<span class="string">&quot;Invalid gen/cases.gen path&quot;</span>)<span class="question-mark">?
+            .context(<span class="string">"Invalid gen/cases.gen path"</span>)<span class="question-mark">?
             </span>.parent()
-            .context(<span class="string">&quot;Invalid gen/cases.gen path&quot;</span>)<span class="question-mark">?</span>;
+            .context(<span class="string">"Invalid gen/cases.gen path"</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>content = std::fs::read_to_string(path)
-            .with_context(|| <span class="macro">format!</span>(<span class="string">&quot;Failed to read {}&quot;</span>, path.display()))<span class="question-mark">?</span>;
+            .with_context(|| <span class="macro">format!</span>(<span class="string">"Failed to read {}"</span>, path.display()))<span class="question-mark">?</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>file = parser::CasesGenParser::parse(parser::Rule::file, <span class="kw-2">&amp;</span>content)
-            .context(<span class="string">&quot;Cannot parse cases.gen&quot;</span>)<span class="question-mark">?</span>;
-        <span class="kw">let </span>file = file.next().ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">&quot;Corrupted parser&quot;</span>))<span class="question-mark">?</span>; <span class="comment">// extract the real file
+            .context(<span class="string">"Cannot parse cases.gen"</span>)<span class="question-mark">?</span>;
+        <span class="kw">let </span>file = file.next().ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">"Corrupted parser"</span>))<span class="question-mark">?</span>; <span class="comment">// extract the real file
 
         </span><span class="kw">let </span><span class="kw-2">mut </span>cases = CasesGen {
             task_dir: task_dir.into(),
@@ -1818,9 +1787,9 @@
             default_generator: <span class="prelude-val">None</span>,
             default_validator: <span class="prelude-val">None</span>,
             current_generator: <span class="prelude-val">None</span>,
-            current_validator: <span class="prelude-val">None</span>,
             subtask_id: <span class="number">0</span>,
-            subtask_description: <span class="prelude-val">None</span>,
+            subtask_name: <span class="prelude-val">None</span>,
+            st_name_to_id: HashMap::new(),
             testcase_id: <span class="number">0</span>,
         };
 
@@ -1830,13 +1799,13 @@
                     <span class="kw">let </span>line = line
                         .into_inner()
                         .next()
-                        .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">&quot;Corrupted parser&quot;</span>))<span class="question-mark">?</span>;
+                        .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">"Corrupted parser"</span>))<span class="question-mark">?</span>;
                     <span class="kw">match </span>line.as_rule() {
                         parser::Rule::command =&gt; {
                             <span class="kw">let </span>command = line
                                 .into_inner()
                                 .next()
-                                .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">&quot;Corrupted parser&quot;</span>))<span class="question-mark">?</span>;
+                                .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">"Corrupted parser"</span>))<span class="question-mark">?</span>;
                             cases.parse_command(command)<span class="question-mark">?</span>;
                         }
                         parser::Rule::testcase =&gt; {
@@ -1861,56 +1830,55 @@
 
     <span class="doccomment">/// Write an auto-generated version of the gen/GEN file inside the task directory.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>write_gen_gen(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>dest = <span class="self">self</span>.task_dir.join(<span class="string">&quot;gen/GEN&quot;</span>);
+        <span class="kw">let </span>dest = <span class="self">self</span>.task_dir.join(<span class="string">"gen/GEN"</span>);
         <span class="kw">if </span>dest.exists() &amp;&amp; !is_gen_gen_deletable(<span class="kw-2">&amp;</span>dest)<span class="question-mark">? </span>{
             <span class="macro">warn!</span>(
-                <span class="string">&quot;The gen/GEN file does not contain {}. Won&#39;t overwrite&quot;</span>,
+                <span class="string">"The gen/GEN file does not contain {}. Won't overwrite"</span>,
                 TM_ALLOW_DELETE_COOKIE
             );
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
-        <span class="kw">let </span><span class="kw-2">mut </span>gen = <span class="string">&quot;# Generated by task-maker. Do not edit!\n&quot;</span>.to_string();
-        <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;# {}&quot;</span>, TM_ALLOW_DELETE_COOKIE);
-        gen += <span class="string">&quot;# Removing or changing the line above will prevent task-maker from touching this file again.\n\n&quot;</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>gen = <span class="string">"# Generated by task-maker. Do not edit!\n"</span>.to_string();
+        <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"# {}"</span>, TM_ALLOW_DELETE_COOKIE);
+        gen += <span class="string">"# Removing or changing the line above will prevent task-maker from touching this file again.\n\n"</span>;
         <span class="kw">if </span>!<span class="self">self</span>.constraints.is_empty() {
-            gen += <span class="string">&quot;# Constraints:\n&quot;</span>;
+            gen += <span class="string">"# Constraints:\n"</span>;
             <span class="kw">for </span>constr <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.constraints {
-                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;# {:?}&quot;</span>, constr);
+                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"# {:?}"</span>, constr);
             }
         }
         <span class="kw">for </span>entry <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.result {
             <span class="kw">match </span>entry {
                 TaskInputEntry::Subtask(subtask) =&gt; {
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(descr) = <span class="kw-2">&amp;</span>subtask.description {
-                        <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;\n# Subtask {}: {}&quot;</span>, subtask.id, descr);
-                    } <span class="kw">else </span>{
-                        <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;\n# Subtask {}&quot;</span>, subtask.id);
+                    <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"\n# Subtask {}"</span>, subtask.id);
+                    <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"#ST: {}"</span>, subtask.max_score);
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <span class="kw-2">&amp;</span>subtask.name {
+                        <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"#STNAME: {}"</span>, name);
                     }
-                    <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;#ST: {}&quot;</span>, subtask.max_score);
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(constraints) = <span class="self">self</span>.subtask_constraints.get(subtask.id <span class="kw">as </span>usize) {
                         <span class="kw">for </span>constr <span class="kw">in </span>constraints {
-                            <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;# {:?}&quot;</span>, constr);
+                            <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"# {:?}"</span>, constr);
                         }
                     }
                 }
                 TaskInputEntry::Testcase(testcase) =&gt; {
-                    <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;# Testcase {}&quot;</span>, testcase.id);
+                    <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"# Testcase {}"</span>, testcase.id);
                     <span class="kw">match </span><span class="kw-2">&amp;</span>testcase.input_generator {
                         InputGenerator::StaticFile(path) =&gt; {
                             <span class="kw">if let </span><span class="prelude-val">Ok</span>(path) = path.strip_prefix(<span class="kw-2">&amp;</span><span class="self">self</span>.task_dir) {
-                                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;#COPY: {}&quot;</span>, path.display());
+                                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"#COPY: {}"</span>, path.display());
                             } <span class="kw">else </span>{
-                                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;#COPY: {}&quot;</span>, path.display());
+                                <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"#COPY: {}"</span>, path.display());
                             }
                         }
                         InputGenerator::Custom(source, args) =&gt; {
-                            <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">&quot;{} {}&quot;</span>, source.name(), args.join(<span class="string">&quot; &quot;</span>));
+                            <span class="kw">let _ </span>= <span class="macro">writeln!</span>(gen, <span class="string">"{} {}"</span>, source.name(), args.join(<span class="string">" "</span>));
                         }
                     }
                 }
             }
         }
-        std::fs::write(<span class="self">self</span>.task_dir.join(<span class="string">&quot;gen/GEN&quot;</span>), gen).context(<span class="string">&quot;Failed to write gen/GEN&quot;</span>)<span class="question-mark">?</span>;
+        std::fs::write(<span class="self">self</span>.task_dir.join(<span class="string">"gen/GEN"</span>), gen).context(<span class="string">"Failed to write gen/GEN"</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -1919,27 +1887,31 @@
         <span class="kw">match </span>line.as_rule() {
             parser::Rule::GEN =&gt; {
                 <span class="self">self</span>.parse_gen(line)
-                    .context(<span class="string">&quot;Failed to parse GEN command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse GEN command"</span>)<span class="question-mark">?</span>;
             }
             parser::Rule::VAL =&gt; {
                 <span class="self">self</span>.parse_val(line)
-                    .context(<span class="string">&quot;Failed to parse VAL command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse VAL command"</span>)<span class="question-mark">?</span>;
             }
             parser::Rule::CONSTRAINT =&gt; {
                 <span class="self">self</span>.parse_constraint(line)
-                    .context(<span class="string">&quot;Failed to parse CONSTRAINT command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse CONSTRAINT command"</span>)<span class="question-mark">?</span>;
             }
             parser::Rule::SUBTASK =&gt; {
                 <span class="self">self</span>.parse_subtask(line)
-                    .context(<span class="string">&quot;Failed to parse SUBTASK command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse SUBTASK command"</span>)<span class="question-mark">?</span>;
+            }
+            parser::Rule::STDEP =&gt; {
+                <span class="self">self</span>.parse_st_dep(line)
+                    .context(<span class="string">"Failed to parse STDEP command"</span>)<span class="question-mark">?</span>;
             }
             parser::Rule::COPY =&gt; {
                 <span class="self">self</span>.parse_copy(line)
-                    .context(<span class="string">&quot;Failed to parse COPY command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse COPY command"</span>)<span class="question-mark">?</span>;
             }
             parser::Rule::RUN =&gt; {
                 <span class="self">self</span>.parse_run(line)
-                    .context(<span class="string">&quot;Failed to parse RUN command&quot;</span>)<span class="question-mark">?</span>;
+                    .context(<span class="string">"Failed to parse RUN command"</span>)<span class="question-mark">?</span>;
             }
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
@@ -1953,19 +1925,19 @@
         current_generator: <span class="prelude-ty">Option</span>&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Cannot add a testcase outside a subtask&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Cannot add a testcase outside a subtask"</span>);
         }
         <span class="kw">let </span>current_generator = <span class="kw">if let </span><span class="prelude-val">Some</span>(gen) = current_generator {
             gen
         } <span class="kw">else </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Cannot generate testcase: no default generator set&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Cannot generate testcase: no default generator set"</span>);
         };
         <span class="kw">let </span>args = shell_words::split(line)
-            .with_context(|| <span class="macro">format!</span>(<span class="string">&quot;Invalid command arguments for testcase &#39;{}&#39;&quot;</span>, line))<span class="question-mark">?</span>;
+            .with_context(|| <span class="macro">format!</span>(<span class="string">"Invalid command arguments for testcase '{}'"</span>, line))<span class="question-mark">?</span>;
         <span class="kw">let </span>generator = <span class="kw-2">&amp;</span><span class="self">self
             </span>.generators
             .get(<span class="kw-2">&amp;</span>current_generator)
-            .context(<span class="string">&quot;invalid current generator&quot;</span>)<span class="question-mark">?</span>;
+            .context(<span class="string">"invalid current generator"</span>)<span class="question-mark">?</span>;
         <span class="kw">let </span>variables = <span class="self">self</span>.get_variables(<span class="kw-2">&amp;</span>generator.args, <span class="kw-2">&amp;</span>args);
         <span class="kw">for </span>constr <span class="kw">in </span><span class="self">self
             </span>.constraints
@@ -1974,93 +1946,66 @@
         {
             <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="bool-val">false</span>) = constr.is_valid(<span class="kw-2">&amp;</span>variables) {
                 <span class="kw">let </span><span class="kw-2">mut </span>error = <span class="macro">format!</span>(
-                    <span class="string">&quot;Testcase &#39;{}&#39; violates constraint {:?}\nWith:&quot;</span>,
+                    <span class="string">"Testcase '{}' violates constraint {:?}\nWith:"</span>,
                     line, constr
                 );
                 <span class="kw">for </span>(var, val) <span class="kw">in </span><span class="kw-2">&amp;</span>variables {
-                    <span class="kw">let _ </span>= <span class="macro">write!</span>(error, <span class="string">&quot;\n  ${} = {}&quot;</span>, var, val);
+                    <span class="kw">let _ </span>= <span class="macro">write!</span>(error, <span class="string">"\n  ${} = {}"</span>, var, val);
                 }
-                <span class="macro">bail!</span>(<span class="string">&quot;{}&quot;</span>, error)
+                <span class="macro">bail!</span>(<span class="string">"{}"</span>, error)
             }
         }
         <span class="kw">let </span>generator = InputGenerator::Custom(generator.source.clone(), args);
         <span class="self">self</span>.result.push(TaskInputEntry::Testcase(TestcaseInfo::new(
             <span class="self">self</span>.testcase_id,
             generator,
-            <span class="self">self</span>.get_validator(<span class="kw-2">&amp;</span>variables)
-                .context(<span class="string">&quot;Cannot get testcase validator&quot;</span>)<span class="question-mark">?</span>,
             (<span class="self">self</span>.get_output_gen)(<span class="self">self</span>.testcase_id),
         )));
         <span class="self">self</span>.testcase_id += <span class="number">1</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Parse a `GEN` or a `VAL`, since they have the same internal format their parsing function is
-    /// abstracted in this.
-    </span><span class="kw">fn </span>process_gen_val(
+    <span class="doccomment">/// Add a new generator/validator to the list
+    /// Since they have the same internal format their parsing function is abstracted in this.
+    </span><span class="kw">fn </span>define_gen_val(
         line: Vec&lt;Pair&gt;,
         task_dir: <span class="kw-2">&amp;</span>Path,
-        subtask_id: SubtaskId,
         default: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;String&gt;,
-        current: <span class="kw-2">&amp;mut </span><span class="prelude-ty">Option</span>&lt;String&gt;,
         managers: <span class="kw-2">&amp;mut </span>HashMap&lt;String, Manager&gt;,
         kind: <span class="kw-2">&amp;</span>str,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>name = line[<span class="number">0</span>].as_str();
-        <span class="comment">// Case 1: GEN|VAL name
-        // Set the current generator/validator to the specified one
-        </span><span class="kw">if </span>line.len() == <span class="number">1 </span>{
-            <span class="kw">if </span>subtask_id == <span class="number">0 </span>{
-                <span class="macro">bail!</span>(
-                    <span class="string">&quot;Cannot set the current {} to {} outside a subtask&quot;</span>,
-                    kind,
-                    name
-                );
-            }
-            <span class="kw">if </span>!managers.contains_key(name) {
-                <span class="macro">bail!</span>(
-                    <span class="string">&quot;Cannot set the current {} to &#39;{}&#39;: unknown {}&quot;</span>,
-                    kind,
-                    name,
-                    kind
-                );
-            }
-            <span class="kw-2">*</span>current = <span class="prelude-val">Some</span>(name.to_string());
-        <span class="comment">// Case 2: GEN|VAL name path [args...]
-        // Add a new generator/validator to the list
-        </span>} <span class="kw">else </span>{
-            <span class="kw">let </span>path = line[<span class="number">1</span>].as_str();
-            <span class="kw">let </span>path = task_dir.join(path);
-            <span class="kw">if </span>!path.exists() {
-                <span class="macro">bail!</span>(
-                    <span class="string">&quot;Cannot add {} &#39;{}&#39;: &#39;{}&#39; does not exists&quot;</span>,
-                    kind,
-                    name,
-                    path.display()
-                );
-            }
-            <span class="kw">let </span>source = SourceFile::new(
-                <span class="kw-2">&amp;</span>path,
-                task_dir,
-                <span class="macro">format!</span>(<span class="string">&quot;The {} named {}&quot;</span>, kind, name),
-                <span class="prelude-val">None</span>,
-                <span class="prelude-val">Some</span>(
-                    task_dir
-                        .join(<span class="string">&quot;bin&quot;</span>)
-                        .join(path.file_name().context(<span class="string">&quot;invalid file name&quot;</span>)<span class="question-mark">?</span>),
-                ),
-            )
-            .map(Arc::new)
-            .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">&quot;Cannot use {} &#39;{}&#39;: unknown language&quot;</span>, kind, path.display()))<span class="question-mark">?</span>;
-            <span class="kw">let </span>args = shell_words::split(line[<span class="number">2</span>].as_str())
-                .with_context(|| <span class="macro">format!</span>(<span class="string">&quot;Invalid arguments of &#39;{}&#39;&quot;</span>, name))<span class="question-mark">?</span>;
-            <span class="kw">if </span>managers.contains_key(name) {
-                <span class="macro">bail!</span>(<span class="string">&quot;Duplicate {} with name {}&quot;</span>, kind, name);
-            }
-            managers.insert(name.to_string(), Manager { source, args });
-            <span class="kw">if </span>default.is_none() || name == <span class="string">&quot;default&quot; </span>{
-                <span class="kw-2">*</span>default = <span class="prelude-val">Some</span>(name.to_string());
-            }
+        <span class="kw">let </span>path = line[<span class="number">1</span>].as_str();
+        <span class="kw">let </span>path = task_dir.join(path);
+        <span class="kw">if </span>!path.exists() {
+            <span class="macro">bail!</span>(
+                <span class="string">"Cannot add {} '{}': '{}' does not exists"</span>,
+                kind,
+                name,
+                path.display()
+            );
+        }
+        <span class="kw">let </span>source = SourceFile::new(
+            <span class="kw-2">&amp;</span>path,
+            task_dir,
+            <span class="macro">format!</span>(<span class="string">"The {} named {}"</span>, kind, name),
+            <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(
+                task_dir
+                    .join(<span class="string">"bin"</span>)
+                    .join(path.file_name().context(<span class="string">"invalid file name"</span>)<span class="question-mark">?</span>),
+            ),
+        )
+        .map(Arc::new)
+        .ok_or_else(|| <span class="macro">anyhow!</span>(<span class="string">"Cannot use {} '{}': unknown language"</span>, kind, path.display()))<span class="question-mark">?</span>;
+        <span class="kw">let </span>args = shell_words::split(line[<span class="number">2</span>].as_str())
+            .with_context(|| <span class="macro">format!</span>(<span class="string">"Invalid arguments of '{}'"</span>, name))<span class="question-mark">?</span>;
+        <span class="kw">if </span>managers.contains_key(name) {
+            <span class="macro">bail!</span>(<span class="string">"Duplicate {} with name {}"</span>, kind, name);
+        }
+        managers.insert(name.to_string(), Manager { source, args });
+        <span class="kw">if </span>default.is_none() || name == <span class="string">"default" </span>{
+            <span class="kw-2">*</span>default = <span class="prelude-val">Some</span>(name.to_string());
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -2068,30 +2013,51 @@
     <span class="doccomment">/// Parse a `:GEN` command.
     </span><span class="kw">fn </span>parse_gen(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>line: Vec&lt;<span class="kw">_</span>&gt; = line.into_inner().collect();
-        CasesGen::&lt;OutGen&gt;::process_gen_val(
-            line,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.task_dir,
-            <span class="self">self</span>.subtask_id,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.default_generator,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.current_generator,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.generators,
-            <span class="string">&quot;generator&quot;</span>,
-        )<span class="question-mark">?</span>;
+        <span class="kw">if </span>line.len() == <span class="number">1 </span>{
+            <span class="kw">let </span>name = line[<span class="number">0</span>].as_str();
+            <span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
+                <span class="macro">bail!</span>(<span class="string">"Cannot set the current generator to '{name}': outside a subtask"</span>,);
+            }
+            <span class="kw">if </span>!<span class="self">self</span>.generators.contains_key(name) {
+                <span class="macro">bail!</span>(<span class="string">"Cannot set the current generator to '{name}': unknown generator"</span>,);
+            }
+            <span class="self">self</span>.current_generator = <span class="prelude-val">Some</span>(name.to_string());
+        } <span class="kw">else </span>{
+            CasesGen::&lt;OutGen&gt;::define_gen_val(
+                line,
+                <span class="kw-2">&amp;</span><span class="self">self</span>.task_dir,
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.default_generator,
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.generators,
+                <span class="string">"generator"</span>,
+            )<span class="question-mark">?</span>;
+        }
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// Parse a `:VAL` command.
     </span><span class="kw">fn </span>parse_val(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>line: Vec&lt;<span class="kw">_</span>&gt; = line.into_inner().collect();
-        CasesGen::&lt;OutGen&gt;::process_gen_val(
-            line,
-            <span class="kw-2">&amp;</span><span class="self">self</span>.task_dir,
-            <span class="self">self</span>.subtask_id,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.default_validator,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.current_validator,
-            <span class="kw-2">&amp;mut </span><span class="self">self</span>.validators,
-            <span class="string">&quot;validator&quot;</span>,
-        )<span class="question-mark">?</span>;
+        <span class="kw">if </span>line.len() == <span class="number">1 </span>{
+            <span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
+                <span class="macro">bail!</span>(<span class="string">"Cannot set the default validator outside a subtask"</span>);
+            }
+            <span class="kw">let </span>val = <span class="self">self
+                </span>.get_validator(<span class="prelude-val">Some</span>(line[<span class="number">0</span>].as_str()), <span class="kw-2">&amp;</span><span class="self">self</span>.get_auto_variables())
+                .context(<span class="string">"Failed to get validator"</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span><span class="prelude-val">Some</span>(TaskInputEntry::Subtask(subtask)) = <span class="self">self</span>.result.last_mut() <span class="kw">else </span>{
+                <span class="macro">bail!</span>(<span class="string">"The validator must be set directly after a subtask"</span>);
+            };
+            subtask.input_validator = val;
+        } <span class="kw">else </span>{
+            CasesGen::&lt;OutGen&gt;::define_gen_val(
+                line,
+                <span class="kw-2">&amp;</span><span class="self">self</span>.task_dir,
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.default_validator,
+                <span class="kw-2">&amp;mut </span><span class="self">self</span>.validators,
+                <span class="string">"validator"</span>,
+            )<span class="question-mark">?</span>;
+        }
+
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2107,7 +2073,7 @@
                     constraint.operands.push(ConstraintOperand::Constant(
                         i64::from_str(item.as_str()).with_context(|| {
                             <span class="macro">format!</span>(
-                                <span class="string">&quot;Invalid integer constant &#39;{}&#39; in constraint &#39;{}&#39;&quot;</span>,
+                                <span class="string">"Invalid integer constant '{}' in constraint '{}'"</span>,
                                 item.as_str(),
                                 line_str,
                             )
@@ -2117,14 +2083,14 @@
                 parser::Rule::variable =&gt; {
                     constraint.operands.push(ConstraintOperand::Variable(
                         item.as_str()
-                            .strip_prefix(<span class="string">&#39;$&#39;</span>)
-                            .expect(<span class="string">&quot;Invalid parser&quot;</span>)
+                            .strip_prefix(<span class="string">'$'</span>)
+                            .expect(<span class="string">"Invalid parser"</span>)
                             .into(),
                     ));
                 }
                 parser::Rule::comp_operator =&gt; {
                     <span class="kw">let </span>operator = ConstraintOperator::from_str(item.as_str())
-                        .context(<span class="string">&quot;Failed to parse contraint operator&quot;</span>)<span class="question-mark">?</span>;
+                        .context(<span class="string">"Failed to parse contraint operator"</span>)<span class="question-mark">?</span>;
                     <span class="kw">let </span>dir = <span class="kw">match </span>operator {
                         ConstraintOperator::Less | ConstraintOperator::LessEqual =&gt; <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
                         ConstraintOperator::Greater | ConstraintOperator::GreaterEqual =&gt; {
@@ -2136,7 +2102,7 @@
                         direction = dir;
                     }
                     <span class="kw">if </span>dir.is_some() &amp;&amp; direction != dir {
-                        <span class="macro">bail!</span>(<span class="string">&quot;Malformed constraint: inequality direction must be the same&quot;</span>)
+                        <span class="macro">bail!</span>(<span class="string">"Malformed constraint: inequality direction must be the same"</span>)
                     }
                     constraint.operators.push(operator)
                 }
@@ -2144,10 +2110,10 @@
             }
         }
         <span class="kw">if </span>constraint.operators.len() + <span class="number">1 </span>!= constraint.operands.len() {
-            <span class="macro">bail!</span>(<span class="string">&quot;Malformed constraint: invalid number of operators&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Malformed constraint: invalid number of operators"</span>);
         }
         <span class="kw">if </span>constraint.operands.len() &lt; <span class="number">2 </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Malformed constraint: too few operands&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Malformed constraint: too few operands"</span>);
         }
         <span class="comment">// subtask_id = 0 means no subtask has been defined yet, so this constraint is global
         </span><span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
@@ -2165,13 +2131,12 @@
     </span><span class="kw">fn </span>parse_subtask(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">let </span>span = line.as_span();
         <span class="kw">let </span>line: Vec&lt;<span class="kw">_</span>&gt; = line.into_inner().collect();
-        <span class="self">self</span>.current_generator = <span class="self">self</span>.default_generator.clone();
-        <span class="self">self</span>.current_validator = <span class="self">self</span>.default_validator.clone();
+        <span class="self">self</span>.current_generator.clone_from(<span class="kw-2">&amp;</span><span class="self">self</span>.default_generator);
         <span class="self">self</span>.subtask_constraints.push(<span class="macro">vec!</span>[]);
         <span class="kw">let </span>score = line[<span class="number">0</span>].as_str();
         <span class="kw">let </span>score = f64::from_str(score).with_context(|| {
             <span class="macro">format!</span>(
-                <span class="string">&quot;Invalid subtask score for subtask {}: {}&quot;</span>,
+                <span class="string">"Invalid subtask score for subtask {}: {}"</span>,
                 <span class="self">self</span>.subtask_id, score
             )
         })<span class="question-mark">?</span>;
@@ -2180,49 +2145,76 @@
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>};
-        <span class="self">self</span>.subtask_description = description.clone();
-        <span class="comment">// FIXME: the cases.gen format does not yet support giving the subtasks a name.
-        </span><span class="self">self</span>.result.push(TaskInputEntry::Subtask(SubtaskInfo {
-            id: <span class="self">self</span>.subtask_id,
-            name: <span class="prelude-val">None</span>,
-            description,
-            max_score: score,
-            testcases: HashMap::new(),
-            span: CodeSpan::from_str(
-                <span class="kw-2">&amp;</span><span class="self">self</span>.file_path,
-                <span class="kw-2">&amp;</span><span class="self">self</span>.file_content,
-                span.start(),
-                span.end() - span.start(),
-            )
-            .ok(),
-            is_default: <span class="bool-val">false</span>,
-        }));
+        <span class="comment">// Remove whitespaces for retrocompatibility with descriptions
+        </span><span class="kw">let </span>name = description
+            .as_deref()
+            .map(|s| s.chars().filter(|<span class="kw-2">&amp;</span>c| c != <span class="string">' ' </span>&amp;&amp; c != <span class="string">'\t'</span>).collect());
+        <span class="self">self</span>.subtask_name.clone_from(<span class="kw-2">&amp;</span>name);
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <span class="kw-2">&amp;</span>name {
+            <span class="kw">let </span>old_id = <span class="self">self</span>.st_name_to_id.insert(name.clone(), <span class="self">self</span>.subtask_id);
+            <span class="macro">ensure!</span>(old_id.is_none(), <span class="string">"Duplicate subtask name '{}'"</span>, name);
+        }
         <span class="self">self</span>.subtask_id += <span class="number">1</span>;
+        <span class="self">self</span>.result.push(TaskInputEntry::Subtask(
+            <span class="attr">#[allow(deprecated)]
+            </span>SubtaskInfo {
+                id: <span class="self">self</span>.subtask_id - <span class="number">1</span>,
+                name,
+                description,
+                max_score: score,
+                span: CodeSpan::from_str(
+                    <span class="kw-2">&amp;</span><span class="self">self</span>.file_path,
+                    <span class="kw-2">&amp;</span><span class="self">self</span>.file_content,
+                    span.start(),
+                    span.end() - span.start(),
+                )
+                .ok(),
+                is_default: <span class="bool-val">false</span>,
+                input_validator: <span class="self">self</span>.get_validator(
+                    <span class="self">self</span>.default_validator.as_deref(),
+                    <span class="kw-2">&amp;</span><span class="self">self</span>.get_auto_variables(),
+                )<span class="question-mark">?</span>,
+                ..Default::default()
+            },
+        ));
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="doccomment">/// Parse a `:STDEP` command.
+    </span><span class="kw">fn </span>parse_st_dep(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+        <span class="kw">for </span>dep <span class="kw">in </span>line.into_inner() {
+            <span class="kw">let </span>id = <span class="kw-2">*</span><span class="self">self
+                </span>.st_name_to_id
+                .get(dep.as_str())
+                .context(<span class="string">"Unknown subtask"</span>)<span class="question-mark">?</span>;
+            <span class="kw">let </span><span class="prelude-val">Some</span>(TaskInputEntry::Subtask(subtask)) = <span class="self">self</span>.result.last_mut() <span class="kw">else </span>{
+                <span class="macro">bail!</span>(<span class="string">":STDEP must immediately follow a #ST: in gen/GEN"</span>);
+            };
+            subtask.dependencies.push(id);
+        }
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="doccomment">/// Parse a `:COPY` command.
     </span><span class="kw">fn </span>parse_copy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Cannot add a COPY testcase outside a subtask&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Cannot add a COPY testcase outside a subtask"</span>);
         }
         <span class="kw">let </span>path = line
             .into_inner()
             .next()
-            .context(<span class="string">&quot;corrupted parser&quot;</span>)<span class="question-mark">?
+            .context(<span class="string">"corrupted parser"</span>)<span class="question-mark">?
             </span>.as_str();
         <span class="kw">let </span>path = <span class="self">self</span>.task_dir.join(path);
         <span class="kw">if </span>!path.exists() {
             <span class="macro">bail!</span>(
-                <span class="string">&quot;Cannot copy testcase from &#39;{}&#39;: file not found&quot;</span>,
+                <span class="string">"Cannot copy testcase from '{}': file not found"</span>,
                 path.display()
             );
         }
         <span class="self">self</span>.result.push(TaskInputEntry::Testcase(TestcaseInfo::new(
             <span class="self">self</span>.testcase_id,
             InputGenerator::StaticFile(path),
-            <span class="self">self</span>.get_validator(<span class="kw-2">&amp;</span><span class="self">self</span>.get_auto_variables())
-                .context(<span class="string">&quot;Cannot get testcase validator&quot;</span>)<span class="question-mark">?</span>,
             (<span class="self">self</span>.get_output_gen)(<span class="self">self</span>.testcase_id),
         )));
         <span class="self">self</span>.testcase_id += <span class="number">1</span>;
@@ -2230,27 +2222,28 @@
     }
 
     <span class="doccomment">/// Get the current validator for the next testcase.
-    </span><span class="kw">fn </span>get_validator(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: <span class="kw-2">&amp;</span>HashMap&lt;String, String&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;InputValidator, Error&gt; {
-        <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.current_validator {
+    </span><span class="kw">fn </span>get_validator(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        validator: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        variables: <span class="kw-2">&amp;</span>HashMap&lt;String, String&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;InputValidator, Error&gt; {
+        <span class="kw">match </span>validator {
             <span class="prelude-val">Some</span>(val) =&gt; {
-                <span class="kw">let </span>validator = <span class="kw-2">&amp;</span><span class="self">self</span>.validators[val];
+                <span class="kw">let </span><span class="prelude-val">Some</span>(validator) = <span class="self">self</span>.validators.get(val) <span class="kw">else </span>{
+                    <span class="macro">bail!</span>(<span class="string">"unknown validator '{}'"</span>, val);
+                };
                 <span class="kw">let </span>args = <span class="kw">if </span>validator.args.is_empty() {
-                    <span class="macro">vec!</span>[variables[<span class="string">&quot;INPUT&quot;</span>].clone(), variables[<span class="string">&quot;ST_NUM&quot;</span>].clone()]
+                    <span class="macro">vec!</span>[variables[<span class="string">"INPUT"</span>].clone(), variables[<span class="string">"ST_NUM"</span>].clone()]
                 } <span class="kw">else </span>{
                     <span class="kw">let </span><span class="kw-2">mut </span>args = Vec::new();
                     <span class="kw">for </span>arg <span class="kw">in </span><span class="kw-2">&amp;</span>validator.args {
                         <span class="comment">// variables may (and should!) start with `$`, remove it before accessing
                         // the `variables` map.
-                        </span><span class="kw">let </span>arg = <span class="kw">if let </span><span class="prelude-val">Some</span>(rest) = arg.strip_prefix(<span class="string">&#39;$&#39;</span>) {
-                            rest
-                        } <span class="kw">else </span>{
-                            arg.as_str()
+                        </span><span class="kw">let </span>arg = arg.strip_prefix(<span class="string">'$'</span>).unwrap_or(arg);
+                        <span class="kw">let </span><span class="prelude-val">Some</span>(value) = variables.get(arg) <span class="kw">else </span>{
+                            <span class="macro">bail!</span>(<span class="string">"Unknown variable in validator arguments: ${}"</span>, arg);
                         };
-                        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = variables.get(arg) {
-                            args.push(value.clone());
-                        } <span class="kw">else </span>{
-                            <span class="macro">bail!</span>(<span class="string">&quot;Unknown variable in validator arguments: ${}&quot;</span>, arg);
-                        }
+                        args.push(value.clone());
                     }
                     args
                 };
@@ -2263,13 +2256,13 @@
     <span class="doccomment">/// Parse a `:RUN` command.
     </span><span class="kw">fn </span>parse_run(<span class="kw-2">&amp;mut </span><span class="self">self</span>, line: Pair) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">if </span><span class="self">self</span>.subtask_id == <span class="number">0 </span>{
-            <span class="macro">bail!</span>(<span class="string">&quot;Cannot add a testcase outside a subtask&quot;</span>);
+            <span class="macro">bail!</span>(<span class="string">"Cannot add a testcase outside a subtask"</span>);
         }
         <span class="kw">let </span>line: Vec&lt;<span class="kw">_</span>&gt; = line.into_inner().collect();
         <span class="kw">let </span>name = line[<span class="number">0</span>].as_str();
         <span class="kw">let </span>args = line[<span class="number">1</span>].as_str();
         <span class="kw">if </span>!<span class="self">self</span>.generators.contains_key(name) {
-            <span class="macro">bail!</span>(<span class="string">&quot;Generator &#39;{}&#39; not declared&quot;</span>, name);
+            <span class="macro">bail!</span>(<span class="string">"Generator '{}' not declared"</span>, name);
         }
         <span class="self">self</span>.parse_testcase(args, <span class="prelude-val">Some</span>(name.into()))<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
@@ -2288,11 +2281,10 @@
     <span class="doccomment">/// Obtain the automatic variables for the current testcase.
     </span><span class="kw">fn </span>get_auto_variables(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HashMap&lt;String, String&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>vars = HashMap::new();
-        vars.insert(<span class="string">&quot;INPUT&quot;</span>.to_string(), TM_VALIDATION_FILE_NAME.to_string());
-        vars.insert(<span class="string">&quot;ST_NUM&quot;</span>.to_string(), (<span class="self">self</span>.subtask_id - <span class="number">1</span>).to_string());
-        vars.insert(<span class="string">&quot;TC_NUM&quot;</span>.to_string(), <span class="self">self</span>.testcase_id.to_string());
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(descr) = <span class="kw-2">&amp;</span><span class="self">self</span>.subtask_description {
-            vars.insert(<span class="string">&quot;ST_DESCRIPTION&quot;</span>.to_string(), descr.clone());
+        vars.insert(<span class="string">"INPUT"</span>.to_string(), TM_VALIDATION_FILE_NAME.to_string());
+        vars.insert(<span class="string">"ST_NUM"</span>.to_string(), (<span class="self">self</span>.subtask_id - <span class="number">1</span>).to_string());
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = <span class="kw-2">&amp;</span><span class="self">self</span>.subtask_name {
+            vars.insert(<span class="string">"ST_NAME"</span>.to_string(), name.clone());
         }
         vars
     }
@@ -2305,9 +2297,9 @@
     }
     <span class="kw">let </span><span class="kw-2">mut </span>buffer = <span class="macro">vec!</span>[];
     <span class="kw">let </span><span class="kw-2">mut </span>file = std::fs::File::open(path)
-        .with_context(|| <span class="macro">format!</span>(<span class="string">&quot;Cannot open file {}&quot;</span>, path.display()))<span class="question-mark">?</span>;
+        .with_context(|| <span class="macro">format!</span>(<span class="string">"Cannot open file {}"</span>, path.display()))<span class="question-mark">?</span>;
     file.read_to_end(<span class="kw-2">&amp;mut </span>buffer)
-        .context(<span class="string">&quot;Cannot read gen/GEN file&quot;</span>)<span class="question-mark">?</span>;
+        .context(<span class="string">"Cannot read gen/GEN file"</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>content = String::from_utf8_lossy(<span class="kw-2">&amp;</span>buffer);
     <span class="comment">// if the gen/GEN is present and it does not contain the cookie, skip all the generation
     </span><span class="kw">if </span>!content.contains(TM_ALLOW_DELETE_COOKIE) {
@@ -2334,32 +2326,31 @@
 
     <span class="kw">fn </span>from_str(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Err&gt; {
         <span class="kw">match </span>s {
-            <span class="string">&quot;&lt;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Less),
-            <span class="string">&quot;&lt;=&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::LessEqual),
-            <span class="string">&quot;&gt;&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Greater),
-            <span class="string">&quot;&gt;=&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::GreaterEqual),
-            <span class="string">&quot;=&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Equal),
-            <span class="kw">_ </span>=&gt; <span class="macro">bail!</span>(<span class="string">&quot;Invalid operator: {}&quot;</span>, s),
+            <span class="string">"&lt;" </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Less),
+            <span class="string">"&lt;=" </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::LessEqual),
+            <span class="string">"&gt;" </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Greater),
+            <span class="string">"&gt;=" </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::GreaterEqual),
+            <span class="string">"=" </span>=&gt; <span class="prelude-val">Ok</span>(ConstraintOperator::Equal),
+            <span class="kw">_ </span>=&gt; <span class="macro">bail!</span>(<span class="string">"Invalid operator: {}"</span>, s),
         }
     }
 }
 
-<span class="kw">impl </span>ToString <span class="kw">for </span>ConstraintOperator {
-    <span class="kw">fn </span>to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+<span class="kw">impl </span>Display <span class="kw">for </span>ConstraintOperator {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            ConstraintOperator::Less =&gt; <span class="string">&quot;&lt;&quot;</span>,
-            ConstraintOperator::LessEqual =&gt; <span class="string">&quot;&lt;=&quot;</span>,
-            ConstraintOperator::Greater =&gt; <span class="string">&quot;&gt;&quot;</span>,
-            ConstraintOperator::GreaterEqual =&gt; <span class="string">&quot;&gt;=&quot;</span>,
-            ConstraintOperator::Equal =&gt; <span class="string">&quot;=&quot;</span>,
+            ConstraintOperator::Less =&gt; <span class="macro">write!</span>(f, <span class="string">"&lt;"</span>),
+            ConstraintOperator::LessEqual =&gt; <span class="macro">write!</span>(f, <span class="string">"&lt;="</span>),
+            ConstraintOperator::Greater =&gt; <span class="macro">write!</span>(f, <span class="string">"&gt;"</span>),
+            ConstraintOperator::GreaterEqual =&gt; <span class="macro">write!</span>(f, <span class="string">"&gt;="</span>),
+            ConstraintOperator::Equal =&gt; <span class="macro">write!</span>(f, <span class="string">"="</span>),
         }
-        .to_string()
     }
 }
 
 <span class="kw">impl </span>ConstraintOperand {
     <span class="doccomment">/// Return the value of this operand which is either the constant or the integer value of the
-    /// variable contained in it. If the variable is not present, or it&#39;s not a valid integer `None`
+    /// variable contained in it. If the variable is not present, or it's not a valid integer `None`
     /// is returned.
     </span><span class="kw">fn </span>get_val(<span class="kw-2">&amp;</span><span class="self">self</span>, vars: <span class="kw-2">&amp;</span>HashMap&lt;String, String&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;i64&gt; {
         <span class="kw">match </span><span class="self">self </span>{
@@ -2379,11 +2370,11 @@
     }
 }
 
-<span class="kw">impl </span>ToString <span class="kw">for </span>ConstraintOperand {
-    <span class="kw">fn </span>to_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+<span class="kw">impl </span>Display <span class="kw">for </span>ConstraintOperand {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            ConstraintOperand::Constant(k) =&gt; k.to_string(),
-            ConstraintOperand::Variable(v) =&gt; <span class="macro">format!</span>(<span class="string">&quot;${}&quot;</span>, v),
+            ConstraintOperand::Constant(k) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, k),
+            ConstraintOperand::Variable(v) =&gt; <span class="macro">write!</span>(f, <span class="string">"${}"</span>, v),
         }
     }
 }
@@ -2406,12 +2397,12 @@
 }
 
 <span class="kw">impl </span>Debug <span class="kw">for </span>Constraint {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), std::fmt::Error&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), std::fmt::Error&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>constraint = <span class="self">self</span>.operands[<span class="number">0</span>].to_string();
         <span class="kw">for </span>(op, var) <span class="kw">in </span><span class="self">self</span>.operators.iter().zip(<span class="self">self</span>.operands[<span class="number">1</span>..].iter()) {
-            <span class="kw">let _ </span>= <span class="macro">write!</span>(constraint, <span class="string">&quot; {} {}&quot;</span>, op.to_string(), var.to_string());
+            <span class="kw">let _ </span>= <span class="macro">write!</span>(constraint, <span class="string">" {} {}"</span>, op, var);
         }
-        <span class="macro">write!</span>(f, <span class="string">&quot;{}&quot;</span>, constraint)
+        <span class="macro">write!</span>(f, <span class="string">"{}"</span>, constraint)
     }
 }
 
@@ -2437,13 +2428,13 @@
         <span class="kw">fn </span>has_error(<span class="kw-2">&amp;mut </span><span class="self">self</span>, message: <span class="kw-2">&amp;</span>str);
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;s</span>&gt; ErrorAssertion <span class="kw">for </span>Spec&lt;<span class="lifetime">&#39;s</span>, Error&gt; {
+    <span class="kw">impl</span>&lt;<span class="lifetime">'s</span>&gt; ErrorAssertion <span class="kw">for </span>Spec&lt;<span class="lifetime">'s</span>, Error&gt; {
         <span class="kw">fn </span>has_error(<span class="kw-2">&amp;mut </span><span class="self">self</span>, message: <span class="kw-2">&amp;</span>str) {
-            <span class="kw">let </span>error = <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.subject);
+            <span class="kw">let </span>error = <span class="macro">format!</span>(<span class="string">"{:?}"</span>, <span class="self">self</span>.subject);
             <span class="kw">if </span>!error.contains(message) {
                 AssertionFailure::from_spec(<span class="self">self</span>)
                     .with_actual(error)
-                    .with_expected(<span class="macro">format!</span>(<span class="string">&quot;error containing &lt;\&quot;{}\&quot;&gt;&quot;</span>, message))
+                    .with_expected(<span class="macro">format!</span>(<span class="string">"error containing &lt;\"{}\"&gt;"</span>, message))
                     .fail();
             }
         }
@@ -2458,7 +2449,7 @@
             <span class="kw">if let </span><span class="prelude-val">Some</span>(parent) = path.as_ref().parent() {
                 std::fs::create_dir_all(<span class="self">self</span>.<span class="number">0</span>.path().join(parent)).unwrap();
             }
-            std::fs::write(<span class="self">self</span>.<span class="number">0</span>.path().join(path), <span class="string">&quot;&quot;</span>).unwrap();
+            std::fs::write(<span class="self">self</span>.<span class="number">0</span>.path().join(path), <span class="string">""</span>).unwrap();
             <span class="self">self
         </span>}
 
@@ -2466,10 +2457,10 @@
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             content: S,
         ) -&gt; <span class="prelude-ty">Result</span>&lt;CasesGen&lt;<span class="kw">impl </span>Fn(TestcaseId) -&gt; OutputGenerator&gt;, Error&gt; {
-            std::fs::create_dir_all(<span class="self">self</span>.<span class="number">0</span>.path().join(<span class="string">&quot;gen&quot;</span>)).unwrap();
-            <span class="kw">let </span>dest = <span class="self">self</span>.<span class="number">0</span>.path().join(<span class="string">&quot;gen/cases.gen&quot;</span>);
+            std::fs::create_dir_all(<span class="self">self</span>.<span class="number">0</span>.path().join(<span class="string">"gen"</span>)).unwrap();
+            <span class="kw">let </span>dest = <span class="self">self</span>.<span class="number">0</span>.path().join(<span class="string">"gen/cases.gen"</span>);
             std::fs::write(<span class="kw-2">&amp;</span>dest, content.as_ref()).unwrap();
-            CasesGen::new(dest, |<span class="kw">_</span>| OutputGenerator::StaticFile(<span class="string">&quot;nope&quot;</span>.into()))
+            CasesGen::new(dest, |<span class="kw">_</span>| OutputGenerator::StaticFile(<span class="string">"nope"</span>.into()))
         }
     }
 
@@ -2477,100 +2468,96 @@
     </span><span class="kw">fn </span>test_gen_gen() {
         <span class="kw">let </span>helper = TestHelper::new();
         <span class="kw">let </span>gen = helper
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34\n:SUBTASK 24\n21 21&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34\n:SUBTASK 24\n21 21"</span>)
             .unwrap();
         gen.write_gen_gen().unwrap();
-        <span class="kw">let </span>path = gen.task_dir.join(<span class="string">&quot;gen/GEN&quot;</span>);
+        <span class="kw">let </span>path = gen.task_dir.join(<span class="string">"gen/GEN"</span>);
         <span class="kw">let </span>data = std::fs::read_to_string(path).unwrap();
         <span class="kw">let </span>res: Vec&lt;<span class="kw">_</span>&gt; = data
-            .split(<span class="string">&#39;\n&#39;</span>)
-            .filter(|s| !s.is_empty() &amp;&amp; !s.starts_with(<span class="string">&quot;# &quot;</span>) &amp;&amp; !s.starts_with(<span class="string">&quot;#COPY&quot;</span>))
+            .split(<span class="string">'\n'</span>)
+            .filter(|s| !s.is_empty() &amp;&amp; !s.starts_with(<span class="string">"# "</span>) &amp;&amp; !s.starts_with(<span class="string">"#COPY"</span>))
             .collect();
-        <span class="macro">assert_eq!</span>(res.len(), <span class="number">4</span>);
-        <span class="macro">assert_eq!</span>(res[<span class="number">0</span>], <span class="string">&quot;#ST: 42&quot;</span>);
-        <span class="macro">assert!</span>(res[<span class="number">1</span>].contains(<span class="string">&quot;12 34&quot;</span>));
-        <span class="macro">assert_eq!</span>(res[<span class="number">2</span>], <span class="string">&quot;#ST: 24&quot;</span>);
-        <span class="macro">assert!</span>(res[<span class="number">3</span>].contains(<span class="string">&quot;21 21&quot;</span>));
+        <span class="macro">assert_eq!</span>(res.len(), <span class="number">5</span>);
+        <span class="macro">assert_eq!</span>(res[<span class="number">0</span>], <span class="string">"#ST: 42"</span>);
+        <span class="macro">assert_eq!</span>(res[<span class="number">1</span>], <span class="string">"#STNAME: lol"</span>);
+        <span class="macro">assert!</span>(res[<span class="number">2</span>].contains(<span class="string">"12 34"</span>));
+        <span class="macro">assert_eq!</span>(res[<span class="number">3</span>], <span class="string">"#ST: 24"</span>);
+        <span class="macro">assert!</span>(res[<span class="number">4</span>].contains(<span class="string">"21 21"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_auto_variables() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34"</span>)
             .unwrap();
         <span class="kw">let </span>vars = gen.get_auto_variables();
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;INPUT&quot;</span>], TM_VALIDATION_FILE_NAME);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_NUM&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;TC_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_DESCRIPTION&quot;</span>], <span class="string">&quot;lol&quot;</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"INPUT"</span>], TM_VALIDATION_FILE_NAME);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NUM"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NAME"</span>], <span class="string">"lol"</span>);
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_auto_variables_no_descr() {
+    </span><span class="kw">fn </span>test_auto_variables_no_name() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34\n: SUBTASK 43&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42 lol\n12 34\n: SUBTASK 43"</span>)
             .unwrap();
         <span class="kw">let </span>vars = gen.get_auto_variables();
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;INPUT&quot;</span>], TM_VALIDATION_FILE_NAME);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;TC_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">&quot;ST_DESCRIPTION&quot;</span>));
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"INPUT"</span>], TM_VALIDATION_FILE_NAME);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NUM"</span>], <span class="string">"1"</span>);
+        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">"ST_NAME"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variables() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34"</span>)
             .unwrap();
-        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>.into(), <span class="string">&quot;2&quot;</span>.into(), <span class="string">&quot;1337&quot;</span>.into()];
-        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">&quot;gen&quot;</span>].args, <span class="kw-2">&amp;</span>args);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;INPUT&quot;</span>], TM_VALIDATION_FILE_NAME);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_NUM&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;TC_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;N&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;M&quot;</span>], <span class="string">&quot;2&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;seed&quot;</span>], <span class="string">&quot;1337&quot;</span>);
+        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">"1"</span>.into(), <span class="string">"2"</span>.into(), <span class="string">"1337"</span>.into()];
+        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">"gen"</span>].args, <span class="kw-2">&amp;</span>args);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"INPUT"</span>], TM_VALIDATION_FILE_NAME);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NUM"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"N"</span>], <span class="string">"1"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"M"</span>], <span class="string">"2"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"seed"</span>], <span class="string">"1337"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variables_extra_vars() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34"</span>)
             .unwrap();
-        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>.into(), <span class="string">&quot;2&quot;</span>.into(), <span class="string">&quot;1337&quot;</span>.into(), <span class="string">&quot;boh!&quot;</span>.into()];
-        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">&quot;gen&quot;</span>].args, <span class="kw-2">&amp;</span>args);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;INPUT&quot;</span>], TM_VALIDATION_FILE_NAME);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_NUM&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;TC_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;N&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;M&quot;</span>], <span class="string">&quot;2&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;seed&quot;</span>], <span class="string">&quot;1337&quot;</span>);
+        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">"1"</span>.into(), <span class="string">"2"</span>.into(), <span class="string">"1337"</span>.into(), <span class="string">"boh!"</span>.into()];
+        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">"gen"</span>].args, <span class="kw-2">&amp;</span>args);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"INPUT"</span>], TM_VALIDATION_FILE_NAME);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NUM"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"N"</span>], <span class="string">"1"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"M"</span>], <span class="string">"2"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"seed"</span>], <span class="string">"1337"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_variables_fewer_vars() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py N M seed\n:SUBTASK 42\n12 34"</span>)
             .unwrap();
-        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>.into()];
-        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">&quot;gen&quot;</span>].args, <span class="kw-2">&amp;</span>args);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;INPUT&quot;</span>], TM_VALIDATION_FILE_NAME);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;ST_NUM&quot;</span>], <span class="string">&quot;0&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;TC_NUM&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert_eq!</span>(vars[<span class="string">&quot;N&quot;</span>], <span class="string">&quot;1&quot;</span>);
-        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">&quot;M&quot;</span>));
-        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">&quot;seed&quot;</span>));
+        <span class="kw">let </span>args = <span class="macro">vec!</span>[<span class="string">"1"</span>.into()];
+        <span class="kw">let </span>vars = gen.get_variables(<span class="kw-2">&amp;</span>gen.generators[<span class="string">"gen"</span>].args, <span class="kw-2">&amp;</span>args);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"INPUT"</span>], TM_VALIDATION_FILE_NAME);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"ST_NUM"</span>], <span class="string">"0"</span>);
+        <span class="macro">assert_eq!</span>(vars[<span class="string">"N"</span>], <span class="string">"1"</span>);
+        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">"M"</span>));
+        <span class="macro">assert!</span>(!vars.contains_key(<span class="string">"seed"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_comment() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;# this is a comment&quot;</span>).unwrap();
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">"# this is a comment"</span>).unwrap();
         <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">0</span>);
     }
 
@@ -2581,94 +2568,94 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py"</span>)
             .unwrap();
-        <span class="macro">assert!</span>(gen.generators.contains_key(<span class="string">&quot;gen&quot;</span>));
+        <span class="macro">assert!</span>(gen.generators.contains_key(<span class="string">"gen"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_with_args() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py N M seed&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py N M seed"</span>)
             .unwrap();
-        <span class="macro">assert!</span>(gen.generators.contains_key(<span class="string">&quot;gen&quot;</span>));
-        <span class="macro">assert_eq!</span>(gen.generators[<span class="string">&quot;gen&quot;</span>].args, <span class="macro">vec!</span>[<span class="string">&quot;N&quot;</span>, <span class="string">&quot;M&quot;</span>, <span class="string">&quot;seed&quot;</span>]);
+        <span class="macro">assert!</span>(gen.generators.contains_key(<span class="string">"gen"</span>));
+        <span class="macro">assert_eq!</span>(gen.generators[<span class="string">"gen"</span>].args, <span class="macro">vec!</span>[<span class="string">"N"</span>, <span class="string">"M"</span>, <span class="string">"seed"</span>]);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_auto_default() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py"</span>)
             .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">&quot;gen&quot;</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">"gen"</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_default() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/default.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:GEN default gen/default.py&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .add_file(<span class="string">"gen/default.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:GEN default gen/default.py"</span>)
             .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">&quot;default&quot;</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">"default"</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_current_generator() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
             .cases_gen(
-                <span class="string">&quot;:GEN gen gen/generator.py\n:GEN gen2 gen/generator.py\n:SUBTASK 42\n:GEN gen2&quot;</span>,
+                <span class="string">":GEN gen gen/generator.py\n:GEN gen2 gen/generator.py\n:SUBTASK 42\n:GEN gen2"</span>,
             )
             .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">&quot;gen&quot;</span>.into()));
-        <span class="macro">assert_eq!</span>(gen.current_generator, <span class="prelude-val">Some</span>(<span class="string">&quot;gen2&quot;</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.default_generator, <span class="prelude-val">Some</span>(<span class="string">"gen"</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.current_generator, <span class="prelude-val">Some</span>(<span class="string">"gen2"</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_current_generator_outside_subtask() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:GEN gen&quot;</span>);
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:GEN gen"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;outside a subtask&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"outside a subtask"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_current_generator_unknown() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42\n:GEN lolnope&quot;</span>);
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42\n:GEN lolnope"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;unknown generator&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"unknown generator"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_duplicate() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:GEN gen gen/generator.py&quot;</span>);
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:GEN gen gen/generator.py"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Duplicate generator&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Duplicate generator"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_missing_file() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:GEN gen gen/generator.py&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":GEN gen gen/generator.py"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;does not exists&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"does not exists"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_generator_invalid_lang() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.lolnope&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/gen.lolnope&quot;</span>);
+            .add_file(<span class="string">"gen/gen.lolnope"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/gen.lolnope"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;unknown language&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"unknown language"</span>);
     }
 
     <span class="comment">/**********************
@@ -2678,94 +2665,82 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py&quot;</span>)
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py"</span>)
             .unwrap();
-        <span class="macro">assert!</span>(gen.validators.contains_key(<span class="string">&quot;val&quot;</span>));
+        <span class="macro">assert!</span>(gen.validators.contains_key(<span class="string">"val"</span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_with_args() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py $INPUT $ST_NUM&quot;</span>)
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py $INPUT $ST_NUM"</span>)
             .unwrap();
-        <span class="macro">assert!</span>(gen.validators.contains_key(<span class="string">&quot;val&quot;</span>));
-        <span class="macro">assert_eq!</span>(gen.validators[<span class="string">&quot;val&quot;</span>].args, <span class="macro">vec!</span>[<span class="string">&quot;$INPUT&quot;</span>, <span class="string">&quot;$ST_NUM&quot;</span>]);
+        <span class="macro">assert!</span>(gen.validators.contains_key(<span class="string">"val"</span>));
+        <span class="macro">assert_eq!</span>(gen.validators[<span class="string">"val"</span>].args, <span class="macro">vec!</span>[<span class="string">"$INPUT"</span>, <span class="string">"$ST_NUM"</span>]);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_auto_default() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py&quot;</span>)
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py"</span>)
             .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_validator, <span class="prelude-val">Some</span>(<span class="string">&quot;val&quot;</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.default_validator, <span class="prelude-val">Some</span>(<span class="string">"val"</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_default() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/default.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py\n:VAL default gen/default.py&quot;</span>)
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .add_file(<span class="string">"gen/default.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py\n:VAL default gen/default.py"</span>)
             .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_validator, <span class="prelude-val">Some</span>(<span class="string">&quot;default&quot;</span>.into()));
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_set_current_validator() {
-        <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(
-                <span class="string">&quot;:VAL val gen/validator.py\n:VAL val2 gen/validator.py\n:SUBTASK 42\n:VAL val2&quot;</span>,
-            )
-            .unwrap();
-        <span class="macro">assert_eq!</span>(gen.default_validator, <span class="prelude-val">Some</span>(<span class="string">&quot;val&quot;</span>.into()));
-        <span class="macro">assert_eq!</span>(gen.current_validator, <span class="prelude-val">Some</span>(<span class="string">&quot;val2&quot;</span>.into()));
+        <span class="macro">assert_eq!</span>(gen.default_validator, <span class="prelude-val">Some</span>(<span class="string">"default"</span>.into()));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_current_validator_outside_subtask() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py\n:VAL val&quot;</span>);
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py\n:VAL val"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;outside a subtask&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"outside a subtask"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_current_validator_unknown() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py\n:SUBTASK 42\n:VAL lolnope&quot;</span>);
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py\n:SUBTASK 42\n:VAL lolnope"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;unknown validator&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"unknown validator"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_duplicate() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/validator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/validator.py\n:VAL val gen/validator.py&quot;</span>);
+            .add_file(<span class="string">"gen/validator.py"</span>)
+            .cases_gen(<span class="string">":VAL val gen/validator.py\n:VAL val gen/validator.py"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Duplicate validator&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Duplicate validator"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_missing_file() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:VAL val gen/validator.py&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":VAL val gen/validator.py"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;does not exists&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"does not exists"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_validator_invalid_lang() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.lolnope&quot;</span>)
-            .cases_gen(<span class="string">&quot;:VAL val gen/gen.lolnope&quot;</span>);
+            .add_file(<span class="string">"gen/gen.lolnope"</span>)
+            .cases_gen(<span class="string">":VAL val gen/gen.lolnope"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;unknown language&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"unknown language"</span>);
     }
 
     <span class="comment">/**********************
@@ -2775,7 +2750,7 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_less() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .cases_gen(<span class="string">&quot;:CONSTRAINT 1 &lt; $N = $K &lt;= $M&quot;</span>)
+            .cases_gen(<span class="string">":CONSTRAINT 1 &lt; $N = $K &lt;= $M"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.constraints.len(), <span class="number">1</span>);
         <span class="kw">let </span>constr = <span class="kw-2">&amp;</span>gen.constraints[<span class="number">0</span>];
@@ -2783,9 +2758,9 @@
             constr.operands,
             <span class="macro">vec!</span>[
                 ConstraintOperand::Constant(<span class="number">1</span>),
-                ConstraintOperand::Variable(<span class="string">&quot;N&quot;</span>.into()),
-                ConstraintOperand::Variable(<span class="string">&quot;K&quot;</span>.into()),
-                ConstraintOperand::Variable(<span class="string">&quot;M&quot;</span>.into())
+                ConstraintOperand::Variable(<span class="string">"N"</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"K"</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"M"</span>.into())
             ]
         );
         <span class="macro">assert_eq!</span>(
@@ -2801,17 +2776,17 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_greater() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .cases_gen(<span class="string">&quot;:CONSTRAINT $K = 1 &gt; $N &gt;= $M&quot;</span>)
+            .cases_gen(<span class="string">":CONSTRAINT $K = 1 &gt; $N &gt;= $M"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.constraints.len(), <span class="number">1</span>);
         <span class="kw">let </span>constr = <span class="kw-2">&amp;</span>gen.constraints[<span class="number">0</span>];
         <span class="macro">assert_eq!</span>(
             constr.operands,
             <span class="macro">vec!</span>[
-                ConstraintOperand::Variable(<span class="string">&quot;K&quot;</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"K"</span>.into()),
                 ConstraintOperand::Constant(<span class="number">1</span>),
-                ConstraintOperand::Variable(<span class="string">&quot;N&quot;</span>.into()),
-                ConstraintOperand::Variable(<span class="string">&quot;M&quot;</span>.into())
+                ConstraintOperand::Variable(<span class="string">"N"</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"M"</span>.into())
             ]
         );
         <span class="macro">assert_eq!</span>(
@@ -2827,16 +2802,16 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_equal() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .cases_gen(<span class="string">&quot;:CONSTRAINT $K = $N = $M&quot;</span>)
+            .cases_gen(<span class="string">":CONSTRAINT $K = $N = $M"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.constraints.len(), <span class="number">1</span>);
         <span class="kw">let </span>constr = <span class="kw-2">&amp;</span>gen.constraints[<span class="number">0</span>];
         <span class="macro">assert_eq!</span>(
             constr.operands,
             <span class="macro">vec!</span>[
-                ConstraintOperand::Variable(<span class="string">&quot;K&quot;</span>.into()),
-                ConstraintOperand::Variable(<span class="string">&quot;N&quot;</span>.into()),
-                ConstraintOperand::Variable(<span class="string">&quot;M&quot;</span>.into())
+                ConstraintOperand::Variable(<span class="string">"K"</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"N"</span>.into()),
+                ConstraintOperand::Variable(<span class="string">"M"</span>.into())
             ]
         );
         <span class="macro">assert_eq!</span>(
@@ -2847,22 +2822,22 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_mixed_directions() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:CONSTRAINT $K &lt; $N &gt; $M&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":CONSTRAINT $K &lt; $N &gt; $M"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;inequality direction must be the same&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"inequality direction must be the same"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_floats() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:CONSTRAINT $N &lt; 10.2&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":CONSTRAINT $N &lt; 10.2"</span>);
         <span class="macro">assert!</span>(gen.is_err());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_constraint_invalid_integer() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:CONSTRAINT $N &lt; 100000000000000000000000000000000&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":CONSTRAINT $N &lt; 100000000000000000000000000000000"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Invalid integer constant&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Invalid integer constant"</span>);
     }
 
     <span class="comment">/**********************
@@ -2871,50 +2846,119 @@
 
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_subtask() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:SUBTASK 42&quot;</span>).unwrap();
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":SUBTASK 42"</span>).unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">1</span>);
         <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
         <span class="kw">if let </span>TaskInputEntry::Subtask(subtask) = subtask {
             <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(subtask.description, <span class="prelude-val">None</span>);
+            <span class="macro">assert_eq!</span>(subtask.name, <span class="prelude-val">None</span>);
             <span class="macro">assert_abs_diff_eq!</span>(subtask.max_score, <span class="number">42.0</span>);
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a subtask, got: {:?}&quot;</span>, subtask);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
         }
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_add_subtask_description() {
+    </span><span class="kw">fn </span>test_add_subtask_name() {
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":SUBTASK 42 the-name"</span>).unwrap();
+        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">1</span>);
+        <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
+        <span class="kw">if let </span>TaskInputEntry::Subtask(subtask) = subtask {
+            <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(subtask.name, <span class="prelude-val">Some</span>(<span class="string">"the-name"</span>.into()));
+            <span class="macro">assert_abs_diff_eq!</span>(subtask.max_score, <span class="number">42.0</span>);
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
+        }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_add_subtask_space_in_name() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .cases_gen(<span class="string">&quot;:SUBTASK 42 the description&quot;</span>)
+            .cases_gen(<span class="string">":SUBTASK 42.42 the name"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">1</span>);
         <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
         <span class="kw">if let </span>TaskInputEntry::Subtask(subtask) = subtask {
             <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(subtask.description, <span class="prelude-val">Some</span>(<span class="string">&quot;the description&quot;</span>.into()));
-            <span class="macro">assert_abs_diff_eq!</span>(subtask.max_score, <span class="number">42.0</span>);
+            <span class="macro">assert_eq!</span>(subtask.name, <span class="prelude-val">Some</span>(<span class="string">"thename"</span>.into()));
+            <span class="macro">assert_abs_diff_eq!</span>(subtask.max_score, <span class="number">42.42</span>);
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a subtask, got: {:?}&quot;</span>, subtask);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_subtask_float_score() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .cases_gen(<span class="string">&quot;:SUBTASK 42.42 the description&quot;</span>)
+            .cases_gen(<span class="string">":SUBTASK 42.42 the-name"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">1</span>);
         <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
         <span class="kw">if let </span>TaskInputEntry::Subtask(subtask) = subtask {
             <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(subtask.description, <span class="prelude-val">Some</span>(<span class="string">&quot;the description&quot;</span>.into()));
+            <span class="macro">assert_eq!</span>(subtask.name, <span class="prelude-val">Some</span>(<span class="string">"the-name"</span>.into()));
             <span class="macro">assert_abs_diff_eq!</span>(subtask.max_score, <span class="number">42.42</span>);
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a subtask, got: {:?}&quot;</span>, subtask);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
+        }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_add_subtask_with_default_val() {
+        <span class="kw">let </span>gen = TestHelper::new()
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .add_file(<span class="string">"gen/val.py"</span>)
+            .cases_gen(
+                <span class="string">":GEN gen gen/generator.py\n:VAL default gen/val.py\n:SUBTASK 42\n:RUN gen 4 5 6"</span>,
+            )
+            .unwrap();
+        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">2</span>);
+        <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
+        <span class="kw">let </span>TaskInputEntry::Subtask(subtask) = subtask <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
+        };
+        <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
+        <span class="kw">if let </span>InputValidator::Custom(<span class="kw">_</span>, args) = <span class="kw-2">&amp;</span>subtask.input_validator {
+            <span class="macro">assert_eq!</span>(args.len(), <span class="number">2</span>);
+            <span class="macro">assert_eq!</span>(args[<span class="number">1</span>], <span class="string">"0"</span>);
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(
+                <span class="string">"Expecting an AssumeValid but got: {:?}"</span>,
+                subtask.input_validator
+            );
+        }
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>test_subtask_validator_args_custom() {
+        <span class="kw">let </span>gen = TestHelper::new()
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .add_file(<span class="string">"gen/val.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/generator.py N M seed\n:VAL default gen/val.py $INPUT $ST_NUM\n:SUBTASK 42\n1 2 3"</span>)
+            .unwrap();
+        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">2</span>);
+        <span class="kw">let </span>subtask = <span class="kw-2">&amp;</span>gen.result[<span class="number">0</span>];
+        <span class="kw">let </span>TaskInputEntry::Subtask(subtask) = subtask <span class="kw">else </span>{
+            <span class="macro">panic!</span>(<span class="string">"Expecting a subtask, got: {:?}"</span>, subtask);
+        };
+        <span class="macro">assert_eq!</span>(subtask.id, <span class="number">0</span>);
+        <span class="kw">if let </span>InputValidator::Custom(source, args) = <span class="kw-2">&amp;</span>subtask.input_validator {
+            <span class="macro">assert_eq!</span>(source.name(), <span class="string">"val.py"</span>);
+            <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[TM_VALIDATION_FILE_NAME, <span class="string">"0"</span>]);
+        } <span class="kw">else </span>{
+            <span class="macro">panic!</span>(
+                <span class="string">"Expecting a custom validator, got: {:?}"</span>,
+                subtask.input_validator
+            );
         }
     }
 
@@ -2925,8 +2969,8 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_copy() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;example.in&quot;</span>)
-            .cases_gen(<span class="string">&quot;:SUBTASK 42\n:COPY example.in&quot;</span>)
+            .add_file(<span class="string">"example.in"</span>)
+            .cases_gen(<span class="string">":SUBTASK 42\n:COPY example.in"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -2937,34 +2981,27 @@
             <span class="kw">if let </span>InputGenerator::StaticFile(<span class="kw">_</span>) = testcase.input_generator {
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a static file, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a static file, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
-            <span class="kw">if let </span>InputValidator::AssumeValid = testcase.input_validator {
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting an AssumeValid but got: {:?}&quot;</span>,
-                    testcase.input_validator
-                );
-            }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_copy_missing_file() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:SUBTASK 42\n:COPY example.in&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":SUBTASK 42\n:COPY example.in"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;file not found&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"file not found"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_copy_no_subtask() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:COPY example.in&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":COPY example.in"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;outside a subtask&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"outside a subtask"</span>);
     }
 
     <span class="comment">/**********************
@@ -2974,8 +3011,8 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_run() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42\n:RUN gen 1 2 3&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42\n:RUN gen 1 2 3"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -2984,67 +3021,23 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(<span class="kw">_</span>, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>]);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
-            <span class="kw">if let </span>InputValidator::AssumeValid = testcase.input_validator {
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting an AssumeValid but got: {:?}&quot;</span>,
-                    testcase.input_validator
-                );
-            }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
-        }
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_add_run_with_val() {
-        <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/val.py&quot;</span>)
-            .cases_gen(
-                <span class="string">&quot;:GEN gen gen/generator.py\n:VAL default gen/val.py\n:SUBTASK 42\n:RUN gen 4 5 6&quot;</span>,
-            )
-            .unwrap();
-        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">2</span>);
-        <span class="kw">let </span>testcase = <span class="kw-2">&amp;</span>gen.result[<span class="number">1</span>];
-        <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
-            <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
-            <span class="kw">if let </span>InputGenerator::Custom(<span class="kw">_</span>, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;4&quot;</span>, <span class="string">&quot;5&quot;</span>, <span class="string">&quot;6&quot;</span>]);
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
-                    testcase.input_generator
-                );
-            }
-            <span class="kw">if let </span>InputValidator::Custom(<span class="kw">_</span>, args) = <span class="kw-2">&amp;</span>testcase.input_validator {
-                <span class="macro">assert_eq!</span>(args.len(), <span class="number">2</span>);
-                <span class="macro">assert_eq!</span>(args[<span class="number">1</span>], <span class="string">&quot;0&quot;</span>);
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting an AssumeValid but got: {:?}&quot;</span>,
-                    testcase.input_validator
-                );
-            }
-        } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_run_with_spaces() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/generator.py\n:SUBTASK 42\n:RUN gen &#39;1 2&#39; \&quot;3 4\&quot; &#39;\&quot;5 6&#39;&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/generator.py\n:SUBTASK 42\n:RUN gen '1 2' \"3 4\" '\"5 6'"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -3053,41 +3046,41 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(<span class="kw">_</span>, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1 2&quot;</span>, <span class="string">&quot;3 4&quot;</span>, <span class="string">&quot;\&quot;5 6&quot;</span>]);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1 2"</span>, <span class="string">"3 4"</span>, <span class="string">"\"5 6"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_run_corrupted_command() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN foo gen/gen.py\n:SUBTASK 42\n:RUN foo good ol&#39; quotes&quot;</span>);
+            .add_file(<span class="string">"gen/gen.py"</span>)
+            .cases_gen(<span class="string">":GEN foo gen/gen.py\n:SUBTASK 42\n:RUN foo good ol' quotes"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Invalid command arguments&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Invalid command arguments"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_run_missing_gen() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:SUBTASK 42\n:RUN foo 42 42&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":SUBTASK 42\n:RUN foo 42 42"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Generator &#39;foo&#39; not declared&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Generator 'foo' not declared"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_run_no_subtask() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/gen.py\n:RUN default 42 42&quot;</span>);
+            .add_file(<span class="string">"gen/gen.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/gen.py\n:RUN default 42 42"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;outside a subtask&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"outside a subtask"</span>);
     }
 
     <span class="comment">/**********************
@@ -3096,8 +3089,8 @@
     </span><span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_default_gen() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py\n:SUBTASK 42\n1 2 3&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/generator.py\n:SUBTASK 42\n1 2 3"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -3106,25 +3099,25 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;generator.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>]);
+                <span class="macro">assert_eq!</span>(source.name(), <span class="string">"generator.py"</span>);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_subtask_gen() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/other.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py\n:GEN other gen/other.py\n:SUBTASK 42\n:GEN other\n1 2 3&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .add_file(<span class="string">"gen/other.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/generator.py\n:GEN other gen/other.py\n:SUBTASK 42\n:GEN other\n1 2 3"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -3133,25 +3126,25 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;other.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>]);
+                <span class="macro">assert_eq!</span>(source.name(), <span class="string">"other.py"</span>);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_subtask_gen_outside() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/other.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py\n:GEN other gen/other.py\n:SUBTASK 42\n:GEN other\n:SUBTASK 20\n1 2 3&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .add_file(<span class="string">"gen/other.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/generator.py\n:GEN other gen/other.py\n:SUBTASK 42\n:GEN other\n:SUBTASK 20\n1 2 3"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -3160,24 +3153,24 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;generator.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>]);
+                <span class="macro">assert_eq!</span>(source.name(), <span class="string">"generator.py"</span>);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_spaces_in_command() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py\n:SUBTASK 42\n&#39;1 2&#39; \&quot;3 4\&quot; &#39;\&quot;5 6&#39;&quot;</span>)
+            .add_file(<span class="string">"gen/generator.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/generator.py\n:SUBTASK 42\n'1 2' \"3 4\" '\"5 6'"</span>)
             .unwrap();
         <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
@@ -3186,97 +3179,40 @@
         <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
             <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
             <span class="kw">if let </span>InputGenerator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_generator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;generator.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1 2&quot;</span>, <span class="string">&quot;3 4&quot;</span>, <span class="string">&quot;\&quot;5 6&quot;</span>]);
+                <span class="macro">assert_eq!</span>(source.name(), <span class="string">"generator.py"</span>);
+                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">"1 2"</span>, <span class="string">"3 4"</span>, <span class="string">"\"5 6"</span>]);
             } <span class="kw">else </span>{
                 <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom generator, got: {:?}&quot;</span>,
+                    <span class="string">"Expecting a custom generator, got: {:?}"</span>,
                     testcase.input_generator
                 );
             }
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
-        }
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_testcase_validator_args_default() {
-        <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/val.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py\n:VAL default gen/val.py\n:SUBTASK 42\n1 2 3&quot;</span>)
-            .unwrap();
-        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">2</span>);
-        <span class="kw">let </span>testcase = <span class="kw-2">&amp;</span>gen.result[<span class="number">1</span>];
-        <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
-            <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
-            <span class="kw">if let </span>InputValidator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_validator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;val.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(args, <span class="kw-2">&amp;</span><span class="macro">vec!</span>[TM_VALIDATION_FILE_NAME, <span class="string">&quot;0&quot;</span>]);
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom validator, got: {:?}&quot;</span>,
-                    testcase.input_validator
-                );
-            }
-        } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
-        }
-    }
-
-    <span class="attr">#[test]
-    </span><span class="kw">fn </span>test_testcase_validator_args_custom() {
-        <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/generator.py&quot;</span>)
-            .add_file(<span class="string">&quot;gen/val.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/generator.py N M seed\n:VAL default gen/val.py $N $M $seed $INPUT $TC_NUM $ST_NUM\n:SUBTASK 42\n1 2 3&quot;</span>)
-            .unwrap();
-        <span class="macro">assert_eq!</span>(gen.subtask_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.testcase_id, <span class="number">1</span>);
-        <span class="macro">assert_eq!</span>(gen.result.len(), <span class="number">2</span>);
-        <span class="kw">let </span>testcase = <span class="kw-2">&amp;</span>gen.result[<span class="number">1</span>];
-        <span class="kw">if let </span>TaskInputEntry::Testcase(testcase) = testcase {
-            <span class="macro">assert_eq!</span>(testcase.id, <span class="number">0</span>);
-            <span class="kw">if let </span>InputValidator::Custom(source, args) = <span class="kw-2">&amp;</span>testcase.input_validator {
-                <span class="macro">assert_eq!</span>(source.name(), <span class="string">&quot;val.py&quot;</span>);
-                <span class="macro">assert_eq!</span>(
-                    args,
-                    <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, TM_VALIDATION_FILE_NAME, <span class="string">&quot;0&quot;</span>, <span class="string">&quot;0&quot;</span>]
-                );
-            } <span class="kw">else </span>{
-                <span class="macro">panic!</span>(
-                    <span class="string">&quot;Expecting a custom validator, got: {:?}&quot;</span>,
-                    testcase.input_validator
-                );
-            }
-        } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Expecting a testcase, got: {:?}&quot;</span>, testcase);
+            <span class="macro">panic!</span>(<span class="string">"Expecting a testcase, got: {:?}"</span>, testcase);
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_valid_constraints() {
-        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">&quot;gen/generator.py&quot;</span>).cases_gen(
-            <span class="string">&quot;:GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n1 2&quot;</span>,
+        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">"gen/generator.py"</span>).cases_gen(
+            <span class="string">":GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n1 2"</span>,
         );
         <span class="macro">assert!</span>(gen.is_ok());
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_invalid_constraints() {
-        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">&quot;gen/generator.py&quot;</span>).cases_gen(
-            <span class="string">&quot;:GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n1 1000&quot;</span>,
+        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">"gen/generator.py"</span>).cases_gen(
+            <span class="string">":GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n1 1000"</span>,
         );
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;violates constraint&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"violates constraint"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_uncheckable_constraints() {
-        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">&quot;gen/generator.py&quot;</span>).cases_gen(
-            <span class="string">&quot;:GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n10000&quot;</span>,
+        <span class="kw">let </span>gen = TestHelper::new().add_file(<span class="string">"gen/generator.py"</span>).cases_gen(
+            <span class="string">":GEN default gen/generator.py N M\n:CONSTRAINT 1 &lt;= $N &lt; $M &lt; 1000\n:SUBTASK 42\n10000"</span>,
         );
         <span class="macro">assert!</span>(gen.is_ok());
     }
@@ -3284,26 +3220,26 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_corrupted_command() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN gen gen/gen.py\n:SUBTASK 42\ngood ol&#39; quotes&quot;</span>);
+            .add_file(<span class="string">"gen/gen.py"</span>)
+            .cases_gen(<span class="string">":GEN gen gen/gen.py\n:SUBTASK 42\ngood ol' quotes"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;Invalid command arguments&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"Invalid command arguments"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_missing_gen() {
-        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">&quot;:SUBTASK 42\n42 42&quot;</span>);
+        <span class="kw">let </span>gen = TestHelper::new().cases_gen(<span class="string">":SUBTASK 42\n42 42"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;no default generator set&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"no default generator set"</span>);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_testcase_no_subtask() {
         <span class="kw">let </span>gen = TestHelper::new()
-            .add_file(<span class="string">&quot;gen/gen.py&quot;</span>)
-            .cases_gen(<span class="string">&quot;:GEN default gen/gen.py\n42 42&quot;</span>);
+            .add_file(<span class="string">"gen/gen.py"</span>)
+            .cases_gen(<span class="string">":GEN default gen/gen.py\n42 42"</span>);
         <span class="macro">assert!</span>(gen.is_err());
-        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">&quot;outside a subtask&quot;</span>);
+        assert_that(<span class="kw-2">&amp;</span>gen.unwrap_err()).has_error(<span class="string">"outside a subtask"</span>);
     }
 }
 </code></pre></div></section></main></body></html>
